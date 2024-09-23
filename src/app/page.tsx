@@ -2,99 +2,146 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="min-h-screen max-w-screen-xl w-full m-auto">
+      {/* Header */}
+      <header className="flex justify-between items-center py-6 pr-8 max-sm:pr-0 bg-white">
+        <div className="w-40 h-auto">
+          {/* Logo */}
+          <Image
+            src="/logo.png" // Replace with the correct path to your logo
+            alt="Andino Logo"
+            width={160} // Adjust the width according to your logo size
+            height={40} // Adjust the height according to your logo size
+            objectFit="contain" // Ensures the logo fits well inside the container
+          />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <nav className="flex max-sm:space-x-2 space-x-8 ">
+          <a
+            href="https://www.youtube.com/@andinolabs"
+            target="_blank"
+            className="text-gray-600"
+          >
+            Eventos pasados
+          </a>
+          <a
+            href="https://chat.whatsapp.com/HMwENgYBbnX5Qag9lz9YDR"
+            target="_blank"
+            className="text-gray-600"
+          >
+            Comunidad
+          </a>
+        </nav>
+      </header>
+
+      {/* Hero Section */}
+      <section
+        className="relative bg-cover bg-center h-[533px] rounded-3xl overflow-visible bg-white"
+        style={{ backgroundImage: `url('/header.jpeg')` }}
+      >
+        <div className="absolute inset-0  opacity-50"></div>
+        <div className="absolute inset-0 flex flex-col top-[160px] text-white text-center">
+          <h1 className="max-sm:text-3xl font-bold max-xl:text-5xl text-6xl max-xl:w-[500px] w-[700px] max-xl:ml-5 max-sm:max-w-full max-sm:m-0">
+            Impulsa tu carrera en inteligencia artificial
+          </h1>
+        </div>
+        <Image
+          className="absolute right-10 bottom-[-200px] max-sm:bottom-[-100px] max-sm:right-0"
+          src="/spaceship.png" // Replace with the correct path to your logo
+          alt="spaceship"
+          width={600} // Adjust the width according to your logo size
+          height={600} // Adjust the height according to your logo size
+          objectFit="contain" // Ensures the logo fits well inside the container
+        />
+      </section>
+
+      <section>
+        <p className="max-w-[400px] text-lg mt-2 max-sm:mt-20">
+          En Andino Labs, nuestra misión es cerrar la brecha tecnológica
+          proporcionando capacitación de alta calidad para impulsar tu carrera.
+          Nuestro equipo investiga y aplica constantemente las últimas
+          tecnologías en nuestro portafolio de productos para ayudarte a
+          comprender casos de uso de alto impacto.
+        </p>
+      </section>
+
+      {/* Partners Section */}
+      {/* <section className="py-12  text-center">
+        <h2 className="text-2xl font-bold">Nuestros aliados</h2>
+        <div className="flex justify-center space-x-16 mt-8">
+          <Image src="/spacex.png" alt="SpaceX" width={100} height={50} />
+          <Image src="/nasa.png" alt="NASA" width={100} height={50} />
+          <Image src="/boeing.png" alt="Boeing" width={100} height={50} />
           <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+            src="/astroscale.png"
+            alt="Astroscale"
+            width={100}
+            height={50}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        </div>
+      </section> */}
+
+      {/* Bootcamp Section */}
+      <section className="py-16 bg-white text-center flex max-xl:flex-row flex-col max-sm:flex-col">
+        <h2 className="text-4xl font-bold flex-1 items-center justify-center max-xl:pt-[15%]">
+          ¿Qué encontrarás en nuestro Bootcamp?
+        </h2>
+        <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8 mt-8 px-8">
+          <div>
+            <div className="bg-gray-200 h-16 w-16 mx-auto rounded"></div>
+            <h3 className="text-xl font-semibold mt-4">Sesiones en vivo</h3>
+            <p>
+              Cada semana tendremos una sesión de capacitación con un experto en
+              el tema con amplia experiencia.
+            </p>
+          </div>
+          <div>
+            <div className="bg-gray-200 h-16 w-16 mx-auto rounded"></div>
+            <h3 className="text-xl font-semibold mt-4">Proyectos</h3>
+            <p>
+              Nuestro programa se enfoca en un 80% de práctica con ejercicios y
+              tareas en vivo.
+            </p>
+          </div>
+          <div>
+            <div className="bg-gray-200 h-16 w-16 mx-auto rounded"></div>
+            <h3 className="text-xl font-semibold mt-4">Recompensas</h3>
+            <p>
+              Premios y recompensas para bonificar la participación y la
+              innovación de los participantes.
+            </p>
+          </div>
+          <div>
+            <div className="bg-gray-200 h-16 w-16 mx-auto rounded"></div>
+            <h3 className="text-xl font-semibold mt-4">Mentorías</h3>
+            <p>
+              Te asignaremos mentores que resolverán todas tus dudas durante
+              sesiones privadas.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* AI Chatbot Section */}
+      <section className="py-16 bg-gray-100 text-center relative">
+        <h2 className="text-3xl font-bold">
+          Crearemos juntos un chat bot de inteligencia artificial
+        </h2>
+        <div className="flex justify-center mt-8">
           <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+            src="/chatbot-example.png"
+            alt="Chatbot Example"
+            width={300}
+            height={500}
           />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+        </div>
+        <button className="bg-black text-white py-3 px-6 mt-8 rounded">
+          Pruébalo tú mismo
+        </button>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-12 bg-black text-white text-center">
+        <p>© 2024 Odyssey. Todos los derechos reservados.</p>
       </footer>
     </div>
   );
