@@ -1,4 +1,7 @@
 import Image from "next/image";
+import PricingSection from "./component/Pricing";
+import ChatBotSection from "./component/Chatbot";
+import LearningTrack from "./component/LearningTrack";
 
 export default function Home() {
   return (
@@ -121,24 +124,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* AI Chatbot Section */}
-      <section className="py-16 bg-gray-100 text-center relative">
-        <h2 className="text-3xl font-bold">
-          Crearemos juntos un chat bot de inteligencia artificial
-        </h2>
-        <div className="flex justify-center mt-8">
-          <Image
-            src="/chatbot-example.png"
-            alt="Chatbot Example"
-            width={300}
-            height={500}
-          />
-        </div>
-        <button className="bg-black text-white py-3 px-6 mt-8 rounded">
-          Pruébalo tú mismo
-        </button>
-      </section>
+      <LearningTrack />
 
+      <ChatBotSection />
+      {/* AI Chatbot Section */}
+
+      <PricingSection />
       {/* Footer */}
       <footer className="py-12 bg-black text-white text-center">
         <p>© 2024 Odyssey. Todos los derechos reservados.</p>
