@@ -30,6 +30,13 @@ export const organizerService = {
     });
   },
 
+  getByOrganizationId: async (organizationId: string) => {
+    return prisma.organizer.findMany({
+      where: { organizationId },
+      include: { user: true },
+    });
+  },
+
   update: async (id: string, data: z.infer<typeof UpdateOrganizerSchema>) => {
     const validatedData = UpdateOrganizerSchema.parse(data);
     return prisma.organizer.update({ where: { id }, data: validatedData });

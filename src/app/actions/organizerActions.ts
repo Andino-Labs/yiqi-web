@@ -1,40 +1,104 @@
 "use server";
 
 import { organizerService } from "@/services/organizerService";
-import { isSuperAdmin } from "@/utils/auth";
+import { isSuperAdmin, isOrganizerAdmin } from "@/utils/auth";
 import { revalidatePath } from "next/cache";
+import { getServerSession } from "next-auth/next";
+import prisma from "@/lib/prisma";
+import { z } from "zod";
 
-export async function createOrganizer(
-  data: Parameters<typeof organizerService.create>[0]
-) {
-  if (!(await isSuperAdmin())) throw new Error("Unauthorized");
-  const organizer = await organizerService.create(data);
-  revalidatePath("/organizers");
-  return organizer;
+export const OrganizerSchema = z.object({
+  userId: z.string().cuid("Invalid user ID"),
+  organizationId: z.string().cuid("Invalid organization ID"),
+  role: z.enum(["ADMIN", "VIEWER"]),
+});
+
+export async function createOrganizer(data: z.infer<typeof OrganizerSchema>) {
+  const session = await getServerSession();
+  if (!session?.user?.email) throw new Error("Unauthorized");
+
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+  });
+  if (!user) throw new Error("User not found");
+
+  if (
+    (await isSuperAdmin()) ||
+    (await isOrganizerAdmin(user.id, data.organizationId))
+  ) {
+    const organizer = await organizerService.create(data);
+    revalidatePath(`/organizations/${data.organizationId}/organizers`);
+    return organizer;
+  } else {
+    throw new Error("Unauthorized");
+  }
 }
 
-export async function getAllOrganizers() {
-  if (!(await isSuperAdmin())) throw new Error("Unauthorized");
-  return organizerService.getAll();
-}
+export async function getOrganizersForOrganization(organizationId: string) {
+  const session = await getServerSession();
+  if (!session?.user?.email) throw new Error("Unauthorized");
 
-export async function getOrganizer(id: string) {
-  if (!(await isSuperAdmin())) throw new Error("Unauthorized");
-  return organizerService.getById(id);
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+  });
+  if (!user) throw new Error("User not found");
+
+  if (
+    (await isSuperAdmin()) ||
+    (await isOrganizerAdmin(user.id, organizationId))
+  ) {
+    return organizerService.getByOrganizationId(organizationId);
+  } else {
+    throw new Error("Unauthorized");
+  }
 }
 
 export async function updateOrganizer(
   id: string,
-  data: Parameters<typeof organizerService.update>[1]
+  data: Partial<z.infer<typeof OrganizerSchema>>
 ) {
-  if (!(await isSuperAdmin())) throw new Error("Unauthorized");
-  const organizer = await organizerService.update(id, data);
-  revalidatePath("/organizers");
-  return organizer;
+  const session = await getServerSession();
+  if (!session?.user?.email) throw new Error("Unauthorized");
+
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+  });
+  if (!user) throw new Error("User not found");
+
+  const organizer = await organizerService.getById(id);
+  if (!organizer) throw new Error("Organizer not found");
+
+  if (
+    (await isSuperAdmin()) ||
+    (await isOrganizerAdmin(user.id, organizer.organizationId))
+  ) {
+    const updatedOrganizer = await organizerService.update(id, data);
+    revalidatePath(`/organizations/${organizer.organizationId}/organizers`);
+    return updatedOrganizer;
+  } else {
+    throw new Error("Unauthorized");
+  }
 }
 
 export async function deleteOrganizer(id: string) {
-  if (!(await isSuperAdmin())) throw new Error("Unauthorized");
-  await organizerService.delete(id);
-  revalidatePath("/organizers");
+  const session = await getServerSession();
+  if (!session?.user?.email) throw new Error("Unauthorized");
+
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+  });
+  if (!user) throw new Error("User not found");
+
+  const organizer = await organizerService.getById(id);
+  if (!organizer) throw new Error("Organizer not found");
+
+  if (
+    (await isSuperAdmin()) ||
+    (await isOrganizerAdmin(user.id, organizer.organizationId))
+  ) {
+    await organizerService.delete(id);
+    revalidatePath(`/organizations/${organizer.organizationId}/organizers`);
+  } else {
+    throw new Error("Unauthorized");
+  }
 }

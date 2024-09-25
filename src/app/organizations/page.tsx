@@ -1,33 +1,28 @@
-import {
-  getAllOrganizations,
-  createOrganization,
-} from "../actions/organizationActions";
+import { getAllOrganizations } from "../actions/organizationActions";
+import { isSuperAdmin } from "@/utils/auth";
+import Link from "next/link";
+import AddOrgButton from "./AddOrgButton";
 
 export default async function OrganizationsPage() {
   const organizations = await getAllOrganizations();
-
-  async function handleCreateOrganization(formData: FormData) {
-    "use server";
-    const name = formData.get("name") as string;
-    const description = formData.get("description") as string;
-    const logo = formData.get("logo") as string;
-    await createOrganization({ name, description, logo });
-  }
+  const isUserSuperAdmin = await isSuperAdmin();
 
   return (
-    <div>
-      <h1>Organizations</h1>
-      <ul>
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Organizations</h1>
+      <ul className="space-y-2">
         {organizations.map((org) => (
-          <li key={org.id}>{org.name}</li>
+          <li key={org.id} className="border p-2 rounded">
+            <Link
+              href={`/organizations/${org.id}`}
+              className="text-blue-500 hover:underline"
+            >
+              {org.name}
+            </Link>
+          </li>
         ))}
       </ul>
-      <form action={handleCreateOrganization}>
-        <input name="name" placeholder="Organization Name" required />
-        <input name="description" placeholder="Description" />
-        <input name="logo" placeholder="Logo URL" />
-        <button type="submit">Create Organization</button>
-      </form>
+      {isUserSuperAdmin && <AddOrgButton />}
     </div>
   );
 }
