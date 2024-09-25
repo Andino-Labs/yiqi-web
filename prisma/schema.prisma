@@ -21,6 +21,7 @@ model User {
   organizers    Organizer[]  // Changed from singular to plural
   attendances   Attendance[]
   isSuperAdmin  Boolean   @default(false)  // Add this line
+  attendedEvents Attendee[]
 }
 
 model Account {
@@ -102,6 +103,8 @@ model Event {
   customFields   Json?        // Added to store custom fields for the event
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
+  requiresApproval Boolean @default(false)
+  attendees        Attendee[]
 }
 
 model Attendance {
@@ -116,4 +119,24 @@ model Attendance {
   updatedAt    DateTime @updatedAt
 
   @@unique([userId, eventId])
+}
+
+model Attendee {
+  id           String   @id @default(cuid())
+  user         User     @relation(fields: [userId], references: [id])
+  userId       String
+  event        Event    @relation(fields: [eventId], references: [id])
+  eventId      String
+  status       AttendeeStatus @default(PENDING)
+  customFields Json?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([userId, eventId])
+}
+
+enum AttendeeStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }

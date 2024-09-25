@@ -1,6 +1,4 @@
 import { getOrganization } from "@/app/actions/organizationActions";
-
-// You'll need to create an action to get contacts for an organization
 import { getOrganizationContacts } from "@/app/actions/contactActions";
 import Link from "next/link";
 
@@ -19,12 +17,17 @@ export default async function ContactsPage({
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">
-        Contact List for {organization.name}
+        Contacts for {organization.name}
       </h1>
       <ul className="space-y-2">
         {contacts.map((contact) => (
-          <li key={contact.id} className="border p-2 rounded">
-            {contact.name} - {contact.email}
+          <li key={contact.user.id} className="border p-2 rounded">
+            <Link
+              href={`/organizations/${params.id}/contacts/${contact.user.id}`}
+              className="text-blue-500 hover:underline"
+            >
+              {contact.user.name} ({contact.user.email})
+            </Link>
           </li>
         ))}
       </ul>
