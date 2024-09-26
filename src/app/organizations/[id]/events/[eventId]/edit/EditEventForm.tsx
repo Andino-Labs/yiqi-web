@@ -64,13 +64,13 @@ export default function EditEventForm({
       </div>
       <div>
         <label htmlFor="startDate" className="block">
-          Start Date
+          Start Date {event.startDate.toLocaleDateString()}
         </label>
         <input
           type="datetime-local"
           id="startDate"
           name="startDate"
-          defaultValue={event.startDate.toDateString()}
+          defaultValue={new Date(event.startDate).toISOString().slice(0, 16)}
           required
           className="w-full border p-2"
         />
@@ -83,7 +83,7 @@ export default function EditEventForm({
           type="datetime-local"
           id="endDate"
           name="endDate"
-          defaultValue={event.endDate.toDateString()}
+          defaultValue={new Date(event.endDate).toISOString().slice(0, 16)}
           required
           className="w-full border p-2"
         />
@@ -123,6 +123,24 @@ export default function EditEventForm({
               <option value="number">Number</option>
               <option value="select">Select</option>
             </select>
+            {field.type === "select" && (
+              <input
+                type="text"
+                value={field.options}
+                onChange={(e) =>
+                  updateCustomField(index, { options: e.target.value })
+                }
+                placeholder="Enter options separated by commas"
+                className="p-2 border rounded ml-2"
+              />
+            )}
+            <button
+              type="button"
+              onClick={() => removeCustomField(index)}
+              className="text-red-500 ml-2"
+            >
+              Remove
+            </button>
           </div>
         ))}
         <button

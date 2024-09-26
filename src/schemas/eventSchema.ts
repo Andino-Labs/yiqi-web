@@ -3,7 +3,7 @@ import { z } from "zod";
 export const CustomFieldSchema = z.object({
   name: z.string().min(1, "Field name is required"),
   type: z.enum(["text", "number", "select", "date"]),
-  required: z.boolean(),
+  required: z.boolean().optional().default(true),
   options: z
     .string()
     .optional()
@@ -12,12 +12,12 @@ export const CustomFieldSchema = z.object({
 
 export const EventSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  startDate: z.date(),
-  endDate: z.date(),
+  startDate: z.coerce.date(),
+  endDate: z.coerce.date(),
   description: z.string().optional(),
   location: z.string().nullable().optional().default(""),
   customFields: z.array(CustomFieldSchema),
-  requiresApproval: z.boolean(),
+  requiresApproval: z.boolean().optional().default(false),
 });
 
 export const createCustomFieldSchema = (field: CustomFieldInput) => {
