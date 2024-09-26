@@ -112,9 +112,24 @@ export default function EditEventForm({
       <div>
         <h2 className="text-xl font-semibold mb-2">Custom Fields</h2>
         {customFields.map((field, index) => (
-          <div key={index} className="mb-4 p-4 border rounded">
-            {/* Custom field inputs */}
-            {/* ... (same as before) ... */}
+          <div key={index} className="mb-2">
+            <input
+              value={field.name}
+              onChange={(e) =>
+                updateCustomField(index, { name: e.target.value })
+              }
+              placeholder="Field Name"
+              className="p-2 border rounded mr-2"
+            />
+            <select
+              value={field.type}
+              onChange={() => removeCustomField(index)}
+              className="p-2 border rounded"
+            >
+              <option value="text">Text</option>
+              <option value="number">Number</option>
+              <option value="select">Select</option>
+            </select>
           </div>
         ))}
         <button
