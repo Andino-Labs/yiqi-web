@@ -2,7 +2,7 @@ import { getOrganization } from "@/app/actions/organizationActions";
 import { getEvent, updateEvent } from "@/app/actions/eventActions";
 import { getCurrentUser, isOrganizerAdmin } from "@/utils/auth";
 import { redirect } from "next/navigation";
-import { CustomFieldInput } from "@/schemas/eventSchema";
+import { CustomFieldInput, DbEventSchema } from "@/schemas/eventSchema";
 import EditEventForm from "./EditEventForm"; // We'll create this component
 
 async function getEventData(organizationId: string, eventId: string) {
@@ -18,7 +18,7 @@ async function getEventData(organizationId: string, eventId: string) {
 
   const isAdmin = currentUser && (await isOrganizerAdmin(organizationId));
 
-  return { organization, event, isAdmin };
+  return { organization, event: DbEventSchema.parse(event), isAdmin };
 }
 
 export default async function EditEventPage({

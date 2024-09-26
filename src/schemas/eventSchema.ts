@@ -12,19 +12,12 @@ export const CustomFieldSchema = z.object({
 
 export const EventSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  startDate: z.string().refine((date) => !isNaN(Date.parse(date)), {
-    message: "Invalid start date",
-  }),
-  endDate: z.string().refine((date) => !isNaN(Date.parse(date)), {
-    message: "Invalid end date",
-  }),
+  startDate: z.date(),
+  endDate: z.date(),
   description: z.string().optional(),
   customFields: z.array(CustomFieldSchema),
   requiresApproval: z.boolean(),
 });
-
-export type EventInput = z.infer<typeof EventSchema>;
-export type CustomFieldInput = z.infer<typeof CustomFieldSchema>;
 
 export const createCustomFieldSchema = (field: CustomFieldInput) => {
   switch (field.type) {
@@ -59,3 +52,15 @@ export const createAttendeeSchema = (customFields: CustomFieldInput[]) => {
 
   return baseSchema.merge(customFieldsSchema);
 };
+
+export const DbEventSchema = EventSchema.extend({
+  id: z.string(),
+  organizationId: z.string(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+  customFields: z.array(CustomFieldSchema).nullable().optional().default([]),
+});
+
+export type EventInput = z.infer<typeof EventSchema>;
+export type CustomFieldInput = z.infer<typeof CustomFieldSchema>;
+export type EditEventInput = z.infer<typeof DbEventSchema>;

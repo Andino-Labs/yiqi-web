@@ -7,17 +7,9 @@ import {
   EventSchema,
   EventInput,
   createAttendeeSchema,
-  CustomFieldSchema,
+  DbEventSchema,
 } from "@/schemas/eventSchema";
 import { z } from "zod";
-
-const DbEventSchema = EventSchema.extend({
-  id: z.string(),
-  organizationId: z.string(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  customFields: z.array(CustomFieldSchema),
-});
 
 type DbEvent = z.infer<typeof DbEventSchema>;
 

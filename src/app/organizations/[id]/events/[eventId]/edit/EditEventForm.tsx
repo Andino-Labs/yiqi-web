@@ -2,17 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { CustomFieldInput } from "@/schemas/eventSchema";
+import { CustomFieldInput, EditEventInput } from "@/schemas/eventSchema";
 
 interface EditEventFormProps {
-  event: {
-    id: string;
-    title: string;
-    startDate: string;
-    endDate: string;
-    description?: string;
-    customFields: CustomFieldInput[];
-  };
+  event: EditEventInput;
   handleSubmit: (formData: FormData) => Promise<void>;
   organizationId: string;
 }
@@ -77,7 +70,7 @@ export default function EditEventForm({
           type="datetime-local"
           id="startDate"
           name="startDate"
-          defaultValue={event.startDate.slice(0, 16)}
+          defaultValue={event.startDate.toDateString()}
           required
           className="w-full border p-2"
         />
@@ -90,7 +83,7 @@ export default function EditEventForm({
           type="datetime-local"
           id="endDate"
           name="endDate"
-          defaultValue={event.endDate.slice(0, 16)}
+          defaultValue={event.endDate.toDateString()}
           required
           className="w-full border p-2"
         />
