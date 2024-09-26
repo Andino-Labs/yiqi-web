@@ -58,7 +58,11 @@ export const DbEventSchema = EventSchema.extend({
   organizationId: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
-  customFields: z.array(CustomFieldSchema).nullable().optional().default([]),
+  customFields: z
+    .array(CustomFieldSchema)
+    .optional()
+    .nullable()
+    .transform((val) => val ?? []),
 });
 
 export type EventInput = z.infer<typeof EventSchema>;
