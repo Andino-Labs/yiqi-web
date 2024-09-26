@@ -1,19 +1,9 @@
-import prisma from "@/lib/prisma";
-import { getCurrentUser } from "@/lib/session";
-import { revalidatePath } from "next/cache";
-import { z } from "zod";
+"use server";
 
-// Zod schema for event data
-const EventSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  startDate: z.string().refine((date) => !isNaN(Date.parse(date)), {
-    message: "Invalid start date",
-  }),
-  endDate: z.string().refine((date) => !isNaN(Date.parse(date)), {
-    message: "Invalid end date",
-  }),
-  description: z.string().optional(),
-});
+import prisma from "@/lib/prisma";
+import { getCurrentUser, isOrganizerAdmin } from "@/utils/auth";
+import { revalidatePath } from "next/cache";
+import { EventSchema, EventInput } from "@/schemas/eventSchema";
 
 export async function getOrganizationEvents(organizationId: string) {
   return await prisma.event.findMany({
@@ -24,19 +14,22 @@ export async function getOrganizationEvents(organizationId: string) {
 
 export async function createEvent(organizationId: string, eventData: unknown) {
   const currentUser = await getCurrentUser();
-  if (
-    !currentUser ||
-    !(await isUserOrganizationAdmin(currentUser.id, organizationId))
-  ) {
+  if (!currentUser || !(await isOrganizerAdmin(organizationId))) {
     throw new Error("Unauthorized");
   }
 
   // Validate event data
-  const validatedData = EventSchema.parse(eventData);
+  const validatedData = EventSchema.parse(eventData) as EventInput;
+
+  // Convert date strings to Date objects
+  const startDate = new Date(validatedData.startDate);
+  const endDate = new Date(validatedData.endDate);
 
   const event = await prisma.event.create({
     data: {
       ...validatedData,
+      startDate,
+      endDate,
       organizationId,
     },
   });
@@ -50,19 +43,24 @@ export async function updateEvent(eventId: string, eventData: unknown) {
   if (!event) throw new Error("Event not found");
 
   const currentUser = await getCurrentUser();
-  if (
-    !currentUser ||
-    !(await isUserOrganizationAdmin(currentUser.id, event.organizationId))
-  ) {
+  if (!currentUser || !(await isOrganizerAdmin(event.organizationId))) {
     throw new Error("Unauthorized");
   }
 
   // Validate event data
-  const validatedData = EventSchema.parse(eventData);
+  const validatedData = EventSchema.parse(eventData) as EventInput;
+
+  // Convert date strings to Date objects
+  const startDate = new Date(validatedData.startDate);
+  const endDate = new Date(validatedData.endDate);
 
   const updatedEvent = await prisma.event.update({
     where: { id: eventId },
-    data: validatedData,
+    data: {
+      ...validatedData,
+      startDate,
+      endDate,
+    },
   });
 
   revalidatePath(`/organizations/${event.organizationId}/events`);

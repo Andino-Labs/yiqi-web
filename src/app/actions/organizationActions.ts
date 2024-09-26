@@ -1,20 +1,29 @@
 "use server";
 
 import { organizationService } from "@/services/organizationService";
-import {
-  isSuperAdmin,
-  isOrganizerAdmin,
-  isOrganizerViewer,
-} from "@/utils/auth";
+import { getCurrentUser, isSuperAdmin, isOrganizerAdmin } from "@/utils/auth";
 import { revalidatePath } from "next/cache";
-import { getServerSession } from "next-auth/next";
 import prisma from "@/lib/prisma";
 
 export async function createOrganization(
   data: Parameters<typeof organizationService.create>[0]
 ) {
+  const currentUser = await getCurrentUser();
+  if (!currentUser) throw new Error("Unauthorized");
+
   if (!(await isSuperAdmin())) throw new Error("Unauthorized");
+
   const org = await organizationService.create(data);
+
+  // Create an organizer entry for the current user as an admin
+  await prisma.organizer.create({
+    data: {
+      userId: currentUser.id,
+      organizationId: org.id,
+      role: "ADMIN",
+    },
+  });
+
   revalidatePath("/organizations");
   return org;
 }
@@ -24,35 +33,20 @@ export async function getAllOrganizations() {
 }
 
 export async function getOrganization(id: string) {
-  const session = await getServerSession();
-  if (!session?.user?.email) throw new Error("Unauthorized");
-
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
+  return await prisma.organization.findUnique({
+    where: { id },
   });
-  if (!user) throw new Error("User not found");
-
-  if ((await isSuperAdmin()) || (await isOrganizerViewer(user.id, id))) {
-    return organizationService.getById(id);
-  } else {
-    throw new Error("Unauthorized");
-  }
 }
 
 export async function updateOrganization(
   id: string,
   data: Parameters<typeof organizationService.update>[1]
 ) {
-  const session = await getServerSession();
-  if (!session?.user?.email) throw new Error("Unauthorized");
+  const currentUser = await getCurrentUser();
+  if (!currentUser) throw new Error("Unauthorized");
 
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-  });
-  if (!user) throw new Error("User not found");
-
-  if ((await isSuperAdmin()) || (await isOrganizerAdmin(user.id, id))) {
-    const org = await organizationService.update(id, data, user.id);
+  if ((await isSuperAdmin()) || (await isOrganizerAdmin(id))) {
+    const org = await organizationService.update(id, data, currentUser.id);
     revalidatePath("/organizations");
     return org;
   } else {

@@ -1,5 +1,5 @@
 import { getOrganization } from "@/app/actions/organizationActions";
-import { getOrganizersForOrganization } from "@/app/actions/organizerActions";
+import { getOrganizersByOrganization } from "@/app/actions/organizerActions";
 import Link from "next/link";
 import AddOrganizerButton from "./AddOrganizerButton";
 
@@ -9,7 +9,7 @@ export default async function OrganizersPage({
   params: { id: string };
 }) {
   const organization = await getOrganization(params.id);
-  const organizers = await getOrganizersForOrganization(params.id);
+  const organizers = await getOrganizersByOrganization(params.id);
 
   if (!organization) {
     return <div>Organization not found</div>;

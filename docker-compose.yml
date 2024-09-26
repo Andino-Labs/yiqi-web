@@ -1,8 +1,8 @@
-version: '3.7'
+version: "3.7"
 services:
   postgres:
     image: ankane/pgvector
-    container_name: andino-postgres
+    container_name: andino-web-postgres
     ports:
       - 5432:5432
     volumes:

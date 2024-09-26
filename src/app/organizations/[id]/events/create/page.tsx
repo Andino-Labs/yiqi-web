@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
+import { createEvent } from "@/app/actions/eventActions";
 
 const CustomFieldSchema = z.object({
   name: z.string().min(1, "Field name is required"),
@@ -63,7 +64,7 @@ export default function CreateEventPage({
       EventSchema.parse(eventData);
       // Here you would typically call an API to create the event
       // For now, we'll just log the data and redirect
-      console.log(eventData);
+      await createEvent(params.id, eventData);
       router.push(`/organizations/${params.id}/events`);
     } catch (error) {
       if (error instanceof z.ZodError) {

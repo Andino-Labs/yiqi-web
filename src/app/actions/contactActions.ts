@@ -1,5 +1,7 @@
+"use server";
+
 import prisma from "@/lib/prisma";
-import { getCurrentUser } from "@/lib/session";
+import { getCurrentUser, isOrganizerAdmin } from "@/utils/auth";
 
 export async function getOrganizationContacts(organizationId: string) {
   const contacts = await prisma.attendee.findMany({
@@ -56,10 +58,7 @@ export async function updateAttendeeStatus(
 
   if (
     !currentUser ||
-    !(await isUserOrganizationAdmin(
-      currentUser.id,
-      attendee.event.organizationId
-    ))
+    !(await isOrganizerAdmin(attendee.event.organizationId))
   ) {
     throw new Error("Unauthorized");
   }
@@ -72,7 +71,10 @@ export async function updateAttendeeStatus(
   return updatedAttendee;
 }
 
-async function isUserOrganizationAdmin(userId: string, organizationId: string) {
+export async function isUserOrganizationAdmin(
+  userId: string,
+  organizationId: string
+) {
   const membership = await prisma.organizer.findFirst({
     where: {
       userId,
