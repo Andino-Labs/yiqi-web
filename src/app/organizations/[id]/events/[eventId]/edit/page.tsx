@@ -1,30 +1,46 @@
 import { getOrganization } from "@/app/actions/organizationActions";
-import { updateEvent } from "@/app/actions/eventActions";
-import { getCurrentUser } from "@/lib/session";
-import prisma from "@/lib/prisma";
-import Link from "next/link";
+import { getEvent, updateEvent } from "@/app/actions/eventActions";
+import { getCurrentUser, isOrganizerAdmin } from "@/utils/auth";
 import { redirect } from "next/navigation";
+import { CustomFieldInput } from "@/schemas/eventSchema";
+import EditEventForm from "./EditEventForm"; // We'll create this component
+
+async function getEventData(organizationId: string, eventId: string) {
+  const [organization, event, currentUser] = await Promise.all([
+    getOrganization(organizationId),
+    getEvent(eventId),
+    getCurrentUser(),
+  ]);
+
+  if (!event) {
+    return { notFound: true };
+  }
+
+  const isAdmin = currentUser && (await isOrganizerAdmin(organizationId));
+
+  return { organization, event, isAdmin };
+}
 
 export default async function EditEventPage({
   params,
 }: {
   params: { id: string; eventId: string };
 }) {
-  const organization = await getOrganization(params.id);
-  const event = await prisma.event.findUnique({
-    where: { id: params.eventId },
-  });
-  const currentUser = await getCurrentUser();
+  const { organization, event, isAdmin, notFound } = await getEventData(
+    params.id,
+    params.eventId
+  );
 
-  if (!organization || !event) {
-    return <div>Organization or Event not found</div>;
+  if (notFound) {
+    return <div>Event not found</div>;
   }
-
-  const isAdmin =
-    currentUser && (await isUserOrganizationAdmin(currentUser.id, params.id));
 
   if (!isAdmin) {
     return <div>Unauthorized</div>;
+  }
+
+  if (!organization || !event) {
+    return <div>Organization or Event not found</div>;
   }
 
   async function handleSubmit(formData: FormData) {
@@ -33,12 +49,16 @@ export default async function EditEventPage({
     const startDate = formData.get("startDate") as string;
     const endDate = formData.get("endDate") as string;
     const description = formData.get("description") as string;
+    const customFields = JSON.parse(
+      formData.get("customFields") as string
+    ) as CustomFieldInput[];
 
     await updateEvent(params.eventId, {
       title,
       startDate,
       endDate,
       description,
+      customFields,
     });
     redirect(`/organizations/${params.id}/events`);
   }
@@ -46,84 +66,11 @@ export default async function EditEventPage({
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Edit Event: {event.title}</h1>
-      <form action={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="title" className="block">
-            Title
-          </label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            defaultValue={event.title}
-            required
-            className="w-full border p-2"
-          />
-        </div>
-        <div>
-          <label htmlFor="startDate" className="block">
-            Start Date
-          </label>
-          <input
-            type="datetime-local"
-            id="startDate"
-            name="startDate"
-            defaultValue={event.startDate.toISOString().slice(0, 16)}
-            required
-            className="w-full border p-2"
-          />
-        </div>
-        <div>
-          <label htmlFor="endDate" className="block">
-            End Date
-          </label>
-          <input
-            type="datetime-local"
-            id="endDate"
-            name="endDate"
-            defaultValue={event.endDate.toISOString().slice(0, 16)}
-            required
-            className="w-full border p-2"
-          />
-        </div>
-        <div>
-          <label htmlFor="description" className="block">
-            Description
-          </label>
-          <textarea
-            id="description"
-            name="description"
-            defaultValue={event.description || ""}
-            className="w-full border p-2"
-            rows={4}
-          ></textarea>
-        </div>
-        <div>
-          <button
-            type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded"
-          >
-            Update Event
-          </button>
-          <Link
-            href={`/organizations/${params.id}/events`}
-            className="ml-4 text-blue-500 hover:underline"
-          >
-            Cancel
-          </Link>
-        </div>
-      </form>
+      <EditEventForm
+        event={event}
+        handleSubmit={handleSubmit}
+        organizationId={params.id}
+      />
     </div>
   );
-}
-
-async function isUserOrganizationAdmin(userId: string, organizationId: string) {
-  const membership = await prisma.organizer.findFirst({
-    where: {
-      userId,
-      organizationId,
-      role: "ADMIN",
-    },
-  });
-  return !!membership;
 }

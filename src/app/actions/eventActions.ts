@@ -3,13 +3,41 @@
 import prisma from "@/lib/prisma";
 import { getCurrentUser, isOrganizerAdmin } from "@/utils/auth";
 import { revalidatePath } from "next/cache";
-import { EventSchema, EventInput } from "@/schemas/eventSchema";
+import {
+  EventSchema,
+  EventInput,
+  createAttendeeSchema,
+  CustomFieldSchema,
+} from "@/schemas/eventSchema";
+import { z } from "zod";
 
-export async function getOrganizationEvents(organizationId: string) {
-  return await prisma.event.findMany({
+const DbEventSchema = EventSchema.extend({
+  id: z.string(),
+  organizationId: z.string(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+  customFields: z.array(CustomFieldSchema),
+});
+
+type DbEvent = z.infer<typeof DbEventSchema>;
+
+export async function getOrganizationEvents(
+  organizationId: string
+): Promise<DbEvent[]> {
+  const events = await prisma.event.findMany({
     where: { organizationId },
     orderBy: { startDate: "asc" },
   });
+
+  return events.map((event) => DbEventSchema.parse(event));
+}
+
+export async function getEvent(eventId: string): Promise<DbEvent | null> {
+  const event = await prisma.event.findUnique({
+    where: { id: eventId },
+  });
+
+  return event ? DbEventSchema.parse(event) : null;
 }
 
 export async function createEvent(organizationId: string, eventData: unknown) {
@@ -18,28 +46,21 @@ export async function createEvent(organizationId: string, eventData: unknown) {
     throw new Error("Unauthorized");
   }
 
-  // Validate event data
   const validatedData = EventSchema.parse(eventData) as EventInput;
-
-  // Convert date strings to Date objects
-  const startDate = new Date(validatedData.startDate);
-  const endDate = new Date(validatedData.endDate);
 
   const event = await prisma.event.create({
     data: {
       ...validatedData,
-      startDate,
-      endDate,
       organizationId,
     },
   });
 
   revalidatePath(`/organizations/${organizationId}/events`);
-  return event;
+  return DbEventSchema.parse(event);
 }
 
 export async function updateEvent(eventId: string, eventData: unknown) {
-  const event = await prisma.event.findUnique({ where: { id: eventId } });
+  const event = await getEvent(eventId);
   if (!event) throw new Error("Event not found");
 
   const currentUser = await getCurrentUser();
@@ -47,35 +68,23 @@ export async function updateEvent(eventId: string, eventData: unknown) {
     throw new Error("Unauthorized");
   }
 
-  // Validate event data
   const validatedData = EventSchema.parse(eventData) as EventInput;
-
-  // Convert date strings to Date objects
-  const startDate = new Date(validatedData.startDate);
-  const endDate = new Date(validatedData.endDate);
 
   const updatedEvent = await prisma.event.update({
     where: { id: eventId },
-    data: {
-      ...validatedData,
-      startDate,
-      endDate,
-    },
+    data: validatedData,
   });
 
   revalidatePath(`/organizations/${event.organizationId}/events`);
-  return updatedEvent;
+  return DbEventSchema.parse(updatedEvent);
 }
 
 export async function deleteEvent(eventId: string) {
-  const event = await prisma.event.findUnique({ where: { id: eventId } });
+  const event = await getEvent(eventId);
   if (!event) throw new Error("Event not found");
 
   const currentUser = await getCurrentUser();
-  if (
-    !currentUser ||
-    !(await isUserOrganizationAdmin(currentUser.id, event.organizationId))
-  ) {
+  if (!currentUser || !(await isOrganizerAdmin(event.organizationId))) {
     throw new Error("Unauthorized");
   }
 
@@ -84,13 +93,51 @@ export async function deleteEvent(eventId: string) {
   revalidatePath(`/organizations/${event.organizationId}/events`);
 }
 
-async function isUserOrganizationAdmin(userId: string, organizationId: string) {
-  const membership = await prisma.organizer.findFirst({
-    where: {
-      userId,
-      organizationId,
-      role: "ADMIN",
+export async function createAttendee(
+  eventId: string,
+  attendeeData: Record<string, unknown>
+) {
+  const event = await getEvent(eventId);
+  if (!event) throw new Error("Event not found");
+
+  const attendeeSchema = createAttendeeSchema(event.customFields);
+  const validatedData = attendeeSchema.parse(attendeeData);
+
+  let user = await prisma.user.findUnique({
+    where: { email: validatedData.email },
+  });
+
+  if (!user) {
+    // Create a new user if they don't exist
+    user = await prisma.user.create({
+      data: {
+        email: validatedData.email,
+        name: validatedData.name || validatedData.email.split("@")[0], // Use part of email as name if not provided
+      },
+    });
+  }
+
+  const attendee = await prisma.attendee.create({
+    data: {
+      userId: user.id,
+      eventId: event.id,
+      status: event.requiresApproval ? "PENDING" : "APPROVED",
+      customFields: validatedData,
     },
   });
-  return !!membership;
+
+  return attendee;
+}
+
+export async function getPublicEvents(): Promise<DbEvent[]> {
+  const now = new Date();
+  const events = await prisma.event.findMany({
+    where: {
+      endDate: { gte: now },
+      // Add any other conditions for public events (e.g., isPublic: true)
+    },
+    orderBy: { startDate: "asc" },
+  });
+
+  return events.map((event) => DbEventSchema.parse(event));
 }
