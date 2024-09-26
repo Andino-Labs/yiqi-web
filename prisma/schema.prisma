@@ -19,7 +19,6 @@ model User {
   accounts      Account[]
   sessions      Session[]
   organizers    Organizer[]  // Changed from singular to plural
-  attendances   Attendance[]
   isSuperAdmin  Boolean   @default(false)  // Add this line
   attendedEvents Attendee[]
 }
@@ -99,27 +98,13 @@ model Event {
   maxAttendees   Int?
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
-  attendances    Attendance[]
   customFields   Json?        // Added to store custom fields for the event
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
   requiresApproval Boolean @default(false)
   attendees        Attendee[]
 }
-
-model Attendance {
-  id           String   @id @default(cuid())
-  user         User     @relation(fields: [userId], references: [id])
-  userId       String
-  event        Event    @relation(fields: [eventId], references: [id])
-  eventId      String
-  status       String   // e.g., "confirmed", "waitlisted", "cancelled"
-  customData   Json?    // Added to store custom data for each attendance
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  @@unique([userId, eventId])
-}
+ 
 
 model Attendee {
   id           String   @id @default(cuid())
@@ -132,7 +117,7 @@ model Attendee {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  @@unique([userId, eventId])
+  @@unique([eventId, userId]) // Add this line
 }
 
 enum AttendeeStatus {

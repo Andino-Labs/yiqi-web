@@ -15,6 +15,7 @@ export const EventSchema = z.object({
   startDate: z.date(),
   endDate: z.date(),
   description: z.string().optional(),
+  location: z.string().nullable().optional().default(""),
   customFields: z.array(CustomFieldSchema),
   requiresApproval: z.boolean(),
 });

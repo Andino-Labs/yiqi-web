@@ -24,12 +24,12 @@ export async function getOrganizationEvents(
   return events.map((event) => DbEventSchema.parse(event));
 }
 
-export async function getEvent(eventId: string): Promise<DbEvent | null> {
-  const event = await prisma.event.findUnique({
+export async function getEvent(eventId: string): Promise<DbEvent> {
+  const event = await prisma.event.findUniqueOrThrow({
     where: { id: eventId },
   });
 
-  return event ? DbEventSchema.parse(event) : null;
+  return DbEventSchema.parse(event);
 }
 
 export async function createEvent(organizationId: string, eventData: unknown) {
@@ -132,4 +132,19 @@ export async function getPublicEvents(): Promise<DbEvent[]> {
   });
 
   return events.map((event) => DbEventSchema.parse(event));
+}
+
+export async function getUserRegistrationStatus(
+  eventId: string,
+  userId: string
+) {
+  const attendee = await prisma.attendee.findUnique({
+    where: {
+      userId_eventId: {
+        eventId,
+        userId,
+      },
+    },
+  });
+  return attendee ? true : false;
 }
