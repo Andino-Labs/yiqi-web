@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "tsc --noEmit && next lint"
+    "lint": "tsc --noEmit && next lint",
+    "migrate": "npm run generate && prisma migrate dev",
+    "generate": "prisma generate"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.5.2",
