@@ -16,11 +16,12 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  phoneNumber   String?
   accounts      Account[]
   sessions      Session[]
   organizers    Organizer[]  // Changed from singular to plural
   isSuperAdmin  Boolean   @default(false)  // Add this line
-  attendedEvents Attendee[]
+  registeredEvents EventRegistration[]
 }
 
 model Account {
@@ -102,21 +103,25 @@ model Event {
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
   requiresApproval Boolean @default(false)
-  attendees        Attendee[]
+  registrations        EventRegistration[]
 }
  
 
-model Attendee {
+model EventRegistration {
   id           String   @id @default(cuid())
-  user         User     @relation(fields: [userId], references: [id])
-  userId       String
+  user         User?     @relation(fields: [userId], references: [id])
+  userId       String?
   event        Event    @relation(fields: [eventId], references: [id])
   eventId      String
   status       AttendeeStatus @default(PENDING)
   customFields Json?
+  name          String?
+  email         String?   
+  phoneNumber   String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
+  @@unique([email, eventId])
   @@unique([eventId, userId]) // Add this line
 }
 

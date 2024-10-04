@@ -1,7 +1,7 @@
 import Image from "next/image";
-import PricingSection from "./component/Pricing";
-import ChatBotSection from "./component/Chatbot";
-import LearningTrack from "./component/LearningTrack";
+import PricingSection from "../components/component/Pricing";
+import ChatBotSection from "../components/component/Chatbot";
+import LearningTrack from "../components/component/LearningTrack";
 
 export default function Home() {
   return (

@@ -140,7 +140,7 @@ export async function getUserRegistrationStatus(
 ) {
   const attendee = await prisma.attendee.findUnique({
     where: {
-      userId_eventId: {
+      eventId_userId: {
         eventId,
         userId,
       },
