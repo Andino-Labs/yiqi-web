@@ -96,7 +96,8 @@ model Event {
   endDate        DateTime
   location       String?
   virtualLink    String?
-  maxAttendees   Int?
+  maxAttendees   Int? 
+  
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
   customFields   Json?        // Added to store custom fields for the event
@@ -130,3 +131,4 @@ enum AttendeeStatus {
   APPROVED
   REJECTED
 }
+
