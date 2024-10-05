@@ -1,14 +1,22 @@
 import axios from "axios";
 import prisma from "./prisma";
 
-export async function sendUserEventWhatsappMessage(
-  destinationUserId: string,
-  threadId: string,
-  eventId: string,
-  content: string,
-  attachement?: string,
-  senderUserId?: string
-) {
+export type sendUserEventWhatsappMessageProps = {
+  destinationUserId: string;
+  threadId: string;
+  eventId: string;
+  content: string;
+  attachement?: string;
+  senderUserId?: string;
+};
+export async function sendUserEventWhatsappMessage({
+  destinationUserId,
+  threadId,
+  eventId,
+  content,
+  attachement,
+  senderUserId,
+}: sendUserEventWhatsappMessageProps) {
   // get users whatsapp
   const thread = await prisma.messageThread.findFirstOrThrow({
     where: {
