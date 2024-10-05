@@ -64,6 +64,10 @@ export async function sendUserEventWhatsappMessage({
       messaging_product: "whatsapp",
       to: WhatsappIntegration.phoneNumber,
       text: { body: content },
+      image: {
+        link: attachement,
+        caption: content, // Optional caption for the image
+      },
     },
   });
 
