@@ -132,7 +132,8 @@ model EventRegistration {
   phoneNumber  String?
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
-
+  paid Boolean @default(false)
+  paymentId String?
   @@unique([email, eventId])
   @@unique([eventId, userId]) // Add this line
 }

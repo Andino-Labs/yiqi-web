@@ -1,17 +1,16 @@
 import prisma from "@/lib/prisma";
 
-export type SendEmailToUserType = {
-  subject: string;
+export type HandleEmailReceivedType = {
   threadId: string;
   content: string;
   attachement?: string;
 };
 
-export async function sendEmailToUser({
+export async function handleEmailReceived({
   threadId,
   content,
   attachement,
-}: SendEmailToUserType) {
+}: HandleEmailReceivedType) {
   // get users whatsapp
   const thread = await prisma.messageThread.findFirstOrThrow({
     where: {
