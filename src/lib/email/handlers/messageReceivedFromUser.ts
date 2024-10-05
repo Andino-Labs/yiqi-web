@@ -19,11 +19,6 @@ export async function sendEmailToUser({
     },
     include: {
       contextUser: true,
-      event: {
-        include: {
-          organization: {},
-        },
-      },
     },
   });
   // eventId
