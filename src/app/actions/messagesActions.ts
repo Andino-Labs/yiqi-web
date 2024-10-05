@@ -5,13 +5,13 @@ import {
   sendUserEventWhatsappMessage,
   sendUserEventWhatsappMessageProps,
 } from "@/lib/whatsapp";
-import { isEventAdmin, isOrganizerAdmin } from "@/utils/auth";
+import { getCurrentUser, isEventAdmin, isOrganizerAdmin } from "@/utils/auth";
 
 // used for the initial load of threads
 export async function getUserMessageThreads(
   userId: string,
   eventId?: string | undefined,
-  orgId?: string | undefined,
+  orgId?: string | undefined
 ) {
   let isAllowed = false;
   if (eventId) {
@@ -39,7 +39,7 @@ export async function getUserMessageThreads(
 }
 
 export async function sendUserEventWhatsappMessageAction(
-  props: sendUserEventWhatsappMessageProps,
+  props: sendUserEventWhatsappMessageProps & { eventId?: string | undefined }
 ) {
   if (props.eventId) {
     const isAllowed = await isEventAdmin(props.eventId);
@@ -49,5 +49,7 @@ export async function sendUserEventWhatsappMessageAction(
     }
   }
 
-  return sendUserEventWhatsappMessage(props);
+  const user = await getCurrentUser();
+
+  return sendUserEventWhatsappMessage({ ...props, senderUserId: user?.id });
 }
