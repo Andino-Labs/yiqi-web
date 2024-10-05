@@ -22,6 +22,12 @@ model User {
   organizers    Organizer[]  // Changed from singular to plural
   isSuperAdmin  Boolean   @default(false)  // Add this line
   registeredEvents EventRegistration[]
+  stopCommunication Boolean  @default(false)  // Add this line
+  messageThread MessageThread[]
+
+  receivedMessages Message[] @relation("destinationUser")
+
+  sentMessages Message[] @relation("senderUser")
 }
 
 model Account {
@@ -68,6 +74,8 @@ model Organization {
   organizers  Organizer[]
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+
+  Integration Integration[]
 }
 
 model Organizer {
@@ -97,7 +105,7 @@ model Event {
   location       String?
   virtualLink    String?
   maxAttendees   Int? 
-  
+
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
   customFields   Json?        // Added to store custom fields for the event
@@ -105,6 +113,10 @@ model Event {
   updatedAt      DateTime     @updatedAt
   requiresApproval Boolean @default(false)
   registrations        EventRegistration[]
+
+  EventBot EventBot[]
+
+  messageThread MessageThread[]
 }
  
 
@@ -131,4 +143,78 @@ enum AttendeeStatus {
   APPROVED
   REJECTED
 }
+
+model Integration {
+    id           String   @id @default(cuid())
+
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  WhatsappIntegration WhatsappIntegration[]
+  defaultBotInstructions String
+  defaultBotName String
+}
+
+enum EventBotType {
+  openAI
+}
+
+model EventBot {
+  id           String   @id @default(cuid())
+  model String
+  externalId String
+  botInstructions String
+  botName String
+  event        Event    @relation(fields: [eventId], references: [id])
+  eventId      String
+}
+
+enum MessageThreadType {
+  whatsapp
+  email
+}
+
+model MessageThread {
+  id           String   @id @default(cuid())
+  event        Event    @relation(fields: [eventId], references: [id])
+  eventId      String
+  externalId String?
+  type MessageThreadType
+  contextUser User  @relation(fields: [contextUserId], references: [id])
+  contextUserId      String
+  messages Message[]
+}
+
+
+
+
+model Message {
+  id           String   @id @default(cuid())
+  messageThread MessageThread? @relation(fields: [MessageThreadId], references: [id])
+  MessageThreadId String?
+  senderUser         User?     @relation("senderUser",fields: [senderUserId], references: [id])
+  senderUserId       String?
+  destinationUser         User?     @relation("destinationUser",fields: [destinationUserId], references: [id])
+  destinationUserId       String?
+  content String
+  attachement String
+  externalId String
+  origin String
+}
+
+model WhatsappIntegration {
+  id           String   @id @default(cuid())
+  integrationId     String      @unique
+  integration       Integration @relation(fields: [integrationId], references: [id], onDelete: Cascade)
+  verifyToken       String      @unique
+  phoneNumber       String
+  phoneNumberId     String
+  businessAccountId String
+  accessToken       String
+}
+
+
+
+
+
+
 
