@@ -5,7 +5,7 @@ import { apiClient } from "./client";
 export async function addContact(
   email: string,
   first_name = "unknown",
-  last_name = "unknown"
+  last_name = "unknown",
 ) {
   const ownedStores = await prisma.user.findFirst({
     where: {

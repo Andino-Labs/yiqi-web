@@ -26,7 +26,7 @@ export const organizationService = {
   update: async (
     id: string,
     data: z.infer<typeof UpdateOrganizationSchema>,
-    userId: string
+    userId: string,
   ) => {
     const validatedData = UpdateOrganizationSchema.parse(data);
 
@@ -36,7 +36,7 @@ export const organizationService = {
 
     if (!organizer) {
       throw new Error(
-        "Unauthorized: User is not an organizer for this organization"
+        "Unauthorized: User is not an organizer for this organization",
       );
     }
 

@@ -11,7 +11,7 @@ import { isEventAdmin, isOrganizerAdmin } from "@/utils/auth";
 export async function getUserMessageThreads(
   userId: string,
   eventId?: string | undefined,
-  orgId?: string | undefined
+  orgId?: string | undefined,
 ) {
   let isAllowed = false;
   if (eventId) {
@@ -39,7 +39,7 @@ export async function getUserMessageThreads(
 }
 
 export async function sendUserEventWhatsappMessageAction(
-  props: sendUserEventWhatsappMessageProps
+  props: sendUserEventWhatsappMessageProps,
 ) {
   if (props.eventId) {
     const isAllowed = await isEventAdmin(props.eventId);

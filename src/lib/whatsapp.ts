@@ -51,7 +51,7 @@ export async function sendUserEventWhatsappMessage({
           organizationId: org.id,
         },
       },
-    }
+    },
   );
 
   await axios({

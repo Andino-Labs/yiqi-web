@@ -20,7 +20,7 @@ export async function getOrganizationContacts(organizationId: string) {
 
 export async function getContactDetails(
   userId: string,
-  organizationId: string
+  organizationId: string,
 ) {
   const contact = await prisma.user.findUnique({
     where: { id: userId },
@@ -46,7 +46,7 @@ export async function getEventAttendees(eventId: string) {
 
 export async function updateAttendeeStatus(
   attendeeId: string,
-  status: "APPROVED" | "REJECTED"
+  status: "APPROVED" | "REJECTED",
 ) {
   const currentUser = await getCurrentUser();
   const attendee = await prisma.eventRegistration.findUnique({
@@ -73,7 +73,7 @@ export async function updateAttendeeStatus(
 
 export async function isUserOrganizationAdmin(
   userId: string,
-  organizationId: string
+  organizationId: string,
 ) {
   const membership = await prisma.organizer.findFirst({
     where: {

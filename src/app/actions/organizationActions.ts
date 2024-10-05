@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
 
 export async function createOrganization(
-  data: Parameters<typeof organizationService.create>[0]
+  data: Parameters<typeof organizationService.create>[0],
 ) {
   const currentUser = await getCurrentUser();
   if (!currentUser) throw new Error("Unauthorized");
@@ -40,7 +40,7 @@ export async function getOrganization(id: string) {
 
 export async function updateOrganization(
   id: string,
-  data: Parameters<typeof organizationService.update>[1]
+  data: Parameters<typeof organizationService.update>[1],
 ) {
   const currentUser = await getCurrentUser();
   if (!currentUser) throw new Error("Unauthorized");
