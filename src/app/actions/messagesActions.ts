@@ -3,7 +3,8 @@
 import prisma from "@/lib/prisma";
 import { isEventAdmin, isOrganizerAdmin } from "@/utils/auth";
 
-export async function getUserMessages(
+// used for the initial load of threads
+export async function getUserMessageThreads(
   userId: string,
   eventId?: string | undefined
 ) {
