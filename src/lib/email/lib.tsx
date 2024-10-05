@@ -13,13 +13,13 @@ export enum MailTemplatesIds {
 }
 
 // Mapping type that links template IDs to their corresponding props
-interface TemplatePropsMap {
+export interface TemplatePropsMap {
   [MailTemplatesIds.ORG_INVITE]: OrgInviteTemplateProps;
   // Add other template mappings as needed
 }
 
 // Strongly typed map linking templates to their corresponding components
-const MailTemplateMap: {
+export const MailTemplateMap: {
   [K in keyof TemplatePropsMap]: ComponentType<TemplatePropsMap[K]>;
 } = {
   [MailTemplatesIds.ORG_INVITE]: OrgInviteTemplate,
@@ -27,10 +27,16 @@ const MailTemplateMap: {
 };
 
 // Define the input type that enforces correct template-data pairing
-type SendMailInput<T extends MailTemplatesIds> = {
+export type SendMailInput<T extends MailTemplatesIds> = {
   toEmail: string;
   templateId: T;
   subject: string;
+  dynamicTemplateData: TemplatePropsMap[T]; // Dynamic props mapped based on template ID
+};
+
+// Define the input type that enforces correct template-data pairing
+export type GenerateEmailPlainText<T extends MailTemplatesIds> = {
+  templateId: T;
   dynamicTemplateData: TemplatePropsMap[T]; // Dynamic props mapped based on template ID
 };
 
@@ -50,5 +56,19 @@ export async function sendEmailForTemplate<T extends MailTemplatesIds>({
   );
 
   // Use your email client to send the email
-  await sendEmail(toEmail, subject, renderedBody);
+  return await sendEmail(toEmail, subject, renderedBody);
+}
+
+// The sendEmail function, now strongly typed for templateId and dynamic data
+export async function generateEmailPlainText<T extends MailTemplatesIds>({
+  templateId,
+  dynamicTemplateData,
+}: GenerateEmailPlainText<T>) {
+  const Component = MailTemplateMap[templateId];
+
+  // type Safety established at the top level
+  return await render(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    <Component {...(dynamicTemplateData as any)} />
+  );
 }

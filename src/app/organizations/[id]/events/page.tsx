@@ -1,8 +1,8 @@
 import { getOrganization } from "@/app/actions/organizationActions";
 import { getOrganizationEvents } from "@/app/actions/eventActions";
-import { getCurrentUser } from "@/lib/session";
 import Link from "next/link";
 import prisma from "@/lib/prisma";
+import { getCurrentUser } from "@/utils/auth";
 
 export default async function EventsPage({
   params,
