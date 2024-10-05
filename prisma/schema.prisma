@@ -11,32 +11,38 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  phoneNumber   String?
-  accounts      Account[]
-  sessions      Session[]
-  organizers    Organizer[]  // Changed from singular to plural
-  isSuperAdmin  Boolean   @default(false)  // Add this line
-  registeredEvents EventRegistration[]
+  id                String              @id @default(cuid())
+  name              String?
+  email             String?             @unique
+  emailVerified     DateTime?
+  image             String?
+  phoneNumber       String?
+  accounts          Account[]
+  sessions          Session[]
+  organizers        Organizer[] // Changed from singular to plural
+  isSuperAdmin      Boolean             @default(false) // Add this line
+  registeredEvents  EventRegistration[]
+  stopCommunication Boolean             @default(false) // Add this line
+  messageThread     MessageThread[]
+
+  receivedMessages Message[] @relation("destinationUser")
+
+  sentMessages Message[] @relation("senderUser")
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.Text
-  session_state      String?
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -60,25 +66,27 @@ model VerificationToken {
 }
 
 model Organization {
-  id          String     @id @default(cuid())
+  id          String      @id @default(cuid())
   name        String
   description String?
   logo        String?
   events      Event[]
   organizers  Organizer[]
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  integration Integration[]
 }
 
 model Organizer {
-  id             String       @id @default(cuid())
-  user           User         @relation(fields: [userId], references: [id])
+  id             String        @id @default(cuid())
+  user           User          @relation(fields: [userId], references: [id])
   userId         String
-  organization   Organization @relation(fields: [organizationId], references: [id])
+  organization   Organization  @relation(fields: [organizationId], references: [id])
   organizationId String
   role           OrganizerRole
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
 
   @@unique([userId, organizationId])
 }
@@ -89,37 +97,41 @@ enum OrganizerRole {
 }
 
 model Event {
-  id             String       @id @default(cuid())
-  title          String
-  description    String?
-  startDate      DateTime
-  endDate        DateTime
-  location       String?
-  virtualLink    String?
-  maxAttendees   Int?
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId String
-  customFields   Json?        // Added to store custom fields for the event
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-  requiresApproval Boolean @default(false)
-  registrations        EventRegistration[]
+  id           String   @id @default(cuid())
+  title        String
+  description  String?
+  startDate    DateTime
+  endDate      DateTime
+  location     String?
+  virtualLink  String?
+  maxAttendees Int?
+
+  organization     Organization        @relation(fields: [organizationId], references: [id])
+  organizationId   String
+  customFields     Json? // Added to store custom fields for the event
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+  requiresApproval Boolean             @default(false)
+  registrations    EventRegistration[]
+
+  EventBot EventBot[]
+
+  messageThread MessageThread[]
 }
- 
 
 model EventRegistration {
-  id           String   @id @default(cuid())
-  user         User?     @relation(fields: [userId], references: [id])
+  id           String         @id @default(cuid())
+  user         User?          @relation(fields: [userId], references: [id])
   userId       String?
-  event        Event    @relation(fields: [eventId], references: [id])
+  event        Event          @relation(fields: [eventId], references: [id])
   eventId      String
   status       AttendeeStatus @default(PENDING)
   customFields Json?
-  name          String?
-  email         String?   
-  phoneNumber   String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  name         String?
+  email        String?
+  phoneNumber  String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
 
   @@unique([email, eventId])
   @@unique([eventId, userId]) // Add this line
@@ -129,4 +141,70 @@ enum AttendeeStatus {
   PENDING
   APPROVED
   REJECTED
+}
+
+model Integration {
+  id                     String               @id @default(cuid())
+  organization           Organization         @relation(fields: [organizationId], references: [id])
+  organizationId         String
+  whatsappIntegration    WhatsappIntegration?
+  whatsappIntegrationId  String?
+  defaultBotInstructions String
+  defaultBotName         String
+
+  @@unique([organizationId, whatsappIntegrationId])
+}
+
+enum EventBotType {
+  openAI
+}
+
+model EventBot {
+  id              String  @id @default(cuid())
+  model           String
+  externalId      String?
+  botInstructions String
+  botName         String
+  event           Event   @relation(fields: [eventId], references: [id])
+  eventId         String
+}
+
+enum MessageThreadType {
+  whatsapp
+  email
+}
+
+model MessageThread {
+  id            String            @id @default(cuid())
+  event         Event             @relation(fields: [eventId], references: [id])
+  eventId       String
+  externalId    String?
+  type          MessageThreadType
+  contextUser   User              @relation(fields: [contextUserId], references: [id])
+  contextUserId String
+  messages      Message[]
+}
+
+model Message {
+  id                String         @id @default(cuid())
+  messageThread     MessageThread? @relation(fields: [messageThreadId], references: [id])
+  messageThreadId   String?
+  senderUser        User?          @relation("senderUser", fields: [senderUserId], references: [id])
+  senderUserId      String?
+  destinationUser   User?          @relation("destinationUser", fields: [destinationUserId], references: [id])
+  destinationUserId String?
+  content           String
+  attachement       String?
+  externalId        String?
+}
+
+model WhatsappIntegration {
+  id                String      @id @default(cuid())
+  integrationId     String      @unique
+  integration       Integration @relation(fields: [integrationId], references: [id], onDelete: Cascade)
+  verifyToken       String      @unique
+  phoneNumber       String
+  phoneNumberId     String
+  businessAccountId String
+  accessToken       String
 }

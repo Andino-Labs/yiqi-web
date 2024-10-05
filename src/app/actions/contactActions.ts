@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import { getCurrentUser, isOrganizerAdmin } from "@/utils/auth";
 
 export async function getOrganizationContacts(organizationId: string) {
-  const contacts = await prisma.attendee.findMany({
+  const contacts = await prisma.eventRegistration.findMany({
     where: {
       event: { organizationId },
     },
@@ -25,7 +25,7 @@ export async function getContactDetails(
   const contact = await prisma.user.findUnique({
     where: { id: userId },
     include: {
-      attendedEvents: {
+      registeredEvents: {
         where: { event: { organizationId } },
         include: { event: true },
       },
@@ -36,7 +36,7 @@ export async function getContactDetails(
 }
 
 export async function getEventAttendees(eventId: string) {
-  const attendees = await prisma.attendee.findMany({
+  const attendees = await prisma.eventRegistration.findMany({
     where: { eventId },
     include: { user: true },
   });
@@ -49,7 +49,7 @@ export async function updateAttendeeStatus(
   status: "APPROVED" | "REJECTED"
 ) {
   const currentUser = await getCurrentUser();
-  const attendee = await prisma.attendee.findUnique({
+  const attendee = await prisma.eventRegistration.findUnique({
     where: { id: attendeeId },
     include: { event: true },
   });
@@ -63,7 +63,7 @@ export async function updateAttendeeStatus(
     throw new Error("Unauthorized");
   }
 
-  const updatedAttendee = await prisma.attendee.update({
+  const updatedAttendee = await prisma.eventRegistration.update({
     where: { id: attendeeId },
     data: { status },
   });

@@ -109,7 +109,7 @@ export async function createAttendee(
     });
   }
 
-  const attendee = await prisma.attendee.create({
+  const attendee = await prisma.eventRegistration.create({
     data: {
       userId: user.id,
       eventId: event.id,
@@ -138,7 +138,7 @@ export async function getUserRegistrationStatus(
   eventId: string,
   userId: string
 ) {
-  const attendee = await prisma.attendee.findUnique({
+  const attendee = await prisma.eventRegistration.findUnique({
     where: {
       eventId_userId: {
         eventId,

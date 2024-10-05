@@ -34,3 +34,13 @@ export async function isOrganizerAdmin(organizationId: string) {
 
   return !!organizer;
 }
+
+export async function isEventAdmin(eventId: string) {
+  const event = await prisma.event.findFirstOrThrow({
+    where: {
+      id: eventId,
+    },
+  });
+
+  return isOrganizerAdmin(event.organizationId);
+}

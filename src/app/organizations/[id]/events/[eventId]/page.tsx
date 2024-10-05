@@ -40,7 +40,7 @@ export default async function EventDetailsPage({
         {attendees.map((attendee) => (
           <li key={attendee.id} className="border p-2 rounded">
             <p>
-              {attendee.user.name} ({attendee.user.email})
+              {attendee?.user?.name} ({attendee?.user?.email})
             </p>
             <p>Status: {attendee.status}</p>
             {attendee.customFields && (
