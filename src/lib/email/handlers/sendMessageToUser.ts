@@ -49,7 +49,12 @@ export async function sendEmailToUser<T extends MailTemplatesIds>({
     throw " user doesnt have an email";
   }
 
-  await sendEmailForTemplate({ ...sendMailInput, toEmail: user.email });
+  await sendEmailForTemplate({
+    ...sendMailInput,
+    toEmail: user.email,
+    threadId,
+  });
+
   const textContent = await generateEmailPlainText({ ...sendMailInput });
 
   return prisma.message.create({
