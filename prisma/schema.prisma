@@ -122,20 +122,17 @@ model Event {
 
 model EventRegistration {
   id           String         @id @default(cuid())
-  user         User?          @relation(fields: [userId], references: [id])
-  userId       String?
+  user         User          @relation(fields: [userId], references: [id])
+  userId       String
   event        Event          @relation(fields: [eventId], references: [id])
   eventId      String
   status       AttendeeStatus @default(PENDING)
   customFields Json?
-  name         String?
-  email        String?
-  phoneNumber  String?
+  
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
   paid Boolean @default(false)
   paymentId String?
-  @@unique([email, eventId])
   @@unique([eventId, userId]) // Add this line
 }
 
