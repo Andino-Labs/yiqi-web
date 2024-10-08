@@ -2,8 +2,8 @@
 
 import prisma from "@/lib/prisma";
 import {
-  sendUserEventWhatsappMessage,
-  sendUserEventWhatsappMessageProps,
+  sendUserWhatsappMessage,
+  sendUserWhatsappMessageProps,
 } from "@/lib/whatsapp";
 import { getCurrentUser, isEventAdmin, isOrganizerAdmin } from "@/utils/auth";
 
@@ -38,8 +38,8 @@ export async function getUserMessageThreads(
   return messageThreads;
 }
 
-export async function sendUserEventWhatsappMessageAction(
-  props: sendUserEventWhatsappMessageProps & { eventId?: string | undefined }
+export async function sendUserWhatsappMessageAction(
+  props: sendUserWhatsappMessageProps & { eventId?: string | undefined }
 ) {
   if (props.eventId) {
     const isAllowed = await isEventAdmin(props.eventId);
@@ -51,5 +51,5 @@ export async function sendUserEventWhatsappMessageAction(
 
   const user = await getCurrentUser();
 
-  return sendUserEventWhatsappMessage({ ...props, senderUserId: user?.id });
+  return sendUserWhatsappMessage({ ...props, senderUserId: user?.id });
 }

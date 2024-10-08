@@ -34,11 +34,7 @@ export async function sendEmailToUser<T extends MailTemplatesIds>({
     },
     include: {
       contextUser: true,
-      event: {
-        include: {
-          organization: {},
-        },
-      },
+      organization: {},
     },
   });
   // eventId

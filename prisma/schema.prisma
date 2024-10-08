@@ -76,6 +76,8 @@ model Organization {
   updatedAt   DateTime    @updatedAt
 
   integration Integration[]
+
+  MessageThread MessageThread[]
 }
 
 model Organizer {
@@ -116,7 +118,6 @@ model Event {
 
   EventBot EventBot[]
 
-  messageThread MessageThread[]
 }
 
 model EventRegistration {
@@ -177,8 +178,8 @@ enum MessageThreadType {
 
 model MessageThread {
   id            String            @id @default(cuid())
-  event         Event             @relation(fields: [eventId], references: [id])
-  eventId       String
+  organization         Organization             @relation(fields: [organizationId], references: [id])
+  organizationId       String
   externalId    String?
   type          MessageThreadType
   contextUser   User              @relation(fields: [contextUserId], references: [id])

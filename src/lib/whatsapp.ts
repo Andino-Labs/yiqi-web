@@ -1,7 +1,7 @@
 import axios from "axios";
 import prisma from "./prisma";
 
-export type sendUserEventWhatsappMessageProps = {
+export type sendUserWhatsappMessageProps = {
   destinationUserId: string;
   threadId: string;
   content: string;
@@ -9,13 +9,13 @@ export type sendUserEventWhatsappMessageProps = {
   senderUserId?: string | null;
 };
 
-export async function sendUserEventWhatsappMessage({
+export async function sendUserWhatsappMessage({
   destinationUserId,
   threadId,
   content,
   attachement,
   senderUserId,
-}: sendUserEventWhatsappMessageProps) {
+}: sendUserWhatsappMessageProps) {
   // get users whatsapp
   const thread = await prisma.messageThread.findFirstOrThrow({
     where: {
@@ -23,15 +23,11 @@ export async function sendUserEventWhatsappMessage({
     },
     include: {
       contextUser: true,
-      event: {
+      organization: {
         include: {
-          organization: {
+          integration: {
             include: {
-              integration: {
-                include: {
-                  whatsappIntegration: true,
-                },
-              },
+              whatsappIntegration: true,
             },
           },
         },
@@ -40,8 +36,12 @@ export async function sendUserEventWhatsappMessage({
   });
   // eventId
 
-  const event = thread.event;
-  const org = event.organization;
+  const org = thread.organization;
+
+  if (!org) {
+    throw "no org found for this thread";
+  }
+
   const user = thread.contextUser;
   const WhatsappIntegration = await prisma.whatsappIntegration.findFirstOrThrow(
     {
@@ -50,7 +50,7 @@ export async function sendUserEventWhatsappMessage({
           organizationId: org.id,
         },
       },
-    },
+    }
   );
   await axios({
     method: "POST",
