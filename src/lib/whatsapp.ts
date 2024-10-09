@@ -50,7 +50,7 @@ export async function sendUserWhatsappMessage({
           organizationId: org.id,
         },
       },
-    }
+    },
   );
   await axios({
     method: "POST",

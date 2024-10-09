@@ -18,7 +18,7 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({
   const [optionsInput, setOptionsInput] = useState("");
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
     setCustomData((prev) => ({ ...prev, [name]: value }));

@@ -8,7 +8,7 @@ import { User } from "next-auth";
 export default async function sendPaymentReminder(
   user: User,
   event: Event,
-  org: Organization
+  org: Organization,
 ) {
   // TODO: send the messages and template stuff
   // send both the whatsapp and the email here, also include the initial

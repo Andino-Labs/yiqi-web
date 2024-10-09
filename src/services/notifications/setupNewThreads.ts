@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 export default async function setupNewThreads(
   userId: string,
-  organizationId: string
+  organizationId: string,
 ) {
   // Check if email thread already exists for the user in the organization
   const emailThread = await prisma.messageThread.findFirst({

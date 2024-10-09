@@ -28,7 +28,7 @@ export default async function EditEventPage({
 }) {
   const { organization, event, isAdmin, notFound } = await getEventData(
     params.id,
-    params.eventId
+    params.eventId,
   );
 
   if (notFound) {
@@ -50,7 +50,7 @@ export default async function EditEventPage({
     const endDate = formData.get("endDate") as string;
     const description = formData.get("description") as string;
     const customFields = JSON.parse(
-      formData.get("customFields") as string
+      formData.get("customFields") as string,
     ) as CustomFieldInput[];
 
     await updateEvent(params.eventId, {

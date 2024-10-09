@@ -20,7 +20,7 @@ export default async function setupInitialEventNotifications({
   const twoHoursBefore = subHours(eventStartDate, 2);
   const morningOfEvent = setSeconds(
     setMinutes(setHours(eventStartDate, 9), 0),
-    0
+    0,
   ); // 9 AM on the day of the event
 
   // Create notification entries in your Notification model

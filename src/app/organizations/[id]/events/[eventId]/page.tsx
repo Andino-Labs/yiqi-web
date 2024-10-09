@@ -23,7 +23,7 @@ export default async function EventDetailsPage({
 
   async function handleApproval(
     attendeeId: string,
-    status: "APPROVED" | "REJECTED"
+    status: "APPROVED" | "REJECTED",
   ) {
     "use server";
     await updateAttendeeStatus(attendeeId, status);

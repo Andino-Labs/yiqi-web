@@ -18,7 +18,7 @@ export async function sendEmail(
   to: string,
   subject: string,
   body: string,
-  threadId: string
+  threadId: string,
 ): Promise<void> {
   const params = {
     Destination: {

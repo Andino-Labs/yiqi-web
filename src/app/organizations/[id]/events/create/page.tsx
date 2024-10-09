@@ -39,7 +39,7 @@ export default function CreateEventPage({
 
   const handleCustomFieldChange = (
     index: number,
-    field: Partial<z.infer<typeof CustomFieldSchema>>
+    field: Partial<z.infer<typeof CustomFieldSchema>>,
   ) => {
     const newFields = [...customFields];
     newFields[index] = { ...newFields[index], ...field };
