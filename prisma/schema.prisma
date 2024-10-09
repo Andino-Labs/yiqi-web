@@ -131,6 +131,8 @@ model Event {
   Notification Notification[]
 
   Form Form[]
+
+  FormSubmission FormSubmission[]
 }
 
 model EventRegistration {
@@ -266,7 +268,9 @@ model FormSubmission {
   form Form @relation(fields: [formId], references: [id])
   formId String
   user User @relation(fields: [userId], references: [id])
-  userId String
+  userId String 
+  eventId String?
+  event Event? @relation(fields: [eventId], references: [id])
   data Json
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
