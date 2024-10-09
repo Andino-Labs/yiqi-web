@@ -28,6 +28,8 @@ model User {
   receivedMessages Message[] @relation("destinationUser")
 
   sentMessages Message[] @relation("senderUser")
+
+  Notification Notification[]
 }
 
 model Account {
@@ -78,6 +80,8 @@ model Organization {
   integration Integration[]
 
   MessageThread MessageThread[]
+
+  Notification Notification[]
 }
 
 model Organizer {
@@ -118,6 +122,8 @@ model Event {
 
   EventBot EventBot[]
 
+
+  Notification Notification[]
 }
 
 model EventRegistration {
@@ -207,3 +213,26 @@ model WhatsappIntegration {
   businessAccountId String
   accessToken       String
 }
+
+model Notification {
+  id             String    @id @default(cuid())
+  userId         String
+  user           User      @relation(fields: [userId], references: [id])
+  eventId        String?
+  event          Event?     @relation(fields: [eventId], references: [id])
+  organization         Organization             @relation(fields: [organizationId], references: [id])
+  organizationId       String
+  type           ReminderType
+  sentAt         DateTime?
+  scheduledFor   DateTime  // When the reminder should be sent
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+enum ReminderType {
+  ONE_DAY_BEFORE
+  TWO_HOURS_BEFORE
+  MORNING_OF
+  PAYMENT_REQUIRED_REMINDER
+}
+

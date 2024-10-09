@@ -10,6 +10,9 @@ import {
   DbEventSchema,
 } from "@/schemas/eventSchema";
 import { z } from "zod";
+import setupInitialEventNotifications from "../notifications/setupInitialNotifications";
+
+// Assuming event.startDate is a Date object
 
 type DbEvent = z.infer<typeof DbEventSchema>;
 
@@ -122,6 +125,12 @@ export async function createRegistration(
     },
   });
 
+  await setupInitialEventNotifications({
+    userId: user.id,
+    eventId: event.id,
+    eventStartDate: event.startDate,
+    orgId: event.organizationId,
+  });
   return registration;
 }
 
