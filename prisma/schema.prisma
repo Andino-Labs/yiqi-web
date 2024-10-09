@@ -29,7 +29,10 @@ model User {
 
   sentMessages Message[] @relation("senderUser")
 
-  Notification Notification[]
+  sentNotifications     Notification[] @relation("notificationSender")
+  receivedNotifications Notification[] @relation("notificationUser")
+
+  FormSubmission FormSubmission[]
 }
 
 model Account {
@@ -82,6 +85,8 @@ model Organization {
   MessageThread MessageThread[]
 
   Notification Notification[]
+
+  Form Form[]
 }
 
 model Organizer {
@@ -124,6 +129,8 @@ model Event {
 
 
   Notification Notification[]
+
+  Form Form[]
 }
 
 model EventRegistration {
@@ -217,9 +224,11 @@ model WhatsappIntegration {
 model Notification {
   id             String    @id @default(cuid())
   userId         String
-  user           User      @relation(fields: [userId], references: [id])
+  user           User      @relation("notificationUser", fields: [userId], references: [id])
   eventId        String?
-  event          Event?     @relation(fields: [eventId], references: [id])
+  event          Event?    @relation(fields: [eventId], references: [id])
+  senderUser     User?     @relation("notificationSender", fields: [senderUserId], references: [id])
+  senderUserId   String?
   organization         Organization             @relation(fields: [organizationId], references: [id])
   organizationId       String
   type           ReminderType
@@ -236,3 +245,29 @@ enum ReminderType {
   PAYMENT_REQUIRED_REMINDER
 }
 
+
+
+model Form {
+  id String @id @default(cuid())
+  organization Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  event Event? @relation(fields: [eventId], references: [id])
+  eventId String?
+  name String
+  description String?
+  fields Json
+  submissions FormSubmission[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model FormSubmission {
+  id String @id @default(cuid())
+  form Form @relation(fields: [formId], references: [id])
+  formId String
+  user User @relation(fields: [userId], references: [id])
+  userId String
+  data Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
