@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { createOrganizer } from "@/app/actions/organizerActions";
-import { searchUsers } from "@/app/actions/userActions";
+import { createOrganizer } from "@/services/actions/organizerActions";
+import { searchUsers } from "@/services/actions/userActions";
 import { useRouter } from "next/navigation";
 import { User } from "@prisma/client";
 

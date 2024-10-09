@@ -2,7 +2,7 @@
 
 import { EditEventInput } from "@/schemas/eventSchema";
 import { useState } from "react";
-import { createRegistration } from "@/app/actions/eventActions";
+import { createRegistration } from "@/services/actions/eventActions";
 
 interface RegistrationModalProps {
   event: EditEventInput;

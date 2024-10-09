@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
-import { createEvent } from "@/app/actions/eventActions";
+import { createEvent } from "@/services/actions/eventActions";
 
 const CustomFieldSchema = z.object({
   name: z.string().min(1, "Field name is required"),
@@ -39,7 +39,7 @@ export default function CreateEventPage({
 
   const handleCustomFieldChange = (
     index: number,
-    field: Partial<z.infer<typeof CustomFieldSchema>>,
+    field: Partial<z.infer<typeof CustomFieldSchema>>
   ) => {
     const newFields = [...customFields];
     newFields[index] = { ...newFields[index], ...field };

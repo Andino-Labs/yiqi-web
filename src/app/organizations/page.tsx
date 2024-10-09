@@ -1,4 +1,4 @@
-import { getAllOrganizations } from "../actions/organizationActions";
+import { getAllOrganizations } from "../../services/actions/organizationActions";
 import { isSuperAdmin } from "@/utils/auth";
 import Link from "next/link";
 import AddOrgButton from "./AddOrgButton";

@@ -1,7 +1,7 @@
 import {
   getEvent,
   getUserRegistrationStatus,
-} from "@/app/actions/eventActions";
+} from "@/services/actions/eventActions";
 import { getCurrentUser } from "@/utils/auth";
 import RegistrationModal from "./RegistrationModal";
 

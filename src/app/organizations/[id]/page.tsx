@@ -1,4 +1,4 @@
-import { getOrganization } from "@/app/actions/organizationActions";
+import { getOrganization } from "@/services/actions/organizationActions";
 import Link from "next/link";
 
 export default async function OrganizationDashboard({

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createRegistration } from "@/app/actions/eventActions";
+import { createRegistration } from "@/services/actions/eventActions";
 import { CustomFieldInput, createAttendeeSchema } from "@/schemas/eventSchema";
 import { useSession } from "next-auth/react";
 import { z } from "zod";

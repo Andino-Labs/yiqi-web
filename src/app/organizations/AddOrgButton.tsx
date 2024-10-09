@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { createOrganization } from "../actions/organizationActions";
+import { createOrganization } from "../../services/actions/organizationActions";
 import { useRouter } from "next/navigation";
 
 export default function AddOrgButton() {

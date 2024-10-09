@@ -1,8 +1,8 @@
-import { getOrganization } from "@/app/actions/organizationActions";
+import { getOrganization } from "@/services/actions/organizationActions";
 import {
   getEventAttendees,
   updateAttendeeStatus,
-} from "@/app/actions/contactActions";
+} from "@/services/actions/contactActions";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
 
@@ -23,7 +23,7 @@ export default async function EventDetailsPage({
 
   async function handleApproval(
     attendeeId: string,
-    status: "APPROVED" | "REJECTED",
+    status: "APPROVED" | "REJECTED"
   ) {
     "use server";
     await updateAttendeeStatus(attendeeId, status);

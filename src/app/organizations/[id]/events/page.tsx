@@ -1,5 +1,5 @@
-import { getOrganization } from "@/app/actions/organizationActions";
-import { getOrganizationEvents } from "@/app/actions/eventActions";
+import { getOrganization } from "@/services/actions/organizationActions";
+import { getOrganizationEvents } from "@/services/actions/eventActions";
 import Link from "next/link";
 import prisma from "@/lib/prisma";
 import { getCurrentUser } from "@/utils/auth";

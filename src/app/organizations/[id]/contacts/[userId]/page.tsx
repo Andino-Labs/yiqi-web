@@ -1,5 +1,5 @@
-import { getOrganization } from "@/app/actions/organizationActions";
-import { getContactDetails } from "@/app/actions/contactActions";
+import { getOrganization } from "@/services/actions/organizationActions";
+import { getContactDetails } from "@/services/actions/contactActions";
 import Link from "next/link";
 
 export default async function ContactDetailsPage({

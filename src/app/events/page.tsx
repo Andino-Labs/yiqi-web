@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { getPublicEvents } from "@/app/actions/eventActions";
+import { getPublicEvents } from "@/services/actions/eventActions";
 
 export const metadata: Metadata = {
   title: "Upcoming Events | Your Organization Name",

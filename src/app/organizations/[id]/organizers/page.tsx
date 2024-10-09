@@ -1,5 +1,5 @@
-import { getOrganization } from "@/app/actions/organizationActions";
-import { getOrganizersByOrganization } from "@/app/actions/organizerActions";
+import { getOrganization } from "@/services/actions/organizationActions";
+import { getOrganizersByOrganization } from "@/services/actions/organizerActions";
 import Link from "next/link";
 import AddOrganizerButton from "./AddOrganizerButton";
 
