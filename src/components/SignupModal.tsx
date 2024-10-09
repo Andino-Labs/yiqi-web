@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createAttendee } from "@/app/actions/eventActions";
+import { createRegistration } from "@/app/actions/eventActions";
 import { CustomFieldInput, createAttendeeSchema } from "@/schemas/eventSchema";
 import { useSession } from "next-auth/react";
 import { z } from "zod";
@@ -26,7 +26,7 @@ export default function SignupModal({ event, onClose }: SignupModalProps) {
 
     try {
       const validatedData = attendeeSchema.parse(formData);
-      await createAttendee(event.id, validatedData);
+      await createRegistration(event.id, validatedData);
       onClose();
       // Show success message
     } catch (error) {

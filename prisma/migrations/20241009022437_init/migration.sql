@@ -4,6 +4,12 @@ CREATE TYPE "OrganizerRole" AS ENUM ('ADMIN', 'VIEWER');
 -- CreateEnum
 CREATE TYPE "AttendeeStatus" AS ENUM ('PENDING', 'APPROVED', 'REJECTED');
 
+-- CreateEnum
+CREATE TYPE "EventBotType" AS ENUM ('openAI');
+
+-- CreateEnum
+CREATE TYPE "MessageThreadType" AS ENUM ('whatsapp', 'email');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -11,7 +17,9 @@ CREATE TABLE "User" (
     "email" TEXT,
     "emailVerified" TIMESTAMP(3),
     "image" TEXT,
+    "phoneNumber" TEXT,
     "isSuperAdmin" BOOLEAN NOT NULL DEFAULT false,
+    "stopCommunication" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -95,20 +103,7 @@ CREATE TABLE "Event" (
 );
 
 -- CreateTable
-CREATE TABLE "Attendance" (
-    "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "eventId" TEXT NOT NULL,
-    "status" TEXT NOT NULL,
-    "customData" JSONB,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "Attendance_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Attendee" (
+CREATE TABLE "EventRegistration" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "eventId" TEXT NOT NULL,
@@ -116,8 +111,70 @@ CREATE TABLE "Attendee" (
     "customFields" JSONB,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "paid" BOOLEAN NOT NULL DEFAULT false,
+    "paymentId" TEXT,
 
-    CONSTRAINT "Attendee_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "EventRegistration_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Integration" (
+    "id" TEXT NOT NULL,
+    "organizationId" TEXT NOT NULL,
+    "whatsappIntegrationId" TEXT,
+    "defaultBotInstructions" TEXT NOT NULL,
+    "defaultBotName" TEXT NOT NULL,
+
+    CONSTRAINT "Integration_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "EventBot" (
+    "id" TEXT NOT NULL,
+    "model" TEXT NOT NULL,
+    "externalId" TEXT,
+    "botInstructions" TEXT NOT NULL,
+    "botName" TEXT NOT NULL,
+    "eventId" TEXT NOT NULL,
+
+    CONSTRAINT "EventBot_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "MessageThread" (
+    "id" TEXT NOT NULL,
+    "organizationId" TEXT NOT NULL,
+    "externalId" TEXT,
+    "type" "MessageThreadType" NOT NULL,
+    "contextUserId" TEXT NOT NULL,
+
+    CONSTRAINT "MessageThread_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Message" (
+    "id" TEXT NOT NULL,
+    "messageThreadId" TEXT,
+    "senderUserId" TEXT,
+    "destinationUserId" TEXT,
+    "content" TEXT NOT NULL,
+    "attachement" TEXT,
+    "externalId" TEXT,
+
+    CONSTRAINT "Message_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "WhatsappIntegration" (
+    "id" TEXT NOT NULL,
+    "integrationId" TEXT NOT NULL,
+    "verifyToken" TEXT NOT NULL,
+    "phoneNumber" TEXT NOT NULL,
+    "phoneNumberId" TEXT NOT NULL,
+    "businessAccountId" TEXT NOT NULL,
+    "accessToken" TEXT NOT NULL,
+
+    CONSTRAINT "WhatsappIntegration_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -139,10 +196,16 @@ CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationTok
 CREATE UNIQUE INDEX "Organizer_userId_organizationId_key" ON "Organizer"("userId", "organizationId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Attendance_userId_eventId_key" ON "Attendance"("userId", "eventId");
+CREATE UNIQUE INDEX "EventRegistration_eventId_userId_key" ON "EventRegistration"("eventId", "userId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Attendee_userId_eventId_key" ON "Attendee"("userId", "eventId");
+CREATE UNIQUE INDEX "Integration_organizationId_whatsappIntegrationId_key" ON "Integration"("organizationId", "whatsappIntegrationId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "WhatsappIntegration_integrationId_key" ON "WhatsappIntegration"("integrationId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "WhatsappIntegration_verifyToken_key" ON "WhatsappIntegration"("verifyToken");
 
 -- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -160,13 +223,31 @@ ALTER TABLE "Organizer" ADD CONSTRAINT "Organizer_organizationId_fkey" FOREIGN K
 ALTER TABLE "Event" ADD CONSTRAINT "Event_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Attendance" ADD CONSTRAINT "Attendance_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "EventRegistration" ADD CONSTRAINT "EventRegistration_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Attendance" ADD CONSTRAINT "Attendance_eventId_fkey" FOREIGN KEY ("eventId") REFERENCES "Event"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "EventRegistration" ADD CONSTRAINT "EventRegistration_eventId_fkey" FOREIGN KEY ("eventId") REFERENCES "Event"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Attendee" ADD CONSTRAINT "Attendee_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Integration" ADD CONSTRAINT "Integration_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Attendee" ADD CONSTRAINT "Attendee_eventId_fkey" FOREIGN KEY ("eventId") REFERENCES "Event"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "EventBot" ADD CONSTRAINT "EventBot_eventId_fkey" FOREIGN KEY ("eventId") REFERENCES "Event"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "MessageThread" ADD CONSTRAINT "MessageThread_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "MessageThread" ADD CONSTRAINT "MessageThread_contextUserId_fkey" FOREIGN KEY ("contextUserId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Message" ADD CONSTRAINT "Message_messageThreadId_fkey" FOREIGN KEY ("messageThreadId") REFERENCES "MessageThread"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Message" ADD CONSTRAINT "Message_senderUserId_fkey" FOREIGN KEY ("senderUserId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Message" ADD CONSTRAINT "Message_destinationUserId_fkey" FOREIGN KEY ("destinationUserId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "WhatsappIntegration" ADD CONSTRAINT "WhatsappIntegration_integrationId_fkey" FOREIGN KEY ("integrationId") REFERENCES "Integration"("id") ON DELETE CASCADE ON UPDATE CASCADE;

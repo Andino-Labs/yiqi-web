@@ -14,7 +14,7 @@ import { z } from "zod";
 type DbEvent = z.infer<typeof DbEventSchema>;
 
 export async function getOrganizationEvents(
-  organizationId: string,
+  organizationId: string
 ): Promise<DbEvent[]> {
   const events = await prisma.event.findMany({
     where: { organizationId },
@@ -85,9 +85,9 @@ export async function deleteEvent(eventId: string) {
   revalidatePath(`/organizations/${event.organizationId}/events`);
 }
 
-export async function createAttendee(
+export async function createRegistration(
   eventId: string,
-  attendeeData: Record<string, unknown>,
+  attendeeData: Record<string, unknown>
 ) {
   const event = await getEvent(eventId);
   if (!event) throw new Error("Event not found");
@@ -95,9 +95,13 @@ export async function createAttendee(
   const attendeeSchema = createAttendeeSchema(event.customFields);
   const validatedData = attendeeSchema.parse(attendeeData);
 
-  let user = await prisma.user.findUnique({
-    where: { email: validatedData.email },
-  });
+  const signedInUser = await getCurrentUser();
+
+  let user = signedInUser
+    ? signedInUser
+    : await prisma.user.findUnique({
+        where: { email: validatedData.email },
+      });
 
   if (!user) {
     // Create a new user if they don't exist
@@ -109,7 +113,7 @@ export async function createAttendee(
     });
   }
 
-  const attendee = await prisma.eventRegistration.create({
+  const registration = await prisma.eventRegistration.create({
     data: {
       userId: user.id,
       eventId: event.id,
@@ -118,7 +122,7 @@ export async function createAttendee(
     },
   });
 
-  return attendee;
+  return registration;
 }
 
 export async function getPublicEvents(): Promise<DbEvent[]> {
@@ -136,7 +140,7 @@ export async function getPublicEvents(): Promise<DbEvent[]> {
 
 export async function getUserRegistrationStatus(
   eventId: string,
-  userId: string,
+  userId: string
 ) {
   const attendee = await prisma.eventRegistration.findUnique({
     where: {

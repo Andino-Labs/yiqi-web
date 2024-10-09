@@ -30,7 +30,7 @@ export const createCustomFieldSchema = (field: CustomFieldInput) => {
       return z.date();
     case "select":
       return z.enum(
-        field.options?.split(",").map((o) => o.trim()) as [string, ...string[]],
+        field.options?.split(",").map((o) => o.trim()) as [string, ...string[]]
       );
     default:
       return z.string();
@@ -39,19 +39,16 @@ export const createCustomFieldSchema = (field: CustomFieldInput) => {
 
 export const createAttendeeSchema = (customFields: CustomFieldInput[]) => {
   const baseSchema = z.object({
-    email: z.string().email("Invalid email address"),
+    email: z.string().email("Invalid email address").optional(),
   });
 
   const customFieldsSchema = z.object(
-    customFields.reduce(
-      (acc, field) => {
-        acc[field.name] = field.required
-          ? createCustomFieldSchema(field)
-          : createCustomFieldSchema(field).optional();
-        return acc;
-      },
-      {} as Record<string, z.ZodTypeAny>,
-    ),
+    customFields.reduce((acc, field) => {
+      acc[field.name] = field.required
+        ? createCustomFieldSchema(field)
+        : createCustomFieldSchema(field).optional();
+      return acc;
+    }, {} as Record<string, z.ZodTypeAny>)
   );
 
   return baseSchema.merge(customFieldsSchema);

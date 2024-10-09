@@ -2,7 +2,7 @@
 
 import { EditEventInput } from "@/schemas/eventSchema";
 import { useState } from "react";
-import { createAttendee } from "@/app/actions/eventActions";
+import { createRegistration } from "@/app/actions/eventActions";
 
 interface RegistrationModalProps {
   event: EditEventInput;
@@ -18,7 +18,7 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({
   const [optionsInput, setOptionsInput] = useState("");
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setCustomData((prev) => ({ ...prev, [name]: value }));
@@ -38,7 +38,7 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({
           .map((option) => option.trim());
         setCustomData((prev) => ({ ...prev, options: optionsArray }));
       }
-      await createAttendee(event.id, customData);
+      await createRegistration(event.id, customData);
       alert("Registration successful!");
       setIsModalOpen(false); // Close the modal on success
     } catch (error) {
