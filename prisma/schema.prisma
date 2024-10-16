@@ -105,6 +105,8 @@ model Organization {
   Form   Form[]
   User   User?   @relation(fields: [userId], references: [id])
   userId String?
+
+  SocialMediaAccount SocialMediaAccount[]
 }
 
 model Organizer {
@@ -420,4 +422,26 @@ model QueueJob {
 
   @@index([status, type, priority])
   @@index([createdAt])
+}
+
+model SocialMediaAccount {
+  id             String               @id @default(cuid())
+  organization   Organization         @relation(fields: [organizationId], references: [id])
+  organizationId String
+  platform       SocialMediaPlatform
+  accountId      String
+  accountName    String
+  accessToken    String
+  refreshToken   String?
+  expiresAt      DateTime?
+  scope          String[]
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+
+  @@unique([organizationId, platform, accountId])
+}
+
+enum SocialMediaPlatform {
+  FACEBOOK
+  INSTAGRAM
 }
