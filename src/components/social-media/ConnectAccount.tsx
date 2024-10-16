@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { SocialMediaPlatform } from "@prisma/client";
 import { initiateOAuthFlow } from "@/services/actions/socialMediaActions";
 import { useToast } from "@/hooks/use-toast";
+import { InitiateOAuthFlowInputSchema } from "@/schemas/socialMediaSchemas";
 
 interface ConnectAccountProps {
   organizationId: string;
@@ -15,7 +16,11 @@ export function ConnectAccount({ organizationId }: ConnectAccountProps) {
 
   const handleConnect = async (platform: SocialMediaPlatform) => {
     try {
-      const { authUrl } = await initiateOAuthFlow(organizationId, platform);
+      const input = InitiateOAuthFlowInputSchema.parse({
+        organizationId,
+        platform,
+      });
+      const { authUrl } = await initiateOAuthFlow(input);
       window.location.href = authUrl;
     } catch (error) {
       console.error(`Error initiating ${platform} OAuth:`, error);

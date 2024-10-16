@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { connectAccount } from "@/services/actions/socialMediaActions";
 import { SocialMediaPlatform } from "@prisma/client";
 import axios from "axios";
+import {
+  ExchangeCodeForTokenOutput,
+  ExchangeCodeForTokenOutputSchema,
+} from "@/schemas/socialMediaSchemas";
 
 export async function GET(
   req: NextRequest,
@@ -18,28 +21,16 @@ export async function GET(
   try {
     const platform = params.platform.toUpperCase() as SocialMediaPlatform;
 
-    const {
-      accessToken,
-      refreshToken,
-      expiresAt,
-      accountId,
-      accountName,
-      scope,
-    } = await exchangeCodeForToken(platform, code);
+    const tokenData = await exchangeCodeForToken(platform, code);
 
-    await connectAccount(
-      state,
-      platform,
-      accountId,
-      accountName,
-      accessToken,
-      refreshToken,
-      expiresAt,
-      scope
-    );
-
+    // Redirect to the account selection page instead of connecting immediately
     return NextResponse.redirect(
-      `/admin/organizations/${state}/social-media?success=true`
+      `/admin/organizations/${state}/social-media/select-accounts?` +
+        new URLSearchParams({
+          accessToken: tokenData.accessToken,
+          userId: tokenData.accountId,
+          platform: platform,
+        }).toString()
     );
   } catch (error) {
     console.error("Error in OAuth callback:", error);
@@ -50,7 +41,7 @@ export async function GET(
 async function exchangeCodeForToken(
   platform: SocialMediaPlatform,
   code: string
-) {
+): Promise<ExchangeCodeForTokenOutput> {
   const tokenResponse = await axios.get(
     "https://graph.facebook.com/v21.0/oauth/access_token",
     {
@@ -91,12 +82,12 @@ async function exchangeCodeForToken(
   const { access_token: longLivedToken, expires_in: longLivedExpires } =
     longLivedTokenResponse.data;
 
-  return {
+  return ExchangeCodeForTokenOutputSchema.parse({
     accessToken: longLivedToken,
-    refreshToken: null, // Facebook doesn't provide refresh tokens for long-lived tokens
+    refreshToken: null,
     expiresAt: new Date(Date.now() + longLivedExpires * 1000),
     accountId: id,
     accountName: name,
     scope: tokenResponse.data.scope.split(","),
-  };
+  });
 }

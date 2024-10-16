@@ -6,41 +6,39 @@ import {
   getSocialMediaAccounts,
   disconnectSocialMediaAccount,
 } from "@/lib/socialMedia";
-import { SocialMediaPlatform } from "@prisma/client";
+import {
+  ConnectAccountInput,
+  ConnectAccountInputSchema,
+  InitiateOAuthFlowInput,
+  InitiateOAuthFlowInputSchema,
+  InitiateOAuthFlowOutputSchema,
+  SocialMediaAccount,
+  SocialMediaAccountSchema,
+} from "@/schemas/socialMediaSchemas";
+import { z } from "zod";
 
-export async function connectAccount(
-  organizationId: string,
-  platform: SocialMediaPlatform,
-  accountId: string,
-  accountName: string,
-  accessToken: string,
-  refreshToken: string | null,
-  expiresAt: Date | null,
-  scope: string[]
-) {
+export async function connectAccount(input: ConnectAccountInput) {
+  const validatedInput = ConnectAccountInputSchema.parse(input);
   const user = await getUser();
   if (!user) {
     throw new Error("Unauthorized");
   }
 
-  const isAdmin = await isOrganizerAdmin(organizationId, user.id);
+  const isAdmin = await isOrganizerAdmin(
+    validatedInput.organizationId,
+    user.id
+  );
   if (!isAdmin) {
     throw new Error("Unauthorized to modify this organization");
   }
 
-  return connectSocialMediaAccount(
-    organizationId,
-    platform,
-    accountId,
-    accountName,
-    accessToken,
-    refreshToken,
-    expiresAt,
-    scope
-  );
+  const result = await connectSocialMediaAccount(validatedInput);
+  return SocialMediaAccountSchema.parse(result);
 }
 
-export async function getAccounts(organizationId: string) {
+export async function getAccounts(
+  organizationId: string
+): Promise<SocialMediaAccount[]> {
   const user = await getUser();
   if (!user) {
     throw new Error("Unauthorized");
@@ -51,7 +49,8 @@ export async function getAccounts(organizationId: string) {
     throw new Error("Unauthorized to view accounts for this organization");
   }
 
-  return getSocialMediaAccounts(organizationId);
+  const accounts = await getSocialMediaAccounts(organizationId);
+  return z.array(SocialMediaAccountSchema).parse(accounts);
 }
 
 export async function disconnectAccount(
@@ -68,26 +67,27 @@ export async function disconnectAccount(
     throw new Error("Unauthorized to modify this organization");
   }
 
-  return disconnectSocialMediaAccount(accountId, organizationId);
+  await disconnectSocialMediaAccount(accountId, organizationId);
 }
 
-export async function initiateOAuthFlow(
-  organizationId: string,
-  platform: SocialMediaPlatform
-) {
+export async function initiateOAuthFlow(input: InitiateOAuthFlowInput) {
+  const validatedInput = InitiateOAuthFlowInputSchema.parse(input);
   const user = await getUser();
   if (!user) {
     throw new Error("Unauthorized");
   }
 
-  const isAdmin = await isOrganizerAdmin(organizationId, user.id);
+  const isAdmin = await isOrganizerAdmin(
+    validatedInput.organizationId,
+    user.id
+  );
   if (!isAdmin) {
     throw new Error("Unauthorized to modify this organization");
   }
 
   const baseCallbackUrl = `${
     process.env.NEXT_PUBLIC_BASE_URL
-  }/api/oauth/${platform.toLowerCase()}/callback`;
+  }/api/oauth/${validatedInput.platform.toLowerCase()}/callback`;
 
   const scope = [
     "email",
@@ -101,7 +101,7 @@ export async function initiateOAuthFlow(
     "instagram_manage_insights",
   ].join(",");
 
-  const authUrl = `https://www.facebook.com/v21.0/dialog/oauth?client_id=${process.env.FACEBOOK_APP_ID}&redirect_uri=${baseCallbackUrl}&state=${organizationId}&scope=${scope}&response_type=code`;
+  const authUrl = `https://www.facebook.com/v21.0/dialog/oauth?client_id=${process.env.FACEBOOK_APP_ID}&redirect_uri=${baseCallbackUrl}&state=${validatedInput.organizationId}&scope=${scope}&response_type=code`;
 
-  return { authUrl };
+  return InitiateOAuthFlowOutputSchema.parse({ authUrl });
 }
