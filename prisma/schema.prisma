@@ -435,6 +435,7 @@ model SocialMediaAccount {
   refreshToken   String?
   expiresAt      DateTime?
   scope          String[]
+  extraDetails   Json?                // Add this line
   createdAt      DateTime             @default(now())
   updatedAt      DateTime             @updatedAt
 

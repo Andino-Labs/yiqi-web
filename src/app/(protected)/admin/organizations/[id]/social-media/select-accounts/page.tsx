@@ -6,16 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { connectAccount } from "@/services/actions/socialMediaActions";
 import { SocialMediaPlatform } from "@prisma/client";
-import { ConnectAccountInput } from "@/schemas/socialMediaSchemas";
+import {
+  ConnectAccountInput,
+  FacebookPageDetails,
+  FacebookPageDetailsSchema,
+} from "@/schemas/socialMediaSchemas";
 import axios from "axios";
-
-interface FacebookPage {
-  id: string;
-  name: string;
-  access_token: string;
-  category: string;
-  tasks: string[];
-}
 
 export default function SelectAccountsPage({
   params,
@@ -24,7 +20,7 @@ export default function SelectAccountsPage({
 }) {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [accounts, setAccounts] = useState<FacebookPage[]>([]);
+  const [accounts, setAccounts] = useState<FacebookPageDetails[]>([]);
   const [selectedAccounts, setSelectedAccounts] = useState<string[]>([]);
 
   useEffect(() => {
@@ -40,7 +36,7 @@ export default function SelectAccountsPage({
       }
 
       try {
-        const fetchedAccounts = await fetchFacebookPages(accessToken, userId);
+        const fetchedAccounts = await fetchFacebookPages(accessToken);
         setAccounts(fetchedAccounts);
       } catch (error) {
         console.error("Error fetching Facebook pages:", error);
@@ -74,6 +70,9 @@ export default function SelectAccountsPage({
           refreshToken: null,
           expiresAt: null,
           scope: account.tasks,
+          extraDetails: {
+            facebookPageDetails: account,
+          },
         };
 
         await connectAccount(connectAccountInput);
@@ -106,21 +105,20 @@ export default function SelectAccountsPage({
 }
 
 async function fetchFacebookPages(
-  accessToken: string,
-  userId: string
-): Promise<FacebookPage[]> {
+  accessToken: string
+): Promise<FacebookPageDetails[]> {
   try {
     const response = await axios.get(
-      `https://graph.facebook.com/v21.0/${userId}/accounts`,
+      `https://graph.facebook.com/v21.0/me/accounts`,
       {
         params: {
           access_token: accessToken,
-          fields: "id,name,access_token,category,tasks",
+          fields: "access_token,category,category_list,name,id,tasks",
         },
       }
     );
 
-    return response.data.data;
+    return FacebookPageDetailsSchema.array().parse(response.data.data);
   } catch (error) {
     console.error("Error fetching Facebook pages:", error);
     throw error;
