@@ -1,6 +1,6 @@
 import { Lucia } from "lucia";
 import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import prisma from "../prisma";
 import { OrganizerRole } from "@prisma/client";
 import { Google } from "arctic";
@@ -8,7 +8,7 @@ import { Google } from "arctic";
 export const googleOAuthClient = new Google(
   process.env.GOOGLE_CLIENT_ID!,
   process.env.GOOGLE_CLIENT_SECRET!,
-  process.env.NEXT_PUBLIC_URL + "/api/auth/google/callback",
+  process.env.NEXT_PUBLIC_URL + "/api/auth/google/callback"
 );
 
 const adapter = new PrismaAdapter(prisma.session, prisma.user);
@@ -24,32 +24,50 @@ export const lucia = new Lucia(adapter, {
 });
 
 export const getUser = async () => {
-  const sessionId = cookies().get(lucia.sessionCookieName)?.value || null;
+  // Check for bearer token first
+  const authHeader = headers().get("authorization");
+  let sessionId: string | null = null;
+
+  if (authHeader && authHeader.startsWith("Bearer ")) {
+    sessionId = authHeader.split(" ")[1];
+  } else {
+    // If no bearer token, check for session cookie
+    sessionId = cookies().get(lucia.sessionCookieName)?.value || null;
+  }
+
   if (!sessionId) {
     return null;
   }
+
   const { session, user } = await lucia.validateSession(sessionId);
+
   try {
     if (session && session.fresh) {
-      // refreshing their session cookie
-      const sessionCookie = await lucia.createSessionCookie(session.id);
-      cookies().set(
-        sessionCookie.name,
-        sessionCookie.value,
-        sessionCookie.attributes,
-      );
+      // Only set cookie if we're using cookie-based auth
+      if (!authHeader) {
+        const sessionCookie = await lucia.createSessionCookie(session.id);
+        cookies().set(
+          sessionCookie.name,
+          sessionCookie.value,
+          sessionCookie.attributes
+        );
+      }
     }
     if (!session) {
-      const sessionCookie = await lucia.createBlankSessionCookie();
-      cookies().set(
-        sessionCookie.name,
-        sessionCookie.value,
-        sessionCookie.attributes,
-      );
+      // Only set blank cookie if we're using cookie-based auth
+      if (!authHeader) {
+        const sessionCookie = await lucia.createBlankSessionCookie();
+        cookies().set(
+          sessionCookie.name,
+          sessionCookie.value,
+          sessionCookie.attributes
+        );
+      }
     }
   } catch (error) {
     console.error(error);
   }
+
   const dbUser = await prisma.user.findUnique({
     where: {
       id: user?.id,
@@ -62,12 +80,13 @@ export const getUser = async () => {
       role: true,
     },
   });
+
   return dbUser;
 };
 
 export async function isEventAdmin(
   eventId: string,
-  userId: string,
+  userId: string
 ): Promise<boolean> {
   const event = await prisma.event.findUnique({
     where: { id: eventId },
@@ -93,7 +112,7 @@ export async function isEventAdmin(
 
 export async function isOrganizerAdmin(
   orgId: string,
-  userId: string,
+  userId: string
 ): Promise<boolean> {
   const organizer = await prisma.organizer.findFirst({
     where: {
