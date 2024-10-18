@@ -1,3 +1,4 @@
+import createMessageRecord from "@/lib/communications/createMessageRecord";
 import prisma from "@/lib/prisma";
 
 export type HandleEmailReceivedType = {
@@ -28,12 +29,10 @@ export async function handleEmailReceived({
     throw " user doesnt have an email";
   }
 
-  return prisma.message.create({
-    data: {
-      content,
-      attachement,
-      messageThreadId: thread.id,
-      senderUserId: user.id,
-    },
+  return createMessageRecord({
+    content,
+    attachement,
+    messageThreadId: thread.id,
+    senderUserId: user.id,
   });
 }

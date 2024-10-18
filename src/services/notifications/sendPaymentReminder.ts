@@ -8,7 +8,7 @@ import { User } from "lucia";
 export default async function sendPaymentReminder(
   user: User,
   event: Event,
-  org: Organization
+  org: Organization,
 ) {
   const realUser = await prisma.user.findFirstOrThrow({
     where: { id: user.id },

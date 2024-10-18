@@ -73,19 +73,19 @@ export async function GenerateSpeakersEventPoster({
     ctx.fillText(
       speaker.name,
       xPos + speakerWidth / 2,
-      yPos + speakerHeight + 40
+      yPos + speakerHeight + 40,
     );
 
     ctx.font = "italic 25px Arial";
     ctx.fillText(
       speaker.title,
       xPos + speakerWidth / 2,
-      yPos + speakerHeight + 80
+      yPos + speakerHeight + 80,
     );
     ctx.fillText(
       speaker.company,
       xPos + speakerWidth / 2,
-      yPos + speakerHeight + 120
+      yPos + speakerHeight + 120,
     );
 
     xPos += speakerWidth + 50; // Move x position for next speaker

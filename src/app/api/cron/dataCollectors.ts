@@ -14,7 +14,7 @@ const CollectUserDataJobSchema = z.object({
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   // Find jobs that need to be processed
   const jobs = await prisma.queueJob.findMany({
@@ -86,7 +86,7 @@ export default async function handler(
           error: (error as Error).message,
         };
       }
-    })
+    }),
   );
 
   res

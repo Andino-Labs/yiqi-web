@@ -10,7 +10,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   // Find notifications that need to be sent
   const notificationsToSend = await prisma.notification.findMany({
@@ -46,11 +46,11 @@ export default async function handler(
         await sendPaymentReminder(
           notification.user,
           notification.event,
-          notification.organization
+          notification.organization,
         );
       } else if (notification.type === "BASE_NOTIFICATION") {
         const data = SendBaseMessageToUserPropsSchema.parse(
-          notification.extraData
+          notification.extraData,
         );
 
         await sendBaseMessageToUser(data);

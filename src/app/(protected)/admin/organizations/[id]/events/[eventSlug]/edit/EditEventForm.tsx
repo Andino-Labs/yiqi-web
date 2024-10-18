@@ -16,7 +16,7 @@ export default function EditEventForm({
   organizationId,
 }: EditEventFormProps) {
   const [customFields, setCustomFields] = useState<CustomFieldInput[]>(
-    event.customFields
+    event.customFields,
   );
 
   const addCustomField = () => {
@@ -28,7 +28,7 @@ export default function EditEventForm({
 
   const updateCustomField = (
     index: number,
-    field: Partial<CustomFieldInput>
+    field: Partial<CustomFieldInput>,
   ) => {
     const newFields = [...customFields];
     newFields[index] = { ...newFields[index], ...field };

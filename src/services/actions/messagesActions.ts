@@ -60,7 +60,7 @@ export async function getUserMessageList(userId: string, orgId: string) {
 }
 
 export async function sendUserWhatsappMessageAction(
-  props: sendUserWhatsappMessageProps & { eventId?: string | undefined }
+  props: sendUserWhatsappMessageProps & { eventId?: string | undefined },
 ) {
   const currentUser = await getUser();
   if (!currentUser) throw new Error("Unauthorized");
@@ -110,7 +110,7 @@ export async function getOrganizationMessageThreads(orgId: string) {
 }
 
 export async function sendUserCommunicationAction(
-  props: SendBaseMessageToUserProps
+  props: SendBaseMessageToUserProps,
 ) {
   const currentUser = await getUser();
   if (!currentUser) throw new Error("Unauthorized");

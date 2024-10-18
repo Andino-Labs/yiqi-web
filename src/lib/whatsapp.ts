@@ -1,5 +1,6 @@
 import axios from "axios";
 import prisma from "./prisma";
+import createMessageRecord from "./communications/createMessageRecord";
 
 export type sendUserWhatsappMessageProps = {
   destinationUserId: string;
@@ -50,7 +51,7 @@ export async function sendUserWhatsappMessage({
           organizationId: org.id,
         },
       },
-    },
+    }
   );
   await axios({
     method: "POST",
@@ -69,13 +70,11 @@ export async function sendUserWhatsappMessage({
     },
   });
 
-  return prisma.message.create({
-    data: {
-      content,
-      attachement,
-      destinationUserId,
-      messageThreadId: thread.id,
-      senderUserId,
-    },
+  return createMessageRecord({
+    content,
+    attachement,
+    destinationUserId,
+    messageThreadId: thread.id,
+    senderUserId,
   });
 }

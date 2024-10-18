@@ -16,7 +16,7 @@ import { GenerateEventOpenGraphJobSchema } from "@/schemas/mediaJobs";
 type DbEvent = z.infer<typeof DbEventSchema>;
 
 export async function getOrganizationEvents(
-  organizationId: string
+  organizationId: string,
 ): Promise<DbEvent[]> {
   const events = await prisma.event.findMany({
     where: { organizationId },
@@ -110,7 +110,7 @@ export async function deleteEvent(eventId: string) {
 
 export async function createRegistration(
   eventId: string,
-  attendeeData: Record<string, unknown>
+  attendeeData: Record<string, unknown>,
 ) {
   const event = await getEvent(eventId);
   if (!event) throw new Error("Event not found");
@@ -167,7 +167,7 @@ export async function getPublicEvents(): Promise<DbEvent[]> {
 
 export async function getUserRegistrationStatus(
   eventId: string,
-  userId: string
+  userId: string,
 ) {
   const attendee = await prisma.eventRegistration.findUnique({
     where: {
@@ -178,4 +178,10 @@ export async function getUserRegistrationStatus(
     },
   });
   return attendee ? true : false;
+}
+
+export async function getEventDetails(eventId: string) {
+  const event = await getEvent(eventId);
+
+  return DbEventSchema.parse(event);
 }

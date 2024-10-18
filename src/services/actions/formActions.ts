@@ -16,7 +16,7 @@ const FormSchema = z.object({
       type: z.enum(["text", "number", "date", "checkbox", "radio", "select"]),
       options: z.array(z.string()).optional(),
       required: z.boolean(),
-    })
+    }),
   ),
 });
 
@@ -27,7 +27,7 @@ const FormSubmissionSchema = z.object({
 export async function createForm(
   organizationId: string,
   eventId: string | null,
-  formData: unknown
+  formData: unknown,
 ) {
   const currentUser = await getUser();
   if (

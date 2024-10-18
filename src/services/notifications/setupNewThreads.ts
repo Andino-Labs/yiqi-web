@@ -1,6 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+"use server";
 
-const prisma = new PrismaClient();
+import prisma from "@/lib/prisma";
 
 export default async function setupNewThreads(
   userId: string,

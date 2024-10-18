@@ -3,6 +3,7 @@ import { getUser } from "@/lib/auth/lucia";
 import OrganizationLayout from "@/components/orgs/organizationLayout";
 import { redirect } from "next/navigation";
 import { Roles } from "@prisma/client";
+import { CreateEventButton } from "@/components/events/createEvent";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const organization = await getOrganization(params.id);
@@ -25,7 +26,9 @@ export default async function Page({ params }: { params: { id: string } }) {
             name: user.name,
           }}
         >
-          aaa
+          <section>
+            <CreateEventButton />
+          </section>
         </OrganizationLayout>
       </main>
     );

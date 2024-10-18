@@ -7,16 +7,28 @@ import VideoBackground from "./components/checkout/landing/herobg";
 import Navbar from "./components/checkout/landing/navbar";
 import PrecioEvento from "./components/checkout/landing/pricing";
 import { Container, Main, Section } from "./components/checkout/mainLayout";
+import { GrillHeaderProps } from "./components/checkout/landing/header";
+import { GrillNavbarProps } from "./components/checkout/landing/navbar";
+interface GrillTemplateTypes {
+  videoBGurl: string;
+  navProps: GrillNavbarProps;
+  headerProps: GrillHeaderProps;
+}
 
-export default function Home() {
+export default function GrillTemplate(props: GrillTemplateTypes) {
   return (
     <>
-      <VideoBackground />
-      <Navbar />
+      <VideoBackground videoUrl={props.videoBGurl} />
+      <Navbar cta={props.navProps.cta} navItems={props.navProps.navItems} />
       <Main>
         <Container>
           <Section>
-            <Header />
+            <Header
+              cta={props.headerProps.cta}
+              headerDescription={props.headerProps.headerDescription}
+              headerTitleSecondary={props.headerProps.headerTitleSecondary}
+              headerTitle={props.headerProps.headerTitle}
+            />
             <Evento />
             <Feature />
             <PrecioEvento />

@@ -89,7 +89,7 @@ export async function sendEmailForTemplate<T extends MailTemplatesIds>({
   // type Safety established at the top level
   const renderedBody = await render(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    <Component {...(dynamicTemplateData as any)} />
+    <Component {...(dynamicTemplateData as any)} />,
   );
 
   // Use your email client to send the email
@@ -106,6 +106,6 @@ export async function generateEmailPlainText<T extends MailTemplatesIds>({
   // type Safety established at the top level
   return await render(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    <Component {...(dynamicTemplateData as any)} />
+    <Component {...(dynamicTemplateData as any)} />,
   );
 }

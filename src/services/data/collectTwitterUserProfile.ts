@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getTwitterData = async (
   accessToken: string,
-  twitterUsername: string
+  twitterUsername: string,
 ) => {
   const url = `https://api.twitter.com/2/users/by/username/${twitterUsername}?user.fields=description,created_at`;
   const tweetsUrl = `https://api.twitter.com/2/users/by/username/${twitterUsername}/tweets`;

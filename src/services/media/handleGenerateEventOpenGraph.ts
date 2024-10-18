@@ -1,3 +1,4 @@
+"use server";
 import prisma from "@/lib/prisma";
 import { GenerateSpeakersEventPoster } from "../media-generator/GenerateSpeakersEventPoster";
 import { UploadToS3 } from "@/lib/uploadToS3";
@@ -25,7 +26,7 @@ export async function handleGenerateEventOpenGraph({
     `${event.id}/openGraphImage.png`,
     {
       type: "image/png",
-    }
+    },
   );
   const openGraphImageUrl = await UploadToS3(posterFile);
   await prisma.event.update({

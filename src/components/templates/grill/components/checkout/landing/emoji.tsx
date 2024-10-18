@@ -58,7 +58,7 @@ export default function HalloweenBackground() {
         ...emoji,
         y: emoji.y > 100 ? -10 : emoji.y + emoji.speed,
         rotation: (emoji.rotation + emoji.speed * 2) % 360,
-      }))
+      })),
     );
 
     requestAnimationFrame(animate);

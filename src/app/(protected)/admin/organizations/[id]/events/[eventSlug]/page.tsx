@@ -3,8 +3,8 @@ import {
   getEventAttendees,
   updateAttendeeStatus,
 } from "@/services/actions/contactActions";
-import prisma from "@/lib/prisma";
 import Link from "next/link";
+import { getEventDetails } from "@/services/actions/eventActions";
 
 export default async function EventDetailsPage({
   params,
@@ -12,9 +12,8 @@ export default async function EventDetailsPage({
   params: { id: string; eventSlug: string };
 }) {
   const organization = await getOrganization(params.id);
-  const event = await prisma.event.findUnique({
-    where: { id: params.eventSlug },
-  });
+
+  const event = await getEventDetails(params.eventSlug);
   const attendees = await getEventAttendees(params.eventSlug);
 
   if (!organization || !event) {
@@ -23,7 +22,7 @@ export default async function EventDetailsPage({
 
   async function handleApproval(
     attendeeId: string,
-    status: "APPROVED" | "REJECTED"
+    status: "APPROVED" | "REJECTED",
   ) {
     "use server";
     await updateAttendeeStatus(attendeeId, status);

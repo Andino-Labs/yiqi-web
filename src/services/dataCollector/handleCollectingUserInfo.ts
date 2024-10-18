@@ -9,13 +9,13 @@ export const getUserData = async (
   email: string,
   twitterAccessToken: string,
   linkedinAccessToken: string,
-  twitterUsername: string
+  twitterUsername: string,
 ) => {
   try {
     // Fetch Twitter data
     const twitterData = await getTwitterData(
       twitterAccessToken,
-      twitterUsername
+      twitterUsername,
     );
 
     // Fetch LinkedIn data

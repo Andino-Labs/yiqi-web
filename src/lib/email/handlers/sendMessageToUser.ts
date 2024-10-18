@@ -5,6 +5,7 @@ import {
   sendEmailForTemplate,
   TemplatePropsMap,
 } from "../lib";
+import createMessageRecord from "@/lib/communications/createMessageRecord";
 
 // Define the input type that enforces correct template-data pairing
 export type SendEmailToUserType<T extends MailTemplatesIds> = {
@@ -51,13 +52,11 @@ export async function sendEmailToUser<T extends MailTemplatesIds>({
 
   const textContent = await generateEmailPlainText({ ...sendMailInput });
 
-  return prisma.message.create({
-    data: {
-      content: content || textContent,
-      attachement,
-      destinationUserId,
-      messageThreadId: thread.id,
-      senderUserId,
-    },
+  return createMessageRecord({
+    content: content || textContent,
+    attachement,
+    destinationUserId,
+    messageThreadId: thread.id,
+    senderUserId,
   });
 }

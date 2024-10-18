@@ -24,7 +24,14 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-export default function Header() {
+export interface GrillHeaderProps {
+  headerTitle: string;
+  headerTitleSecondary: string;
+  headerDescription: string;
+  cta: string;
+}
+
+export default function Header(props: GrillHeaderProps) {
   return (
     <Section
       id="payment"
@@ -42,17 +49,14 @@ export default function Header() {
               variants={itemVariants}
               className="!mb-4 text-4xl md:text-5xl lg:text-6xl font-bold text-orange-500"
             >
-              Tech Grill <span className="text-white">Halloween Edition</span>
+              {props.headerTitle}{" "}
+              <span className="text-white">{props.headerTitleSecondary}</span>
             </motion.h1>
             <motion.h3
               variants={itemVariants}
               className="text-orange-300 text-lg md:text-xl lg:text-2xl mb-8"
             >
-              <Balancer>
-                Conecta, disfruta y comparte con expertos en la industria,
-                entusiastas de la tecnología como tú en un ambiente elegante y
-                amistoso.
-              </Balancer>
+              <Balancer>{props.headerDescription}</Balancer>
             </motion.h3>
             <motion.div
               variants={itemVariants}
@@ -60,7 +64,7 @@ export default function Header() {
             >
               <Link href="#conocemas" className="w-full sm:w-1/2">
                 <Button className="min-w-full rounded-[50px] sm:w-1/2  border  border-orange-500 text-white hover:shadow-lg hover:shadow-orange-500/50 transition-all duration-300 text-lg py-6">
-                  Conoce más
+                  {props.cta}
                 </Button>
               </Link>
             </motion.div>

@@ -41,28 +41,26 @@ export const getUser = async () => {
 
   const { session, user } = await lucia.validateSession(sessionId);
 
+  if (!user || !session) {
+    return null;
+  }
+
   try {
     if (session && session.fresh) {
-      // Only set cookie if we're using cookie-based auth
-      if (!authHeader) {
-        const sessionCookie = await lucia.createSessionCookie(session.id);
-        cookies().set(
-          sessionCookie.name,
-          sessionCookie.value,
-          sessionCookie.attributes
-        );
-      }
+      const sessionCookie = await lucia.createSessionCookie(session.id);
+      cookies().set(
+        sessionCookie.name,
+        sessionCookie.value,
+        sessionCookie.attributes
+      );
     }
     if (!session) {
-      // Only set blank cookie if we're using cookie-based auth
-      if (!authHeader) {
-        const sessionCookie = await lucia.createBlankSessionCookie();
-        cookies().set(
-          sessionCookie.name,
-          sessionCookie.value,
-          sessionCookie.attributes
-        );
-      }
+      const sessionCookie = await lucia.createBlankSessionCookie();
+      cookies().set(
+        sessionCookie.name,
+        sessionCookie.value,
+        sessionCookie.attributes
+      );
     }
   } catch (error) {
     console.error(error);

@@ -7,15 +7,22 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 
-export default function Navbar() {
+interface GrillNavValues {
+  href: string;
+  label: string;
+}
+
+export interface GrillNavbarProps {
+  navItems: GrillNavValues[];
+  cta: string;
+}
+
+export default function Navbar(props: GrillNavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-  const navItems = [
-    { href: "#conocemas", label: "Conoce más" },
-    { href: "#entrada", label: "Que incluye?" },
-  ];
+  const navItems = props.navItems;
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 flex justify-center w-full">
@@ -52,7 +59,7 @@ export default function Navbar() {
         <div className="hidden md:block">
           <Link href="#payment">
             <Button className="bg-gradient-to-r from-orange-500 to-red-600 text-white hover:shadow-lg hover:shadow-orange-500/50 transition-all duration-300">
-              Chapa tu entrada!
+              {props.cta}
             </Button>
           </Link>
         </div>
@@ -84,7 +91,7 @@ export default function Navbar() {
                 ))}
                 <Link href="#payment">
                   <Button className="bg-gradient-to-r from-orange-500 to-red-600 text-white hover:shadow-lg hover:shadow-orange-500/50 transition-all duration-300">
-                    Chapa tu entrada!
+                    {props.cta}
                   </Button>
                 </Link>
               </nav>

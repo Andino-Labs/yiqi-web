@@ -22,7 +22,7 @@ export default function ConnectedChat({
   const [messages, setMessages] = useState(defaultMessages);
   const [messageType, setMessageType] = useState<MessageThreadType>(
     defaultMessages.at(0)?.messageThread.type ||
-      MessageThreadTypeEnum.Enum.whatsapp
+      MessageThreadTypeEnum.Enum.whatsapp,
   );
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
