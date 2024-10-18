@@ -1,5 +1,5 @@
-import { User, Event } from "@prisma/client";
-import { ReactElement } from "react";
+import { User, Event } from '@prisma/client'
+import { ReactElement } from 'react'
 
 import {
   Html,
@@ -10,24 +10,24 @@ import {
   Heading,
   Text,
   Button,
-  Link,
-} from "@react-email/components";
+  Link
+} from '@react-email/components'
 
 // Define the props types for each template
 export interface EventRegistrationRejectedProps {
-  user: User;
-  event: Event;
+  user: User
+  event: Event
 }
 
 export function EventRegistrationRejected({
   user,
-  event,
+  event
 }: EventRegistrationRejectedProps): ReactElement {
-  const { name } = user;
-  const { title: eventName, startDate, endDate, location } = event;
+  const { name } = user
+  const { title: eventName, startDate, endDate, location } = event
 
   // Placeholder for the event link, replace with the actual event link if needed
-  const eventLink = `https://mi-plataforma.com/eventos`;
+  const eventLink = `https://mi-plataforma.com/eventos`
 
   return (
     <Html>
@@ -41,10 +41,10 @@ export function EventRegistrationRejected({
             Hola, {name}
           </Heading>
           <Text className="text-lg text-gray-600 mb-4">
-            Lamentamos informarte que tu solicitud de registro para el evento{" "}
-            <strong>{eventName}</strong>, programado desde el{" "}
-            <strong>{new Date(startDate).toLocaleDateString()}</strong> hasta el{" "}
-            <strong>{new Date(endDate).toLocaleDateString()}</strong> en{" "}
+            Lamentamos informarte que tu solicitud de registro para el evento{' '}
+            <strong>{eventName}</strong>, programado desde el{' '}
+            <strong>{new Date(startDate).toLocaleDateString()}</strong> hasta el{' '}
+            <strong>{new Date(endDate).toLocaleDateString()}</strong> en{' '}
             <strong>{location}</strong>, no ha sido aceptada.
           </Text>
           <Text className="text-lg text-gray-600 mb-4">
@@ -71,5 +71,5 @@ export function EventRegistrationRejected({
         </Container>
       </Body>
     </Html>
-  );
+  )
 }

@@ -1,71 +1,71 @@
-import Link from "next/link";
+import Link from 'next/link'
 import {
   MessageSquare,
   Users,
   Menu,
   LogOut,
   Calendar,
-  BookUser,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+  BookUser
+} from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import SignOutButton from "../auth/sign-out";
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+import SignOutButton from '../auth/sign-out'
 
 interface UserProps {
-  name: string;
-  email: string;
-  picture: string;
+  name: string
+  email: string
+  picture: string
 }
 
 interface AdminLayoutProps {
-  children: React.ReactNode;
-  userProps: UserProps;
-  orgId: string;
+  children: React.ReactNode
+  userProps: UserProps
+  orgId: string
 }
 
 export default function OrganizationLayout({
   children,
   userProps,
-  orgId,
+  orgId
 }: AdminLayoutProps) {
   const navItems = [
     {
-      name: "Chat",
+      name: 'Chat',
       icon: MessageSquare,
-      href: `/admin/organizations/${orgId}/chat`,
+      href: `/admin/organizations/${orgId}/chat`
     },
     {
-      name: "Eventos",
+      name: 'Eventos',
       icon: Calendar,
-      href: `/admin/organizations/${orgId}/events`,
+      href: `/admin/organizations/${orgId}/events`
     },
     {
-      name: "Personas",
+      name: 'Personas',
       icon: BookUser,
-      href: `/admin/organizations/${orgId}/contacts`,
+      href: `/admin/organizations/${orgId}/contacts`
     },
     {
-      name: "Organizadores",
+      name: 'Organizadores',
       icon: Users,
-      href: `/admin/organizations/${orgId}/organizers`,
-    },
-  ];
+      href: `/admin/organizations/${orgId}/organizers`
+    }
+  ]
 
   return (
     <div className="w-full flex h-screen bg-gray-100">
       {/* Sidebar for larger screens */}
       <aside className="hidden w-64 bg-white p-4 shadow-md lg:block">
         <nav className="space-y-2">
-          {navItems.map((item) => (
+          {navItems.map(item => (
             <Link
               key={item.name}
               href={item.href}
@@ -91,7 +91,7 @@ export default function OrganizationLayout({
         </SheetTrigger>
         <SheetContent side="left" className="w-64">
           <nav className="space-y-2">
-            {navItems.map((item) => (
+            {navItems.map(item => (
               <Link
                 key={item.name}
                 href={item.href}
@@ -164,5 +164,5 @@ export default function OrganizationLayout({
         </div>
       </main>
     </div>
-  );
+  )
 }

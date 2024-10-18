@@ -1,5 +1,5 @@
 export interface VideoBG {
-  videoUrl: string;
+  videoUrl: string
 }
 
 export default function VideoBackground(url: VideoBG) {
@@ -17,5 +17,5 @@ export default function VideoBackground(url: VideoBG) {
       </video>
       <div className="absolute inset-0 bg-black/50"></div>
     </div>
-  );
+  )
 }

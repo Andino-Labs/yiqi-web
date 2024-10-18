@@ -1,60 +1,60 @@
 export async function UploadToS3(file: File): Promise<string> {
-  const res = await fetch("/api/upload", {
-    method: "POST",
+  const res = await fetch('/api/upload', {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       fileName: file.name,
-      fileType: file.type,
-    }),
-  });
+      fileType: file.type
+    })
+  })
 
-  const { presignedUrl, publicUrl } = await res.json();
+  const { presignedUrl, publicUrl } = await res.json()
 
   await fetch(presignedUrl, {
-    method: "PUT",
+    method: 'PUT',
     headers: {
-      "Content-Type": file.type,
+      'Content-Type': file.type
     },
-    body: file,
-  });
+    body: file
+  })
 
-  return publicUrl;
+  return publicUrl
 }
 
 export async function UploadManyToS3(files: File[]): Promise<string[]> {
-  const uploadPromises = files.map(async (file) => {
+  const uploadPromises = files.map(async file => {
     try {
-      const res = await fetch("/api/upload", {
-        method: "POST",
+      const res = await fetch('/api/upload', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           fileName: file.name,
-          fileType: file.type,
-        }),
-      });
+          fileType: file.type
+        })
+      })
 
-      const { presignedUrl, publicUrl } = await res.json();
+      const { presignedUrl, publicUrl } = await res.json()
 
       await fetch(presignedUrl, {
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          "Content-Type": file.type,
+          'Content-Type': file.type
         },
-        body: file,
-      });
+        body: file
+      })
 
-      return publicUrl;
+      return publicUrl
     } catch (error) {
-      console.error(`Failed to upload file: ${file.name}`, error);
-      return null;
+      console.error(`Failed to upload file: ${file.name}`, error)
+      return null
     }
-  });
+  })
 
-  const publicUrls = await Promise.all(uploadPromises);
+  const publicUrls = await Promise.all(uploadPromises)
 
-  return publicUrls.filter((url) => url !== null);
+  return publicUrls.filter(url => url !== null)
 }

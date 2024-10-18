@@ -1,19 +1,19 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import Link from "next/link";
-import Balancer from "react-wrap-balancer";
-import { Section } from "../mainLayout";
-import { ArrowRight, ChevronRight } from "lucide-react";
+import { useState } from 'react'
+import { motion } from 'framer-motion'
+import Link from 'next/link'
+import Balancer from 'react-wrap-balancer'
+import { Section } from '../mainLayout'
+import { ArrowRight, ChevronRight } from 'lucide-react'
 
 type FeatureText = {
-  icon: JSX.Element;
-  title: string;
-  description: string;
-  href?: string;
-  cta?: string;
-};
+  icon: JSX.Element
+  title: string
+  description: string
+  href?: string
+  cta?: string
+}
 
 const containerVariants = {
   hidden: { opacity: 0, y: 50 },
@@ -22,26 +22,26 @@ const containerVariants = {
     y: 0,
     transition: {
       duration: 0.5,
-      when: "beforeChildren",
-      staggerChildren: 0.1,
-    },
-  },
-};
+      when: 'beforeChildren',
+      staggerChildren: 0.1
+    }
+  }
+}
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
-};
+  visible: { opacity: 1, y: 0 }
+}
 
 export interface GrillFeatureProps {
-  featMotion1: string;
-  featMotion2: string;
-  featCta: string;
-  featureText: FeatureText[];
+  featMotion1: string
+  featMotion2: string
+  featCta: string
+  featureText: FeatureText[]
 }
 
 const Feature = (props: GrillFeatureProps) => {
-  const [isHovered, setIsHovered] = useState(false);
+  const [isHovered, setIsHovered] = useState(false)
 
   return (
     <Section
@@ -110,7 +110,7 @@ const Feature = (props: GrillFeatureProps) => {
               <motion.div
                 className="ml-2"
                 animate={{ x: isHovered ? 5 : 0 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 10 }}
               >
                 <ChevronRight className="w-6 h-6" />
               </motion.div>
@@ -119,7 +119,7 @@ const Feature = (props: GrillFeatureProps) => {
         </motion.div>
       </motion.div>
     </Section>
-  );
-};
+  )
+}
 
-export default Feature;
+export default Feature

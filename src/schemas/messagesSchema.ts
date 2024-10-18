@@ -1,13 +1,13 @@
-import { z } from "zod";
+import { z } from 'zod'
 
 const UserInfoSchema = z.object({
   id: z.string(),
   name: z.string().nullable(),
-  picture: z.string().nullable(),
-});
+  picture: z.string().nullable()
+})
 
-export const MessageThreadTypeEnum = z.enum(["whatsapp", "email"]);
-export type MessageThreadType = z.infer<typeof MessageThreadTypeEnum>;
+export const MessageThreadTypeEnum = z.enum(['whatsapp', 'email'])
+export type MessageThreadType = z.infer<typeof MessageThreadTypeEnum>
 export const MessageSchema = z.object({
   id: z.string(),
   content: z.string(),
@@ -19,14 +19,14 @@ export const MessageSchema = z.object({
   destinationUser: UserInfoSchema.nullable(),
   messageThread: z.object({
     type: MessageThreadTypeEnum,
-    id: z.string(),
-  }),
-});
+    id: z.string()
+  })
+})
 
-export const MessageListSchema = z.array(MessageSchema);
+export const MessageListSchema = z.array(MessageSchema)
 
-export type Message = z.infer<typeof MessageSchema>;
-export type MessageList = z.infer<typeof MessageListSchema>;
+export type Message = z.infer<typeof MessageSchema>
+export type MessageList = z.infer<typeof MessageListSchema>
 
 export const OrgMessageListItemSchema = z.object({
   id: z.string(),
@@ -41,10 +41,10 @@ export const OrgMessageListItemSchema = z.object({
     id: z.string(),
     content: z.string(),
     createdAt: z.string(),
-    senderUserId: z.string(),
-  }),
-});
+    senderUserId: z.string()
+  })
+})
 
 export type OrgMessageListItemSchemaType = z.infer<
   typeof OrgMessageListItemSchema
->;
+>

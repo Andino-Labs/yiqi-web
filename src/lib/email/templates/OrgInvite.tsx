@@ -1,14 +1,14 @@
-import { ReactElement } from "react";
+import { ReactElement } from 'react'
 
 // Define the props types for each template
 export interface OrgInviteTemplateProps {
-  name: string;
-  inviteLink: string;
+  name: string
+  inviteLink: string
 }
 
 export function OrgInviteTemplate({
   name,
-  inviteLink,
+  inviteLink
 }: OrgInviteTemplateProps): ReactElement {
   return (
     <div>
@@ -17,5 +17,5 @@ export function OrgInviteTemplate({
         Click <a href={inviteLink}>here</a> to join our platform.
       </p>
     </div>
-  );
+  )
 }

@@ -1,22 +1,22 @@
-"use client";
+'use client'
 
-import React from "react";
-import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import React from 'react'
+import Image from 'next/image'
+import { ArrowRight } from 'lucide-react'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
-import { TracingBeam } from "../tb";
+  CardTitle
+} from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import Link from 'next/link'
+import { TracingBeam } from '../tb'
 
 const dummyContent = [
   {
-    title: "Fundamentos de inteligencia artificial generativa",
+    title: 'Fundamentos de inteligencia artificial generativa',
     description: (
       <>
         <>
@@ -35,11 +35,11 @@ const dummyContent = [
         </>
       </>
     ),
-    badge: "Introducción - primer modulo",
-    image: "/genai.jpeg",
+    badge: 'Introducción - primer modulo',
+    image: '/genai.jpeg'
   },
   {
-    title: "La arquitectura de una solución de AI",
+    title: 'La arquitectura de una solución de AI',
     description: (
       <>
         En este modulo desentrañaremos lo que toma arquitectar una solución de
@@ -50,11 +50,11 @@ const dummyContent = [
         una solución que requiera de esta tecnología.
       </>
     ),
-    badge: "Arquitectura de una solución - Segundo módulo",
-    image: "/arch.jpeg",
+    badge: 'Arquitectura de una solución - Segundo módulo',
+    image: '/arch.jpeg'
   },
   {
-    title: "Desarrollo de una solución",
+    title: 'Desarrollo de una solución',
     description: (
       <>
         Hay miles de formas de poder desarrollar una solución de inteligencia
@@ -70,10 +70,10 @@ const dummyContent = [
         deploy.
       </>
     ),
-    badge: "Desarrollo, implementación y despliegue - Tercer módulo",
-    image: "/final.jpeg",
-  },
-];
+    badge: 'Desarrollo, implementación y despliegue - Tercer módulo',
+    image: '/final.jpeg'
+  }
+]
 
 export function Curricula() {
   return (
@@ -143,5 +143,5 @@ export function Curricula() {
         </div>
       </Link>
     </section>
-  );
+  )
 }

@@ -1,37 +1,37 @@
-"use client";
+'use client'
 
-import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Section } from "../mainLayout";
+import { useState, useRef, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Section } from '../mainLayout'
 import {
   Skull,
   Clock,
   MapPin,
   Ticket,
   ChevronRight,
-  PlayCircle,
-} from "lucide-react";
-import Link from "next/link";
-import Balancer from "react-wrap-balancer";
+  PlayCircle
+} from 'lucide-react'
+import Link from 'next/link'
+import Balancer from 'react-wrap-balancer'
 
 // main prop interface
 export interface GrillPricingProps {
-  title: string;
-  dateTime: string;
-  location: string;
-  cta: string;
-  videoSrc: string;
-  videoText: string;
-  description: string;
-  texts: string[];
-  balanceText: string;
+  title: string
+  dateTime: string
+  location: string
+  cta: string
+  videoSrc: string
+  videoText: string
+  description: string
+  texts: string[]
+  balanceText: string
 }
 
 export default function PrecioEvento(props: GrillPricingProps) {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isHovered, setIsHovered] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [hasInteracted, setHasInteracted] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
 
   const containerVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -40,40 +40,40 @@ export default function PrecioEvento(props: GrillPricingProps) {
       y: 0,
       transition: {
         duration: 0.5,
-        when: "beforeChildren",
-        staggerChildren: 0.1,
-      },
-    },
-  };
+        when: 'beforeChildren',
+        staggerChildren: 0.1
+      }
+    }
+  }
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
+    visible: { opacity: 1, y: 0 }
+  }
 
   const togglePlay = () => {
     if (videoRef.current) {
       if (isPlaying) {
-        videoRef.current.pause();
+        videoRef.current.pause()
       } else {
-        videoRef.current.play();
+        videoRef.current.play()
       }
-      setIsPlaying(!isPlaying);
-      setHasInteracted(true);
+      setIsPlaying(!isPlaying)
+      setHasInteracted(true)
     }
-  };
+  }
 
   useEffect(() => {
-    const video = videoRef.current;
+    const video = videoRef.current
     if (video) {
-      video.addEventListener("play", () => setIsPlaying(true));
-      video.addEventListener("pause", () => setIsPlaying(false));
+      video.addEventListener('play', () => setIsPlaying(true))
+      video.addEventListener('pause', () => setIsPlaying(false))
       return () => {
-        video.removeEventListener("play", () => setIsPlaying(true));
-        video.removeEventListener("pause", () => setIsPlaying(false));
-      };
+        video.removeEventListener('play', () => setIsPlaying(true))
+        video.removeEventListener('pause', () => setIsPlaying(false))
+      }
     }
-  }, []);
+  }, [])
 
   return (
     <Section
@@ -124,8 +124,8 @@ export default function PrecioEvento(props: GrillPricingProps) {
                 <motion.li
                   key={index}
                   className="flex items-start text-sm sm:text-base"
-                  whileHover={{ scale: 1.05, color: "#f97316" }}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  whileHover={{ scale: 1.05, color: '#f97316' }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 10 }}
                 >
                   {index % 2 === 0 ? (
                     <Skull className="w-5 h-5 sm:w-6 sm:h-6 mr-3 text-orange-500 flex-shrink-0 mt-1" />
@@ -150,7 +150,7 @@ export default function PrecioEvento(props: GrillPricingProps) {
                   <motion.div
                     className="ml-2"
                     animate={{ x: isHovered ? 5 : 0 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 10 }}
                   >
                     <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
                   </motion.div>
@@ -196,5 +196,5 @@ export default function PrecioEvento(props: GrillPricingProps) {
         </motion.div>
       </motion.div>
     </Section>
-  );
+  )
 }

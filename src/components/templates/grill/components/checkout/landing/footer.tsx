@@ -1,15 +1,15 @@
 // React and Next.js imports
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image'
+import Link from 'next/link'
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button'
 // Icon imports
-import { Twitter } from "lucide-react";
+import { Twitter } from 'lucide-react'
 
 // Asset imports
-import Logo from "@/public/logo.svg";
-import { Container, Section } from "../mainLayout";
-import { InstagramLogoIcon, LinkedInLogoIcon } from "@radix-ui/react-icons";
+import Logo from '@/public/logo.svg'
+import { Container, Section } from '../mainLayout'
+import { InstagramLogoIcon, LinkedInLogoIcon } from '@radix-ui/react-icons'
 
 export default function Footer() {
   return (
@@ -55,5 +55,5 @@ export default function Footer() {
         </Container>
       </Section>
     </footer>
-  );
+  )
 }

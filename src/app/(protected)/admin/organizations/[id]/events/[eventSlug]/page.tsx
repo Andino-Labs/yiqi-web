@@ -1,31 +1,31 @@
-import { getOrganization } from "@/services/actions/organizationActions";
+import { getOrganization } from '@/services/actions/organizationActions'
 import {
   getEventAttendees,
-  updateAttendeeStatus,
-} from "@/services/actions/contactActions";
-import Link from "next/link";
-import { getEventDetails } from "@/services/actions/eventActions";
+  updateAttendeeStatus
+} from '@/services/actions/contactActions'
+import Link from 'next/link'
+import { getEventDetails } from '@/services/actions/eventActions'
 
 export default async function EventDetailsPage({
-  params,
+  params
 }: {
-  params: { id: string; eventSlug: string };
+  params: { id: string; eventSlug: string }
 }) {
-  const organization = await getOrganization(params.id);
+  const organization = await getOrganization(params.id)
 
-  const event = await getEventDetails(params.eventSlug);
-  const attendees = await getEventAttendees(params.eventSlug);
+  const event = await getEventDetails(params.eventSlug)
+  const attendees = await getEventAttendees(params.eventSlug)
 
   if (!organization || !event) {
-    return <div>Event or Organization not found</div>;
+    return <div>Event or Organization not found</div>
   }
 
   async function handleApproval(
     attendeeId: string,
-    status: "APPROVED" | "REJECTED",
+    status: 'APPROVED' | 'REJECTED'
   ) {
-    "use server";
-    await updateAttendeeStatus(attendeeId, status);
+    'use server'
+    await updateAttendeeStatus(attendeeId, status)
   }
 
   return (
@@ -36,7 +36,7 @@ export default async function EventDetailsPage({
       <p>Description: {event.description}</p>
       <h2 className="text-xl font-bold mt-4 mb-2">Attendees:</h2>
       <ul className="space-y-2">
-        {attendees.map((attendee) => (
+        {attendees.map(attendee => (
           <li key={attendee.id} className="border p-2 rounded">
             <p>
               {attendee?.user?.name} ({attendee?.user?.email})
@@ -45,16 +45,16 @@ export default async function EventDetailsPage({
             {attendee.customFields && (
               <pre>{JSON.stringify(attendee.customFields, null, 2)}</pre>
             )}
-            {event.requiresApproval && attendee.status === "PENDING" && (
+            {event.requiresApproval && attendee.status === 'PENDING' && (
               <form>
                 <button
-                  formAction={() => handleApproval(attendee.id, "APPROVED")}
+                  formAction={() => handleApproval(attendee.id, 'APPROVED')}
                   className="bg-green-500 text-white px-2 py-1 rounded mr-2"
                 >
                   Approve
                 </button>
                 <button
-                  formAction={() => handleApproval(attendee.id, "REJECTED")}
+                  formAction={() => handleApproval(attendee.id, 'REJECTED')}
                   className="bg-red-500 text-white px-2 py-1 rounded"
                 >
                   Reject
@@ -71,5 +71,5 @@ export default async function EventDetailsPage({
         Back to Events
       </Link>
     </div>
-  );
+  )
 }

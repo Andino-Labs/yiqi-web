@@ -1,18 +1,18 @@
-"use client";
+'use client'
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  DialogTrigger
+} from '@/components/ui/dialog'
 
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
 import {
   Form,
   FormControl,
@@ -20,70 +20,70 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { OrganizationSchema } from "@/services/organizationService";
-import { useToast } from "@/hooks/use-toast";
-import { Textarea } from "@/components/ui/textarea";
+  FormMessage
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { OrganizationSchema } from '@/services/organizationService'
+import { useToast } from '@/hooks/use-toast'
+import { Textarea } from '@/components/ui/textarea'
 
-import { createOrganization } from "@/services/actions/organizationActions";
+import { createOrganization } from '@/services/actions/organizationActions'
 
 function ColorPicker({
   value,
-  onChange,
+  onChange
 }: {
-  value: string;
-  onChange: (value: string) => void;
+  value: string
+  onChange: (value: string) => void
 }) {
   return (
     <div className="flex items-center space-x-2">
       <input
         type="color"
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={e => onChange(e.target.value)}
         className="w-10 h-10 rounded-md cursor-pointer"
       />
       <Input
         type="text"
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={e => onChange(e.target.value)}
         placeholder="#000000"
         className="w-24"
       />
     </div>
-  );
+  )
 }
 
-const formSchema = OrganizationSchema;
+const formSchema = OrganizationSchema
 
 function AddOrgButtonForm({ userId }: { userId: { value: string } }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      description: "",
-      logo: "",
-      colour: "#000000", // Default color
-    },
-  });
+      name: '',
+      description: '',
+      logo: '',
+      colour: '#000000' // Default color
+    }
+  })
 
-  const { toast } = useToast();
+  const { toast } = useToast()
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      await createOrganization(values, userId.value);
+      await createOrganization(values, userId.value)
       toast({
-        description: "Organización creada exitosamente!",
-        variant: "default",
-      });
+        description: 'Organización creada exitosamente!',
+        variant: 'default'
+      })
     } catch (error) {
       toast({
         description: `${error}`,
-        variant: "destructive",
-      });
+        variant: 'destructive'
+      })
     } finally {
-      await form.reset();
+      await form.reset()
     }
   }
 
@@ -167,7 +167,7 @@ function AddOrgButtonForm({ userId }: { userId: { value: string } }) {
         </Button>
       </form>
     </Form>
-  );
+  )
 }
 
 function AddOrgButton(userId: { value: string }) {
@@ -186,7 +186,7 @@ function AddOrgButton(userId: { value: string }) {
         <AddOrgButtonForm userId={userId} />
       </DialogContent>
     </Dialog>
-  );
+  )
 }
 
-export { AddOrgButton };
+export { AddOrgButton }

@@ -1,34 +1,34 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-"use client";
+'use client'
 
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image'
+import Link from 'next/link'
 import {
   ArrowRightIcon,
   HamburgerMenuIcon,
-  Cross1Icon,
-} from "@radix-ui/react-icons";
-import { useState, useEffect } from "react";
+  Cross1Icon
+} from '@radix-ui/react-icons'
+import { useState, useEffect } from 'react'
 
 export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
-    const checkIfMobile = () => setIsMobile(window.innerWidth < 768);
-    checkIfMobile();
-    window.addEventListener("resize", checkIfMobile);
-    return () => window.removeEventListener("resize", checkIfMobile);
-  }, []);
+    const checkIfMobile = () => setIsMobile(window.innerWidth < 768)
+    checkIfMobile()
+    window.addEventListener('resize', checkIfMobile)
+    return () => window.removeEventListener('resize', checkIfMobile)
+  }, [])
 
   useEffect(() => {
     if (isMenuOpen) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden'
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = 'unset'
     }
-  }, [isMenuOpen]);
+  }, [isMenuOpen])
 
   return (
     <>
@@ -37,7 +37,7 @@ export default function Navbar() {
         fixed top-0 left-0 right-0 flex flex-col md:flex-row items-center justify-between 
         w-full max-w-[80vw] mx-auto border p-2 md:p-4 px-4 md:px-12 my-4 
         bg-white bg-opacity-40 backdrop-blur-lg shadow-lg hover:shadow-xl  z-50
-        ${isMenuOpen ? "h-screen md:h-auto rounded-[22px] md:rounded-full" : "rounded-full"}
+        ${isMenuOpen ? 'h-screen md:h-auto rounded-[22px] md:rounded-full' : 'rounded-full'}
       `}
       >
         <div className="flex justify-between items-center w-full md:w-auto">
@@ -48,13 +48,13 @@ export default function Navbar() {
               src="/logoandino.svg"
               alt="Logo"
               className="text-black"
-              style={{ filter: "invert(1)" }}
+              style={{ filter: 'invert(1)' }}
             />
           </Link>
           <button
             className="md:hidden p-2"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
           >
             {isMenuOpen ? (
               <Cross1Icon className="w-6 h-6" />
@@ -66,9 +66,9 @@ export default function Navbar() {
 
         <div
           className={`
-          ${isMenuOpen ? "flex" : "hidden"} md:flex flex-col md:flex-row gap-6 
+          ${isMenuOpen ? 'flex' : 'hidden'} md:flex flex-col md:flex-row gap-6 
           text-lg font-mono mt-8 md:mt-0 w-full md:w-auto items-center
-          ${isMenuOpen ? "h-full justify-center" : ""}
+          ${isMenuOpen ? 'h-full justify-center' : ''}
         `}
         >
           <Link
@@ -119,5 +119,5 @@ export default function Navbar() {
         />
       )}
     </>
-  );
+  )
 }

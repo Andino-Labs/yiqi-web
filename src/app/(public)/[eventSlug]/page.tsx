@@ -1,7 +1,7 @@
 export default async function Page({
-  params,
+  params
 }: {
-  params: { eventSlug: string };
+  params: { eventSlug: string }
 }) {
-  return <div>evento: {params.eventSlug}</div>;
+  return <div>evento: {params.eventSlug}</div>
 }

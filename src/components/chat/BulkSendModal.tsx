@@ -1,30 +1,30 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { MessageForm } from "./MessageForm";
+  DialogTrigger
+} from '@/components/ui/dialog'
+import { MessageForm } from './MessageForm'
 import {
   MessageThreadType,
-  MessageThreadTypeEnum,
-} from "@/schemas/messagesSchema";
+  MessageThreadTypeEnum
+} from '@/schemas/messagesSchema'
 
 export function BulkSendModal() {
   const [messageType, setMessageType] = useState<MessageThreadType>(
-    MessageThreadTypeEnum.Enum.whatsapp,
-  );
+    MessageThreadTypeEnum.Enum.whatsapp
+  )
 
   const handleBulkSend = async (values: { message: string }) => {
     // Implement bulk send logic here
-    console.log("Bulk send:", values.message, messageType);
+    console.log('Bulk send:', values.message, messageType)
     // Close the modal after sending
-  };
+  }
 
   return (
     <Dialog>
@@ -42,5 +42,5 @@ export function BulkSendModal() {
         />
       </DialogContent>
     </Dialog>
-  );
+  )
 }

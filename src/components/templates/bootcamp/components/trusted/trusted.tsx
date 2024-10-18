@@ -1,42 +1,42 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-"use client";
+'use client'
 
-import { useEffect, useState, useRef } from "react";
-import Image from "next/image";
+import { useEffect, useState, useRef } from 'react'
+import Image from 'next/image'
 
 const logos = [
-  "/bcp.svg",
-  "/cc.jpeg",
-  "/yape.png",
-  "/forbis.png",
-  "/bcp.svg",
-  "/cc.jpeg",
-  "/yape.png",
-  "/forbis.png",
-];
+  '/bcp.svg',
+  '/cc.jpeg',
+  '/yape.png',
+  '/forbis.png',
+  '/bcp.svg',
+  '/cc.jpeg',
+  '/yape.png',
+  '/forbis.png'
+]
 
 export interface TrustedByCarouselProps {
-  title: string;
+  title: string
 }
 
 export default function TrustedByCarousel(props: TrustedByCarouselProps) {
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [scrollPosition, setScrollPosition] = useState(0)
+  const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const containerWidth = containerRef.current?.offsetWidth || 0;
-    const totalWidth = logos.length * 180; // Assuming each logo takes 180px width
+    const containerWidth = containerRef.current?.offsetWidth || 0
+    const totalWidth = logos.length * 180 // Assuming each logo takes 180px width
 
     const intervalId = setInterval(() => {
-      setScrollPosition((prevPosition) => {
-        const newPosition = prevPosition + 1;
-        return newPosition >= totalWidth ? 0 : newPosition;
-      });
-    }, 50);
+      setScrollPosition(prevPosition => {
+        const newPosition = prevPosition + 1
+        return newPosition >= totalWidth ? 0 : newPosition
+      })
+    }, 50)
 
-    return () => clearInterval(intervalId);
-  }, []);
+    return () => clearInterval(intervalId)
+  }, [])
 
   return (
     <div className="w-full max-w-screen py-8 sm:py-12 max-h-[60vh] overflow-hidden">
@@ -52,7 +52,7 @@ export default function TrustedByCarousel(props: TrustedByCarouselProps) {
             className="absolute whitespace-nowrap"
             style={{
               transform: `translateX(-${scrollPosition}px)`,
-              transition: "transform 0.5s linear",
+              transition: 'transform 0.5s linear'
             }}
           >
             {[...logos, ...logos].map((logo, index) => (
@@ -72,5 +72,5 @@ export default function TrustedByCarousel(props: TrustedByCarouselProps) {
         </div>
       </div>
     </div>
-  );
+  )
 }

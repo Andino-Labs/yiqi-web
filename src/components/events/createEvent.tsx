@@ -1,9 +1,9 @@
-"use client";
+'use client'
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
@@ -11,55 +11,55 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+  FormMessage
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 import {
   Popover,
   PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { Paintbrush } from "lucide-react";
+  PopoverTrigger
+} from '@/components/ui/popover'
+import { cn } from '@/lib/utils'
+import { Paintbrush } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  DialogTrigger
+} from '@/components/ui/dialog'
 
 const EventSchema = z.object({
-  title: z.string().min(1, "Title is required"),
+  title: z.string().min(1, 'Title is required'),
   description: z.string().optional(),
   startDate: z.string(),
   endDate: z.string(),
   color: z.string().optional(),
   location: z.string().optional(),
   virtualLink: z.string().url().optional(),
-  maxAttendees: z.number().int().positive().optional(),
-});
+  maxAttendees: z.number().int().positive().optional()
+})
 
 function CreateEventForm() {
   const form = useForm<z.infer<typeof EventSchema>>({
     resolver: zodResolver(EventSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      startDate: "",
-      endDate: "",
-      color: "",
-      location: "",
-      virtualLink: "",
-      maxAttendees: undefined,
-    },
-  });
+      title: '',
+      description: '',
+      startDate: '',
+      endDate: '',
+      color: '',
+      location: '',
+      virtualLink: '',
+      maxAttendees: undefined
+    }
+  })
 
   function onSubmit(values: z.infer<typeof EventSchema>) {
     //createEvent()
-    console.log(values);
+    console.log(values)
   }
 
   return (
@@ -142,8 +142,8 @@ function CreateEventForm() {
                       variant="outline"
                       role="combobox"
                       className={cn(
-                        "w-[200px] justify-between",
-                        !field.value && "text-muted-foreground",
+                        'w-[200px] justify-between',
+                        !field.value && 'text-muted-foreground'
                       )}
                     >
                       {field.value ? (
@@ -155,7 +155,7 @@ function CreateEventForm() {
                           {field.value}
                         </>
                       ) : (
-                        "Selecciona un color"
+                        'Selecciona un color'
                       )}
                       <Paintbrush className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
@@ -174,21 +174,21 @@ function CreateEventForm() {
                         id="color-picker"
                         type="color"
                         value={field.value}
-                        onChange={(e) => form.setValue("color", e.target.value)}
+                        onChange={e => form.setValue('color', e.target.value)}
                         className="w-full h-10 rounded-md cursor-pointer"
                       />
                     </div>
                     <div className="flex items-center space-x-2">
                       <Input
                         value={field.value}
-                        onChange={(e) => form.setValue("color", e.target.value)}
+                        onChange={e => form.setValue('color', e.target.value)}
                         placeholder="#000000"
                       />
                       <Button
                         type="button"
                         variant="outline"
                         className="px-3"
-                        onClick={() => form.setValue("color", "")}
+                        onClick={() => form.setValue('color', '')}
                       >
                         Resetear
                       </Button>
@@ -245,7 +245,7 @@ function CreateEventForm() {
                 <Input
                   type="number"
                   {...field}
-                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                  onChange={e => field.onChange(e.target.valueAsNumber)}
                 />
               </FormControl>
               <FormDescription>
@@ -258,7 +258,7 @@ function CreateEventForm() {
         <Button type="submit">Crea tu evento</Button>
       </form>
     </Form>
-  );
+  )
 }
 function CreateEventButton() {
   return (
@@ -275,7 +275,7 @@ function CreateEventButton() {
         <CreateEventForm />
       </DialogContent>
     </Dialog>
-  );
+  )
 }
 
-export { CreateEventButton };
+export { CreateEventButton }

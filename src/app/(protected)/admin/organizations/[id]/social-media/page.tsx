@@ -1,22 +1,22 @@
-import React from "react";
-import { ConnectedAccounts } from "@/components/social-media/ConnectedAccounts";
-import { ConnectAccount } from "@/components/social-media/ConnectAccount";
-import { getAccounts } from "@/services/actions/socialMediaActions";
-import { getUser } from "@/lib/auth/lucia";
-import { redirect } from "next/navigation";
-import OrganizationLayout from "@/components/orgs/organizationLayout";
+import React from 'react'
+import { ConnectedAccounts } from '@/components/social-media/ConnectedAccounts'
+import { ConnectAccount } from '@/components/social-media/ConnectAccount'
+import { getAccounts } from '@/services/actions/socialMediaActions'
+import { getUser } from '@/lib/auth/lucia'
+import { redirect } from 'next/navigation'
+import OrganizationLayout from '@/components/orgs/organizationLayout'
 
 export default async function SocialMediaPage({
-  params,
+  params
 }: {
-  params: { id: string };
+  params: { id: string }
 }) {
-  const user = await getUser();
+  const user = await getUser()
   if (!user) {
-    redirect("/auth");
+    redirect('/auth')
   }
 
-  const accounts = await getAccounts(params.id);
+  const accounts = await getAccounts(params.id)
 
   return (
     <OrganizationLayout
@@ -24,7 +24,7 @@ export default async function SocialMediaPage({
       userProps={{
         picture: user.picture!,
         email: user.email,
-        name: user.name,
+        name: user.name
       }}
     >
       <div className="space-y-8">
@@ -33,5 +33,5 @@ export default async function SocialMediaPage({
         <ConnectAccount organizationId={params.id} />
       </div>
     </OrganizationLayout>
-  );
+  )
 }

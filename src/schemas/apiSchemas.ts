@@ -1,8 +1,8 @@
-import { z } from "zod";
-import { DbEventSchema } from "./eventSchema";
-import { userSchema } from "./userSchema";
+import { z } from 'zod'
+import { DbEventSchema } from './eventSchema'
+import { userSchema } from './userSchema'
 
-export const AttendeeStatusSchema = z.enum(["PENDING", "APPROVED", "REJECTED"]);
+export const AttendeeStatusSchema = z.enum(['PENDING', 'APPROVED', 'REJECTED'])
 
 export const RegistrationSchema = z.object({
   id: z.string(),
@@ -11,8 +11,8 @@ export const RegistrationSchema = z.object({
   status: AttendeeStatusSchema,
   customFields: z.record(z.unknown()),
   createdAt: z.date(),
-  updatedAt: z.date(),
-});
+  updatedAt: z.date()
+})
 
 export const OrganizationSchema = z.object({
   id: z.string(),
@@ -21,11 +21,11 @@ export const OrganizationSchema = z.object({
   logo: z.string().nullable(),
   userId: z.string(),
   createdAt: z.date(),
-  updatedAt: z.date(),
-});
+  updatedAt: z.date()
+})
 
-export const SearchUserResultSchema = z.array(userSchema);
+export const SearchUserResultSchema = z.array(userSchema)
 
-export const PublicEventsSchema = z.array(DbEventSchema);
+export const PublicEventsSchema = z.array(DbEventSchema)
 
-export const UserRegistrationStatusSchema = z.boolean();
+export const UserRegistrationStatusSchema = z.boolean()

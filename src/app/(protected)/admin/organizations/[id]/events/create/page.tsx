@@ -1,79 +1,79 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { z } from "zod";
-import { createEvent } from "@/services/actions/eventActions";
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { z } from 'zod'
+import { createEvent } from '@/services/actions/eventActions'
 
 const CustomFieldSchema = z.object({
-  name: z.string().min(1, "Field name is required"),
-  type: z.enum(["text", "number", "select"]),
-  options: z.array(z.string()).optional(),
-});
+  name: z.string().min(1, 'Field name is required'),
+  type: z.enum(['text', 'number', 'select']),
+  options: z.array(z.string()).optional()
+})
 
 const EventSchema = z.object({
-  title: z.string().min(1, "Title is required"),
+  title: z.string().min(1, 'Title is required'),
   description: z.string().optional(),
   startDate: z.string(),
   endDate: z.string(),
   location: z.string().optional(),
   virtualLink: z.string().url().optional(),
   maxAttendees: z.number().int().positive().optional(),
-  customFields: z.array(CustomFieldSchema),
-});
+  customFields: z.array(CustomFieldSchema)
+})
 
 export default function CreateEventPage({
-  params,
+  params
 }: {
-  params: { id: string };
+  params: { id: string }
 }) {
   const [customFields, setCustomFields] = useState<
     z.infer<typeof CustomFieldSchema>[]
-  >([]);
-  const [error, setError] = useState("");
-  const router = useRouter();
+  >([])
+  const [error, setError] = useState('')
+  const router = useRouter()
 
   const handleAddCustomField = () => {
-    setCustomFields([...customFields, { name: "", type: "text" }]);
-  };
+    setCustomFields([...customFields, { name: '', type: 'text' }])
+  }
 
   const handleCustomFieldChange = (
     index: number,
-    field: Partial<z.infer<typeof CustomFieldSchema>>,
+    field: Partial<z.infer<typeof CustomFieldSchema>>
   ) => {
-    const newFields = [...customFields];
-    newFields[index] = { ...newFields[index], ...field };
-    setCustomFields(newFields);
-  };
+    const newFields = [...customFields]
+    newFields[index] = { ...newFields[index], ...field }
+    setCustomFields(newFields)
+  }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
+    event.preventDefault()
+    const formData = new FormData(event.currentTarget)
     const eventData = {
-      title: formData.get("title") as string,
-      description: formData.get("description") as string,
-      startDate: formData.get("startDate") as string,
-      endDate: formData.get("endDate") as string,
-      location: formData.get("location") as string,
-      virtualLink: formData.get("virtualLink") as string,
-      maxAttendees: Number(formData.get("maxAttendees")),
-      customFields,
-    };
+      title: formData.get('title') as string,
+      description: formData.get('description') as string,
+      startDate: formData.get('startDate') as string,
+      endDate: formData.get('endDate') as string,
+      location: formData.get('location') as string,
+      virtualLink: formData.get('virtualLink') as string,
+      maxAttendees: Number(formData.get('maxAttendees')),
+      customFields
+    }
 
     try {
-      EventSchema.parse(eventData);
+      EventSchema.parse(eventData)
       // Here you would typically call an API to create the event
       // For now, we'll just log the data and redirect
-      await createEvent(params.id, eventData);
-      router.push(`/admin/organizations/${params.id}/events`);
+      await createEvent(params.id, eventData)
+      router.push(`/admin/organizations/${params.id}/events`)
     } catch (error) {
       if (error instanceof z.ZodError) {
-        setError(error.errors.map((e) => e.message).join(", "));
+        setError(error.errors.map(e => e.message).join(', '))
       } else {
-        setError("An unexpected error occurred");
+        setError('An unexpected error occurred')
       }
     }
-  };
+  }
 
   return (
     <div className="container mx-auto p-4">
@@ -125,7 +125,7 @@ export default function CreateEventPage({
             <div key={index} className="mb-2">
               <input
                 value={field.name}
-                onChange={(e) =>
+                onChange={e =>
                   handleCustomFieldChange(index, { name: e.target.value })
                 }
                 placeholder="Field Name"
@@ -133,9 +133,9 @@ export default function CreateEventPage({
               />
               <select
                 value={field.type}
-                onChange={(e) =>
+                onChange={e =>
                   handleCustomFieldChange(index, {
-                    type: e.target.value as "text" | "number" | "select",
+                    type: e.target.value as 'text' | 'number' | 'select'
                   })
                 }
                 className="p-2 border rounded"
@@ -164,5 +164,5 @@ export default function CreateEventPage({
       </form>
       {error && <p className="text-red-500 mt-2">{error}</p>}
     </div>
-  );
+  )
 }

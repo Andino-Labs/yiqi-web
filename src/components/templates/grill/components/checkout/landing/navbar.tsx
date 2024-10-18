@@ -1,28 +1,28 @@
-"use client";
+'use client'
 
-import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import Image from 'next/image'
+import Link from 'next/link'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Button } from '@/components/ui/button'
+import { Menu, X } from 'lucide-react'
 
 interface GrillNavValues {
-  href: string;
-  label: string;
+  href: string
+  label: string
 }
 
 export interface GrillNavbarProps {
-  navItems: GrillNavValues[];
-  cta: string;
+  navItems: GrillNavValues[]
+  cta: string
 }
 
 export default function Navbar(props: GrillNavbarProps) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
 
-  const navItems = props.navItems;
+  const navItems = props.navItems
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 flex justify-center w-full">
@@ -44,7 +44,7 @@ export default function Navbar(props: GrillNavbarProps) {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex space-x-6">
-          {navItems.map((item) => (
+          {navItems.map(item => (
             <Link
               key={item.href}
               href={item.href}
@@ -80,7 +80,7 @@ export default function Navbar(props: GrillNavbarProps) {
               className="absolute top-full left-0 right-0 bg-black/30 backdrop-blur-xl mt-2 p-4 rounded-[22px] border border-orange-500/30 shadow-lg md:hidden"
             >
               <nav className="flex flex-col space-y-4">
-                {navItems.map((item) => (
+                {navItems.map(item => (
                   <Link
                     key={item.href}
                     href={item.href}
@@ -100,5 +100,5 @@ export default function Navbar(props: GrillNavbarProps) {
         </AnimatePresence>
       </motion.div>
     </div>
-  );
+  )
 }

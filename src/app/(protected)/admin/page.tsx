@@ -1,12 +1,12 @@
-import { getUser } from "@/lib/auth/lucia";
-import { redirect } from "next/navigation";
-import { Roles } from "@prisma/client";
-import AdminLayout from "@/components/chat/adminLayout";
+import { getUser } from '@/lib/auth/lucia'
+import { redirect } from 'next/navigation'
+import { Roles } from '@prisma/client'
+import AdminLayout from '@/components/chat/adminLayout'
 
 export default async function Page() {
-  const user = await getUser();
+  const user = await getUser()
   if (!user) {
-    redirect("/auth");
+    redirect('/auth')
   }
   if (user.role === Roles.ADMIN) {
     return (
@@ -15,18 +15,18 @@ export default async function Page() {
           userProps={{
             picture: user.picture!,
             email: user.email,
-            name: user.name,
+            name: user.name
           }}
         >
           contenidooo
         </AdminLayout>
       </main>
-    );
+    )
   } else if (user.role === Roles.NEW_USER) {
-    redirect("/newuser");
+    redirect('/newuser')
   } else if (user.role === Roles.USER) {
-    redirect("/user");
+    redirect('/user')
   } else if (user.role === Roles.ANDINO_ADMIN) {
-    redirect("/andino-admin");
+    redirect('/andino-admin')
   }
 }

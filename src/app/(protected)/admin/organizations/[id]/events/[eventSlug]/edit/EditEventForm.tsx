@@ -1,50 +1,50 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import Link from "next/link";
-import { CustomFieldInput, EditEventInput } from "@/schemas/eventSchema";
+import { useState } from 'react'
+import Link from 'next/link'
+import { CustomFieldInput, EditEventInput } from '@/schemas/eventSchema'
 
 interface EditEventFormProps {
-  event: EditEventInput;
-  handleSubmit: (formData: FormData) => Promise<void>;
-  organizationId: string;
+  event: EditEventInput
+  handleSubmit: (formData: FormData) => Promise<void>
+  organizationId: string
 }
 
 export default function EditEventForm({
   event,
   handleSubmit,
-  organizationId,
+  organizationId
 }: EditEventFormProps) {
   const [customFields, setCustomFields] = useState<CustomFieldInput[]>(
-    event.customFields,
-  );
+    event.customFields
+  )
 
   const addCustomField = () => {
     setCustomFields([
       ...customFields,
-      { name: "", type: "text", required: false },
-    ]);
-  };
+      { name: '', type: 'text', required: false }
+    ])
+  }
 
   const updateCustomField = (
     index: number,
-    field: Partial<CustomFieldInput>,
+    field: Partial<CustomFieldInput>
   ) => {
-    const newFields = [...customFields];
-    newFields[index] = { ...newFields[index], ...field };
-    setCustomFields(newFields);
-  };
+    const newFields = [...customFields]
+    newFields[index] = { ...newFields[index], ...field }
+    setCustomFields(newFields)
+  }
 
   const removeCustomField = (index: number) => {
-    setCustomFields(customFields.filter((_, i) => i !== index));
-  };
+    setCustomFields(customFields.filter((_, i) => i !== index))
+  }
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    formData.append("customFields", JSON.stringify(customFields));
-    await handleSubmit(formData);
-  };
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    formData.append('customFields', JSON.stringify(customFields))
+    await handleSubmit(formData)
+  }
 
   return (
     <form onSubmit={onSubmit} className="space-y-4">
@@ -95,7 +95,7 @@ export default function EditEventForm({
         <textarea
           id="description"
           name="description"
-          defaultValue={event.description || ""}
+          defaultValue={event.description || ''}
           className="w-full border p-2"
           rows={4}
         ></textarea>
@@ -108,9 +108,7 @@ export default function EditEventForm({
           <div key={index} className="mb-2">
             <input
               value={field.name}
-              onChange={(e) =>
-                updateCustomField(index, { name: e.target.value })
-              }
+              onChange={e => updateCustomField(index, { name: e.target.value })}
               placeholder="Field Name"
               className="p-2 border rounded mr-2"
             />
@@ -123,11 +121,11 @@ export default function EditEventForm({
               <option value="number">Number</option>
               <option value="select">Select</option>
             </select>
-            {field.type === "select" && (
+            {field.type === 'select' && (
               <input
                 type="text"
                 value={field.options}
-                onChange={(e) =>
+                onChange={e =>
                   updateCustomField(index, { options: e.target.value })
                 }
                 placeholder="Enter options separated by commas"
@@ -167,5 +165,5 @@ export default function EditEventForm({
         </Link>
       </div>
     </form>
-  );
+  )
 }

@@ -1,6 +1,6 @@
-import prisma from "@/lib/prisma";
-import { getLinkedInData } from "../data/collectLinkedinUserProfile";
-import { getTwitterData } from "../data/collectTwitterUserProfile";
+import prisma from '@/lib/prisma'
+import { getLinkedInData } from '../data/collectLinkedinUserProfile'
+import { getTwitterData } from '../data/collectTwitterUserProfile'
 
 // TODO; ensure this works fine with jsut an email
 //  we need to find a service that uses any info we got from the user to get his accounts
@@ -9,37 +9,37 @@ export const getUserData = async (
   email: string,
   twitterAccessToken: string,
   linkedinAccessToken: string,
-  twitterUsername: string,
+  twitterUsername: string
 ) => {
   try {
     // Fetch Twitter data
     const twitterData = await getTwitterData(
       twitterAccessToken,
-      twitterUsername,
-    );
+      twitterUsername
+    )
 
     // Fetch LinkedIn data
-    const linkedinData = await getLinkedInData(linkedinAccessToken);
+    const linkedinData = await getLinkedInData(linkedinAccessToken)
 
     await prisma.user.findUnique({
       where: {
-        email,
-      },
-    });
+        email
+      }
+    })
 
     await prisma.user.update({
       where: {
-        email,
+        email
       },
       data: {
         dataCollected: {
           twitter: twitterData,
-          linkedin: linkedinData,
-        },
-      },
-    });
+          linkedin: linkedinData
+        }
+      }
+    })
   } catch (error) {
-    console.error("Error fetching user data:", error);
-    throw error;
+    console.error('Error fetching user data:', error)
+    throw error
   }
-};
+}

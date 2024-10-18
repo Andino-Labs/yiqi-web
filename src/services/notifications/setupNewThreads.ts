@@ -1,19 +1,19 @@
-"use server";
+'use server'
 
-import prisma from "@/lib/prisma";
+import prisma from '@/lib/prisma'
 
 export default async function setupNewThreads(
   userId: string,
-  organizationId: string,
+  organizationId: string
 ) {
   // Check if email thread already exists for the user in the organization
   const emailThread = await prisma.messageThread.findFirst({
     where: {
       organizationId,
       contextUserId: userId,
-      type: "email",
-    },
-  });
+      type: 'email'
+    }
+  })
 
   // If email thread doesn't exist, create a new one
   if (!emailThread) {
@@ -21,9 +21,9 @@ export default async function setupNewThreads(
       data: {
         organizationId,
         contextUserId: userId,
-        type: "email",
-      },
-    });
+        type: 'email'
+      }
+    })
   }
 
   // Check if WhatsApp thread already exists for the user in the organization
@@ -31,9 +31,9 @@ export default async function setupNewThreads(
     where: {
       organizationId,
       contextUserId: userId,
-      type: "whatsapp",
-    },
-  });
+      type: 'whatsapp'
+    }
+  })
 
   // If WhatsApp thread doesn't exist, create a new one
   if (!whatsappThread) {
@@ -41,8 +41,8 @@ export default async function setupNewThreads(
       data: {
         organizationId,
         contextUserId: userId,
-        type: "whatsapp",
-      },
-    });
+        type: 'whatsapp'
+      }
+    })
   }
 }

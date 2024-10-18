@@ -1,17 +1,17 @@
-import { getOrganization } from "@/services/actions/organizationActions";
-import { getContactDetails } from "@/services/actions/contactActions";
-import Link from "next/link";
+import { getOrganization } from '@/services/actions/organizationActions'
+import { getContactDetails } from '@/services/actions/contactActions'
+import Link from 'next/link'
 
 export default async function ContactDetailsPage({
-  params,
+  params
 }: {
-  params: { id: string; userId: string };
+  params: { id: string; userId: string }
 }) {
-  const organization = await getOrganization(params.id);
-  const contact = await getContactDetails(params.userId, params.id);
+  const organization = await getOrganization(params.id)
+  const contact = await getContactDetails(params.userId, params.id)
 
   if (!organization || !contact) {
-    return <div>Contact or Organization not found</div>;
+    return <div>Contact or Organization not found</div>
   }
 
   return (
@@ -22,7 +22,7 @@ export default async function ContactDetailsPage({
       <p>Email: {contact.email}</p>
       <h2 className="text-xl font-bold mt-4 mb-2">Attended Events:</h2>
       <ul className="space-y-2">
-        {contact.registeredEvents?.map((attendee) => (
+        {contact.registeredEvents?.map(attendee => (
           <li key={attendee.id} className="border p-2 rounded">
             <Link
               href={`/admin/organizations/${params.id}/events/${attendee.event.id}`}
@@ -41,5 +41,5 @@ export default async function ContactDetailsPage({
         Back to Contacts
       </Link>
     </div>
-  );
+  )
 }

@@ -1,25 +1,25 @@
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { SocialMediaAccount } from "@prisma/client";
-import { disconnectAccount } from "@/services/actions/socialMediaActions";
+import React from 'react'
+import { Button } from '@/components/ui/button'
+import { SocialMediaAccount } from '@prisma/client'
+import { disconnectAccount } from '@/services/actions/socialMediaActions'
 
 interface ConnectedAccountsProps {
-  accounts: SocialMediaAccount[];
-  organizationId: string;
+  accounts: SocialMediaAccount[]
+  organizationId: string
 }
 
 export function ConnectedAccounts({
   accounts,
-  organizationId,
+  organizationId
 }: ConnectedAccountsProps) {
   const handleDisconnect = async (accountId: string) => {
     try {
-      await disconnectAccount(accountId, organizationId);
+      await disconnectAccount(accountId, organizationId)
       // You might want to refresh the accounts list here or use some state management
     } catch (error) {
-      console.error("Failed to disconnect account:", error);
+      console.error('Failed to disconnect account:', error)
     }
-  };
+  }
 
   return (
     <div>
@@ -28,7 +28,7 @@ export function ConnectedAccounts({
         <p>No connected accounts.</p>
       ) : (
         <ul>
-          {accounts.map((account) => (
+          {accounts.map(account => (
             <li
               key={account.id}
               className="flex items-center justify-between mb-2"
@@ -47,5 +47,5 @@ export function ConnectedAccounts({
         </ul>
       )}
     </div>
-  );
+  )
 }

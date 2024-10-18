@@ -1,16 +1,16 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { ReactNode } from "react";
+import { Card, CardContent } from '@/components/ui/card'
+import { ReactNode } from 'react'
 import {
   FileIcon,
   HandIcon,
   RadiobuttonIcon,
-  StarFilledIcon,
-} from "@radix-ui/react-icons";
+  StarFilledIcon
+} from '@radix-ui/react-icons'
 
 function FeatDisplayer(props: {
-  icon: ReactNode;
-  title: string;
-  subtitle: string;
+  icon: ReactNode
+  title: string
+  subtitle: string
 }) {
   return (
     <Card className="h-full transform transition-transform duration-300 hover:-translate-y-2">
@@ -22,21 +22,21 @@ function FeatDisplayer(props: {
         <p className="text-sm text-gray-500 mt-2">{props.subtitle}</p>
       </CardContent>
     </Card>
-  );
+  )
 }
 
 export interface FeatDisplayer {
-  title: string;
-  subtitle: string;
+  title: string
+  subtitle: string
 }
 
 export interface FAQProps {
-  header1: string;
-  header2: string;
-  feat1: FeatDisplayer;
-  feat2: FeatDisplayer;
-  feat3: FeatDisplayer;
-  feat4: FeatDisplayer;
+  header1: string
+  header2: string
+  feat1: FeatDisplayer
+  feat2: FeatDisplayer
+  feat3: FeatDisplayer
+  feat4: FeatDisplayer
 }
 
 export default function Faq(props: FAQProps) {
@@ -71,5 +71,5 @@ export default function Faq(props: FAQProps) {
         />
       </div>
     </div>
-  );
+  )
 }

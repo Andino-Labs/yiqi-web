@@ -1,18 +1,18 @@
-import { getOrganization } from "@/services/actions/organizationActions";
-import { getOrganizersByOrganization } from "@/services/actions/organizerActions";
-import Link from "next/link";
-import AddOrganizerButton from "./AddOrganizerButton";
+import { getOrganization } from '@/services/actions/organizationActions'
+import { getOrganizersByOrganization } from '@/services/actions/organizerActions'
+import Link from 'next/link'
+import AddOrganizerButton from './AddOrganizerButton'
 
 export default async function OrganizersPage({
-  params,
+  params
 }: {
-  params: { id: string };
+  params: { id: string }
 }) {
-  const organization = await getOrganization(params.id);
-  const organizers = await getOrganizersByOrganization(params.id);
+  const organization = await getOrganization(params.id)
+  const organizers = await getOrganizersByOrganization(params.id)
 
   if (!organization) {
-    return <div>Organization not found</div>;
+    return <div>Organization not found</div>
   }
 
   return (
@@ -21,7 +21,7 @@ export default async function OrganizersPage({
         Manage Organizers for {organization.name}
       </h1>
       <ul className="space-y-2">
-        {organizers.map((organizer) => (
+        {organizers.map(organizer => (
           <li key={organizer.id} className="border p-2 rounded">
             {organizer.user.name} - {organizer.role}
           </li>
@@ -35,5 +35,5 @@ export default async function OrganizersPage({
         Back to Organization Dashboard
       </Link>
     </div>
-  );
+  )
 }

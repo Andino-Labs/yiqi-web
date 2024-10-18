@@ -1,21 +1,21 @@
-"use client";
+'use client'
 
-import { YouTubeEmbed } from "@next/third-parties/google";
-import Slider from "react-slick";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useState } from "react";
+import { YouTubeEmbed } from '@next/third-parties/google'
+import Slider from 'react-slick'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useState } from 'react'
 
 // Import slick styles
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
 
 // Define the props for our component
 interface YouTubeCarouselProps {
-  videos: { id: string; title: string }[];
+  videos: { id: string; title: string }[]
 }
 
 export default function YouTubeCarousel({ videos }: YouTubeCarouselProps) {
-  const [sliderRef, setSliderRef] = useState<Slider | null>(null);
+  const [sliderRef, setSliderRef] = useState<Slider | null>(null)
 
   const settings = {
     dots: true,
@@ -29,11 +29,11 @@ export default function YouTubeCarousel({ videos }: YouTubeCarouselProps) {
         breakpoint: 1024,
         settings: {
           slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };
+          slidesToScroll: 1
+        }
+      }
+    ]
+  }
 
   return (
     <section
@@ -46,11 +46,11 @@ export default function YouTubeCarousel({ videos }: YouTubeCarouselProps) {
         </h2>
         <div className="relative max-w-4xl mx-auto flex flex-col items-center justify-center">
           <Slider
-            ref={(slider) => setSliderRef(slider)}
+            ref={slider => setSliderRef(slider)}
             {...settings}
             className="w-full flex flex-col items-center justify-center"
           >
-            {videos.map((video) => (
+            {videos.map(video => (
               <div
                 key={video.id}
                 className="flex flex-col justify-center items-center px-2"
@@ -85,5 +85,5 @@ export default function YouTubeCarousel({ videos }: YouTubeCarouselProps) {
         </div>
       </div>
     </section>
-  );
+  )
 }

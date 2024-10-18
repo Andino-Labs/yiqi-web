@@ -1,10 +1,10 @@
-"use client";
+'use client'
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
@@ -12,54 +12,54 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+  FormMessage
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useToast } from "@/hooks/use-toast";
+  SelectValue
+} from '@/components/ui/select'
+import { Checkbox } from '@/components/ui/checkbox'
+import { useToast } from '@/hooks/use-toast'
 
 const formSchema = z.object({
   code: z
     .string()
-    .min(1, { message: "Código incorrecto" })
+    .min(1, { message: 'Código incorrecto' })
     .optional()
 
-    .refine((val) => val === undefined || val.toLowerCase() === "andino vip", {
-      message: "Código incorrecto",
+    .refine(val => val === undefined || val.toLowerCase() === 'andino vip', {
+      message: 'Código incorrecto'
     }),
 
-  amount: z.number().min(1, { message: "Elije una cantidad de entradas" }),
-  name: z.string().min(1, { message: "Necesitamos tu nombre" }),
-  phone: z.string().min(1, { message: "¿Cuál es tu teléfono?" }),
-  email: z.string().email({ message: "Tu email es inválido" }),
-  linkedin: z.string().url({ message: "Tu link es inválido" }),
-  authorization: z.boolean().refine((val) => val === true, {
-    message: "Debes autorizar el uso de tus datos",
-  }),
-});
+  amount: z.number().min(1, { message: 'Elije una cantidad de entradas' }),
+  name: z.string().min(1, { message: 'Necesitamos tu nombre' }),
+  phone: z.string().min(1, { message: '¿Cuál es tu teléfono?' }),
+  email: z.string().email({ message: 'Tu email es inválido' }),
+  linkedin: z.string().url({ message: 'Tu link es inválido' }),
+  authorization: z.boolean().refine(val => val === true, {
+    message: 'Debes autorizar el uso de tus datos'
+  })
+})
 
 export function ContactForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      code: "",
-      name: "",
-      phone: "",
-      email: "",
-      linkedin: "",
+      code: '',
+      name: '',
+      phone: '',
+      email: '',
+      linkedin: '',
       amount: 1,
-      authorization: false,
-    },
-  });
+      authorization: false
+    }
+  })
 
-  const { toast } = useToast();
+  const { toast } = useToast()
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
@@ -78,19 +78,19 @@ export function ContactForm() {
         amount: values.amount,
         code: values.code,
       }); */
-      window.location.href = "/error";
+      window.location.href = '/error'
       toast({
         title:
-          "Gracias por reservar tu entrada al Tech Grill Halloween Edition",
-        description: `${values}`,
-      });
+          'Gracias por reservar tu entrada al Tech Grill Halloween Edition',
+        description: `${values}`
+      })
     } catch (error) {
       toast({
         description: `${error}`,
-        variant: "destructive",
-      });
+        variant: 'destructive'
+      })
     } finally {
-      await form.reset();
+      await form.reset()
     }
   }
 
@@ -187,7 +187,7 @@ export function ContactForm() {
                 Cantidad de entradas
               </FormLabel>
               <Select
-                onValueChange={(value) => field.onChange(parseInt(value, 10))}
+                onValueChange={value => field.onChange(parseInt(value, 10))}
                 defaultValue={field.value.toString()}
               >
                 <FormControl>
@@ -196,9 +196,9 @@ export function ContactForm() {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {[1, 2, 3, 4, 5].map((num) => (
+                  {[1, 2, 3, 4, 5].map(num => (
                     <SelectItem key={num} value={num.toString()}>
-                      {num} {num === 1 ? "entrada" : "entradas"} - {num * 65}{" "}
+                      {num} {num === 1 ? 'entrada' : 'entradas'} - {num * 65}{' '}
                       soles
                     </SelectItem>
                   ))}
@@ -265,5 +265,5 @@ export function ContactForm() {
         </Button>
       </form>
     </Form>
-  );
+  )
 }

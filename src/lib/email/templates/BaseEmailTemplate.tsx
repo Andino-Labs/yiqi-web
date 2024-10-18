@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { ReactElement } from 'react'
 
 import {
   Html,
@@ -7,16 +7,16 @@ import {
   Container,
   Text,
   Link,
-  Img,
-} from "@react-email/components";
+  Img
+} from '@react-email/components'
 
 // Define the props types for each template
 export interface BaseEmailTemplateProps {
-  content: string;
+  content: string
 }
 
 export function BaseEmailTemplate({
-  content,
+  content
 }: BaseEmailTemplateProps): ReactElement {
   // Placeholder for dynamic link, replace with actual link
 
@@ -45,5 +45,5 @@ export function BaseEmailTemplate({
         </Container>
       </Body>
     </Html>
-  );
+  )
 }

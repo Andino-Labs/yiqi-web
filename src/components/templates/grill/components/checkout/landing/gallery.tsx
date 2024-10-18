@@ -1,8 +1,8 @@
-"use client";
+'use client'
 
-import { motion } from "framer-motion";
-import Image from "next/image";
-import { Section, Container } from "../mainLayout";
+import { motion } from 'framer-motion'
+import Image from 'next/image'
+import { Section, Container } from '../mainLayout'
 
 const containerVariants = {
   hidden: { opacity: 0, y: 50 },
@@ -11,20 +11,20 @@ const containerVariants = {
     y: 0,
     transition: {
       duration: 0.5,
-      when: "beforeChildren",
-      staggerChildren: 0.1,
-    },
-  },
-};
+      when: 'beforeChildren',
+      staggerChildren: 0.1
+    }
+  }
+}
 
 const itemVariants = {
   hidden: { opacity: 0, scale: 0.8 },
-  visible: { opacity: 1, scale: 1 },
-};
+  visible: { opacity: 1, scale: 1 }
+}
 
 export interface GrillGalleryProps {
-  header1: string;
-  images: string[];
+  header1: string
+  images: string[]
 }
 
 export default function ImageGallery(props: GrillGalleryProps) {
@@ -64,5 +64,5 @@ export default function ImageGallery(props: GrillGalleryProps) {
         </Container>
       </motion.div>
     </Section>
-  );
+  )
 }

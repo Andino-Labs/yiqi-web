@@ -7,8 +7,9 @@
     "dev-email": "email dev",
     "build": "next build && npm run build:client-types",
     "start": "next start",
-    "lint": "tsc --noEmit && next lint",
+    "lint": "tsc --noEmit && next lint && npm run format",
     "migrate": "npm run generate && prisma migrate dev",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "generate": "prisma generate",
     "build:client-types": "tsup --config yiqi-client/tsup.config.ts"
   },
@@ -56,6 +57,7 @@
     "mailparser": "^3.7.1",
     "mercadopago": "^2.0.15",
     "next": "14.2.15",
+    "prettier": "^3.3.3",
     "prisma": "^5.20.0",
     "react": "^18",
     "react-dom": "^18",

@@ -1,11 +1,11 @@
-"use client";
+'use client'
 
-import { motion } from "framer-motion";
-import Balancer from "react-wrap-balancer";
-import { Section, Container } from "../mainLayout";
-import Link from "next/link";
-import { ContactForm } from "./contact-form";
-import { Button } from "@/components/ui/button";
+import { motion } from 'framer-motion'
+import Balancer from 'react-wrap-balancer'
+import { Section, Container } from '../mainLayout'
+import Link from 'next/link'
+import { ContactForm } from './contact-form'
+import { Button } from '@/components/ui/button'
 const containerVariants = {
   hidden: { opacity: 0, y: -50 },
   visible: {
@@ -13,22 +13,22 @@ const containerVariants = {
     y: 0,
     transition: {
       duration: 0.5,
-      when: "beforeChildren",
-      staggerChildren: 0.1,
-    },
-  },
-};
+      when: 'beforeChildren',
+      staggerChildren: 0.1
+    }
+  }
+}
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
-};
+  visible: { opacity: 1, y: 0 }
+}
 
 export interface GrillHeaderProps {
-  headerTitle: string;
-  headerTitleSecondary: string;
-  headerDescription: string;
-  cta: string;
+  headerTitle: string
+  headerTitleSecondary: string
+  headerDescription: string
+  cta: string
 }
 
 export default function Header(props: GrillHeaderProps) {
@@ -49,7 +49,7 @@ export default function Header(props: GrillHeaderProps) {
               variants={itemVariants}
               className="!mb-4 text-4xl md:text-5xl lg:text-6xl font-bold text-orange-500"
             >
-              {props.headerTitle}{" "}
+              {props.headerTitle}{' '}
               <span className="text-white">{props.headerTitleSecondary}</span>
             </motion.h1>
             <motion.h3
@@ -76,5 +76,5 @@ export default function Header(props: GrillHeaderProps) {
         </Container>
       </motion.div>
     </Section>
-  );
+  )
 }

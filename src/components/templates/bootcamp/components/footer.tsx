@@ -1,6 +1,6 @@
-import { Twitter, Instagram, Linkedin } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
+import { Twitter, Instagram, Linkedin } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
 
 export default function MinimalisticFooter() {
   return (
@@ -13,7 +13,7 @@ export default function MinimalisticFooter() {
             src="/logoandino.svg"
             alt="Logo"
             className="text-black"
-            style={{ filter: "invert(1)" }}
+            style={{ filter: 'invert(1)' }}
           />
         </div>
         <div className="flex space-x-4 justify-center">
@@ -35,7 +35,7 @@ export default function MinimalisticFooter() {
         </div>
       </div>
     </footer>
-  );
+  )
 }
 
 function SocialLink({
@@ -53,5 +53,5 @@ function SocialLink({
     >
       {children}
     </Link>
-  );
+  )
 }

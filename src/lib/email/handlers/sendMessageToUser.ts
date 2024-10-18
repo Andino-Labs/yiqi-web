@@ -1,23 +1,23 @@
-import prisma from "@/lib/prisma";
+import prisma from '@/lib/prisma'
 import {
   generateEmailPlainText,
   MailTemplatesIds,
   sendEmailForTemplate,
-  TemplatePropsMap,
-} from "../lib";
-import createMessageRecord from "@/lib/communications/createMessageRecord";
+  TemplatePropsMap
+} from '../lib'
+import createMessageRecord from '@/lib/communications/createMessageRecord'
 
 // Define the input type that enforces correct template-data pairing
 export type SendEmailToUserType<T extends MailTemplatesIds> = {
-  templateId: T;
-  subject: string;
-  dynamicTemplateData: TemplatePropsMap[T];
-  destinationUserId: string;
-  threadId: string;
-  content?: string | undefined;
-  attachement?: string;
-  senderUserId?: string;
-};
+  templateId: T
+  subject: string
+  dynamicTemplateData: TemplatePropsMap[T]
+  destinationUserId: string
+  threadId: string
+  content?: string | undefined
+  attachement?: string
+  senderUserId?: string
+}
 
 export async function sendEmailToUser<T extends MailTemplatesIds>({
   destinationUserId,
@@ -30,33 +30,33 @@ export async function sendEmailToUser<T extends MailTemplatesIds>({
   // get users whatsapp
   const thread = await prisma.messageThread.findFirstOrThrow({
     where: {
-      id: threadId,
+      id: threadId
     },
     include: {
       contextUser: true,
-      organization: {},
-    },
-  });
+      organization: {}
+    }
+  })
 
-  const user = thread.contextUser;
+  const user = thread.contextUser
 
   if (!user.email) {
-    throw " user doesnt have an email";
+    throw ' user doesnt have an email'
   }
 
   await sendEmailForTemplate({
     ...sendMailInput,
     toEmail: user.email,
-    threadId,
-  });
+    threadId
+  })
 
-  const textContent = await generateEmailPlainText({ ...sendMailInput });
+  const textContent = await generateEmailPlainText({ ...sendMailInput })
 
   return createMessageRecord({
     content: content || textContent,
     attachement,
     destinationUserId,
     messageThreadId: thread.id,
-    senderUserId,
-  });
+    senderUserId
+  })
 }

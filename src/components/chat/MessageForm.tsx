@@ -1,50 +1,50 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+import { Button } from '@/components/ui/button'
+import { Textarea } from '@/components/ui/textarea'
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+  FormMessage
+} from '@/components/ui/form'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+import { ChevronDown } from 'lucide-react'
 import {
   MessageThreadType,
-  MessageThreadTypeEnum,
-} from "@/schemas/messagesSchema";
+  MessageThreadTypeEnum
+} from '@/schemas/messagesSchema'
 
 const formSchema = z.object({
   message: z.string().min(1, {
-    message: "Message must be at least 1 character.",
-  }),
-});
+    message: 'Message must be at least 1 character.'
+  })
+})
 
 interface MessageFormProps {
-  onSubmit: (values: z.infer<typeof formSchema>) => Promise<void>;
-  messageType: MessageThreadType;
-  setMessageType: (type: MessageThreadType) => void;
+  onSubmit: (values: z.infer<typeof formSchema>) => Promise<void>
+  messageType: MessageThreadType
+  setMessageType: (type: MessageThreadType) => void
 }
 
 export function MessageForm({
   onSubmit,
   messageType,
-  setMessageType,
+  setMessageType
 }: MessageFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      message: "",
-    },
-  });
+      message: ''
+    }
+  })
 
   return (
     <Form {...form}>
@@ -66,8 +66,8 @@ export function MessageForm({
             <DropdownMenuTrigger asChild>
               <Button variant="outline">
                 {messageType === MessageThreadTypeEnum.Enum.whatsapp
-                  ? "WhatsApp"
-                  : "Email"}
+                  ? 'WhatsApp'
+                  : 'Email'}
                 <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -87,13 +87,13 @@ export function MessageForm({
             </DropdownMenuContent>
           </DropdownMenu>
           <Button type="submit">
-            Send{" "}
+            Send{' '}
             {messageType === MessageThreadTypeEnum.Enum.whatsapp
-              ? "WhatsApp"
-              : "Email"}
+              ? 'WhatsApp'
+              : 'Email'}
           </Button>
         </div>
       </form>
     </Form>
-  );
+  )
 }

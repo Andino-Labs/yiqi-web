@@ -1,6 +1,6 @@
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import Image from 'next/image'
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
 export default function Pricing() {
   return (
@@ -24,10 +24,10 @@ export default function Pricing() {
             price="170"
             title="Precio general"
             features={[
-              "Acceso al bootcamp 4 fechas",
-              "Material educativo",
-              "Tutorías online",
-              "Evento presencial networking",
+              'Acceso al bootcamp 4 fechas',
+              'Material educativo',
+              'Tutorías online',
+              'Evento presencial networking'
             ]}
           />
           <PriceCard
@@ -35,23 +35,23 @@ export default function Pricing() {
             title="Precio Andino"
             subtitle="(Descuento a miembros de Andino VIP)"
             features={[
-              "Acceso al bootcamp 4 fechas",
-              "Material educativo",
-              "Tutorías online",
-              "Evento presencial networking",
+              'Acceso al bootcamp 4 fechas',
+              'Material educativo',
+              'Tutorías online',
+              'Evento presencial networking'
             ]}
           />
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 function PriceCard(props: {
-  price: string;
-  title: string;
-  subtitle?: string;
-  features: string[];
+  price: string
+  title: string
+  subtitle?: string
+  features: string[]
 }) {
   return (
     <div className="bg-white p-6 sm:p-8 rounded-lg shadow-lg mb-5 sm:mb-0">
@@ -92,5 +92,5 @@ function PriceCard(props: {
         </Button>
       </Link>
     </div>
-  );
+  )
 }

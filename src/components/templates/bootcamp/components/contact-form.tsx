@@ -1,10 +1,10 @@
-"use client";
+'use client'
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
@@ -12,46 +12,46 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
+  FormMessage
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { useToast } from '@/hooks/use-toast'
 
 // Define the Zod schema
 const formSchema = z.object({
-  name: z.string().min(1, { message: "Necesitamos tu nombre" }),
-  phone: z.string().min(1, { message: "¿Cuál es tu teléfono?" }),
-  email: z.string().email({ message: "Tu email es inválido" }),
-  linkedin: z.string().url({ message: "Tu link es inválido" }),
-});
+  name: z.string().min(1, { message: 'Necesitamos tu nombre' }),
+  phone: z.string().min(1, { message: '¿Cuál es tu teléfono?' }),
+  email: z.string().email({ message: 'Tu email es inválido' }),
+  linkedin: z.string().url({ message: 'Tu link es inválido' })
+})
 
 export function ContactForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      phone: "",
-      email: "",
-      linkedin: "",
-    },
-  });
+      name: '',
+      phone: '',
+      email: '',
+      linkedin: ''
+    }
+  })
 
-  const { toast } = useToast();
+  const { toast } = useToast()
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       // get to add the server action to create the lead based on org id
       toast({
-        title: "Gracias por postular al bootcamp",
-        description: `${values}`,
-      });
+        title: 'Gracias por postular al bootcamp',
+        description: `${values}`
+      })
     } catch (error) {
       toast({
         description: `${error}`,
-        variant: "destructive",
-      });
+        variant: 'destructive'
+      })
     } finally {
-      await form.reset();
+      await form.reset()
     }
   }
 
@@ -133,10 +133,10 @@ export function ContactForm() {
           )}
         />
 
-        <Button variant={"secondary"} className="w-full mt-2" type="submit">
+        <Button variant={'secondary'} className="w-full mt-2" type="submit">
           Postular al bootcamp
         </Button>
       </form>
     </Form>
-  );
+  )
 }

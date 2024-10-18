@@ -1,36 +1,36 @@
-"use client";
+'use client'
 
-import { useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Section } from "../mainLayout";
-import { ChevronRight, PlayCircle } from "lucide-react";
-import Balancer from "react-wrap-balancer";
-import Link from "next/link";
+import { useState, useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Section } from '../mainLayout'
+import { ChevronRight, PlayCircle } from 'lucide-react'
+import Balancer from 'react-wrap-balancer'
+import Link from 'next/link'
 
 export interface GrillEventProps {
-  motionHeader: string;
-  videoSrc: string;
-  videoText: string;
-  balanceText: string;
-  paymentText: string;
+  motionHeader: string
+  videoSrc: string
+  videoText: string
+  balanceText: string
+  paymentText: string
 }
 
 export default function Evento(props: GrillEventProps) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
 
-  const [isHovered, setIsHovered] = useState(false);
+  const [isHovered, setIsHovered] = useState(false)
 
   const togglePlay = () => {
     if (videoRef.current) {
       if (isPlaying) {
-        videoRef.current.pause();
+        videoRef.current.pause()
       } else {
-        videoRef.current.play();
+        videoRef.current.play()
       }
-      setIsPlaying(!isPlaying);
+      setIsPlaying(!isPlaying)
     }
-  };
+  }
 
   const containerVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -39,16 +39,16 @@ export default function Evento(props: GrillEventProps) {
       y: 0,
       transition: {
         duration: 0.5,
-        when: "beforeChildren",
-        staggerChildren: 0.1,
-      },
-    },
-  };
+        when: 'beforeChildren',
+        staggerChildren: 0.1
+      }
+    }
+  }
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
+    visible: { opacity: 1, y: 0 }
+  }
 
   return (
     <Section className="flex flex-col -mt-8 items-center justify-center min-h-screen">
@@ -112,7 +112,7 @@ export default function Evento(props: GrillEventProps) {
               <motion.div
                 className="ml-2"
                 animate={{ x: isHovered ? 5 : 0 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 10 }}
               >
                 <ChevronRight className="w-6 h-6" />
               </motion.div>
@@ -121,5 +121,5 @@ export default function Evento(props: GrillEventProps) {
         </motion.div>
       </motion.div>
     </Section>
-  );
+  )
 }

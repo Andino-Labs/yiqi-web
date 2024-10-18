@@ -1,9 +1,9 @@
-import MercadoPagoConfig, { Preference } from "mercadopago";
+import MercadoPagoConfig, { Preference } from 'mercadopago'
 
-const access = "add mercadopago token";
+const access = 'add mercadopago token'
 
 export const MPclient = new MercadoPagoConfig({
-  accessToken: access,
-});
+  accessToken: access
+})
 
-export const MPpreference = new Preference(MPclient);
+export const MPpreference = new Preference(MPclient)

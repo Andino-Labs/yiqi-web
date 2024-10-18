@@ -1,25 +1,25 @@
-import prisma from "@/lib/prisma";
-import { SocialMediaPlatform } from "@prisma/client";
+import prisma from '@/lib/prisma'
+import { SocialMediaPlatform } from '@prisma/client'
 
 export async function connectSocialMediaAccount(data: {
-  organizationId: string;
-  platform: SocialMediaPlatform;
-  accountId: string;
-  accountName: string;
-  accessToken: string;
-  refreshToken: string | null;
-  expiresAt: Date | null;
-  scope: string[];
+  organizationId: string
+  platform: SocialMediaPlatform
+  accountId: string
+  accountName: string
+  accessToken: string
+  refreshToken: string | null
+  expiresAt: Date | null
+  scope: string[]
 }) {
   return prisma.socialMediaAccount.create({
-    data,
-  });
+    data
+  })
 }
 
 export async function getSocialMediaAccounts(organizationId: string) {
   return prisma.socialMediaAccount.findMany({
-    where: { organizationId },
-  });
+    where: { organizationId }
+  })
 }
 
 export async function disconnectSocialMediaAccount(
@@ -29,7 +29,7 @@ export async function disconnectSocialMediaAccount(
   return prisma.socialMediaAccount.delete({
     where: {
       id: accountId,
-      organizationId,
-    },
-  });
+      organizationId
+    }
+  })
 }

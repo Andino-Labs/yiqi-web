@@ -1,48 +1,48 @@
-"use client";
+'use client'
 
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { SocialMediaPlatform } from "@prisma/client";
-import { initiateOAuthFlow } from "@/services/actions/socialMediaActions";
-import { useToast } from "@/hooks/use-toast";
-import { InitiateOAuthFlowInputSchema } from "@/schemas/socialMediaSchemas";
+import React from 'react'
+import { Button } from '@/components/ui/button'
+import { SocialMediaPlatform } from '@prisma/client'
+import { initiateOAuthFlow } from '@/services/actions/socialMediaActions'
+import { useToast } from '@/hooks/use-toast'
+import { InitiateOAuthFlowInputSchema } from '@/schemas/socialMediaSchemas'
 
 interface ConnectAccountProps {
-  organizationId: string;
+  organizationId: string
 }
 
 export function ConnectAccount({ organizationId }: ConnectAccountProps) {
-  const { toast } = useToast();
+  const { toast } = useToast()
 
   const handleConnect = async (platform: SocialMediaPlatform) => {
     try {
       const input = InitiateOAuthFlowInputSchema.parse({
         organizationId,
-        platform,
-      });
-      const { authUrl } = await initiateOAuthFlow(input);
-      window.location.href = authUrl;
+        platform
+      })
+      const { authUrl } = await initiateOAuthFlow(input)
+      window.location.href = authUrl
     } catch (error) {
-      console.error(`Error initiating ${platform} OAuth:`, error);
+      console.error(`Error initiating ${platform} OAuth:`, error)
       toast({
-        title: "Error",
+        title: 'Error',
         description: `Failed to connect to ${platform}. Please try again.`,
-        variant: "destructive",
-      });
+        variant: 'destructive'
+      })
     }
-  };
+  }
 
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">Connect New Account</h2>
       <div className="space-y-2">
-        <Button onClick={() => handleConnect("FACEBOOK")} className="w-full">
+        <Button onClick={() => handleConnect('FACEBOOK')} className="w-full">
           Connect Facebook
         </Button>
-        <Button onClick={() => handleConnect("INSTAGRAM")} className="w-full">
+        <Button onClick={() => handleConnect('INSTAGRAM')} className="w-full">
           Connect Instagram
         </Button>
       </div>
     </div>
-  );
+  )
 }

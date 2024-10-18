@@ -1,29 +1,29 @@
-"use client";
-import { Button } from "../ui/button";
-import { getGoogleOauthConsentUrl } from "@/services/auth/auth";
-import { useToast } from "@/hooks/use-toast";
-import { GoogleIcon } from "./icons";
+'use client'
+import { Button } from '../ui/button'
+import { getGoogleOauthConsentUrl } from '@/services/auth/auth'
+import { useToast } from '@/hooks/use-toast'
+import { GoogleIcon } from './icons'
 
 export default function GoogleOAuthButton() {
-  const { toast } = useToast();
+  const { toast } = useToast()
   return (
     <Button
       className="flex flex-row gap-2"
-      variant={"outline"}
+      variant={'outline'}
       onClick={async () => {
-        const res = await getGoogleOauthConsentUrl();
+        const res = await getGoogleOauthConsentUrl()
         if (res.url) {
-          window.location.href = res.url;
+          window.location.href = res.url
         } else {
           toast({
-            title: "ERROR:",
+            title: 'ERROR:',
             description: `${res.error}`,
-            variant: "destructive",
-          });
+            variant: 'destructive'
+          })
         }
       }}
     >
       Ingresa con Google <GoogleIcon />
     </Button>
-  );
+  )
 }

@@ -1,14 +1,14 @@
-"use client";
+'use client'
 
-import { useState, useEffect } from "react";
-import { ContactForm } from "./contact-form";
+import { useState, useEffect } from 'react'
+import { ContactForm } from './contact-form'
 
 export default function ContactSection() {
-  const [isClient, setIsClient] = useState(false);
+  const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
-    setIsClient(true);
-  }, []);
+    setIsClient(true)
+  }, [])
 
   return (
     <div
@@ -37,5 +37,5 @@ export default function ContactSection() {
         <ContactForm />
       </div>
     </div>
-  );
+  )
 }

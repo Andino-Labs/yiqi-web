@@ -1,41 +1,41 @@
-import Link from "next/link";
-import { Settings, Users, Menu, LogOut } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Link from 'next/link'
+import { Settings, Users, Menu, LogOut } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import SignOutButton from "../auth/sign-out";
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+import SignOutButton from '../auth/sign-out'
 
 interface UserProps {
-  name: string;
-  email: string;
-  picture: string;
+  name: string
+  email: string
+  picture: string
 }
 
 interface AdminLayoutProps {
-  children: React.ReactNode;
-  userProps: UserProps;
+  children: React.ReactNode
+  userProps: UserProps
 }
 
 export default function AdminLayout({ children, userProps }: AdminLayoutProps) {
   const navItems = [
-    { name: "Organizaciones", icon: Users, href: `/admin/organizations` },
-    { name: "Settings", icon: Settings, href: "/admin/settings" },
-  ];
+    { name: 'Organizaciones', icon: Users, href: `/admin/organizations` },
+    { name: 'Settings', icon: Settings, href: '/admin/settings' }
+  ]
 
   return (
     <div className="w-full flex h-screen bg-gray-100">
       {/* Sidebar for larger screens */}
       <aside className="hidden w-64 bg-white p-4 shadow-md lg:block">
         <nav className="space-y-2">
-          {navItems.map((item) => (
+          {navItems.map(item => (
             <Link
               key={item.name}
               href={item.href}
@@ -61,7 +61,7 @@ export default function AdminLayout({ children, userProps }: AdminLayoutProps) {
         </SheetTrigger>
         <SheetContent side="left" className="w-64">
           <nav className="space-y-2">
-            {navItems.map((item) => (
+            {navItems.map(item => (
               <Link
                 key={item.name}
                 href={item.href}
@@ -134,5 +134,5 @@ export default function AdminLayout({ children, userProps }: AdminLayoutProps) {
         </div>
       </main>
     </div>
-  );
+  )
 }

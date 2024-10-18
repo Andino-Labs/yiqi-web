@@ -1,50 +1,50 @@
-import prisma from "@/lib/prisma";
-import { z } from "zod";
+import prisma from '@/lib/prisma'
+import { z } from 'zod'
 
 export const OrganizationSchema = z.object({
-  name: z.string().min(1, { message: "Name is required" }),
+  name: z.string().min(1, { message: 'Name is required' }),
   description: z.string().optional(),
-  logo: z.string().url({ message: "Invalid URL" }).optional(),
-  colour: z.string().min(1, { message: "Colour is required" }),
-});
+  logo: z.string().url({ message: 'Invalid URL' }).optional(),
+  colour: z.string().min(1, { message: 'Colour is required' })
+})
 
-const UpdateOrganizationSchema = OrganizationSchema.partial();
+const UpdateOrganizationSchema = OrganizationSchema.partial()
 
 export const organizationService = {
   create: async (data: z.infer<typeof OrganizationSchema>) => {
-    const validatedData = OrganizationSchema.parse(data);
-    return prisma.organization.create({ data: validatedData });
+    const validatedData = OrganizationSchema.parse(data)
+    return prisma.organization.create({ data: validatedData })
   },
 
   getAll: async () => {
-    return prisma.organization.findMany();
+    return prisma.organization.findMany()
   },
 
   getById: async (id: string) => {
-    return prisma.organization.findUnique({ where: { id } });
+    return prisma.organization.findUnique({ where: { id } })
   },
 
   update: async (
     id: string,
     data: z.infer<typeof UpdateOrganizationSchema>,
-    userId: string,
+    userId: string
   ) => {
-    const validatedData = UpdateOrganizationSchema.parse(data);
+    const validatedData = UpdateOrganizationSchema.parse(data)
 
     const organizer = await prisma.organizer.findFirst({
-      where: { organizationId: id, userId: userId },
-    });
+      where: { organizationId: id, userId: userId }
+    })
 
     if (!organizer) {
       throw new Error(
-        "Unauthorized: User is not an organizer for this organization",
-      );
+        'Unauthorized: User is not an organizer for this organization'
+      )
     }
 
-    return prisma.organization.update({ where: { id }, data: validatedData });
+    return prisma.organization.update({ where: { id }, data: validatedData })
   },
 
   delete: async (id: string) => {
-    return prisma.organization.delete({ where: { id } });
-  },
-};
+    return prisma.organization.delete({ where: { id } })
+  }
+}

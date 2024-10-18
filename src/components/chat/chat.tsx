@@ -1,24 +1,24 @@
-import { Card, CardContent } from "@/components/ui/card";
-import Link from "next/link";
+import { Card, CardContent } from '@/components/ui/card'
+import Link from 'next/link'
 import {
   ResizableHandle,
   ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { MessagesSquare, Users } from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { OrgMessageListItemSchemaType } from "@/schemas/messagesSchema";
+  ResizablePanelGroup
+} from '@/components/ui/resizable'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { MessagesSquare, Users } from 'lucide-react'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { OrgMessageListItemSchemaType } from '@/schemas/messagesSchema'
 
 function Chats({
   contextUserName,
   lastMessage,
-  userId,
+  userId
 }: OrgMessageListItemSchemaType) {
   function getFirst5Words(str: string): string {
-    const words = str.split(" ");
-    const first5Words = words.slice(0, 5);
-    return first5Words.join(" ") + (words.length > 5 ? "..." : "");
+    const words = str.split(' ')
+    const first5Words = words.slice(0, 5)
+    return first5Words.join(' ') + (words.length > 5 ? '...' : '')
   }
 
   return (
@@ -39,13 +39,13 @@ function Chats({
         </div>
       </div>
     </Link>
-  );
+  )
 }
 
 export default function ChatComponent({
-  chats,
+  chats
 }: {
-  chats: OrgMessageListItemSchemaType[];
+  chats: OrgMessageListItemSchemaType[]
 }) {
   return (
     <Card className="h-[80vh]">
@@ -77,5 +77,5 @@ export default function ChatComponent({
         </ResizablePanelGroup>
       </CardContent>
     </Card>
-  );
+  )
 }
