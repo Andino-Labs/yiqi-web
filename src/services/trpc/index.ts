@@ -16,7 +16,10 @@ import {
   UserRegistrationStatusSchema,
   OrganizationSchema
 } from '@/schemas/apiSchemas'
+import { handleMobileGoogleSignIn, validateMobileSession } from '../mobileAuth'
+import { userSchema } from '@/schemas/userSchema'
 
+// always make sure to use a zod parser on return if returning prisma models to avoid faiures.
 export const appRouter = router({
   searchUsers: publicProcedure
     .input(z.object({ query: z.string() }))
@@ -71,6 +74,24 @@ export const appRouter = router({
       const organization = await getOrganization(input)
       if (!organization) throw new Error('Organization not found')
       return OrganizationSchema.parse(organization)
+    }),
+
+  mobileGoogleSignIn: publicProcedure
+    .input(
+      z.object({
+        idToken: z.string()
+      })
+    )
+    .mutation(async ({ input }) => {
+      const result = await handleMobileGoogleSignIn(input.idToken)
+      return result
+    }),
+
+  validateMobileSession: publicProcedure
+    .input(z.string())
+    .query(async ({ input }) => {
+      const user = await validateMobileSession(input)
+      return userSchema.parse(user)
     })
 })
 
