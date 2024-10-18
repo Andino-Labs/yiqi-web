@@ -78,7 +78,6 @@ export const getUser = async () => {
       role: true
     }
   })
-
   return dbUser
 }
 

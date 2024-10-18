@@ -11,6 +11,7 @@
     "migrate": "npm run generate && prisma migrate dev",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "generate": "prisma generate",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "build:client-types": "tsup --config yiqi-client/tsup.config.ts"
   },
   "dependencies": {
