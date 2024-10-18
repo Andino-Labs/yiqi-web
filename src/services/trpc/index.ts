@@ -43,12 +43,12 @@ export const appRouter = router({
       z.object({
         eventId: z.string(),
         attendeeData: z.record(z.unknown()),
-      }),
+      })
     )
     .mutation(async ({ input }) => {
       const registration = await createRegistration(
         input.eventId,
-        input.attendeeData,
+        input.attendeeData
       );
       return RegistrationSchema.parse(registration);
     }),
@@ -58,12 +58,12 @@ export const appRouter = router({
       z.object({
         eventId: z.string(),
         userId: z.string(),
-      }),
+      })
     )
     .query(async ({ input }) => {
       const status = await getUserRegistrationStatus(
         input.eventId,
-        input.userId,
+        input.userId
       );
       return UserRegistrationStatusSchema.parse(status);
     }),
