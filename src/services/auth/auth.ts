@@ -10,7 +10,7 @@ export const logOut = async () => {
   cookies().set(
     sessionCookie.name,
     sessionCookie.value,
-    sessionCookie.attributes,
+    sessionCookie.attributes
   );
   return redirect("/auth");
 };
@@ -34,7 +34,7 @@ export const getGoogleOauthConsentUrl = async () => {
       codeVerifier,
       {
         scopes: ["email", "profile"],
-      },
+      }
     );
     return { success: true, url: authUrl.toString() };
   } catch (error) {

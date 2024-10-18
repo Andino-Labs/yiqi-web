@@ -16,6 +16,7 @@ import {
   UserRegistrationStatusSchema,
   OrganizationSchema,
 } from "@/schemas/apiSchemas";
+import { handleMobileGoogleSignIn, validateMobileSession } from "../mobileAuth";
 
 export const appRouter = router({
   searchUsers: publicProcedure
@@ -71,6 +72,24 @@ export const appRouter = router({
       const organization = await getOrganization(input);
       if (!organization) throw new Error("Organization not found");
       return OrganizationSchema.parse(organization);
+    }),
+
+  mobileGoogleSignIn: publicProcedure
+    .input(
+      z.object({
+        idToken: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const result = await handleMobileGoogleSignIn(input.idToken);
+      return result;
+    }),
+
+  validateMobileSession: publicProcedure
+    .input(z.string())
+    .query(async ({ input }) => {
+      const user = await validateMobileSession(input);
+      return user;
     }),
 });
 

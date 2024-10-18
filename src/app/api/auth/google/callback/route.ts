@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
 
   const { accessToken } = await googleOAuthClient.validateAuthorizationCode(
     code,
-    codeVerifier,
+    codeVerifier
   );
   const googleResponse = await fetch(
     "https://www.googleapis.com/oauth2/v1/userinfo",
@@ -39,7 +39,7 @@ export async function GET(req: NextRequest) {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
-    },
+    }
   );
 
   const googleData = (await googleResponse.json()) as {
@@ -76,7 +76,7 @@ export async function GET(req: NextRequest) {
   cookies().set(
     sessionCookie.name,
     sessionCookie.value,
-    sessionCookie.attributes,
+    sessionCookie.attributes
   );
 
   return redirect("/newuser");

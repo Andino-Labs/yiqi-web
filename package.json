@@ -49,6 +49,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "framer-motion": "^11.11.8",
+    "google-auth-library": "^9.14.2",
     "lucia": "^3.2.1",
     "lucide-react": "^0.452.0",
     "mailparser": "^3.7.1",
