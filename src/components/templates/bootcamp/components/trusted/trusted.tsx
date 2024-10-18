@@ -17,7 +17,7 @@ const logos = [
 ]
 
 export interface TrustedByCarouselProps {
-  title: string
+  title: string;
 }
 
 export default function TrustedByCarousel(props: TrustedByCarouselProps) {

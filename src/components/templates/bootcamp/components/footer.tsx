@@ -1,8 +1,19 @@
-import { Twitter, Instagram, Linkedin } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
 
-export default function MinimalisticFooter() {
+export interface SocialLink {
+  url: string;
+  label: string;
+  icon: React.ElementType;
+}
+
+export interface MinimalisticFooterProps {
+  imageSrc: string;
+  socials: SocialLink[];
+}
+
+export default function MinimalisticFooter(props: MinimalisticFooterProps) {
   return (
     <footer className="relative bg-background border-t w-full">
       <div className="container mx-auto max-w-full py-4 px-4 sm:px-8 lg:px-20 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
@@ -10,28 +21,18 @@ export default function MinimalisticFooter() {
           <Image
             height={50}
             width={75}
-            src="/logoandino.svg"
+            src={props.imageSrc || "/logoandino.svg"}
             alt="Logo"
             className="text-black"
             style={{ filter: 'invert(1)' }}
           />
         </div>
         <div className="flex space-x-4 justify-center">
-          <SocialLink href="https://x.com/andino_labs" aria-label="Twitter">
-            <Twitter className="w-5 h-5" />
-          </SocialLink>
-          <SocialLink
-            href="https://www.instagram.com/andinolabs/"
-            aria-label="Instagram"
-          >
-            <Instagram className="w-5 h-5" />
-          </SocialLink>
-          <SocialLink
-            href="https://www.linkedin.com/company/andino-labs/?originalSubdomain=pe"
-            aria-label="LinkedIn"
-          >
-            <Linkedin className="w-5 h-5" />
-          </SocialLink>
+          {props.socials.map((items, index) => (
+            <SocialLink key={index} href={items.url} aria-label={items.label}>
+              <items.icon className="w-5 h-5" />
+            </SocialLink>
+          ))}
         </div>
       </div>
     </footer>

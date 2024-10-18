@@ -1,11 +1,19 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { ContactForm } from './contact-form'
+import { useState, useEffect } from "react";
+import { ContactForm } from "./contact-form";
+interface header {
+  header1: string;
+  header2: string;
+}
+export interface ContactProps {
+  videoSrc: string;
+  videoText: string;
+  header: header[];
+}
 
-export default function ContactSection() {
-  const [isClient, setIsClient] = useState(false)
-
+export default function ContactSection(props: ContactProps) {
+  const [isClient, setIsClient] = useState(false);
   useEffect(() => {
     setIsClient(true)
   }, [])
@@ -24,16 +32,19 @@ export default function ContactSection() {
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
         >
-          <source src="/c.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
+          <source src={props.videoSrc || "/c.mp4"} type="video/mp4" />
+          {props.videoText}
         </video>
       )}
 
       {/* Content Overlay */}
       <div className="absolute inset-0 bg-black bg-opacity-40 flex md:flex-row flex-col gap-12 items-center justify-center text-white p-4">
-        <h1 className="text-4xl md:text-6xl font-bold mb-4 text-start">
-          Postula a nuestro <br /> bootcamp
-        </h1>
+        {/* {props.header.header1} <br /> {props.header.header2} */}
+        {props.header.map((items, index) => (
+          <h1 key={index}>
+            {items.header1} <br /> {items.header2}
+          </h1>
+        ))}
         <ContactForm />
       </div>
     </div>

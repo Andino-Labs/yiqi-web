@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "dev-email": "email dev",
-    "build": "next build && npm run build:client-types",
+    "build": "prisma generate && next build && npm run build:client-types",
     "start": "next start",
     "lint": "tsc --noEmit && next lint && npm run format",
     "migrate": "npm run generate && prisma migrate dev",

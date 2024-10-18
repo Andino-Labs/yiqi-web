@@ -1,14 +1,26 @@
-import Image from 'next/image'
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+export interface PriceGrid {
+  price: string;
+  title: string;
+  subtitle?: string;
+  features: string[];
+}
 
-export default function Pricing() {
+export interface pricingProps {
+  imageSrc: string;
+  title: string;
+  priceDetails: PriceGrid[];
+}
+
+export default function Pricing(props: pricingProps) {
   return (
     <div id="precio" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
       <div className="relative overflow-hidden rounded-3xl">
         <div className="relative -z-50">
           <Image
-            src="/spacex.jpg"
+            src={props.imageSrc || "/AndinoLabs.svg"}
             alt="Earth from space"
             width={1200}
             height={400}
@@ -17,30 +29,17 @@ export default function Pricing() {
           <div className="absolute inset-0 bg-black opacity-50 rounded-[22px]"></div>
         </div>
         <h2 className="absolute top-8 left-0 right-0 text-center text-3xl sm:text-4xl md:text-5xl font-bold text-white">
-          Nuestros precios
+          {props.title}
         </h2>
         <div className="flex flex-col sm:flex-row gap-6 justify-center -mt-16 sm:-mt-24 px-4 sm:px-8">
-          <PriceCard
-            price="170"
-            title="Precio general"
-            features={[
-              'Acceso al bootcamp 4 fechas',
-              'Material educativo',
-              'Tutorías online',
-              'Evento presencial networking'
-            ]}
-          />
-          <PriceCard
-            price="100"
-            title="Precio Andino"
-            subtitle="(Descuento a miembros de Andino VIP)"
-            features={[
-              'Acceso al bootcamp 4 fechas',
-              'Material educativo',
-              'Tutorías online',
-              'Evento presencial networking'
-            ]}
-          />
+          {props.priceDetails.map((items, index) => (
+            <PriceCard
+              key={index}
+              price={items.price}
+              title={items.title}
+              features={items.features}
+            />
+          ))}
         </div>
       </div>
     </div>

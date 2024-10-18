@@ -31,12 +31,12 @@ export interface FeatDisplayer {
 }
 
 export interface FAQProps {
-  header1: string
-  header2: string
-  feat1: FeatDisplayer
-  feat2: FeatDisplayer
-  feat3: FeatDisplayer
-  feat4: FeatDisplayer
+  header1: string;
+  header2: string;
+  feat1: FeatDisplayer;
+  feat2: FeatDisplayer;
+  feat3: FeatDisplayer;
+  feat4: FeatDisplayer;
 }
 
 export default function Faq(props: FAQProps) {

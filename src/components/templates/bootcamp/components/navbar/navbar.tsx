@@ -11,9 +11,20 @@ import {
 } from '@radix-ui/react-icons'
 import { useState, useEffect } from 'react'
 
-export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
+export interface Urlprop {
+  link: string;
+  text: string;
+}
+
+export interface NavBarProps {
+  imgSrc: string;
+  url: Urlprop[];
+  cta: Urlprop;
+}
+
+export default function Navbar(props: NavBarProps) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const checkIfMobile = () => setIsMobile(window.innerWidth < 768)
@@ -45,7 +56,7 @@ export default function Navbar() {
             <Image
               height={50}
               width={75}
-              src="/logoandino.svg"
+              src={props.imgSrc}
               alt="Logo"
               className="text-black"
               style={{ filter: 'invert(1)' }}
@@ -71,43 +82,36 @@ export default function Navbar() {
           ${isMenuOpen ? 'h-full justify-center' : ''}
         `}
         >
-          <Link
-            href="#curricula"
-            className="py-2 hover:underline"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Curricula
-          </Link>
-          <Link
-            href="#precio"
-            className="py-2 hover:underline"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Precio
-          </Link>
+          {props.url.map((item, index) => (
+            <Link
+              key={index}
+              href={item.link}
+              className="py-2 hover:underline"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {item.text}
+            </Link>
+          ))}
 
           <Link
-            href="https://youtu.be/es-E_6TAQrQ?si=x95Uck-wIdEvUzL1"
-            className="py-2 hover:underline"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Nosotros
-          </Link>
-          <Link
-            href="#contacto"
+            href={props.cta.link}
             className="md:hidden mt-4 w-full max-w-xs"
             onClick={() => setIsMenuOpen(false)}
           >
             <div className="relative flex flex-row gap-2 items-center justify-center text-lg font-semibold group hover:bg-black hover:text-white text-black border border-black p-2 px-4 rounded-full transition-colors duration-300">
-              Registrate
+              {props.cta.text}
               <ArrowRightIcon className="w-4 h-4 group-hover:-rotate-45 transition-all" />
             </div>
           </Link>
         </div>
 
-        <Link href="#contacto" className="hidden md:block">
+        <Link
+          href={props.cta.link}
+          className="md:hidden mt-4 w-full max-w-xs"
+          onClick={() => setIsMenuOpen(false)}
+        >
           <div className="relative flex flex-row gap-2 items-center justify-center text-lg font-semibold group hover:bg-black hover:text-white text-black border border-black p-2 px-4 rounded-full transition-colors duration-300">
-            Registrate
+            {props.cta.text}
             <ArrowRightIcon className="w-4 h-4 group-hover:-rotate-45 transition-all" />
           </div>
         </Link>

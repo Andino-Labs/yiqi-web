@@ -7,13 +7,13 @@ import Balancer from 'react-wrap-balancer'
 import { Section } from '../mainLayout'
 import { ArrowRight, ChevronRight } from 'lucide-react'
 
-type FeatureText = {
-  icon: JSX.Element
-  title: string
-  description: string
-  href?: string
-  cta?: string
-}
+export type FeatureText = {
+  icon: JSX.Element;
+  title: string;
+  description: string;
+  href?: string;
+  cta?: string;
+};
 
 const containerVariants = {
   hidden: { opacity: 0, y: 50 },
