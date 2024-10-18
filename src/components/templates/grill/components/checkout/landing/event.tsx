@@ -7,7 +7,15 @@ import { ChevronRight, PlayCircle } from "lucide-react";
 import Balancer from "react-wrap-balancer";
 import Link from "next/link";
 
-export default function Evento() {
+export interface GrillEventProps {
+  motionHeader: string;
+  videoSrc: string;
+  videoText: string;
+  balanceText: string;
+  paymentText: string;
+}
+
+export default function Evento(props: GrillEventProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -54,7 +62,7 @@ export default function Evento() {
           variants={itemVariants}
           className="text-orange-500 text-4xl md:text-5xl font-bold mb-6"
         >
-          ¿Qué es el TECH GRILL?
+          {props.motionHeader}
         </motion.h1>
         <motion.div
           variants={itemVariants}
@@ -66,8 +74,8 @@ export default function Evento() {
             onPlay={() => setIsPlaying(true)}
             onPause={() => setIsPlaying(false)}
           >
-            <source src="/2.mp4" type="video/mp4" />
-            Tu navegador no soporta el elemento de video.
+            <source src={props.videoSrc} type="video/mp4" />
+            {props.videoText}
           </video>
           <AnimatePresence>
             {!isPlaying && (
@@ -88,13 +96,7 @@ export default function Evento() {
           className="mt-4 flex flex-col items-center justify-center"
         >
           <p className="mt-2 text-orange-300 text-base md:text-lg lg:text-xl max-w-2xl mx-auto p-2">
-            <Balancer>
-              ¡Descubre TECH GRILL! Este evento único combina aprendizaje,
-              diversión y networking en un ambiente relajado. Disfruta de una
-              deliciosa parrillada y vino mientras interactúas con personas
-              influyentes y aprendes de expertos en innovación y tecnologías
-              emergentes. ¡Una experiencia imperdible!
-            </Balancer>
+            <Balancer>{props.balanceText}</Balancer>
           </p>
         </motion.div>
         <motion.div variants={itemVariants} className="flex justify-center">
@@ -106,7 +108,7 @@ export default function Evento() {
               onHoverStart={() => setIsHovered(true)}
               onHoverEnd={() => setIsHovered(false)}
             >
-              Comprar Entrada
+              {props.paymentText}
               <motion.div
                 className="ml-2"
                 animate={{ x: isHovered ? 5 : 0 }}

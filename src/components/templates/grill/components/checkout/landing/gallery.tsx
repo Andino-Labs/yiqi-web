@@ -22,21 +22,12 @@ const itemVariants = {
   visible: { opacity: 1, scale: 1 },
 };
 
-const images = [
-  "/fotos/1701239260065.jpg",
-  "/fotos/1707745815195.jpg",
-  "/fotos/1707745820545.jpg",
-  "/fotos/1708979881903.jpg",
-  "/fotos/1708979896325.jpg",
-  "/fotos/1708979896795.jpg",
-  "/fotos/1713030447411.jpg",
-  "/fotos/1713030448746.jpg",
-  "/fotos/1713030449380.jpg",
-  "/fotos/1716477639767.jpg",
-  "/fotos/1716477639866.jpg",
-];
+export interface GrillGalleryProps {
+  header1: string;
+  images: string[];
+}
 
-export default function ImageGallery() {
+export default function ImageGallery(props: GrillGalleryProps) {
   return (
     <Section className="flex z-10 flex-col items-center justify-center py-16">
       <motion.div
@@ -50,10 +41,11 @@ export default function ImageGallery() {
             variants={itemVariants}
             className="text-4xl md:text-5xl font-bold text-orange-500 mb-8 text-center"
           >
-            Así lo pasamos en nuestros eventos
+            {props.header1}
           </motion.h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {images.map((src, index) => (
+            {/* static generated image src mapping */}
+            {props.images.map((src, index) => (
               <motion.div
                 key={src}
                 variants={itemVariants}

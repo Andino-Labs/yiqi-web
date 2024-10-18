@@ -16,7 +16,11 @@ const logos = [
   "/forbis.png",
 ];
 
-export default function TrustedByCarousel() {
+export interface TrustedByCarouselProps {
+  title: string;
+}
+
+export default function TrustedByCarousel(props: TrustedByCarouselProps) {
   const [scrollPosition, setScrollPosition] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -38,7 +42,7 @@ export default function TrustedByCarousel() {
     <div className="w-full max-w-screen py-8 sm:py-12 max-h-[60vh] overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-2xl sm:text-3xl font-extrabold text-black text-center mb-6 sm:mb-8">
-          Hemos capacitado a equipos de:
+          {props.title}
         </h2>
         <div
           className="relative overflow-hidden h-16 sm:h-20"

@@ -4,7 +4,17 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
-export default function ResponsiveVideoHero() {
+export interface ResponsiveVideoHeroProps {
+  videoSrc: string;
+  videoText: string;
+  title: string;
+  description: string;
+  ctaUrl1: string;
+  cta1: string;
+  ctaUrl2: string;
+  cta2: string;
+}
+export default function ResponsiveVideoHero(props: ResponsiveVideoHeroProps) {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -22,37 +32,36 @@ export default function ResponsiveVideoHero() {
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
         >
-          <source src="/e.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
+          <source src={props.videoSrc} type="video/mp4" />
+          {props.videoText}
         </video>
       )}
 
       {/* Content Overlay */}
       <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center text-white p-4">
         <h1 className="text-4xl md:text-6xl font-bold mb-4 text-center">
-          Impulsa tu carrera en inteligencia artificial
+          {props.title}
         </h1>
         <p className="text-xl md:text-2xl mb-8 text-center max-w-2xl">
-          Unete al futuro de la industria tecnologica con este bootcamp hecho
-          por expertos de la industria
+          {props.description}
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
-          <Link href="#contacto">
+          <Link href={props.ctaUrl1}>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-8 py-3 bg-white text-black rounded-full font-semibold text-lg transition-colors duration-300 hover:bg-gray-200"
             >
-              Quiero empezar!
+              {props.cta1}
             </motion.button>
           </Link>
-          <Link href="#curricula">
+          <Link href={props.ctaUrl2}>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-8 py-3 bg-white text-black rounded-full font-semibold text-lg transition-colors duration-300 hover:bg-gray-200"
             >
-              Quiero saber más
+              {props.cta2}
             </motion.button>
           </Link>
         </div>

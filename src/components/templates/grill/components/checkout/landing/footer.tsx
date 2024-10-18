@@ -28,13 +28,7 @@ export default function Footer() {
               ></Image>
             </Link>
           </div>
-          <div className="mb-4 flex flex-col gap-4 md:mb-0 md:flex-row">
-            {/*
-            <Link href="/privacy-policy">Privacy Policy</Link>
-            <Link href="/terms-of-service">Terms of Service</Link>
-            <Link href="/cookie-policy">Cookie Policy</Link>
-            */}
-          </div>
+          <div className="mb-4 flex flex-col gap-4 md:mb-0 md:flex-row"></div>
         </Container>
         <Container className="not-prose flex flex-col justify-between gap-6 border-t md:flex-row md:items-center md:gap-2">
           <div className="flex gap-2">

@@ -8,7 +8,7 @@ import { Google } from "arctic";
 export const googleOAuthClient = new Google(
   process.env.GOOGLE_CLIENT_ID!,
   process.env.GOOGLE_CLIENT_SECRET!,
-  process.env.NEXT_PUBLIC_URL + "/api/auth/google/callback"
+  process.env.NEXT_PUBLIC_URL + "/api/auth/google/callback",
 );
 
 const adapter = new PrismaAdapter(prisma.session, prisma.user);
@@ -51,7 +51,7 @@ export const getUser = async () => {
       cookies().set(
         sessionCookie.name,
         sessionCookie.value,
-        sessionCookie.attributes
+        sessionCookie.attributes,
       );
     }
     if (!session) {
@@ -59,7 +59,7 @@ export const getUser = async () => {
       cookies().set(
         sessionCookie.name,
         sessionCookie.value,
-        sessionCookie.attributes
+        sessionCookie.attributes,
       );
     }
   } catch (error) {
@@ -84,7 +84,7 @@ export const getUser = async () => {
 
 export async function isEventAdmin(
   eventId: string,
-  userId: string
+  userId: string,
 ): Promise<boolean> {
   const event = await prisma.event.findUnique({
     where: { id: eventId },
@@ -110,7 +110,7 @@ export async function isEventAdmin(
 
 export async function isOrganizerAdmin(
   orgId: string,
-  userId: string
+  userId: string,
 ): Promise<boolean> {
   const organizer = await prisma.organizer.findFirst({
     where: {
