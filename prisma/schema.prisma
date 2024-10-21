@@ -1,13 +1,23 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
+
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -33,7 +43,6 @@ model User {
   receivedNotifications Notification[] @relation("notificationUser")
 
   FormSubmission FormSubmission[]
- 
 
   Organizer Organizer[]
 
@@ -153,9 +162,8 @@ model Event {
 
   openGraphImage String?
 
-
   GeneratedMedia GeneratedMedia[]
-  queueJobs QueueJob[]
+  queueJobs      QueueJob[]
 }
 
 enum MediaType {
@@ -167,13 +175,13 @@ enum MediaType {
 }
 
 model GeneratedMedia {
-  id String @id @default(cuid())
-  event Event? @relation(fields: [eventId], references: [id])
-  eventId String?
-  imageUrl String
-  type MediaType
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String    @id @default(cuid())
+  event     Event?    @relation(fields: [eventId], references: [id])
+  eventId   String?
+  imageUrl  String
+  type      MediaType
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model EventRegistration {
@@ -239,8 +247,8 @@ model MessageThread {
   contextUser    User              @relation(fields: [contextUserId], references: [id])
   contextUserId  String
   messages       Message[]
-  createdAt         DateTime       @default(now())
-  updatedAt      DateTime         @default(now())
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @default(now())
 }
 
 model Message {
@@ -269,22 +277,22 @@ model WhatsappIntegration {
 }
 
 model Notification {
-  id             String       @id @default(cuid())
+  id             String           @id @default(cuid())
   userId         String?
-  user           User?         @relation("notificationUser", fields: [userId], references: [id])
+  user           User?            @relation("notificationUser", fields: [userId], references: [id])
   eventId        String?
-  event          Event?       @relation(fields: [eventId], references: [id])
-  senderUser     User?        @relation("notificationSender", fields: [senderUserId], references: [id])
+  event          Event?           @relation(fields: [eventId], references: [id])
+  senderUser     User?            @relation("notificationSender", fields: [senderUserId], references: [id])
   senderUserId   String?
-  organization   Organization @relation(fields: [organizationId], references: [id])
+  organization   Organization     @relation(fields: [organizationId], references: [id])
   organizationId String
   type           NotificationType
   sentAt         DateTime?
   scheduledFor   DateTime // When the reminder should be sent
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
   formId         String? // Add this line
-  form           Form?        @relation(fields: [formId], references: [id]) // Add this line
+  form           Form?            @relation(fields: [formId], references: [id]) // Add this line
   extraData      Json?
 }
 
@@ -325,8 +333,6 @@ model FormSubmission {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
-
-
 
 // enum SchedulingType {
 //   ROUND_ROBIN @map("roundRobin")
