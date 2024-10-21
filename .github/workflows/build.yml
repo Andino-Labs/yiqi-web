@@ -28,6 +28,16 @@ jobs:
     env:
       FROM_EMAIL: fake@example.com
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/andino
+      AWS_ACCESS_KEY_ID: aws-access-key_id
+      AWS_SECRET_ACCESS_KEY: aws-secret-access-key
+      AWS_REGION: aws-region
+      AWS_S3_BUCKET_NAME: aws-s3-bucket-name
+      NEXT_PUBLIC_URL: http://localhost:3000
+      CALLBACK: /api/auth/google/callback
+      GOOGLE_CLIENT_ID: google-client-id
+      GOOGLE_CLIENT_SECRET: google-client-secret
+
+
 
     steps:
       - uses: actions/checkout@v3

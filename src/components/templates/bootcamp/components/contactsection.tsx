@@ -1,19 +1,19 @@
 'use client'
 
-import { useState, useEffect } from "react";
-import { ContactForm } from "./contact-form";
+import { useState, useEffect } from 'react'
+import { ContactForm } from './contact-form'
 interface header {
-  header1: string;
-  header2: string;
+  header1: string
+  header2: string
 }
 export interface ContactProps {
-  videoSrc: string;
-  videoText: string;
-  header: header[];
+  videoSrc: string
+  videoText: string
+  header: header[]
 }
 
 export default function ContactSection(props: ContactProps) {
-  const [isClient, setIsClient] = useState(false);
+  const [isClient, setIsClient] = useState(false)
   useEffect(() => {
     setIsClient(true)
   }, [])
@@ -32,7 +32,7 @@ export default function ContactSection(props: ContactProps) {
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
         >
-          <source src={props.videoSrc || "/c.mp4"} type="video/mp4" />
+          <source src={props.videoSrc || '/c.mp4'} type="video/mp4" />
           {props.videoText}
         </video>
       )}

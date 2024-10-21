@@ -1,21 +1,21 @@
 'use client'
 
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import Link from "next/link";
+import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
+import Link from 'next/link'
 
 interface ResponsiveVideoHero {
-  videoSrc: string;
-  videoText: string;
-  title: string;
-  description: string;
-  ctaUrl1: string;
-  cta1: string;
-  ctaUrl2: string;
-  cta2: string;
+  videoSrc: string
+  videoText: string
+  title: string
+  description: string
+  ctaUrl1: string
+  cta1: string
+  ctaUrl2: string
+  cta2: string
 }
 export interface ResponsiveVideoHeroProps {
-  videoProps: ResponsiveVideoHero;
+  videoProps: ResponsiveVideoHero
 }
 export default function ResponsiveVideoHero(props: ResponsiveVideoHeroProps) {
   const [isClient, setIsClient] = useState(false)

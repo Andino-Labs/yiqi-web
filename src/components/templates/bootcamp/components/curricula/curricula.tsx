@@ -8,24 +8,24 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
-import { TracingBeam } from "../tb";
-import { Urlprop } from "../navbar/navbar";
+  CardTitle
+} from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import Link from 'next/link'
+import { TracingBeam } from '../tb'
+import { Urlprop } from '../navbar/navbar'
 
 interface DummyContent {
-  title: string;
-  description: React.JSX.Element;
-  badge: string;
-  image: string;
+  title: string
+  description: React.JSX.Element
+  badge: string
+  image: string
 }
 
 export interface CurriculaProps {
-  title: string;
-  dummyContent: DummyContent[];
-  url: Urlprop;
+  title: string
+  dummyContent: DummyContent[]
+  url: Urlprop
 }
 
 export function Curricula(props: CurriculaProps) {

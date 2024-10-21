@@ -8,12 +8,12 @@ import { Section } from '../mainLayout'
 import { ArrowRight, ChevronRight } from 'lucide-react'
 
 export type FeatureText = {
-  icon: JSX.Element;
-  title: string;
-  description: string;
-  href?: string;
-  cta?: string;
-};
+  icon: JSX.Element
+  title: string
+  description: string
+  href?: string
+  cta?: string
+}
 
 const containerVariants = {
   hidden: { opacity: 0, y: 50 },

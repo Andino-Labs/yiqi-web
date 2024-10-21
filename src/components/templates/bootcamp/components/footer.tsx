@@ -1,16 +1,16 @@
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
+import Image from 'next/image'
+import Link from 'next/link'
+import React from 'react'
 
 export interface SocialLink {
-  url: string;
-  label: string;
-  icon: React.ElementType;
+  url: string
+  label: string
+  icon: React.ElementType
 }
 
 export interface MinimalisticFooterProps {
-  imageSrc: string;
-  socials: SocialLink[];
+  imageSrc: string
+  socials: SocialLink[]
 }
 
 export default function MinimalisticFooter(props: MinimalisticFooterProps) {
@@ -21,7 +21,7 @@ export default function MinimalisticFooter(props: MinimalisticFooterProps) {
           <Image
             height={50}
             width={75}
-            src={props.imageSrc || "/logoandino.svg"}
+            src={props.imageSrc || '/logoandino.svg'}
             alt="Logo"
             className="text-black"
             style={{ filter: 'invert(1)' }}

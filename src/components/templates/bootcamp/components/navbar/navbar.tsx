@@ -12,19 +12,19 @@ import {
 import { useState, useEffect } from 'react'
 
 export interface Urlprop {
-  link: string;
-  text: string;
+  link: string
+  text: string
 }
 
 export interface NavBarProps {
-  imgSrc: string;
-  url: Urlprop[];
-  cta: Urlprop;
+  imgSrc: string
+  url: Urlprop[]
+  cta: Urlprop
 }
 
 export default function Navbar(props: NavBarProps) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     const checkIfMobile = () => setIsMobile(window.innerWidth < 768)

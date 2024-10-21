@@ -1,17 +1,17 @@
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import Image from 'next/image'
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 export interface PriceGrid {
-  price: string;
-  title: string;
-  subtitle?: string;
-  features: string[];
+  price: string
+  title: string
+  subtitle?: string
+  features: string[]
 }
 
 export interface pricingProps {
-  imageSrc: string;
-  title: string;
-  priceDetails: PriceGrid[];
+  imageSrc: string
+  title: string
+  priceDetails: PriceGrid[]
 }
 
 export default function Pricing(props: pricingProps) {
@@ -20,7 +20,7 @@ export default function Pricing(props: pricingProps) {
       <div className="relative overflow-hidden rounded-3xl">
         <div className="relative -z-50">
           <Image
-            src={props.imageSrc || "/AndinoLabs.svg"}
+            src={props.imageSrc || '/AndinoLabs.svg'}
             alt="Earth from space"
             width={1200}
             height={400}
