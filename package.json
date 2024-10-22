@@ -57,10 +57,6 @@
     "mercadopago": "^2.0.15",
     "next": "14.2.15",
     "prettier": "^3.3.3",
-<<<<<<< HEAD
-=======
-    "prisma": "^5.20.0",
->>>>>>> 0e6ef39 (adjustments)
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.53.0",
