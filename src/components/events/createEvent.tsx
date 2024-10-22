@@ -75,22 +75,22 @@ function CreateEventForm() {
         <div className="flex flex-col space-y-5">
           <div className="relative grid grid-cols-4 gap-3 before:absolute before:border-2 before:border-dashed before:top-3 before:left-0 before:right-0 before:w-[95%] before:border-[#b4b4b4] before:z-10 px-5">
 
-          <div className={`${activeStep === 0 ? "bg-blue-600" : "bg-black"} rounded-md text-md z-50 text-white w-8 flex justify-center items-center h-8`}>
+          <div className={`${activeStep === 0 ? "bg-black text-white" : "bg-zinc-400 text-black"} rounded-md text-md z-50 w-8 flex justify-center items-center h-8`}>
             1
           </div>
 
 
-          <div className={`${activeStep === 1 ? "bg-blue-600" : "bg-black"} rounded-md text-md z-50 text-white w-8 flex justify-center items-center h-8`}>
+          <div className={`${activeStep === 1 ? "bg-black text-white" : "bg-zinc-400 text-black"} rounded-md text-md z-50 w-8 flex justify-center items-center h-8`}>
             2
           </div>
 
 
-          <div className={`${activeStep === 2 ? "bg-blue-600" : "bg-black"} rounded-md text-md z-50 text-white w-8 flex justify-center items-center h-8`}>
+          <div className={`${activeStep === 2 ? "bg-black text-white" : "bg-zinc-400 text-black"} rounded-md text-md z-50 w-8 flex justify-center items-center h-8`}>
             3
           </div>
 
 
-          <div className={`${activeStep === 3 ? "bg-blue-600" : "bg-black"} rounded-md text-md z-50 text-white w-8 flex justify-center items-center h-8`}>
+          <div className={`${activeStep === 3 ? "bg-black text-white" : "bg-zinc-400 text-black"} rounded-md text-md z-50 w-8 flex justify-center items-center h-8`}>
             4
           </div>
 
