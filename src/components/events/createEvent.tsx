@@ -104,9 +104,9 @@ function CreateEventForm() {
         {activeStep === 0 && (
           <div className="flex flex-col space-y-5">
             <div className="flex justify-center">
-              <h3 className="capitalize text-4xl font-bold after:absolute relative after:w-[45%] after:h-[5px] after:rounded-md after:left-0 after:-bottom-3 after:bg-blue-600">
+              {/* <h3 className="capitalize text-4xl font-bold">
                   step 1
-              </h3>
+              </h3> */}
             </div>
 
             <div className="flex items-start flex-col w-full  space-y-5">
@@ -158,9 +158,9 @@ function CreateEventForm() {
         {activeStep === 1 && (
           <div className="flex flex-col space-y-5">
             <div className="flex justify-center">
-              <h3 className="capitalize text-4xl font-bold after:absolute relative after:w-[45%] after:h-[5px] after:rounded-md after:left-0 after:-bottom-3 after:bg-blue-600">
+              {/* <h3 className="capitalize text-4xl font-bold">
                   step 2
-              </h3>
+              </h3> */}
             </div>
 
             <div className="flex items-start flex-col w-full  space-y-5">
@@ -205,9 +205,9 @@ function CreateEventForm() {
         {activeStep === 2 && (
           <div className="flex flex-col space-y-5">
             <div className="flex justify-center">
-              <h3 className="capitalize text-4xl font-bold after:absolute relative after:w-[45%] after:h-[5px] after:rounded-md after:left-0 after:-bottom-3 after:bg-blue-600">
+              {/* <h3 className="capitalize text-4xl font-bold">
                   step 3
-              </h3>
+              </h3> */}
             </div>
 
             <div className="flex items-start flex-col w-full  space-y-5">
@@ -317,9 +317,9 @@ function CreateEventForm() {
         {activeStep === 3 && (
           <div className="flex flex-col space-y-5">
             <div className="flex justify-center">
-              <h3 className="capitalize text-4xl font-bold after:absolute relative after:w-[45%] after:h-[5px] after:rounded-md after:left-0 after:-bottom-3 after:bg-blue-600">
+              {/* <h3 className="capitalize text-4xl font-bold">
                   step 4
-              </h3>
+              </h3> */}
             </div>
 
             <div className="flex items-start flex-col w-full  space-y-5">
