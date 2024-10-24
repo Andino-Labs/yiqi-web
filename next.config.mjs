@@ -8,7 +8,11 @@ const nextConfig = {
     remotePatterns: [
       {
         hostname: 'lh3.googleusercontent.com'
-      }
+      },
+      {
+        hostname: 'images.unsplash.com'
+      },
+      { hostname: 'randomuser.me' }
     ]
   },
   experimental: {
