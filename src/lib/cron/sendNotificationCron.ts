@@ -1,17 +1,11 @@
-// pages/api/checkUnpaidUsers.ts
-
-import prisma from '@/lib/prisma'
 import {
-  sendBaseMessageToUser,
-  SendBaseMessageToUserPropsSchema
+  SendBaseMessageToUserPropsSchema,
+  sendBaseMessageToUser
 } from '@/services/notifications/sendBaseMessageToUser'
 import sendPaymentReminder from '@/services/notifications/sendPaymentReminder'
-import { NextApiRequest, NextApiResponse } from 'next'
+import prisma from '../prisma'
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export async function sendNotificationCron() {
   // Find notifications that need to be sent
   const notificationsToSend = await prisma.notification.findMany({
     where: {
@@ -63,6 +57,4 @@ export default async function handler(
       data: { sentAt: new Date() }
     })
   }
-
-  res.status(200).json({ message: 'Notifications sent' })
 }

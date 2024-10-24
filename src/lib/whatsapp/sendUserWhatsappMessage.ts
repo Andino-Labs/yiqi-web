@@ -1,6 +1,6 @@
 import axios from 'axios'
-import prisma from './prisma'
-import createMessageRecord from './communications/createMessageRecord'
+import prisma from '../prisma'
+import createMessageRecord from '../communications/createMessageRecord'
 
 export type sendUserWhatsappMessageProps = {
   destinationUserId: string

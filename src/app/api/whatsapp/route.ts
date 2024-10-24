@@ -1,37 +1,57 @@
-import axios from 'axios'
 import { NextRequest, NextResponse } from 'next/server'
+import {
+  WhatsAppWebhookSchema,
+  TextMessagePayloadSchema
+} from '@/schemas/whatsappSchema'
+import { handleTextMessageReceived } from '@/lib/whatsapp/handleTextMessageReceived'
 
-const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN, ANDINO_WHATSAPP } = process.env
+const { WEBHOOK_VERIFY_TOKEN } = process.env
 
 export async function POST(req: NextRequest) {
-  const body = await req.json()
+  try {
+    const body = await req.json()
+    const webhookData = WhatsAppWebhookSchema.parse(body)
 
-  // log incoming messages
-  console.log('Incoming webhook message:', JSON.stringify(body, null, 2))
+    const entry = webhookData.entry[0]
+    const message = entry?.changes[0]?.value?.messages?.[0]
 
-  // check if the webhook request contains a message
-  const message = body.entry?.[0]?.changes[0]?.value?.messages?.[0]
-
-  if (message?.type === 'text') {
-    // send a reply message
-    await axios({
-      method: 'POST',
-      url: `https://graph.facebook.com/v18.0/${ANDINO_WHATSAPP}/messages`,
-      headers: {
-        Authorization: `Bearer ${GRAPH_API_TOKEN}`
-      },
-      data: {
-        messaging_product: 'whatsapp',
-        to: message.from,
-        text: { body: 'Echo: ' + message.text.body },
-        context: {
-          message_id: message.id
-        }
+    if (message) {
+      switch (message.type) {
+        case 'text':
+          const textMessagePayload = TextMessagePayloadSchema.parse(body)
+          await handleTextMessageReceived(textMessagePayload)
+          break
+        case 'image':
+          // Handle image message
+          break
+        case 'video':
+          // Handle video message
+          break
+        case 'audio':
+          // Handle audio message
+          break
+        case 'document':
+          // Handle document message
+          break
+        case 'location':
+          // Handle location message
+          break
+        case 'button':
+          // Handle button reply
+          break
+        case 'interactive':
+          // Handle list reply
+          break
+        default:
+          console.debug('Unhandled message type:', message.type)
       }
-    })
-  }
+    }
 
-  return new NextResponse(null, { status: 200 })
+    return new NextResponse(null, { status: 200 })
+  } catch (error) {
+    console.error('Error processing webhook:', error)
+    return new NextResponse(null, { status: 400 })
+  }
 }
 
 export async function GET(req: NextRequest) {

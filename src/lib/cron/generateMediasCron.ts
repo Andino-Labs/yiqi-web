@@ -1,25 +1,12 @@
-// a new cron job that will collect data from the internet
-// and store it in the database
+import { GenerateEventOpenGraphJobSchema } from '@/schemas/mediaJobs'
+import prisma from '../prisma'
+import { handleGenerateEventOpenGraph } from '@/services/media/handleGenerateEventOpenGraph'
 
-import prisma from '@/lib/prisma'
-import { getLinkedInData } from '@/services/data/collectLinkedinUserProfile'
-// import { getTwitterData } from "@/services/data/collectTwitterUserProfile";
-import { NextApiRequest, NextApiResponse } from 'next'
-import { z } from 'zod'
-import { Prisma } from '@prisma/client'
-const CollectUserDataJobSchema = z.object({
-  userId: z.string(),
-  platforms: z.array(z.enum(['linkedin', 'twitter']))
-})
-
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export async function generateMediasCron() {
   // Find jobs that need to be processed
   const jobs = await prisma.queueJob.findMany({
     where: {
-      type: 'COLLECT_USER_DATA',
+      type: 'GENERATE_EVENT_OPEN_GRAPH',
       status: 'PENDING',
       attempts: { lt: 3 } // Only get jobs that have been attempted less than 3 times
     },
@@ -40,25 +27,13 @@ export default async function handler(
           }
         })
 
-        // Process the job
-        const { userId, platforms } = CollectUserDataJobSchema.parse(job.data)
-        const collectedData: Record<string, unknown> = {}
-
-        for (const platform of platforms) {
-          if (platform === 'linkedin') {
-            collectedData.linkedin = await getLinkedInData(userId)
-          } else if (platform === 'twitter') {
-            // collectedData.twitter = await getTwitterData(userId);
-          }
+        // Process the job based on its type
+        if (job.type === 'GENERATE_EVENT_OPEN_GRAPH') {
+          const { eventId } = GenerateEventOpenGraphJobSchema.parse(job.data)
+          await handleGenerateEventOpenGraph({ eventId })
+        } else {
+          throw new Error(`Unsupported job type: ${job.type}`)
         }
-
-        // Update user with collected data
-        await prisma.user.update({
-          where: { id: userId },
-          data: {
-            dataCollected: collectedData as Prisma.InputJsonValue
-          }
-        })
 
         // Update job status to COMPLETED
         await prisma.queueJob.update({
@@ -88,8 +63,5 @@ export default async function handler(
       }
     })
   )
-
-  res
-    .status(200)
-    .json({ message: 'User data collection jobs processed', results })
+  return results
 }

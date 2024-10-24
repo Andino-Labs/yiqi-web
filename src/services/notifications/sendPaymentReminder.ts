@@ -1,7 +1,7 @@
 import { sendEmailToUser } from '@/lib/email/handlers/sendMessageToUser'
 import { MailTemplatesIds } from '@/lib/email/lib'
 import prisma from '@/lib/prisma'
-import { sendUserWhatsappMessage } from '@/lib/whatsapp'
+import { sendUserWhatsappMessage } from '@/lib/whatsapp/sendUserWhatsappMessage'
 import { Event, Organization } from '@prisma/client'
 import { User } from 'lucia'
 

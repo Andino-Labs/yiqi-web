@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma'
 import {
   sendUserWhatsappMessage,
   sendUserWhatsappMessageProps
-} from '@/lib/whatsapp'
+} from '@/lib/whatsapp/sendUserWhatsappMessage'
 import { getUser, isEventAdmin, isOrganizerAdmin } from '@/lib/auth/lucia'
 import {
   OrgMessageListItemSchema,
@@ -16,7 +16,11 @@ import {
 } from '../notifications/sendBaseMessageToUser'
 import { NotificationType } from '@prisma/client'
 
-export async function getUserMessageList(userId: string, orgId: string) {
+export async function getUserMessageList(
+  userId: string,
+  orgId: string,
+  cursorId?: string
+) {
   const currentUser = await getUser()
   if (!currentUser) throw new Error('Unauthorized')
 
@@ -27,16 +31,16 @@ export async function getUserMessageList(userId: string, orgId: string) {
 
   const messageList = await prisma.message.findMany({
     where: {
-      OR: [
-        {
-          senderUserId: userId
-        },
-        {
-          destinationUserId: userId
-        }
-      ]
+      OR: [{ senderUserId: userId }, { destinationUserId: userId }],
+      messageThread: {
+        organizationId: orgId
+      }
     },
-    take: 40,
+    take: 20,
+    ...(cursorId && {
+      cursor: { id: cursorId },
+      skip: 1 // Skip the cursor itself
+    }),
     orderBy: {
       createdAt: 'desc'
     },

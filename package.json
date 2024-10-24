@@ -11,7 +11,8 @@
     "migrate": "npm run generate && prisma migrate dev",
     "generate": "prisma generate",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "build:client-types": "tsup --config yiqi-client/tsup.config.ts"
+    "build:client-types": "tsup --config yiqi-client/tsup.config.ts",
+    "run-crons": "chmod +x run-crons.sh && ./run-crons.sh"
   },
   "dependencies": {
     "@algora/xtrpc": "^0.1.1",
@@ -32,6 +33,7 @@
     "@radix-ui/react-scroll-area": "^1.2.0",
     "@radix-ui/react-select": "^2.1.2",
     "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-tabs": "^1.1.1",
     "@radix-ui/react-toast": "^1.2.2",
     "@react-email/components": "0.0.25",
     "@react-email/render": "^1.0.1",
