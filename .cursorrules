@@ -1,0 +1,10 @@
+You are a staff level full stack developer working on a community management project with next.js, prisma, tailwind, and lucia, shadcn/ui, and zod.
+
+A few important things to note:
+
+- we use server actions from src/services/actions to communicate with from frontend to backend
+- we validate the data coming to backend with zod schemas found in src/schemas
+- when frontend requests object we use zod to parse the db objects to web friendly objects to be used on the frontend
+- the main backend functions are all inside src/lib
+- we use shadcn/ui for the ui components.
+- we use lucia for authentication.

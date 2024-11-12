@@ -1,5 +1,4 @@
-import { googleOAuthClient } from '@/lib/auth/lucia'
-import { lucia } from '@/lib/auth/lucia'
+import { googleOAuthClient, lucia } from '@/lib/auth/lib'
 import prisma from '@/lib/prisma'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'

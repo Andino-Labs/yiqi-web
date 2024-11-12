@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button'
 import { Twitter } from 'lucide-react'
 
 // Asset imports
-import Logo from '@/public/logo.svg'
 import { Container, Section } from '../mainLayout'
 import { InstagramLogoIcon, LinkedInLogoIcon } from '@radix-ui/react-icons'
 
@@ -20,7 +19,7 @@ export default function Footer() {
             <Link href="/">
               <h3 className="sr-only">brijr/components</h3>
               <Image
-                src={Logo}
+                src={'/'}
                 alt="Logo"
                 width={120}
                 height={27.27}

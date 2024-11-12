@@ -1,44 +1,15 @@
-import { Lucia } from 'lucia'
-import { PrismaAdapter } from '@lucia-auth/adapter-prisma'
-import { cookies, headers } from 'next/headers'
+'use server'
+
+import { cookies } from 'next/headers'
+import { lucia } from './lib'
 import prisma from '../prisma'
 import { OrganizerRole } from '@prisma/client'
-import { Google } from 'arctic'
-
-export const googleOAuthClient = new Google(
-  process.env.GOOGLE_CLIENT_ID!,
-  process.env.GOOGLE_CLIENT_SECRET!,
-  process.env.NEXT_PUBLIC_URL + '/api/auth/google/callback'
-)
-
-const adapter = new PrismaAdapter(prisma.session, prisma.user)
-
-export const lucia = new Lucia(adapter, {
-  sessionCookie: {
-    name: 'andino-auth-cookie',
-    expires: false,
-    attributes: {
-      secure: process.env.NODE_ENV === 'production'
-    }
-  }
-})
 
 export const getUser = async () => {
-  // Check for bearer token first
-  const authHeader = headers().get('authorization')
-  let sessionId: string | null = null
-
-  if (authHeader && authHeader.startsWith('Bearer ')) {
-    sessionId = authHeader.split(' ')[1]
-  } else {
-    // If no bearer token, check for session cookie
-    sessionId = cookies().get(lucia.sessionCookieName)?.value || null
-  }
-
+  const sessionId = cookies().get(lucia.sessionCookieName)?.value || null
   if (!sessionId) {
     return null
   }
-
   const { session, user } = await lucia.validateSession(sessionId)
 
   if (!user || !session) {
@@ -65,7 +36,6 @@ export const getUser = async () => {
   } catch (error) {
     console.error(error)
   }
-
   const dbUser = await prisma.user.findUnique({
     where: {
       id: user?.id

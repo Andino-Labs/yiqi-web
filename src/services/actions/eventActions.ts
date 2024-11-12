@@ -3,93 +3,15 @@
 import prisma from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 import {
-  EventSchema,
-  EventInput,
   createAttendeeSchema,
-  DbEventSchema
+  SavedEventSchema as SavedEventSchema,
+  EventRegistrationSchema,
+  SavedEventType
 } from '@/schemas/eventSchema'
-import { z } from 'zod'
 import setupInitialEventNotifications from '../notifications/setupInitialNotifications'
 import { getUser, isOrganizerAdmin } from '@/lib/auth/lucia'
-import { GenerateEventOpenGraphJobSchema } from '@/schemas/mediaJobs'
-
-type DbEvent = z.infer<typeof DbEventSchema>
-
-export async function getOrganizationEvents(
-  organizationId: string
-): Promise<DbEvent[]> {
-  const events = await prisma.event.findMany({
-    where: { organizationId },
-    orderBy: { startDate: 'asc' }
-  })
-
-  return events.map(event => DbEventSchema.parse(event))
-}
-
-export async function getEvent(eventId: string): Promise<DbEvent> {
-  const event = await prisma.event.findUniqueOrThrow({
-    where: { id: eventId }
-  })
-
-  return DbEventSchema.parse(event)
-}
-
-export async function createEvent(organizationId: string, eventData: unknown) {
-  const currentUser = await getUser()
-  if (
-    !currentUser ||
-    !(await isOrganizerAdmin(organizationId, currentUser.id))
-  ) {
-    throw new Error('Unauthorized')
-  }
-
-  const validatedData = EventSchema.parse(eventData) as EventInput
-
-  const event = await prisma.event.create({
-    data: {
-      ...validatedData,
-      organizationId
-    }
-  })
-
-  // Create a job for generating the open graph image
-  await prisma.queueJob.create({
-    data: {
-      type: 'GENERATE_EVENT_OPEN_GRAPH',
-      status: 'PENDING',
-      data: GenerateEventOpenGraphJobSchema.parse({ eventId: event.id }),
-      priority: 1,
-      organizationId: organizationId,
-      eventId: event.id
-    }
-  })
-
-  revalidatePath(`/admin/organizations/${organizationId}/events`)
-  return DbEventSchema.parse(event)
-}
-
-export async function updateEvent(eventId: string, eventData: unknown) {
-  const event = await getEvent(eventId)
-  if (!event) throw new Error('Event not found')
-
-  const currentUser = await getUser()
-  if (
-    !currentUser ||
-    !(await isOrganizerAdmin(event.organizationId, currentUser.id))
-  ) {
-    throw new Error('Unauthorized')
-  }
-
-  const validatedData = EventSchema.parse(eventData) as EventInput
-
-  const updatedEvent = await prisma.event.update({
-    where: { id: eventId },
-    data: validatedData
-  })
-
-  revalidatePath(`/admin/organizations/${event.organizationId}/events`)
-  return DbEventSchema.parse(updatedEvent)
-}
+import { AttendeeStatus } from '@prisma/client'
+import { getEvent } from './event/getEvent'
 
 export async function deleteEvent(eventId: string) {
   const event = await getEvent(eventId)
@@ -144,16 +66,27 @@ export async function createRegistration(
     }
   })
 
+  if (registration.status === AttendeeStatus.APPROVED) {
+    // maybe support multiple tickets per registration in the future
+    // await prisma.ticket.create({
+    //   data: {
+    //     registrationId: registration.id,
+    //     userId: user.id
+    //   }
+    // })
+  }
+
   await setupInitialEventNotifications({
     userId: user.id,
     eventId: event.id,
-    eventStartDate: event.startDate,
+    eventStartDate: new Date(event.startDate),
     orgId: event.organizationId
   })
+
   return registration
 }
 
-export async function getPublicEvents(): Promise<DbEvent[]> {
+export async function getPublicEvents(): Promise<SavedEventType[]> {
   const now = new Date()
   const events = await prisma.event.findMany({
     where: {
@@ -162,7 +95,7 @@ export async function getPublicEvents(): Promise<DbEvent[]> {
     orderBy: { startDate: 'asc' }
   })
 
-  return events.map(event => DbEventSchema.parse(event))
+  return events.map(event => SavedEventSchema.parse(event))
 }
 
 export async function getUserRegistrationStatus(
@@ -180,8 +113,55 @@ export async function getUserRegistrationStatus(
   return attendee ? true : false
 }
 
-export async function getEventDetails(eventId: string) {
-  const event = await getEvent(eventId)
+export async function getEventRegistrations(eventId: string) {
+  const registrations = await prisma.eventRegistration.findMany({
+    where: { eventId },
+    include: {
+      user: true
+    }
+  })
 
-  return DbEventSchema.parse(event)
+  return registrations.map(registration =>
+    EventRegistrationSchema.parse(registration)
+  )
+}
+
+export async function getEventRegistrationsByUserId(userId: string) {
+  const registrations = await prisma.eventRegistration.findMany({
+    where: { userId },
+    include: {
+      event: true,
+      user: true
+    }
+  })
+
+  return registrations.map(registration =>
+    EventRegistrationSchema.parse(registration)
+  )
+}
+
+export async function checkInUserToEvent(eventId: string, ticketId: string) {
+  const event = await getEvent(eventId)
+  if (!event) throw new Error('Event not found')
+
+  const currentUser = await getUser()
+  if (
+    !currentUser ||
+    !(await isOrganizerAdmin(event.organizationId, currentUser.id))
+  ) {
+    throw new Error('Unauthorized')
+  }
+
+  const updatedRegistration = await prisma.ticket.update({
+    where: { id: ticketId },
+    data: {
+      checkedInByUserId: currentUser.id,
+      checkedInDate: new Date()
+    },
+    include: {
+      user: true
+    }
+  })
+
+  return EventRegistrationSchema.parse(updatedRegistration)
 }

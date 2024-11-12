@@ -4,7 +4,7 @@ import { ConnectAccount } from '@/components/social-media/ConnectAccount'
 import { getAccounts } from '@/services/actions/socialMediaActions'
 import { getUser } from '@/lib/auth/lucia'
 import { redirect } from 'next/navigation'
-import OrganizationLayout from '@/components/orgs/organizationLayout'
+import OrganizationLayout from '@/components/orgs/OrganizationLayout'
 
 export default async function SocialMediaPage({
   params
@@ -24,7 +24,8 @@ export default async function SocialMediaPage({
       userProps={{
         picture: user.picture!,
         email: user.email,
-        name: user.name
+        name: user.name,
+        id: user.id
       }}
     >
       <div className="space-y-8">

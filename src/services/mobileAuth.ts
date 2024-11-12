@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma'
-import { lucia } from '@/lib/auth/lucia'
+import { lucia } from '@/lib/auth/lib'
 import { OAuth2Client } from 'google-auth-library'
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)

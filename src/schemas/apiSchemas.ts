@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { DbEventSchema } from './eventSchema'
+import { SavedEventSchema } from './eventSchema'
 import { userSchema } from './userSchema'
 
 export const AttendeeStatusSchema = z.enum(['PENDING', 'APPROVED', 'REJECTED'])
@@ -26,6 +26,6 @@ export const OrganizationSchema = z.object({
 
 export const SearchUserResultSchema = z.array(userSchema)
 
-export const PublicEventsSchema = z.array(DbEventSchema)
+export const PublicEventsSchema = z.array(SavedEventSchema)
 
 export const UserRegistrationStatusSchema = z.boolean()

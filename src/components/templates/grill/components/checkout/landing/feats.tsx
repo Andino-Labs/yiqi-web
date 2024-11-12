@@ -7,7 +7,7 @@ import Balancer from 'react-wrap-balancer'
 import { Section } from '../mainLayout'
 import { ArrowRight, ChevronRight } from 'lucide-react'
 
-type FeatureText = {
+export type FeatureText = {
   icon: JSX.Element
   title: string
   description: string

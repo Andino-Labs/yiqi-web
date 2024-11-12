@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from '@/components/ui/button'
-import { SocialMediaAccount } from '@prisma/client'
 import { disconnectAccount } from '@/services/actions/socialMediaActions'
+import { SocialMediaAccount } from '@/schemas/socialMediaSchemas'
 
 interface ConnectedAccountsProps {
   accounts: SocialMediaAccount[]

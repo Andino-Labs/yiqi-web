@@ -3,12 +3,11 @@ import { searchUsers } from '../actions/userActions'
 import { publicProcedure, router } from './util'
 import {
   getPublicEvents,
-  getEvent,
   createRegistration,
   getUserRegistrationStatus
 } from '../actions/eventActions'
 import { getOrganization } from '../actions/organizationActions'
-import { DbEventSchema } from '@/schemas/eventSchema'
+import { SavedEventSchema } from '@/schemas/eventSchema'
 import {
   SearchUserResultSchema,
   PublicEventsSchema,
@@ -18,6 +17,7 @@ import {
 } from '@/schemas/apiSchemas'
 import { handleMobileGoogleSignIn, validateMobileSession } from '../mobileAuth'
 import { userSchema } from '@/schemas/userSchema'
+import { getEvent } from '../actions/event/getEvent'
 
 // always make sure to use a zod parser on return if returning prisma models to avoid faiures.
 export const appRouter = router({
@@ -35,7 +35,7 @@ export const appRouter = router({
 
   getEvent: publicProcedure.input(z.string()).query(async ({ input }) => {
     const event = await getEvent(input)
-    return DbEventSchema.parse(event)
+    return SavedEventSchema.parse(event)
   }),
 
   createRegistration: publicProcedure
