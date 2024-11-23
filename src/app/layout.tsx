@@ -2,6 +2,9 @@ import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import './globals.css'
 import { Toaster } from '@/components/ui/toaster'
+import MainLandingNav from '@/components/mainLanding/mainNav'
+import { getUser } from '@/lib/auth/lucia'
+import { logOut } from '@/services/auth/auth'
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -20,16 +23,23 @@ export const metadata: Metadata = {
     'Yiqi is a platform for bringing people together through professional communities. Find your tribe, learn, grow, and connect.'
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode
 }>) {
+
+  const user = await getUser()
+
   return (
     <html lang="en" className="h-screen w-full">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen w-full`}
       >
+      <MainLandingNav
+        user={{ name: user?.name, picture: user?.picture as string }}
+        logOut={logOut}
+      />
         {children}
         <Toaster />
       </body>

@@ -13,6 +13,7 @@ import {
   SheetTrigger
 } from '@/components/ui/sheet'
 import { AccountDropdown } from '../AccountDropdown'
+import { usePathname } from 'next/navigation'
 
 interface User {
   name?: string
@@ -27,6 +28,7 @@ interface HeaderProps {
 
 export default function MainLandingNav({ user, logOut }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false)
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,6 +38,10 @@ export default function MainLandingNav({ user, logOut }: HeaderProps) {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  if (pathname.startsWith("/admin") || pathname.startsWith("/auth")) {
+    return null;
+  }
 
   return (
     <header
@@ -63,7 +69,7 @@ export default function MainLandingNav({ user, logOut }: HeaderProps) {
           </Link>
 
           <nav className="hidden md:flex items-center space-x-4">
-            <NavLink href="#events">
+            <NavLink href={pathname.startsWith("/communities") ? '/' : '#events'}>
               <TicketSlash size={16} />
               <span>Events</span>
             </NavLink>
@@ -99,7 +105,7 @@ export default function MainLandingNav({ user, logOut }: HeaderProps) {
               </SheetHeader>
               <div className="mt-6 flex flex-col space-y-4">
                 <NavLink href="/events" mobile>
-                  communities
+                  communitiess
                 </NavLink>
                 <NavLink href="/events" mobile>
                   Events
