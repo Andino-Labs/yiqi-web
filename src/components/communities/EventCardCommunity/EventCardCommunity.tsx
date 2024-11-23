@@ -6,6 +6,7 @@ interface EventCardProps {
 }
 
 const EventCardCommunity = ({ events }: EventCardProps) => {
+  
   return (
     <>
       <div className="flex flex-col gap-5">
