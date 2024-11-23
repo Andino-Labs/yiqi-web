@@ -1,11 +1,11 @@
 'use client'
 
-import { useState } from "react"
-import EventCardCommunity from "../EventCardCommunity/EventCardCommunity"
-import CommunityMembers from "../CommunityMembers/CommunityMembers"
-import { OrganizationUserType } from "@/schemas/organizerSchema"
-import { UserType } from "@/schemas/userSchema"
-import { EventCommunityType } from "@/schemas/eventSchema"
+import { useState } from 'react'
+import EventCardCommunity from '../EventCardCommunity/EventCardCommunity'
+import CommunityMembers from '../CommunityMembers/CommunityMembers'
+import { OrganizationUserType } from '@/schemas/organizerSchema'
+import { UserType } from '@/schemas/userSchema'
+import { EventCommunityType } from '@/schemas/eventSchema'
 
 interface CommunityTabsProps {
   navItems: string[]
@@ -15,15 +15,25 @@ interface CommunityTabsProps {
   organizers: OrganizationUserType[]
 }
 
-export default function CommunityTab({ navItems, description, events, members, organizers }: CommunityTabsProps) {
+export default function CommunityTab({
+  navItems,
+  description,
+  events,
+  members,
+  organizers
+}: CommunityTabsProps) {
   const [activeTab, setActiveTab] = useState<string>('About')
   const [showAllContent, setShowAllContent] = useState<boolean>(false)
 
   const lines = description.split('\n')
   const visibleContent = showAllContent ? lines : lines.slice(0, 4)
 
-  const validEvents = events.filter(event => new Date(event.startDate) >= new Date())
-  const pastEvents = events.filter(event => new Date(event.startDate) < new Date())
+  const validEvents = events.filter(
+    event => new Date(event.startDate) >= new Date()
+  )
+  const pastEvents = events.filter(
+    event => new Date(event.startDate) < new Date()
+  )
 
   return (
     <>
@@ -49,11 +59,15 @@ export default function CommunityTab({ navItems, description, events, members, o
       </div>
       <div className="mt-2 h-[3px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
 
-      <div className={`bg-[#111827] rounded-lg shadow-sm ${activeTab === 'Members' ? 'w-full' : 'w-full sm:w-1/2'}`}>
+      <div
+        className={`bg-[#111827] rounded-lg shadow-sm ${activeTab === 'Members' ? 'w-full' : 'w-full sm:w-1/2'}`}
+      >
         <div className="p-4 sm:p-6">
           {activeTab === 'About' && (
             <>
-              <h2 className="text-xl sm:text-2xl font-bold mb-4 text-white">About us</h2>
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 text-white">
+                About us
+              </h2>
               <div className="whitespace-pre-wrap">
                 {visibleContent.map((line, index) => (
                   <p key={index} className="text-gray-400 mb-2">
@@ -94,7 +108,9 @@ export default function CommunityTab({ navItems, description, events, members, o
             </>
           )}
 
-          {activeTab === 'Members' && <CommunityMembers members={members} organizers={organizers} />}
+          {activeTab === 'Members' && (
+            <CommunityMembers members={members} organizers={organizers} />
+          )}
         </div>
       </div>
     </>

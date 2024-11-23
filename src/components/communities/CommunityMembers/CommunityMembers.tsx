@@ -1,43 +1,52 @@
 'use client'
 
-import { Search } from 'lucide-react';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Input } from '@/components/ui/input';
-import { useState, useMemo } from 'react';
-import Image from 'next/image';
-import { UserType } from '@/schemas/userSchema';
-import { OrganizationUserType } from '@/schemas/organizerSchema';
+import { Search } from 'lucide-react'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Input } from '@/components/ui/input'
+import { useState, useMemo } from 'react'
+import Image from 'next/image'
+import { UserType } from '@/schemas/userSchema'
+import { OrganizationUserType } from '@/schemas/organizerSchema'
 
 interface CommunityMembersProps {
-  members: UserType[];
-  organizers: OrganizationUserType[];
+  members: UserType[]
+  organizers: OrganizationUserType[]
 }
 
-export default function CommunityMembers({ members, organizers }: CommunityMembersProps) {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedSection, setSelectedSection] = useState('All members');
-  const allOrganizers = useMemo(() => organizers.map((organizer) => organizer.user), [organizers]);
+export default function CommunityMembers({
+  members,
+  organizers
+}: CommunityMembersProps) {
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedSection, setSelectedSection] = useState('All members')
+  const allOrganizers = useMemo(
+    () => organizers.map(organizer => organizer.user),
+    [organizers]
+  )
 
-  const sections = useMemo(() => [
-    { name: 'All members', count: members.length },
-    { name: 'Organizers', count: organizers.length },
-  ], [members.length, organizers.length]);
+  const sections = useMemo(
+    () => [
+      { name: 'All members', count: members.length },
+      { name: 'Organizers', count: organizers.length }
+    ],
+    [members.length, organizers.length]
+  )
 
   const currentMembers = useMemo(() => {
-    return selectedSection === 'All members' ? members : allOrganizers;
-  }, [selectedSection, members, allOrganizers]);
+    return selectedSection === 'All members' ? members : allOrganizers
+  }, [selectedSection, members, allOrganizers])
 
   const filteredMembers = useMemo(() => {
-    return currentMembers.filter((member) =>
+    return currentMembers.filter(member =>
       member.name?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [currentMembers, searchQuery]);
+    )
+  }, [currentMembers, searchQuery])
 
   return (
     <div className="flex flex-col gap-4 bg-[#111827] rounded-lg sm:flex-row sm:gap-8">
       <div className="w-full sm:w-64">
         <nav className="space-y-1">
-          {sections.map((section) => (
+          {sections.map(section => (
             <button
               key={section.name}
               onClick={() => setSelectedSection(section.name)}
@@ -49,7 +58,11 @@ export default function CommunityMembers({ members, organizers }: CommunityMembe
             >
               <span>{section.name}</span>
               <span
-                className={selectedSection === section.name ? 'text-[#00C9A7]' : 'text-gray-500'}
+                className={
+                  selectedSection === section.name
+                    ? 'text-[#00C9A7]'
+                    : 'text-gray-500'
+                }
               >
                 {section.count}
               </span>
@@ -63,7 +76,7 @@ export default function CommunityMembers({ members, organizers }: CommunityMembe
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center mb-4">
             <h2 className="text-xl font-semibold text-white">
               {selectedSection} (
-              {sections.find((s) => s.name === selectedSection)?.count})
+              {sections.find(s => s.name === selectedSection)?.count})
             </h2>
           </div>
           <div className="relative">
@@ -73,14 +86,17 @@ export default function CommunityMembers({ members, organizers }: CommunityMembe
               placeholder="Search members"
               className="pl-10 bg-[#1F2937] border-[#374151] text-gray-300 placeholder:text-gray-400"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
             />
           </div>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2">
-          {filteredMembers.map((member) => (
-            <div key={member.id} className="flex items-center justify-between py-2">
+          {filteredMembers.map(member => (
+            <div
+              key={member.id}
+              className="flex items-center justify-between py-2"
+            >
               <div className="flex items-center gap-3 overflow-hidden">
                 <Avatar className="h-12 w-12">
                   {member.picture ? (
@@ -98,7 +114,9 @@ export default function CommunityMembers({ members, organizers }: CommunityMembe
                   )}
                 </Avatar>
                 <div className="flex-1">
-                  <h3 className="text-sm font-medium text-[#00C9A7] truncate max-w-full">{member.name}</h3>
+                  <h3 className="text-sm font-medium text-[#00C9A7] truncate max-w-full">
+                    {member.name}
+                  </h3>
                 </div>
               </div>
             </div>
@@ -106,5 +124,5 @@ export default function CommunityMembers({ members, organizers }: CommunityMembe
         </div>
       </div>
     </div>
-  );
+  )
 }

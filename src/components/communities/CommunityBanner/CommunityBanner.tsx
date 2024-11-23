@@ -1,27 +1,31 @@
-import Image from 'next/image';
-import { MapPin, Users } from 'lucide-react';
-import { 
-  BiFacebookIcon, 
-  BiInstagramIcon, 
-  BiLinkedinIcon, 
-  BiTiktokIcon, 
-  BiWebsiteIcon 
-} from '@/assets/icons';
-import { PublicCommunityType } from '@/schemas/communitySchema';
-import { OrganizationUserType } from '@/schemas/organizerSchema';
-import { UserType } from '@/schemas/userSchema';
+import Image from 'next/image'
+import { MapPin, Users } from 'lucide-react'
+import {
+  BiFacebookIcon,
+  BiInstagramIcon,
+  BiLinkedinIcon,
+  BiTiktokIcon,
+  BiWebsiteIcon
+} from '@/assets/icons'
+import { PublicCommunityType } from '@/schemas/communitySchema'
+import { OrganizationUserType } from '@/schemas/organizerSchema'
+import { UserType } from '@/schemas/userSchema'
 
 interface CommunityBannerProps {
-  organization: PublicCommunityType;
-  organizers: OrganizationUserType[];
-  members: UserType[];
+  organization: PublicCommunityType
+  organizers: OrganizationUserType[]
+  members: UserType[]
 }
 
-export default function CommunityBanner({ organization, organizers, members }: CommunityBannerProps) {
-  const allOrganizers = organizers.map((organizer) => organizer.user);
-  const firstOrganizer = allOrganizers[0]?.name || 'Unknown Organizer';
-  const remainingOrganizersCount = allOrganizers.length - 1;
-  const membersLength = members.length;
+export default function CommunityBanner({
+  organization,
+  organizers,
+  members
+}: CommunityBannerProps) {
+  const allOrganizers = organizers.map(organizer => organizer.user)
+  const firstOrganizer = allOrganizers[0]?.name || 'Unknown Organizer'
+  const remainingOrganizersCount = allOrganizers.length - 1
+  const membersLength = members.length
 
   return (
     <div className="mb-8 bg-[#111827] rounded-lg overflow-hidden">
@@ -57,9 +61,16 @@ export default function CommunityBanner({ organization, organizers, members }: C
             <div className="flex items-center gap-2 text-gray-400 justify-center md:justify-start">
               <Users className="h-5 w-5" />
               <span>
-                Organized by <span className="font-semibold text-white">{firstOrganizer}</span>
+                Organized by{' '}
+                <span className="font-semibold text-white">
+                  {firstOrganizer}
+                </span>
                 {remainingOrganizersCount > 0 && (
-                  <span> and {remainingOrganizersCount} other{remainingOrganizersCount > 1 ? 's' : ''}</span>
+                  <span>
+                    {' '}
+                    and {remainingOrganizersCount} other
+                    {remainingOrganizersCount > 1 ? 's' : ''}
+                  </span>
                 )}
               </span>
             </div>
@@ -112,14 +123,14 @@ export default function CommunityBanner({ organization, organizers, members }: C
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 interface SocialIconProps {
-  href: string;
-  label: string;
-  hoverColor: string;
-  icon: React.ReactNode;
+  href: string
+  label: string
+  hoverColor: string
+  icon: React.ReactNode
 }
 
 const SocialIcon = ({ href, label, hoverColor, icon }: SocialIconProps) => (
@@ -132,4 +143,4 @@ const SocialIcon = ({ href, label, hoverColor, icon }: SocialIconProps) => (
   >
     {icon}
   </a>
-);
+)

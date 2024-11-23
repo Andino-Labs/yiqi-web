@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { userSchema } from './userSchema';
+import { userSchema } from './userSchema'
 
 export const OrganizerSchema = z.object({
   userId: z.string().cuid('Invalid user ID'),
@@ -19,11 +19,11 @@ export const OrganizationUserSchema = z.object({
   id: z.string(),
   userId: z.string(),
   organizationId: z.string(),
-  role: z.enum(["VIEWER", "USER", "ADMIN"]),
+  role: z.enum(['VIEWER', 'USER', 'ADMIN']),
   createdAt: z.date(),
   updatedAt: z.date(),
-  user: userSchema,
-});
+  user: userSchema
+})
 
 export type OrganizationType = z.infer<typeof OrganizationSchema>
 

@@ -76,7 +76,6 @@ export const EventCommunitySchema = z.object({
   type: z.nativeEnum(EventTypeEnum)
 })
 
-
 export const EventSchema = EventInputSchema.extend({
   id: z.string()
 })

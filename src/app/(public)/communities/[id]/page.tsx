@@ -1,21 +1,25 @@
-import { getOrganization } from '@/services/actions/organizationActions';
-import CommunityTab from '@/components/communities/CommunityTab/CommunityTab';
-import CommunityBanner from '@/components/communities/CommunityBanner/CommunityBanner';
-import { getOrganizationEvents } from '@/services/actions/event/getOrganizationEvents';
-import { getOrganizationContacts } from '@/services/actions/contactActions';
-import { getOrganizersByOrganization } from '@/services/actions/organizerActions';
+import { getOrganization } from '@/services/actions/organizationActions'
+import CommunityTab from '@/components/communities/CommunityTab/CommunityTab'
+import CommunityBanner from '@/components/communities/CommunityBanner/CommunityBanner'
+import { getOrganizationEvents } from '@/services/actions/event/getOrganizationEvents'
+import { getOrganizationContacts } from '@/services/actions/contactActions'
+import { getOrganizersByOrganization } from '@/services/actions/organizerActions'
 
-export default async function CommunityDetail({ params }: { params: { id: string } }) {
+export default async function CommunityDetail({
+  params
+}: {
+  params: { id: string }
+}) {
   const [organization, events, members, organizers] = await Promise.all([
     getOrganization(params.id),
     getOrganizationEvents(params.id),
     getOrganizationContacts(params.id),
-    getOrganizersByOrganization(params.id),
-  ]);
+    getOrganizersByOrganization(params.id)
+  ])
 
-  const description = organization?.description || 'No description available';
+  const description = organization?.description || 'No description available'
 
-  const navItems = ['About', 'Members'];
+  const navItems = ['About', 'Members']
 
   return (
     <div className="flex flex-col min-h-screen bg-black pt-10">
@@ -34,5 +38,5 @@ export default async function CommunityDetail({ params }: { params: { id: string
         />
       </div>
     </div>
-  );
+  )
 }

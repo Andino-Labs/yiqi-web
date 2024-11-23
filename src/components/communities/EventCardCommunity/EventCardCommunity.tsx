@@ -1,15 +1,15 @@
-import { EventCommunityType } from '@/schemas/eventSchema';
-import Image from 'next/image';
+import { EventCommunityType } from '@/schemas/eventSchema'
+import Image from 'next/image'
 
 interface EventCardProps {
-  events: EventCommunityType[];
+  events: EventCommunityType[]
 }
 
 const EventCardCommunity = ({ events }: EventCardProps) => {
   return (
     <>
       <div className="flex flex-col gap-5">
-        {events.map((event) => (
+        {events.map(event => (
           <div
             className="rounded-lg p-4 sm:p-6 w-full max-w-[90%] sm:max-w-[500px] mx-auto bg-gradient-to-r from-[#1E1B4B] to-[#3F1D38] shadow-lg shadow-[#FF0080]/20 relative overflow-hidden"
             key={event.id}
@@ -47,7 +47,7 @@ const EventCardCommunity = ({ events }: EventCardProps) => {
         ))}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default EventCardCommunity;
+export default EventCardCommunity

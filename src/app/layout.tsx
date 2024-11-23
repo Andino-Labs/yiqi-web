@@ -28,7 +28,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-
   const user = await getUser()
 
   return (
@@ -36,10 +35,10 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen w-full`}
       >
-      <MainLandingNav
-        user={{ name: user?.name, picture: user?.picture as string }}
-        logOut={logOut}
-      />
+        <MainLandingNav
+          user={{ name: user?.name, picture: user?.picture as string }}
+          logOut={logOut}
+        />
         {children}
         <Toaster />
       </body>

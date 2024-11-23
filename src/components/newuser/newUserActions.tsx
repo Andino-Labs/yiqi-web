@@ -259,9 +259,7 @@ export default function BeEventAdminForm({
               <FormControl>
                 <Input placeholder="https://www.andinolabs.com/" {...field} />
               </FormControl>
-              <FormDescription>
-                Ingresa la url de tu website
-              </FormDescription>
+              <FormDescription>Ingresa la url de tu website</FormDescription>
               <FormMessage />
             </FormItem>
           )}

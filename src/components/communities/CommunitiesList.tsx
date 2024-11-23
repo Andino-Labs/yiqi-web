@@ -1,13 +1,16 @@
-import CommunityCard from './CommunityCard/CommunityCard';
-import { PublicCommunityType } from '@/schemas/communitySchema';
+import CommunityCard from './CommunityCard/CommunityCard'
+import { PublicCommunityType } from '@/schemas/communitySchema'
 
 type CommunitiesListProps = {
-  communities: PublicCommunityType[];
+  communities: PublicCommunityType[]
   showHeader?: boolean
-};
+}
 
-const CommunitiesList = ({ communities, showHeader = true  }: CommunitiesListProps) => {
-  const hasCommunities = communities.length > 0;
+const CommunitiesList = ({
+  communities,
+  showHeader = true
+}: CommunitiesListProps) => {
+  const hasCommunities = communities.length > 0
 
   return (
     <section id="communities" className="w-full bg-black min-h-screen pt-9">
@@ -24,7 +27,7 @@ const CommunitiesList = ({ communities, showHeader = true  }: CommunitiesListPro
 
           {hasCommunities ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {communities.map((community) => (
+              {communities.map(community => (
                 <CommunityCard key={community.id} community={community} />
               ))}
             </div>
@@ -36,7 +39,7 @@ const CommunitiesList = ({ communities, showHeader = true  }: CommunitiesListPro
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default CommunitiesList;
+export default CommunitiesList

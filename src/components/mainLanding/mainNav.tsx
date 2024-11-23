@@ -28,7 +28,7 @@ interface HeaderProps {
 
 export default function MainLandingNav({ user, logOut }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false)
-  const pathname = usePathname();
+  const pathname = usePathname()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,8 +39,8 @@ export default function MainLandingNav({ user, logOut }: HeaderProps) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  if (pathname.startsWith("/admin") || pathname.startsWith("/auth")) {
-    return null;
+  if (pathname.startsWith('/admin') || pathname.startsWith('/auth')) {
+    return null
   }
 
   return (
@@ -69,7 +69,9 @@ export default function MainLandingNav({ user, logOut }: HeaderProps) {
           </Link>
 
           <nav className="hidden md:flex items-center space-x-4">
-            <NavLink href={pathname.startsWith("/communities") ? '/' : '#events'}>
+            <NavLink
+              href={pathname.startsWith('/communities') ? '/' : '#events'}
+            >
               <TicketSlash size={16} />
               <span>Events</span>
             </NavLink>

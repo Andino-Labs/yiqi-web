@@ -17,12 +17,7 @@ const CommunityCard: React.FC<CommunityCardProps> = ({ community }) => {
 
         <div className="relative h-48 w-full">
           {logo ? (
-            <Image
-              src={logo}
-              alt={name}
-              fill
-              className="object-cover"
-            />
+            <Image src={logo} alt={name} fill className="object-cover" />
           ) : (
             <div className="h-full w-full bg-gray-700 flex items-center justify-center">
               <span className="text-white text-sm">No logo available</span>
