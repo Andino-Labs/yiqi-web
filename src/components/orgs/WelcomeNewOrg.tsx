@@ -12,6 +12,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Progress } from '@/components/ui/progress'
 import { Import, CreditCard, Calendar, Bell } from 'lucide-react'
 import Link from 'next/link'
+import { translations } from '@/lib/translations/translations'
 
 type Props = {
   importedContacts: boolean
@@ -31,32 +32,32 @@ export default function WelcomeScreen({
   const [tasks] = useState([
     {
       id: 1,
-      title: 'Import your contacts',
-      description: 'Get started by importing your contact list',
+      title: translations.es.welcomeScreenTasksImportContacts,
+      description: translations.es.welcomeScreenTasksImportDescription,
       icon: Import,
       completed: importedContacts,
       link: `/admin/organizations/${orgId}/contacts`
     },
     {
       id: 2,
-      title: 'Setup payments',
-      description: 'Configure your payment settings to receive funds',
+      title: translations.es.welcomeScreenTasksSetupPayments,
+      description: translations.es.welcomeScreenTasksPaymentDescription,
       icon: CreditCard,
       completed: paymentsIsSetup,
       link: `/admin/organizations/${orgId}/billing`
     },
     {
       id: 3,
-      title: 'Create new events',
-      description: 'Start planning and creating your first event',
+      title: translations.es.welcomeScreenTasksCreateEvents,
+      description: translations.es.welcomeScreenTasksEventDescription,
       icon: Calendar,
       completed: eventCreated,
       link: `/admin/organizations/${orgId}/events`
     },
     {
       id: 4,
-      title: 'Send notifications',
-      description: 'Reach out to your contacts with important updates',
+      title: translations.es.welcomeScreenTasksSendNotifications,
+      description: translations.es.welcomeScreenTasksNotificationDescription,
       icon: Bell,
       completed: notificationsSent,
       link: `/admin/organizations/${orgId}/chat`
@@ -71,22 +72,25 @@ export default function WelcomeScreen({
       <Card className="w-full max-w-4xl mx-auto">
         <CardHeader>
           <CardTitle className="text-3xl font-bold text-center text-purple-800">
-            Welcome, New Admin!
+            {translations.es.welcomeScreenTitle}
           </CardTitle>
           <CardDescription className="text-center text-lg mt-2">
-            Let&apos;s get your organization set up and running!
+            {translations.es.welcomeScreenDescription}
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {/* Progress bar section */}
           <div className="mb-6">
             <p className="text-sm font-medium text-gray-700 mb-2">
-              Your progress
+              {translations.es.welcomeScreenProgressTitle}
             </p>
             <Progress value={progress} className="w-full h-2" />
             <p className="text-right text-sm text-gray-600 mt-1">
-              {completedTasks} of {tasks.length} tasks completed
+              {completedTasks} {translations.es.welcomeOf} {tasks.length}{' '}
+              {translations.es.welcomeScreenTasks}
             </p>
           </div>
+          {/* Task Cards */}
           <div className="grid gap-6 md:grid-cols-2">
             {tasks.map(task => (
               <Link href={task.link} key={task.id}>

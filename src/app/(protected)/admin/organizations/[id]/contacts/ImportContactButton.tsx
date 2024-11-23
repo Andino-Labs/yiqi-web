@@ -1,6 +1,7 @@
 'use client'
 
 import { useToast } from '@/hooks/use-toast'
+import { translations } from '@/lib/translations/translations'
 import { importUsersAction } from '@/services/actions/importActions'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -63,7 +64,7 @@ export function ImportContactButton(params: { organizationId: string }) {
       onClick={handleImportContacts}
       disabled={isLoading}
     >
-      {isLoading ? 'Importing...' : 'Import Contacts'}
+      {isLoading ? translations.es.importing : translations.es.importContacts}
     </button>
   )
 }

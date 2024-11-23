@@ -17,6 +17,7 @@ import { TriangleAlert } from 'lucide-react'
 
 import { useRouter } from 'next/navigation'
 import { deleteUserAccount } from '@/services/actions/userActions'
+import { translations } from '@/lib/translations/translations'
 
 export default function DeleteAccountDialog() {
   const [isLoading, setIsLoading] = useState(false)
@@ -29,23 +30,22 @@ export default function DeleteAccountDialog() {
       const result = await deleteUserAccount()
       if (result.success) {
         toast({
-          title: 'Account Deleted',
-          description:
-            'Your account has been successfully deleted. You have been logged out.'
+          title: translations.es.accountDeleted,
+          description: translations.es.accountDeletedDescription
         })
         router.push('/auth')
       } else {
         toast({
-          title: 'ERROR:',
-          description: result.error ?? 'Failed to delete account',
+          title: translations.es.error,
+          description: result.error ?? translations.es.errorDeleting,
           variant: 'destructive'
         })
       }
     } catch (error) {
       console.log(error)
       toast({
-        title: 'ERROR:',
-        description: 'Something went wrong',
+        title: translations.es.error,
+        description: translations.es.somethingWentWrong,
         variant: 'destructive'
       })
     } finally {
@@ -58,21 +58,22 @@ export default function DeleteAccountDialog() {
       <AlertDialogTrigger asChild>
         <Button variant="destructive" className="flex items-center space-x-2">
           <TriangleAlert className="h-4 w-4" />
-          <span>Delete Account</span>
+          <span>{translations.es.deleteAccount}</span>
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>{translations.es.areYouSure}</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+            {translations.es.actionCannotBeUndone}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>{translations.es.cancel}</AlertDialogCancel>
           <AlertDialogAction onClick={handleDelete} disabled={isLoading}>
-            {isLoading ? 'Deleting...' : 'Delete Account'}
+            {isLoading
+              ? translations.es.deleting
+              : translations.es.deleteAccountConfirmation}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

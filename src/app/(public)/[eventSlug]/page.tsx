@@ -1,6 +1,6 @@
-import { EventPage } from '@/components/lumalike/template1'
+//import { EventPage } from '@/components/lumalike/template1'
 // import { DragDropZone } from '@/components/upload/upload'
-const event = {
+/*const event = {
   title: 'Tech Grill',
   subtitle: 'El Gran Cierre de Lima Tech Week 2024',
   date: 'sabado, November 9',
@@ -33,7 +33,7 @@ Lima es famosa por su pasión por la buena comida, y en SaborTech llevamos esta 
     name: 'Lima Tech Week 2024',
     url: '/lima-tech-week'
   }
-}
+}*/
 export default async function Page({
   params
 }: {
@@ -42,7 +42,7 @@ export default async function Page({
   console.log(params.eventSlug)
   return (
     <>
-      <EventPage event={event} />
+      <div>Eventos</div>
     </>
   )
 }

@@ -3,6 +3,7 @@ import GoogleOAuthButton from '@/components/auth/googleButton'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
+import LinkedInOAuthButton from '@/components/auth/LinkedinButton'
 
 export default async function Page() {
   return (
@@ -32,6 +33,7 @@ export default async function Page() {
         <CardContent className="px-6 pb-8">
           <div className="space-y-4 ">
             <GoogleOAuthButton />
+            <LinkedInOAuthButton />
           </div>
         </CardContent>
 

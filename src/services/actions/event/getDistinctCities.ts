@@ -1,3 +1,5 @@
+'use server'
+
 import prisma from '@/lib/prisma'
 
 type locationObject = { city: string; country: string }

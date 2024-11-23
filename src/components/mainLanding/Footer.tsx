@@ -1,3 +1,4 @@
+import { translations } from '@/lib/translations/translations'
 import { Mail } from 'lucide-react'
 import Link from 'next/link'
 
@@ -8,7 +9,6 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
         {/* Izquierda: Logo y Links */}
         <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 items-center">
-          <span className="font-bold text-lg">Yiki</span>
           {/* <Link href="#" className="hover:underline">
             Whats New
           </Link>
@@ -21,6 +21,7 @@ export default function Footer() {
           <Link href="#" className="hover:underline">
             Help
           </Link> */}
+          <span className="font-bold text-lg">Yiqi</span>
         </div>
 
         {/* Derecha: Iconos sociales */}
@@ -28,7 +29,11 @@ export default function Footer() {
           {/* <button className="p-2 rounded-full hover:bg-white hover:text-black">
             <Search className="w-5 h-5" />
           </button> */}
-          <button className="p-2 rounded-full hover:bg-white hover:text-black">
+          <button className="p-2 rounded-full hover:bg-white hover:text-black"></button>
+          <button
+            className="p-2 rounded-full hover:bg-white hover:text-black"
+            aria-label={translations.es.contactUs}
+          >
             <Mail className="w-5 h-5" />
           </button>
           {/* <button className="p-2 rounded-full hover:bg-white hover:text-black">
@@ -42,14 +47,8 @@ export default function Footer() {
 
       {/* Enlace inferior */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 flex justify-center space-x-6 text-sm">
-        <Link href="#" className="hover:underline">
-          Terms
-        </Link>
-        <Link href="#" className="hover:underline">
-          Privacy
-        </Link>
-        <Link href="#" className="hover:underline">
-          Security
+        <Link href="/politics/privacy" className="hover:underline">
+          {translations.es.privacy}
         </Link>
       </div>
     </footer>

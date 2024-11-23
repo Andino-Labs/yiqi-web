@@ -24,7 +24,7 @@ export const appRouter = router({
     }),
 
   getPublicEvents: publicProcedure.query(async () => {
-    const events = await getPublicEvents()
+    const events = await getPublicEvents({})
     return PublicEventsSchema.parse(events)
   }),
 

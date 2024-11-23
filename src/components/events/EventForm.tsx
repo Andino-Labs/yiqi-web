@@ -47,6 +47,7 @@ import {
   DialogFooter
 } from '@/components/ui/dialog'
 import Link from 'next/link'
+import { translations } from '@/lib/translations/translations'
 
 type Props = {
   organizationId: string
@@ -257,7 +258,7 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
         setLoading(false)
       } catch (error) {
         setLoading(false)
-        console.error('Failed to save event:', error)
+        console.error(translations.es.failedToSaveEvent, error)
       }
     }
   }
@@ -287,7 +288,7 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
                   ) : (
                     <div className="h-full w-full flex items-center justify-center">
                       <span className="text-sm text-gray-500">
-                        Select an Image
+                        {translations.es.selectAnImage}
                       </span>
                     </div>
                   )}
@@ -315,7 +316,7 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
                     <div className="relative">
                       <Input
                         id="event-name"
-                        placeholder="Event Name"
+                        placeholder={translations.es.eventName}
                         className="text-xl border-0 px-0 focus-visible:ring-0"
                         {...field}
                       />
@@ -338,7 +339,7 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
               <div className="flex-1 space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <div className="mb-2">Start</div>
+                    <div className="mb-2">{translations.es.start}</div>
                     <div className="grid grid-cols-2 gap-2">
                       <FormField
                         control={form.control}
@@ -375,7 +376,7 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
                     </div>
                   </div>
                   <div>
-                    <div className="mb-2">End</div>
+                    <div className="mb-2">{translations.es.end}</div>
                     <div className="grid grid-cols-2 gap-2">
                       <FormField
                         control={form.control}
@@ -414,7 +415,7 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
                 </div>
                 <Select defaultValue="GMT-05:00">
                   <SelectTrigger>
-                    <SelectValue placeholder="Select timezone" />
+                    <SelectValue placeholder={translations.es.selectTimezone} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="GMT-05:00">GMT-05:00 Lima</SelectItem>
@@ -472,7 +473,7 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Users className="h-5 w-5" />
-                <span>Capacity</span>
+                <span>{translations.es.capacity}</span>
               </div>
               <FormField
                 control={form.control}
@@ -482,7 +483,7 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
                     <FormControl>
                       <Input
                         type="number"
-                        placeholder="Unlimited"
+                        placeholder={translations.es.unlimited}
                         min={1}
                         className="w-32 text-right"
                         value={field.value?.toString()}
@@ -511,8 +512,12 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
                 }
               }}
             >
-              <span>Tickets</span>
-              <span>{showTicketManager ? 'Ocultar' : 'Editar'}</span>
+              <span>{translations.es.tickets}</span>
+              <span>
+                {showTicketManager
+                  ? translations.es.hide
+                  : translations.es.edit}
+              </span>
             </div>
 
             {tickets.length > 0 && !showTicketManager && (
@@ -527,12 +532,14 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
                     </div>
                     <div className="text-center">
                       <span className="text-sm text-gray-500">
-                        {ticket.price > 0 ? `$${ticket.price}` : 'Free'}
+                        {ticket.price > 0
+                          ? `$${ticket.price}`
+                          : translations.es.free}
                       </span>
                     </div>
                     <div className="text-right">
                       <span className="text-sm text-gray-500">
-                        {ticket.limit} Tickets
+                        {ticket.limit} {translations.es.tickets}
                       </span>
                     </div>
                   </div>
@@ -554,20 +561,21 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
             <Dialog open={showStripeDialog} onOpenChange={setShowStripeDialog}>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Stripe Account Required</DialogTitle>
+                  <DialogTitle>
+                    {translations.es.stripeAccountRequired}
+                  </DialogTitle>
                   <DialogDescription>
-                    To charge for tickets, please set up your Stripe account in
-                    the billing settings.
+                    {translations.es.stripeSetupInfo}
                     <Link
                       href={`/admin/organizations/${organizationId}/billing`}
                     >
-                      Click here start
+                      {translations.es.clickHereStart}
                     </Link>
                   </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
                   <Button onClick={() => setShowStripeDialog(false)}>
-                    Close
+                    {translations.es.close}
                   </Button>
                 </DialogFooter>
               </DialogContent>
@@ -578,11 +586,11 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
               <Button type="submit" className="w-full">
                 {loading
                   ? event
-                    ? 'Actualizando Evento...'
-                    : 'Creando Evento...'
+                    ? translations.es.updatingEvent
+                    : translations.es.creatingEvent
                   : event
-                    ? 'Actualizar Evento'
-                    : 'Crear Evento'}
+                    ? translations.es.updateEvent
+                    : translations.es.createEvent}
               </Button>
             </div>
           </div>

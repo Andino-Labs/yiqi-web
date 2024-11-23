@@ -1,3 +1,4 @@
+import { translations } from '@/lib/translations/translations'
 import {
   UsersIcon,
   BarChart3Icon,
@@ -227,26 +228,26 @@ export const eventDetails = {
 
 export const communityDetail = {
   id: 'org1',
-  name: 'Tech Innovators',
+  name: translations.es.communityName,
   logo: 'https://images.unsplash.com/photo-1542744095-291d1f67b221',
-  description: 'A community of tech enthusiasts driving innovation.',
+  description: translations.es.communityDescription,
   colour: '#4CAF50',
   events: [
     {
       id: 'event1',
-      title: 'Tech Expo 2024',
+      title: translations.es.eventTitle1,
       startDate: '2024-11-05T10:00:00Z',
       endDate: '2024-11-06T18:00:00Z',
-      location: 'San Francisco, CA',
+      location: translations.es.eventLocation1,
       virtualLink: 'https://tech-expo-2024.com',
       maxAttendees: 500
     },
     {
       id: 'event2',
-      title: 'AI Conference',
+      title: translations.es.eventTitle2,
       startDate: '2024-12-12T09:00:00Z',
       endDate: '2024-12-14T17:00:00Z',
-      location: 'New York, NY',
+      location: translations.es.eventLocation2,
       virtualLink: 'https://ai-conference.com',
       maxAttendees: 300
     }
@@ -254,12 +255,12 @@ export const communityDetail = {
   organizers: [
     {
       name: 'John Doe',
-      role: 'ADMIN',
+      role: translations.es.roleAdmin,
       avatar: 'https://randomuser.me/api/portraits/men/45.jpg'
     },
     {
       name: 'Jane Smith',
-      role: 'VIEWER',
+      role: translations.es.roleViewer,
       avatar: 'https://randomuser.me/api/portraits/women/60.jpg'
     }
   ],
@@ -268,50 +269,44 @@ export const communityDetail = {
   queueJobs: [
     {
       id: 'queue1',
-      description: 'Process event registrations'
+      description: translations.es.queueJobDescription
     }
   ],
   customFields: {
-    focus: 'Innovation in AI and Robotics',
-    partnerships: 'Collaborating with major tech companies'
+    focus: translations.es.customFocus,
+    partnerships: translations.es.customPartnerships
   }
 }
 
 export const features = [
   {
-    title: 'Community Management',
-    description:
-      'Efficiently manage your community members, roles, and permissions with our intuitive tools.',
+    title: translations.es.featureCommunityManagement,
+    description: translations.es.featureCommunityManagementDescription,
     icon: UsersIcon
   },
   {
-    title: 'Analytics & Insights',
-    description:
-      "Make data-driven decisions with comprehensive analytics about your community's engagement.",
+    title: translations.es.featureAnalyticsInsights,
+    description: translations.es.featureAnalyticsInsightsDescription,
     icon: BarChart3Icon
   },
   {
-    title: 'Event Organization',
-    description:
-      'Plan, schedule, and manage community events seamlessly with integrated calendar features.',
+    title: translations.es.featureEventOrganization,
+    description: translations.es.featureEventOrganizationDescription,
     icon: CalendarIcon
   },
   {
-    title: 'Discussion Forums',
-    description:
-      'Foster meaningful conversations with customizable discussion spaces and moderation tools.',
+    title: translations.es.featureDiscussionForums,
+    description: translations.es.featureDiscussionForumsDescription,
     icon: MessageSquareIcon
   },
   {
-    title: 'Customization',
-    description:
-      "Tailor the platform to match your community's unique needs and branding requirements.",
+    title: translations.es.featureCustomization,
+    description: translations.es.featureCustomizationDescription,
     icon: Settings2Icon
   },
   {
-    title: 'Community Engagement',
-    description:
-      'Build stronger connections with tools designed to increase member participation and interaction.',
+    title: translations.es.featureCommunityEngagement,
+    description: translations.es.featureCommunityEngagementDescription,
     icon: HeartHandshakeIcon
   }
 ]

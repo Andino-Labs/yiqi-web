@@ -1,5 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { features } from '@/data/events'
+import { translations } from '@/lib/translations/translations'
 import { GitHubLogoIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
 
@@ -10,11 +11,10 @@ export default function Features() {
         <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
           <div className="space-y-2">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-white">
-              Platform Features
+              {translations.es.featuresTitle}
             </h2>
             <p className="mx-auto max-w-[700px] text-gray-400 md:text-xl/relaxed">
-              Everything you need to build and manage thriving communities, all
-              in one place.
+              {translations.es.featuresDescription}
             </p>
           </div>
         </div>
@@ -50,16 +50,14 @@ export default function Features() {
 
         {/* Call to Action */}
         <div className="mt-12 text-center">
-          <p className="text-gray-400 mb-4">
-            Open source and built for community builders
-          </p>
+          <p className="text-gray-400 mb-4">{translations.es.featuresCTA}</p>
           <div className="inline-flex items-center justify-center rounded-lg border border-gray-800 bg-gray-900 px-4 py-2 text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
             <Link
               href={'https://github.com/Andino-Labs/yiqi-mobile'}
               className="flex gap-2 items-center justify-center"
             >
               <GitHubLogoIcon />
-              View on GitHub
+              {translations.es.featuresViewOnGitHub}
             </Link>
           </div>
         </div>

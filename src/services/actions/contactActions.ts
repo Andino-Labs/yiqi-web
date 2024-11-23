@@ -3,6 +3,7 @@
 import prisma from '@/lib/prisma'
 import { userSchema } from '@/schemas/userSchema'
 
+// org membership
 export async function getOrganizationContacts(organizationId: string) {
   const pastRegistrationPromise = prisma.eventRegistration.findMany({
     where: {

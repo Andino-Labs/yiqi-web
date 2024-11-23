@@ -34,7 +34,7 @@ export default function Navbar(props: GrillNavbarProps) {
       >
         <Link href="/" className="flex items-center">
           <Image
-            src="/logo.svg"
+            src="/logo.png"
             alt="Logo"
             height={100}
             width={100}

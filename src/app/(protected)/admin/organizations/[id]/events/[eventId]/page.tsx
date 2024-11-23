@@ -6,6 +6,7 @@ import { Roles } from '@prisma/client'
 import Link from 'next/link'
 import { EventAdminView } from '@/components/EventAdminView'
 import { getEventRegistrations } from '@/services/actions/event/getEventAttendees'
+import { translations } from '@/lib/translations/translations'
 
 export default async function EventDetailsPage({
   params
@@ -17,7 +18,7 @@ export default async function EventDetailsPage({
   const attendees = await getEventRegistrations(params.eventId)
 
   if (!event) {
-    return <div>Event not found</div>
+    return <div>{translations.es.eventNotFound}</div>
   }
 
   if (!user) {
@@ -37,34 +38,42 @@ export default async function EventDetailsPage({
           }}
         >
           <div className="flex justify-between items-center mb-4">
-            <h1 className="text-2xl font-bold">Event: {event.title}</h1>
+            <h1 className="text-2xl font-bold">
+              {translations.es.eventTitleInEventDetails} {event.title}
+            </h1>
             <div className="flex space-x-2">
               <Link
                 href={`/admin/organizations/${params.id}/events`}
                 className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gray-200 text-gray-800 hover:bg-gray-300 h-10 px-4 py-2"
               >
-                Back to Events
+                {translations.es.backToEvents}
               </Link>
               <button className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-red-600 text-white hover:bg-red-700 h-10 px-4 py-2">
-                Delete Event
+                {translations.es.deleteEvent}
               </button>
             </div>
           </div>
 
           <section className="border rounded-md p-4">
-            <h2 className="text-xl font-bold mb-2">Event Details</h2>
+            <h2 className="text-xl font-bold mb-2">
+              {translations.es.eventDetails}
+            </h2>
             <div className="flex justify-between mb-2">
               <div>
-                <span className="font-semibold">Start Date</span>
+                <span className="font-semibold">
+                  {translations.es.startDate}
+                </span>
                 <p>{new Date(event.startDate).toLocaleString()}</p>
               </div>
               <div>
-                <span className="font-semibold">End Date</span>
+                <span className="font-semibold">{translations.es.endDate}</span>
                 <p>{new Date(event.endDate).toLocaleString()}</p>
               </div>
             </div>
             <div>
-              <span className="font-semibold">Description</span>
+              <span className="font-semibold">
+                {translations.es.description}
+              </span>
               <p>{event.description}</p>
             </div>
           </section>

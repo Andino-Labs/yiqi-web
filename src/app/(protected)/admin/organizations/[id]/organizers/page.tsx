@@ -4,6 +4,7 @@ import Link from 'next/link'
 import AddOrganizerButton from './AddOrganizerButton'
 import OrganizationLayout from '@/components/orgs/OrganizationLayout'
 import { getUser } from '@/lib/auth/lucia'
+import { translations } from '@/lib/translations/translations'
 
 export default async function OrganizersPage({
   params
@@ -15,7 +16,7 @@ export default async function OrganizersPage({
   const organizers = await getOrganizersByOrganization(params.id)
 
   if (!organization || !user) {
-    return <div>Organization not found</div>
+    return <div>{translations.es.organizationNotFound}</div>
   }
 
   return (
@@ -30,7 +31,7 @@ export default async function OrganizersPage({
     >
       <div className="container mx-auto p-4">
         <h1 className="text-2xl font-bold mb-4">
-          Manage Organizers for {organization.name}
+          {translations.es.manageOrganizersFor} {organization.name}
         </h1>
         <ul className="space-y-2">
           {organizers.map(organizer => (
@@ -44,7 +45,7 @@ export default async function OrganizersPage({
           href={`/admin/organizations/${params.id}`}
           className="mt-4 inline-block text-blue-500 hover:underline"
         >
-          Back to Organization Dashboard
+          {translations.es.backToOrganizationDashboard}
         </Link>
       </div>
     </OrganizationLayout>

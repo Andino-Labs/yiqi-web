@@ -2,18 +2,19 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import { communityHighlights } from '@/data/events'
+import { translations } from '@/lib/translations/translations'
 
 const CommunityHighlights = () => {
   return (
-    <section className="w-full bg-black py-12 ">
+    <section className="w-full bg-black py-12">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-white">
-            Featured Communities
+            {translations.es.highlightsTitle}
           </h2>
           <p className="mt-2 text-gray-400">
-            Join these amazing communities and connect with like-minded people
+            {translations.es.highlightsSubtitle}
           </p>
         </div>
 
