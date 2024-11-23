@@ -35,25 +35,26 @@ import { Separator } from '@/components/ui/separator'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useToast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
-import {
-  ProfileDataValues,
-  profileFormSchema,
-  type ProfileFormValues
-} from '@/schemas/userSchema'
 import { updateUserProfile } from '@/services/actions/userActions'
 import { UploadToS3 } from '@/lib/uploadToS3'
 import ProfilePictureUpload from './UpdatePictureUpload'
 import DeleteAccountDialog from './DeleteAccountDialog'
 import { Input } from '../ui/input'
+import {
+  profileWithPrivacySchema,
+  ProfileWithPrivacy
+} from '@/schemas/userSchema'
+import { translations } from '@/lib/translations/translations'
 
-function UpdateProfileForm({ user }: { user: ProfileDataValues }) {
+function UpdateProfileForm({ user }: { user: ProfileWithPrivacy }) {
   const [isLoading, setIsLoading] = useState(false)
   const { toast } = useToast()
   const router = useRouter()
 
-  const form = useForm<ProfileFormValues>({
-    resolver: zodResolver(profileFormSchema),
+  const form = useForm<ProfileWithPrivacy>({
+    resolver: zodResolver(profileWithPrivacySchema),
     defaultValues: {
+      ...user,
       name: user.name ?? '',
       email: user.email ?? '',
       phoneNumber: user.phoneNumber ?? '',
@@ -69,7 +70,7 @@ function UpdateProfileForm({ user }: { user: ProfileDataValues }) {
     }
   })
 
-  async function onSubmit(data: ProfileFormValues) {
+  async function onSubmit(data: ProfileWithPrivacy) {
     setIsLoading(true)
     try {
       let imageUrl: string | null = null
@@ -82,30 +83,57 @@ function UpdateProfileForm({ user }: { user: ProfileDataValues }) {
           return
         }
       }
-      const profileData: ProfileDataValues = {
+      const profileData: ProfileWithPrivacy = {
         ...data,
         picture: imageUrl ?? user.picture,
         id: user.id
       }
+
       const result = await updateUserProfile(profileData)
       if (result.success) {
         router.refresh()
         toast({
-          description: 'Profile updated successfully',
+          description: translations.es.profileUpdated,
           variant: 'default'
+        })
+      } else {
+        toast({
+          title: translations.es.error,
+          description: translations.es.updateFailed,
+          variant: 'destructive'
         })
       }
     } catch (error) {
       console.log(error)
       toast({
-        title: 'Error',
-        description: 'Failed to update profile. Please try again.',
+        title: translations.es.error,
+        description: translations.es.somethingWentWrong,
         variant: 'destructive'
       })
     } finally {
       setIsLoading(false)
     }
   }
+
+  const renderPrivacySwitch = (
+    field: keyof ProfileWithPrivacy['privacySettings'],
+    label: string
+  ) => (
+    <div className="flex items-center justify-between">
+      <FormLabel>{label}</FormLabel>
+      <div className="flex items-center justify-between gap-2">
+        <FormLabel>Set to Public</FormLabel>
+        <Switch
+          checked={form.watch(`privacySettings.${field}`)}
+          onCheckedChange={checked =>
+            form.setValue(`privacySettings.${field}`, checked, {
+              shouldDirty: true
+            })
+          }
+        />
+      </div>
+    </div>
+  )
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -132,7 +160,9 @@ function UpdateProfileForm({ user }: { user: ProfileDataValues }) {
     >
       <Card className="bg-transparent border-none">
         <CardHeader>
-          <CardTitle className="text-2xl">Profile Settings</CardTitle>
+          <CardTitle className="text-2xl">
+            {translations.es.profileSettings}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -160,14 +190,14 @@ function UpdateProfileForm({ user }: { user: ProfileDataValues }) {
                     name={'name'}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Name</FormLabel>
+                        <FormLabel>{translations.es.name}</FormLabel>
                         <FormControl>
                           <div className="relative">
                             <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                             <Input
                               type="text"
                               className="pl-9 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
-                              placeholder="Enter your name"
+                              placeholder={translations.es.enterYourName}
                               {...field}
                             />
                           </div>
@@ -183,14 +213,14 @@ function UpdateProfileForm({ user }: { user: ProfileDataValues }) {
                     name={'email'}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Email</FormLabel>
+                        {renderPrivacySwitch('email', translations.es.email)}
                         <FormControl>
                           <div className="relative">
                             <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                             <Input
                               type="text"
                               className="pl-9 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
-                              placeholder="Enter your Email"
+                              placeholder={translations.es.enterYourEmail}
                               disabled
                               {...field}
                             />
@@ -207,7 +237,10 @@ function UpdateProfileForm({ user }: { user: ProfileDataValues }) {
                     name={'phoneNumber'}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Phone Number</FormLabel>
+                        {renderPrivacySwitch(
+                          'phoneNumber',
+                          translations.es.phoneNumber
+                        )}
                         <FormControl>
                           <div className="relative">
                             <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -230,14 +263,14 @@ function UpdateProfileForm({ user }: { user: ProfileDataValues }) {
                     name={'company'}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Company</FormLabel>
+                        <FormLabel>{translations.es.company}</FormLabel>
                         <FormControl>
                           <div className="relative">
                             <Building2 className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                             <Input
                               type="text"
                               className="pl-9 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
-                              placeholder="Enter your Company"
+                              placeholder={translations.es.enterCompany}
                               {...field}
                             />
                           </div>
@@ -258,21 +291,20 @@ function UpdateProfileForm({ user }: { user: ProfileDataValues }) {
                 animate="visible"
                 className="space-y-6"
               >
-                {/* {FORM_SECTIONS.professional.map(renderFormField)} */}
                 <div>
                   <FormField
                     control={form.control}
                     name={'position'}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Position</FormLabel>
+                        <FormLabel>{translations.es.position}</FormLabel>
                         <FormControl>
                           <div className="relative">
                             <Briefcase className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                             <Input
                               type="text"
                               className="pl-9 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
-                              placeholder="Enter your Position"
+                              placeholder={translations.es.enterPosition}
                               {...field}
                             />
                           </div>
@@ -284,18 +316,13 @@ function UpdateProfileForm({ user }: { user: ProfileDataValues }) {
                 </div>
 
                 <div className="space-y-2">
-                  <label
-                    htmlFor="shortDescription"
-                    className="text-sm font-medium"
-                  >
-                    Bio
-                  </label>
+                  <FormLabel>{translations.es.bio}</FormLabel>
                   <div className="relative">
                     <FileText className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Textarea
                       {...form.register('shortDescription')}
                       className="min-h-[100px] pl-9 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
-                      placeholder="Tell us about yourself"
+                      placeholder={translations.es.tellUsAboutYourself}
                     />
                   </div>
                 </div>
@@ -316,14 +343,14 @@ function UpdateProfileForm({ user }: { user: ProfileDataValues }) {
                     name={'x'}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>X</FormLabel>
+                        {renderPrivacySwitch('x', 'X')}
                         <FormControl>
                           <div className="relative">
                             <X className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                             <Input
                               type="text"
                               className="pl-9 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
-                              placeholder="Enter your x"
+                              placeholder={translations.es.enterYourX}
                               {...field}
                             />
                           </div>
@@ -339,14 +366,14 @@ function UpdateProfileForm({ user }: { user: ProfileDataValues }) {
                     name={'linkedin'}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Linkedin</FormLabel>
+                        {renderPrivacySwitch('linkedin', 'Linkedin')}
                         <FormControl>
                           <div className="relative">
                             <Linkedin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                             <Input
                               type="text"
                               className="pl-9 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
-                              placeholder="Enter your linkedin"
+                              placeholder={translations.es.enterLinkedinURL}
                               {...field}
                             />
                           </div>
@@ -369,7 +396,7 @@ function UpdateProfileForm({ user }: { user: ProfileDataValues }) {
                             <Input
                               type="text"
                               className="pl-9 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
-                              placeholder="Enter your instagram"
+                              placeholder={translations.es.enterInstagramURL}
                               {...field}
                             />
                           </div>
@@ -385,14 +412,17 @@ function UpdateProfileForm({ user }: { user: ProfileDataValues }) {
                     name={'website'}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Website</FormLabel>
+                        {renderPrivacySwitch(
+                          'website',
+                          translations.es.website
+                        )}
                         <FormControl>
                           <div className="relative">
                             <Globe className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                             <Input
                               type="text"
                               className="pl-9 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
-                              placeholder="Enter your website"
+                              placeholder={translations.es.enterWebsiteURL}
                               {...field}
                             />
                           </div>
@@ -418,11 +448,11 @@ function UpdateProfileForm({ user }: { user: ProfileDataValues }) {
                     <div className="text-sm font-medium">
                       <div className="flex items-center gap-2">
                         <BellOff className="h-4 w-4" />
-                        Stop Communications
+                        {translations.es.stopCommunications}
                       </div>
                     </div>
                     <div className="text-sm text-muted-foreground">
-                      Disable all marketing communications and newsletters
+                      {translations.es.disableCommunications}
                     </div>
                   </div>
                   <Switch
@@ -437,7 +467,7 @@ function UpdateProfileForm({ user }: { user: ProfileDataValues }) {
 
                 <div className="flex items-center gap-2 rounded-lg border p-4">
                   <Shield className="h-4 w-4" />
-                  <div className="flex-1">Role</div>
+                  <div className="flex-1">{translations.es.role}</div>
                   <Badge>User</Badge>
                 </div>
               </motion.div>
@@ -452,12 +482,12 @@ function UpdateProfileForm({ user }: { user: ProfileDataValues }) {
                   {isLoading ? (
                     <>
                       <Loader2 className="h-4 w-4 animate-spin" />
-                      <span>Saving...</span>
+                      <span>{translations.es.saving}</span>
                     </>
                   ) : (
                     <>
                       <Save className="h-4 w-4" />
-                      <span>Save Changes</span>
+                      <span>{translations.es.saveChanges}</span>
                     </>
                   )}
                 </Button>

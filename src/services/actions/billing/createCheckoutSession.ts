@@ -59,15 +59,13 @@ export const createCheckoutSession = async (offerings: Props[]) => {
   const application_fee_amount =
     line_items.reduce((acc, item) => {
       return acc + item.price_data.unit_amount * item.quantity
-    }, 0) *
-    commission *
-    100
+    }, 0) * commission
 
   const session = await stripe.checkout.sessions.create(
     {
       line_items,
       payment_intent_data: {
-        application_fee_amount
+        application_fee_amount: Math.round(application_fee_amount)
       },
       mode: 'payment',
       ui_mode: 'embedded',

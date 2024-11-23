@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { Upload } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
+import { translations } from '@/lib/translations/translations'
 
 interface ProfilePictureUploadProps {
   readonly currentValue?: string | File | null
@@ -88,7 +89,9 @@ export default function ProfilePictureUpload({
           className="absolute inset-0 bg-primary"
         />
         <span className={isDragActive ? 'text-primary-foreground' : ''}>
-          {isDragActive ? 'Drop here' : 'Change Picture'}
+          {isDragActive
+            ? translations.es.dropHere
+            : translations.es.changePicture}
         </span>
       </Button>
     </motion.div>

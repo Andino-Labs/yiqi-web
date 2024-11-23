@@ -25,7 +25,7 @@ model User {
   emailVerified     DateTime?
   picture           String?
   phoneNumber       String?
-  privacySettings   PrivacySetting[] @default([])
+  privacySettings   Json                @default("{}")
   accounts          Account[]
   session           Session[]
   ownerOf           Organization[]
@@ -47,6 +47,7 @@ model User {
 
   QueueJob QueueJob[]
 
+  // for actual shape of this checkout userDataCollectedShema
   dataCollected Json?
 
   registeredEvents EventRegistration[] @relation("registrationUser")
@@ -58,6 +59,9 @@ model User {
   OrganizationContact OrganizationContact[]
 
   deletedAt DateTime?
+
+  linkedinAccessToken String?
+  
 }
 
 enum Roles {
@@ -381,7 +385,7 @@ model Form {
   eventId        String?
   name           String
   description    String?
-  fields         Json
+  fields         Json             @default("[]")
   submissions    FormSubmission[]
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt

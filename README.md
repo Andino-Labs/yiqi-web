@@ -9,17 +9,17 @@ Current features include:
 - Event management (similar to Luma)
 - CRM functionality (comparable to Salesforce)
 - Mass messaging via WhatsApp and email
+- Customer CSV imports
 
 Upcoming features:
 
-- AI-driven automations for responses and follow-ups
+- AI-driven automations for community management
 - Forms and surveys
 - Hackathon management
 - Expense tracking
 - Fundraising automation
 - Social media management (like Buffer)
 - Networking booking app (similar to Upstream)
-- Customer CSV imports
 - AI agent for user data scraping
 - AI-driven content generation
 - Blockchain NFTs for ticketing and marketplace

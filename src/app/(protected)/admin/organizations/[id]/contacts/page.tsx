@@ -5,6 +5,7 @@ import OrganizationLayout from '@/components/orgs/OrganizationLayout'
 import { getUser } from '@/lib/auth/lucia'
 import { ImportContactButton } from './ImportContactButton'
 import { ImportContactTemplateButton } from './ImportContactTemplateButton'
+import { translations } from '@/lib/translations/translations'
 
 export default async function ContactsPage({
   params
@@ -17,7 +18,7 @@ export default async function ContactsPage({
   const contacts = await getOrganizationContacts(params.id)
 
   if (!organization || !user) {
-    return <div>Organization not found</div>
+    return <div>{translations.es.noOrganizationFound}</div>
   }
 
   return (
@@ -33,7 +34,7 @@ export default async function ContactsPage({
       <div className="container mx-auto p-4">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold">
-            Contacts for {organization.name}
+            <span>{translations.es.contactsFor}</span> {organization.name}
           </h1>
           <ImportContactButton organizationId={organization.id} />
         </div>
@@ -56,7 +57,7 @@ export default async function ContactsPage({
           href={`/admin/organizations/${params.id}`}
           className="mt-4 inline-block text-blue-500 hover:underline"
         >
-          Back to Organization Dashboard
+          <span>{translations.es.backToDashboard}</span>
         </Link>
       </div>
     </OrganizationLayout>

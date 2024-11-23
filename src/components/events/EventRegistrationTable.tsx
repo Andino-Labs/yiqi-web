@@ -13,6 +13,7 @@ import {
   AttendeeStatus,
   EventRegistrationsSchemaType
 } from '@/schemas/eventSchema'
+import { translations } from '@/lib/translations/translations'
 
 export default function EventRegistrationTable({
   registrations
@@ -30,10 +31,10 @@ export default function EventRegistrationTable({
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Name</TableHead>
-          <TableHead>Email</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Action</TableHead>
+          <TableHead>{translations.es.name}</TableHead>
+          <TableHead>{translations.es.email}</TableHead>
+          <TableHead>{translations.es.status}</TableHead>
+          <TableHead>{translations.es.action}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -43,23 +44,23 @@ export default function EventRegistrationTable({
             <TableCell>{attendee.email}</TableCell>
             <TableCell>{status}</TableCell>
             <TableCell>
-              {status != AttendeeStatus.APPROVED && (
+              {status !== AttendeeStatus.APPROVED && (
                 <Button
                   onClick={() => handleApproval(id, 'APPROVED')}
                   size="sm"
                   className="bg-green-500 hover:bg-green-600"
                 >
-                  <Check className="w-4 h-4 mr-1" /> Approve
+                  <Check className="w-4 h-4 mr-1" /> {translations.es.approve}
                 </Button>
               )}
 
-              {status != AttendeeStatus.REJECTED && (
+              {status !== AttendeeStatus.REJECTED && (
                 <Button
                   onClick={() => handleApproval(id, 'REJECTED')}
                   size="sm"
                   className="bg-red-500 hover:bg-red-600"
                 >
-                  <X className="w-4 h-4 mr-1" /> Reject
+                  <X className="w-4 h-4 mr-1" /> {translations.es.reject}
                 </Button>
               )}
             </TableCell>

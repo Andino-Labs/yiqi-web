@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "private": true,
   "engines": {
-    "node": ">=20.0.0"
+    "node": "20.17.0"
   },
   "scripts": {
     "dev": "next dev",
@@ -17,7 +17,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "build:client-types": "tsup --config yiqi-client/tsup.config.ts",
     "run-crons": "chmod +x run-crons.sh && ./run-crons.sh",
-    "prepare": "husky"
+    "prepare": "husky",
+    "run-script": "ts-node -r ./scripts/register.ts -P tsconfig.script.json scripts/runScript.ts"
   },
   "dependencies": {
     "@algora/xtrpc": "^0.1.1",
@@ -66,17 +67,18 @@
     "andino-web": "file:",
     "arctic": "^1.9.2",
     "axios": "^1.7.7",
-    "canvas": "^2.11.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "csv-parse": "^5.5.6",
     "date-fns": "^4.1.0",
     "framer-motion": "^11.11.8",
+    "jsonwebtoken": "^9.0.2",
+    "linkedin-api-client": "^0.3.0",
     "lucia": "^3.2.1",
     "lucide-react": "^0.452.0",
     "mailparser": "^3.7.1",
-    "mercadopago": "^2.0.15",
     "next": "14.2.15",
+    "openai": "^4.73.0",
     "prettier": "^3.3.3",
     "qrcode.react": "^4.1.0",
     "react": "^18",
@@ -94,10 +96,12 @@
     "superjson": "^2.2.1",
     "tailwind-merge": "^2.5.3",
     "tailwindcss-animate": "^1.0.7",
+    "tiktoken": "^1.0.17",
     "tsup": "^8.3.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -109,6 +113,8 @@
     "postcss": "^8",
     "prisma": "^5.21.1",
     "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5"
   }
 }
