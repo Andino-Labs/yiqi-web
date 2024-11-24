@@ -15,6 +15,7 @@ import {
 import { AccountDropdown } from '../AccountDropdown'
 import { translations } from '@/lib/translations/translations'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 
 interface User {
   name?: string
@@ -29,6 +30,7 @@ interface HeaderProps {
 
 export default function MainLandingNav({ user, logOut }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,6 +40,10 @@ export default function MainLandingNav({ user, logOut }: HeaderProps) {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  if (pathname.startsWith('/admin') || pathname.startsWith('/auth')) {
+    return null
+  }
 
   return (
     <header

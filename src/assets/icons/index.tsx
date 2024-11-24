@@ -1,0 +1,5 @@
+export { default as BiTiktokIcon } from './biTiktokIcon'
+export { default as BiInstagramIcon } from './biInstagramIcon'
+export { default as BiFacebookIcon } from './biFacebookIcon'
+export { default as BiLinkedinIcon } from './biLinkedinIcon'
+export { default as BiWebsiteIcon } from './biWebsiteIcon'

@@ -89,7 +89,12 @@ export default function BeEventAdminForm({
       name: '',
       description: '',
       logo: '',
-      colour: '#000000'
+      colour: '#000000',
+      facebook: '',
+      instagram: '',
+      tiktok: '',
+      linkedin: '',
+      website: ''
     }
   })
 
@@ -172,6 +177,89 @@ export default function BeEventAdminForm({
               <FormDescription>
                 Selecciona un color para tu organización
               </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="facebook"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Url de Facebook</FormLabel>
+              <FormControl>
+                <Input placeholder="https://www.facebook.com/" {...field} />
+              </FormControl>
+              <FormDescription>
+                Ingresa la url de tu organización en facebook
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="instagram"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Url de Instragram</FormLabel>
+              <FormControl>
+                <Input placeholder="https://www.instagram.com/" {...field} />
+              </FormControl>
+              <FormDescription>
+                Ingresa la url de tu organización en Instagram
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="tiktok"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Url de Tiktok</FormLabel>
+              <FormControl>
+                <Input placeholder="https://www.tiktok.com/" {...field} />
+              </FormControl>
+              <FormDescription>
+                Ingresa la url de tu organización en tiktok
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="linkedin"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Url de LinkedIn</FormLabel>
+              <FormControl>
+                <Input placeholder="https://www.linkedin.com/" {...field} />
+              </FormControl>
+              <FormDescription>
+                Ingresa la url de tu organización en linkedin
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="website"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Website</FormLabel>
+              <FormControl>
+                <Input placeholder="https://www.andinolabs.com/" {...field} />
+              </FormControl>
+              <FormDescription>Ingresa la url de tu website</FormDescription>
               <FormMessage />
             </FormItem>
           )}

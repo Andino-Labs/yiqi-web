@@ -1,4 +1,10 @@
-export const translations: Record<string, { [key: string]: string }> = {
+import communities from '@/app/(public)/communities/page'
+import { all } from 'axios'
+
+export const translations: Record<
+  string,
+  { [key: string]: string | Record<string, any> }
+> = {
   en: {
     // General
     eventTitle: 'Event Title',
@@ -555,6 +561,37 @@ export const translations: Record<string, { [key: string]: string }> = {
     linkedinDisconnectedToastDesc:
       'Puedes volver a conectarla en cualquier momento',
     linkedinErrorToast: 'Error al desconectar la cuenta de LinkedIn',
-    linkedinErrorToastDesc: 'Por favor, inténtalo de nuevo más tarde'
+    linkedinErrorToastDesc: 'Por favor, inténtalo de nuevo más tarde',
+    communitiesPage: {
+      noLogoAvailable: 'No hay logo disponible',
+      communities: 'Comunidades',
+      noCommunitiesFound: 'No se encontraron comunidades en este momento.'
+    },
+    communityDetails: {
+      banner: {
+        members: 'Miembros',
+        organizedBy: 'Organizado por',
+        and: 'y',
+        other: 'otro',
+        organizationLogo: 'Logo de la Organización'
+      },
+      members: {
+        allMembers: 'Miembros',
+        organizers: 'Organizadores',
+        searchMembers: 'Buscar miembros...'
+      },
+      navigation: {
+        about: 'Acerca de',
+        members: 'Miembros'
+      },
+      about: {
+        showLess: 'Mostrar menos',
+        loadMore: 'Cargar más'
+      },
+      events: {
+        upcomingEvents: 'Próximos Eventos',
+        pastEvents: 'Eventos Pasados'
+      }
+    }
   }
 }

@@ -54,6 +54,28 @@ export const EventInputSchema = z.object({
   type: z.nativeEnum(EventTypeEnum)
 })
 
+export const EventCommunitySchema = z.object({
+  id: z.string(),
+  title: z.string().min(1, 'Title is required'),
+  startDate: z.coerce.date(),
+  endDate: z.coerce.date(),
+  location: z.string().optional().nullable(),
+  city: z.string().optional().nullable(),
+  state: z.string().optional().nullable(),
+  country: z.string().optional().nullable(),
+  virtualLink: z
+    .string()
+    .transform(val => (val === '' ? null : val))
+    .pipe(z.string().url().nullable())
+    .optional()
+    .nullable(),
+  description: z.string().optional(),
+  maxAttendees: z.number().int().positive().optional().nullable(),
+  requiresApproval: z.boolean().default(false),
+  openGraphImage: z.string().optional().nullable(),
+  type: z.nativeEnum(EventTypeEnum)
+})
+
 export const EventSchema = EventInputSchema.extend({
   id: z.string()
 })
@@ -154,6 +176,7 @@ export const PublicEventSchema = SavedEventSchema.extend({
 
 export type PublicEventType = z.infer<typeof PublicEventSchema>
 export type EventInputType = z.infer<typeof EventInputSchema>
+export type EventCommunityType = z.infer<typeof EventCommunitySchema>
 export type EventType = z.infer<typeof EventSchema>
 
 export type CustomFieldInputType = z.infer<typeof CustomFieldSchema>
