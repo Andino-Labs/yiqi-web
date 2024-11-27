@@ -9,17 +9,17 @@ Current features include:
 - Event management (similar to Luma)
 - CRM functionality (comparable to Salesforce)
 - Mass messaging via WhatsApp and email
-- AI-driven automations for responses and follow-ups
-- Forms and surveys
+- Customer CSV imports
 
 Upcoming features:
 
+- AI-driven automations for community management
+- Forms and surveys
 - Hackathon management
 - Expense tracking
 - Fundraising automation
 - Social media management (like Buffer)
 - Networking booking app (similar to Upstream)
-- Customer CSV imports
 - AI agent for user data scraping
 - AI-driven content generation
 - Blockchain NFTs for ticketing and marketplace
@@ -68,8 +68,6 @@ Upcoming features:
 
 Copy the contents of `.env.example` to a new file named `.env` and fill in the values:
 
-- `NEXTAUTH_URL`: Your app's URL (e.g., `http://localhost:3000`)
-- `NEXTAUTH_SECRET`: A secret key for NextAuth
 - `CALLBACK`: OAuth callback URL
 - `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`: Google OAuth credentials
 - `DIRECT_URL` and `DATABASE_URL`: PostgreSQL database URLs
@@ -145,3 +143,25 @@ To simulate cron jobs locally, you can use the provided shell script. This scrip
 The script will continue running and calling the cron routes every 2 minutes until you stop it (use Ctrl+C to stop the script).
 
 Note: Ensure that your local development server is running on `http://localhost:3000`. If you're using a different port or URL, update the `BASE_URL` in the `run-crons.sh` script accordingly.
+
+## Notification System
+
+Andino uses a queue-based notification system to handle various types of communications with users. The system is built around the `Notification` model in the database which acts as a queue for pending notifications.
+
+### How it works
+
+1. Notifications are queued by creating entries in the `Notification` table with:
+
+   - Target user(s)
+   - Organization context
+   - Notification type (email, WhatsApp, etc)
+   - Scheduled time to send
+   - Additional data needed for the notification
+
+2. A cron job regularly checks for pending notifications and processes them through the appropriate channels (email/WhatsApp)
+
+### Architecture
+
+- `src/lib/` contains the core notification logic and handlers
+- `src/services/actions/` provides server actions that the frontend can use to queue notifications
+- All incoming/outgoing data is validated using Zod schemas defined in `src/schemas/`

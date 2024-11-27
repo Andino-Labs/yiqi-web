@@ -4,6 +4,8 @@ import { organizationService } from '@/services/organizationService'
 import { revalidatePath } from 'next/cache'
 import prisma from '@/lib/prisma'
 import { Roles } from '@prisma/client'
+import { getUser } from '@/lib/auth/lucia'
+import { OrganizationSchema } from '@/schemas/organizerSchema'
 
 export async function createOrganization(
   data: Parameters<typeof organizationService.create>[0],
@@ -41,8 +43,18 @@ export async function createOrganization(
   }
 }
 
-export async function getAllOrganizations() {
-  return organizationService.getAll()
+export async function getAllOrganizationsForCurrentUser() {
+  const user = await getUser()
+  if (!user) {
+    throw new Error('Unauthorized')
+  }
+
+  const results = await prisma.organizer.findMany({
+    where: { userId: user.id },
+    include: { organization: true }
+  })
+
+  return results.map(org => OrganizationSchema.parse(org.organization))
 }
 
 export async function getOrganization(id: string) {

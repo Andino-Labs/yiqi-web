@@ -1,6 +1,7 @@
 import prisma from '@/lib/prisma'
 import { subDays } from 'date-fns'
 import setupNewThreads from './setupNewThreads'
+import { NotificationType } from '@prisma/client'
 
 export default async function setupInitialEventNotifications({
   eventId,
@@ -27,16 +28,28 @@ export default async function setupInitialEventNotifications({
 
   if (confirmedUser) {
     // Create notification entries in your Notification model
-    await prisma.notification.createMany({
+    return await prisma.notification.createMany({
       data: [
         {
           userId,
           eventId,
           organizationId: orgId,
-          type: 'RESERVATION_CONFIRMED',
-          scheduledFor: oneDayBefore
+          type: NotificationType.RESERVATION_CONFIRMED,
+          scheduledFor: new Date()
         }
       ]
     })
   }
+
+  await prisma.notification.createMany({
+    data: [
+      {
+        userId,
+        eventId,
+        organizationId: orgId,
+        type: NotificationType.RESERVATION_PAYMENT_REMINDER,
+        scheduledFor: oneDayBefore
+      }
+    ]
+  })
 }

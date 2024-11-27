@@ -14,6 +14,7 @@ import {
   MessageThreadType,
   MessageThreadTypeEnum
 } from '@/schemas/messagesSchema'
+import { translations } from '@/lib/translations/translations'
 
 export function BulkSendModal() {
   const [messageType, setMessageType] = useState<MessageThreadType>(
@@ -22,18 +23,18 @@ export function BulkSendModal() {
 
   const handleBulkSend = async (values: { message: string }) => {
     // Implement bulk send logic here
-    console.log('Bulk send:', values.message, messageType)
+    console.log(translations.es.bulkSendLog, values.message, messageType)
     // Close the modal after sending
   }
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Envío masivo</Button>
+        <Button variant="outline">{translations.es.bulkSendButton}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Envío masivo</DialogTitle>
+          <DialogTitle>{translations.es.bulkSendTitle}</DialogTitle>
         </DialogHeader>
         <MessageForm
           onSubmit={handleBulkSend}

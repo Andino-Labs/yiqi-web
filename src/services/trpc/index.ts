@@ -1,14 +1,9 @@
 import { z } from 'zod'
 import { searchUsers } from '../actions/userActions'
 import { publicProcedure, router } from './util'
-import {
-  getPublicEvents,
-  getEvent,
-  createRegistration,
-  getUserRegistrationStatus
-} from '../actions/eventActions'
+import { getUserRegistrationStatus } from '../actions/eventActions'
 import { getOrganization } from '../actions/organizationActions'
-import { DbEventSchema } from '@/schemas/eventSchema'
+import { SavedEventSchema } from '@/schemas/eventSchema'
 import {
   SearchUserResultSchema,
   PublicEventsSchema,
@@ -16,6 +11,9 @@ import {
   UserRegistrationStatusSchema,
   OrganizationSchema
 } from '@/schemas/apiSchemas'
+import { getEvent } from '../actions/event/getEvent'
+import { getPublicEvents } from '../actions/event/getPublicEvents'
+import { createRegistration } from '../actions/event/createRegistration'
 
 export const appRouter = router({
   searchUsers: publicProcedure
@@ -26,13 +24,13 @@ export const appRouter = router({
     }),
 
   getPublicEvents: publicProcedure.query(async () => {
-    const events = await getPublicEvents()
+    const events = await getPublicEvents({})
     return PublicEventsSchema.parse(events)
   }),
 
   getEvent: publicProcedure.input(z.string()).query(async ({ input }) => {
     const event = await getEvent(input)
-    return DbEventSchema.parse(event)
+    return SavedEventSchema.parse(event)
   }),
 
   createRegistration: publicProcedure

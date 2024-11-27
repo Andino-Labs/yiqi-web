@@ -28,6 +28,7 @@ import { OrganizationSchema } from '@/services/organizationService'
 import { useToast } from '@/hooks/use-toast'
 import { Textarea } from '../ui/textarea'
 import { makeRegularUser } from '@/services/actions/userActions'
+import { SingleFileUpload } from '../upload/upload'
 
 function BeRegularUserButton({ userId }: { userId: { value: string } }) {
   const { toast } = useToast()
@@ -73,7 +74,9 @@ function ColorPicker({
   )
 }
 
-const formSchema = OrganizationSchema
+const formSchema = OrganizationSchema.extend({
+  logo: z.string().url().optional()
+})
 
 export default function BeEventAdminForm({
   userId
@@ -86,7 +89,7 @@ export default function BeEventAdminForm({
       name: '',
       description: '',
       logo: '',
-      colour: '#000000' // Default color
+      colour: '#000000'
     }
   })
 
@@ -105,7 +108,7 @@ export default function BeEventAdminForm({
         variant: 'destructive'
       })
     } finally {
-      await form.reset()
+      form.reset()
     }
   }
 
@@ -149,23 +152,13 @@ export default function BeEventAdminForm({
             </FormItem>
           )}
         />
-
-        <FormField
-          control={form.control}
-          name="logo"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Logo URL</FormLabel>
-              <FormControl>
-                <Input placeholder="https://example.com/logo.png" {...field} />
-              </FormControl>
-              <FormDescription>
-                Ingresa la URL del logo de tu organización
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <FormLabel>Logo</FormLabel>
+        <FormControl>
+          <SingleFileUpload
+            onUploadComplete={url => form.setValue('logo', url)}
+          />
+        </FormControl>
+        <FormDescription>Sube el logo de tu organización</FormDescription>
 
         <FormField
           control={form.control}

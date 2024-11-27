@@ -8,7 +8,7 @@ export default function GoogleOAuthButton() {
   const { toast } = useToast()
   return (
     <Button
-      className="flex flex-row gap-2"
+      className="flex flex-row gap-2 w-full"
       variant={'outline'}
       onClick={async () => {
         const res = await getGoogleOauthConsentUrl()

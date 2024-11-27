@@ -84,7 +84,10 @@ export async function deleteForm(formId: string) {
     throw new Error('Unauthorized')
   }
 
-  await prisma.form.delete({ where: { id: formId } })
+  await prisma.form.update({
+    where: { id: formId },
+    data: { deletedAt: new Date() }
+  })
 
   revalidatePath(`/admin/organizations/${form.organizationId}/forms`)
 }

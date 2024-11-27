@@ -45,6 +45,9 @@ export const organizationService = {
   },
 
   delete: async (id: string) => {
-    return prisma.organization.delete({ where: { id } })
+    return prisma.organization.update({
+      where: { id },
+      data: { deletedAt: new Date() }
+    })
   }
 }

@@ -21,10 +21,11 @@ import {
   MessageThreadType,
   MessageThreadTypeEnum
 } from '@/schemas/messagesSchema'
+import { translations } from '@/lib/translations/translations'
 
 const formSchema = z.object({
   message: z.string().min(1, {
-    message: 'Message must be at least 1 character.'
+    message: translations.es.messageMinLength
   })
 })
 
@@ -55,7 +56,10 @@ export function MessageForm({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Textarea placeholder="Type your message here." {...field} />
+                <Textarea
+                  placeholder={translations.es.typeYourMessage}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -66,8 +70,8 @@ export function MessageForm({
             <DropdownMenuTrigger asChild>
               <Button variant="outline">
                 {messageType === MessageThreadTypeEnum.Enum.whatsapp
-                  ? 'WhatsApp'
-                  : 'Email'}
+                  ? translations.es.whatsapp
+                  : translations.es.email}
                 <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -77,20 +81,20 @@ export function MessageForm({
                   setMessageType(MessageThreadTypeEnum.Enum.whatsapp)
                 }
               >
-                WhatsApp
+                {translations.es.whatsapp}
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => setMessageType(MessageThreadTypeEnum.Enum.email)}
               >
-                Email
+                {translations.es.email}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
           <Button type="submit">
-            Send{' '}
+            {translations.es.send}{' '}
             {messageType === MessageThreadTypeEnum.Enum.whatsapp
-              ? 'WhatsApp'
-              : 'Email'}
+              ? translations.es.whatsapp
+              : translations.es.email}
           </Button>
         </div>
       </form>

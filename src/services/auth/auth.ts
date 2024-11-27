@@ -1,9 +1,8 @@
 'use server'
-import { lucia } from '@/lib/auth/lucia'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { generateCodeVerifier, generateState } from 'arctic'
-import { googleOAuthClient } from '@/lib/auth/lucia'
+import { googleOAuthClient, lucia } from '@/lib/auth/lib'
 
 export const logOut = async () => {
   const sessionCookie = await lucia.createBlankSessionCookie()

@@ -1,5 +1,4 @@
-import { googleOAuthClient } from '@/lib/auth/lucia'
-import { lucia } from '@/lib/auth/lucia'
+import { googleOAuthClient, lucia } from '@/lib/auth/lib'
 import prisma from '@/lib/prisma'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
@@ -65,7 +64,14 @@ export async function GET(req: NextRequest) {
       data: {
         name: googleData.name,
         email: googleData.email,
-        picture: googleData.picture
+        picture: googleData.picture,
+        privacySettings: {
+          email: true,
+          phoneNumber: true,
+          linkedin: true,
+          x: true,
+          website: true
+        }
       }
     })
     userId = user.id

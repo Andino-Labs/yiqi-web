@@ -1,7 +1,6 @@
 import { getUser } from '@/lib/auth/lucia'
 import { redirect } from 'next/navigation'
 import { Roles } from '@prisma/client'
-import AdminLayout from '@/components/chat/adminLayout'
 import ActiveChatComponent from '@/components/chat/activeChat'
 import ConnectedChat from '@/components/chat/connectedChat'
 import {
@@ -9,6 +8,7 @@ import {
   getUserMessageList
 } from '@/services/actions/messagesActions'
 import { BulkSendModal } from '@/components/chat/BulkSendModal'
+import OrganizationLayout from '@/components/orgs/OrganizationLayout'
 
 export default async function Page({
   params
@@ -27,11 +27,13 @@ export default async function Page({
   if (user.role === Roles.USER) {
     return (
       <main className="flex flex-col items-center justify-center">
-        <AdminLayout
+        <OrganizationLayout
+          orgId={params.id}
           userProps={{
             picture: user.picture!,
             email: user.email,
-            name: user.name
+            name: user.name,
+            id: user.id
           }}
         >
           <div className="w-full flex justify-end mb-4">
@@ -44,7 +46,7 @@ export default async function Page({
               orgId={params.id}
             />
           </ActiveChatComponent>
-        </AdminLayout>
+        </OrganizationLayout>
       </main>
     )
   } else if (user.role === Roles.NEW_USER) {

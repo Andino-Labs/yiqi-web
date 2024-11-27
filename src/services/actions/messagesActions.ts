@@ -12,7 +12,8 @@ import {
 } from '@/schemas/messagesSchema'
 import {
   sendBaseMessageToUser,
-  SendBaseMessageToUserProps
+  SendBaseMessageToUserProps,
+  SendBaseMessageToUserPropsSchema
 } from '../notifications/sendBaseMessageToUser'
 import { NotificationType } from '@prisma/client'
 
@@ -187,7 +188,7 @@ export async function sendBulkMessagesAction({
         eventId: event.id,
         organizationId: event.organizationId,
         type: NotificationType.BASE_NOTIFICATION,
-        extraData: props,
+        extraData: SendBaseMessageToUserPropsSchema.parse(props),
         scheduledFor: new Date()
       })
     })

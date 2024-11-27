@@ -427,11 +427,3 @@ model QueueJob {
   @@index([status, type, priority])
   @@index([createdAt])
 }
-
-// Add this model to your existing schema
-model CronLock {
-  id        String   @id @default(cuid())
-  jobName   String   @unique
-  lockedAt  DateTime
-  expiresAt DateTime
-}
