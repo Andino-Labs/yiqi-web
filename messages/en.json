@@ -343,7 +343,21 @@
     "Begin": "Begin",
     "manage": "I want to manage my community!",
     "createCommunityManager": "Create your community manager",
-    "form": "Fill in the free fields to continue, you can modify them later!"
+    "form": "Fill in the free fields to continue, you can modify them later!",
+
+    "describe":"Describe your organization",
+    "Color":"Color",
+    "faceBook":"facebook Url",
+    "feacebookDescription":"Enter your organization's url on Facebook",
+    "instagram":"Instagram Url",
+    "instagramDescription":"Enter your organization's url on Instagram",
+    "Tiktok":"Tiktok Url",
+    "tiktokDescription":"Enter your organization's url on Tiktok",
+    "LinkedIn":"LinkedIn url",
+    "LinkedInDescription":"Enter your organization's url on LinkedIn",
+    "Website":"Website",
+    "websiteDescription":"Enter the url of your website"
+
   },
   "AddOrg": {
     "success": "Organization created successfully!",

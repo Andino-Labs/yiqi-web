@@ -341,7 +341,20 @@
     "Begin": "Começar",
     "manage": "Quero gerir a minha comunidade!",
     "createCommunityManager": "Crie o seu gestor de comunidade",
-    "form": "Preencha os campos livres para continuar, poderá modificá-los mais tarde!"
+    "form": "Preencha os campos livres para continuar, poderá modificá-los mais tarde!",
+
+    "describe": "Descreva a sua organização",
+    "Color": "Cor",
+    "faceBook": "URL do Facebook",
+    "feacebookDescription": "Insira o URL da sua organização no Facebook",
+    "instagram": "URL do Instagram",
+    "instagramDescription": "Insira o URL da sua organização no Instagram",
+    "Tiktok": "URL do Tiktok",
+    "tiktokDescription": "Insira o URL da sua organização no Tiktok",
+    "LinkedIn": "URL do LinkedIn",
+    "LinkedInDescription": "Insira o URL da sua organização no LinkedIn",
+    "Website": "Website",
+    "websiteDescription": "Insira o URL do seu website"
   },
   "AddOrg": {
     "success": "Organização criada com sucesso!",

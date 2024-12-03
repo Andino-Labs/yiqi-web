@@ -150,8 +150,8 @@ export default function BeEventAdminForm({
             <FormItem>
               <FormLabel>{t('Description')}</FormLabel>
               <FormControl>
-                <Textarea
-                  placeholder="Describe tu organización"
+                <Textarea 
+                  placeholder={t('describe')}
                   {...field}
                   className="resize-none"
                 />
@@ -174,7 +174,7 @@ export default function BeEventAdminForm({
           name="colour"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Color</FormLabel>
+              <FormLabel>{t('Color')}</FormLabel>
               <FormControl>
                 <ColorPicker value={field.value} onChange={field.onChange} />
               </FormControl>
@@ -189,12 +189,12 @@ export default function BeEventAdminForm({
           name="facebook"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Url de Facebook</FormLabel>
+              <FormLabel>{("faceBook")}</FormLabel>
               <FormControl>
                 <Input placeholder="https://www.facebook.com/" {...field} />
               </FormControl>
               <FormDescription>
-                Ingresa la url de tu organización en facebook
+                {t("feacebookDescription")}
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -206,12 +206,12 @@ export default function BeEventAdminForm({
           name="instagram"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Url de Instragram</FormLabel>
+              <FormLabel>{t("instagram")}</FormLabel>
               <FormControl>
                 <Input placeholder="https://www.instagram.com/" {...field} />
               </FormControl>
               <FormDescription>
-                Ingresa la url de tu organización en Instagram
+                {t("instagramDescription")}
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -223,12 +223,12 @@ export default function BeEventAdminForm({
           name="tiktok"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Url de Tiktok</FormLabel>
+              <FormLabel>{t("Tiktok")}</FormLabel>
               <FormControl>
                 <Input placeholder="https://www.tiktok.com/" {...field} />
               </FormControl>
               <FormDescription>
-                Ingresa la url de tu organización en tiktok
+                {t("tiktokDescription")}
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -240,12 +240,12 @@ export default function BeEventAdminForm({
           name="linkedin"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Url de LinkedIn</FormLabel>
+              <FormLabel>{t("LinkedIn")}</FormLabel>
               <FormControl>
                 <Input placeholder="https://www.linkedin.com/" {...field} />
               </FormControl>
               <FormDescription>
-                Ingresa la url de tu organización en linkedin
+                {t("LinkedInDescription")}
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -257,11 +257,11 @@ export default function BeEventAdminForm({
           name="website"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Website</FormLabel>
+              <FormLabel>{t("Website")}</FormLabel>
               <FormControl>
                 <Input placeholder="https://www.andinolabs.com/" {...field} />
               </FormControl>
-              <FormDescription>Ingresa la url de tu website</FormDescription>
+              <FormDescription>{t("websiteDescription")}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
