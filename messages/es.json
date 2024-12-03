@@ -94,7 +94,8 @@
     "contacts": "Personas",
     "organizers": "Organizadores",
     "billing": "Facturación",
-    "logOut": "Cerrar sesión"
+    "logOut": "Cerrar sesión",
+    "events":"Eventos"
   },
   "SidebarDropdown": {
     "switchOrganization": "Cambiar Organización"
@@ -111,7 +112,9 @@
   "contactFor": {
     "contactsFor": "Contactos de",
     "backToDashboard": "Volver al Tablero de la Organización",
-    "organizationNotFound": "Organización no encontrada"
+    "organizationNotFound": "Organización no encontrada",
+    "createNewEvents":"Crear Nuevos Eventos",
+    "events":"Eventos"
   },
   "ContactTemplateDownload": {
     "exampleCsvContent": "nombre,correo,telefono,edad,ciudad\njuan.doe@ejemplo.com,123456789,Juan Doe,25,Nueva York\njane.smith@ejemplo.com,987654321,Jane Smith,30,Los Angeles\nroberto.brown@ejemplo.com,567890123,Roberto Brown,35,Chicago\nemilia.davis@ejemplo.com,345678901,Emilia Davis,28,Miami\nmichael.wilson@ejemplo.com,123098456,Michael Wilson,40,Seattle\nsarah.johnson@ejemplo.com,789012345,Sarah Johnson,32,Houston\ndavid.martinez@ejemplo.com,456789012,David Martinez,29,Dallas\nlinda.hernandez@ejemplo.com,890123456,Linda Hernandez,34,San Diego\njames.lopez@ejemplo.com,234567890,James Lopez,26,Fénix\npatricia.gonzalez@ejemplo.com,678901234,Patricia González,38,San Francisco",
