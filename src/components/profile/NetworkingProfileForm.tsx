@@ -162,7 +162,7 @@ export default function NetworkingProfileForm({ initialData }: Props) {
   }
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
+    <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>
         <CardTitle>{translations.es.networkingProfileTitle}</CardTitle>
         <CardDescription className="space-y-3">
@@ -190,7 +190,7 @@ export default function NetworkingProfileForm({ initialData }: Props) {
                     htmlFor="resume-upload"
                     className={`flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium ${
                       isProcessingFile
-                        ? 'bg-gray-100 cursor-not-allowed'
+                        ? 'bg-gray-100 cursor-not-allowed text-gray-500'
                         : 'bg-white hover:bg-gray-50 cursor-pointer'
                     }`}
                   >
@@ -202,7 +202,9 @@ export default function NetworkingProfileForm({ initialData }: Props) {
                     ) : (
                       <>
                         <Upload className="h-4 w-4 mr-2" />
-                        {translations.es.selectResumeTypes}
+                        <p className="text-black">
+                          {translations.es.selectResumeTypes}
+                        </p>
                       </>
                     )}
                   </label>

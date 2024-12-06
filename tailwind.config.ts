@@ -16,7 +16,8 @@ const config: Config = {
       },
       textColor: {
         primary: 'rgb(var(--text-primary) / <alpha-value>)',
-        secondary: 'rgb(var(--text-secondary) / <alpha-value>)'
+        secondary: 'rgb(var(--text-secondary) / <alpha-value>)',
+        opposite: 'rgb(var(--text-opposite) / <alpha-value>)'
       },
       colors: {
         background: 'hsl(var(--background))',

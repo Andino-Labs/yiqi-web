@@ -1,7 +1,18 @@
 'use client'
 
 import Link from 'next/link'
-import { User, CreditCard, History, Ticket, Speech, LogOut } from 'lucide-react'
+import {
+  User,
+  CreditCard,
+  History,
+  Ticket,
+  Speech,
+  LogOut,
+  UserIcon,
+  Settings,
+  HomeIcon,
+  LayoutDashboard
+} from 'lucide-react'
 
 import {
   Sidebar,
@@ -24,11 +35,13 @@ import {
 } from '../ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import SignOutButton from '../auth/sign-out'
+import Image from 'next/image'
 interface UserProps {
   name: string
   email: string
   picture: string
   id: string
+  role: string
 }
 
 interface UserLayoutProps {
@@ -67,12 +80,21 @@ export default function UserLayout({ children, userProps }: UserLayoutProps) {
   ]
 
   return (
-    <SidebarProvider>
-      <div className="flex  w-full">
+    <SidebarProvider className="bg-primary">
+      <div className="flex  w-full bg-primary">
         <Sidebar collapsible="icon">
           <SidebarContent>
             <SidebarGroup>
               <SidebarMenu>
+                <Link href={'/'} className="flex-shrink-0">
+                  <Image
+                    src="/logo.png"
+                    alt="Logo"
+                    height={90}
+                    width={90}
+                    className="mr-2 p-2"
+                  />
+                </Link>
                 {navItems.map(item => (
                   <SidebarMenuItem key={item.name}>
                     <SidebarMenuButton asChild>
@@ -87,8 +109,8 @@ export default function UserLayout({ children, userProps }: UserLayoutProps) {
             </SidebarGroup>
           </SidebarContent>
         </Sidebar>
-        <div className="flex-1 overflow-auto bg-gray-100">
-          <header className="flex items-center justify-between bg-white p-4 shadow-md">
+        <div className="flex-1 overflow-auto bg-gray-100 bg-primary">
+          <header className="flex items-center justify-between p-4 shadow-md bg-primary">
             <SidebarTrigger />
 
             <DropdownMenu>
@@ -110,6 +132,32 @@ export default function UserLayout({ children, userProps }: UserLayoutProps) {
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href={`/user`} className="cursor-pointer">
+                    <UserIcon className="mr-2 h-4 w-4 text-muted-foreground" />
+                    <span>{t('profile')}</span>
+                  </Link>
+                </DropdownMenuItem>
+                {userProps.role === 'ADMIN' && (
+                  <DropdownMenuItem asChild>
+                    <Link href={`/admin`} className="cursor-pointer">
+                      <LayoutDashboard className="mr-2 h-4 w-4 text-muted-foreground" />
+                      <span>{t('organization')}</span>
+                    </Link>
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuItem asChild>
+                  <Link href={`/user/edit`} className="cursor-pointer">
+                    <Settings className="mr-2 h-4 w-4 text-muted-foreground" />
+                    <span>{t('settings')}</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href={`/`} className="cursor-pointer">
+                    <HomeIcon className="mr-2 h-4 w-4 text-muted-foreground" />
+                    <span>Home</span>
+                  </Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem>
                   <SignOutButton>
                     <div className="flex items-center gap-4">

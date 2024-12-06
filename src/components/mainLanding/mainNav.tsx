@@ -21,6 +21,7 @@ interface User {
   name?: string
   picture?: string
   email?: string
+  role?: string
 }
 
 interface HeaderProps {
@@ -68,14 +69,14 @@ export default function MainLandingNav({
             <Image
               src="/logo.png"
               alt="Logo"
-              height={100}
-              width={100}
+              height={90}
+              width={90}
               className="mr-2 p-2"
             />
           </Link>
 
           <div className="flex space-x-3 items-center">
-            <LangSelector />
+            <LangSelector className="hidden md:block" />
             <nav className="hidden md:flex items-center space-x-4">
               {showExtraButton && (
                 <Button
@@ -157,24 +158,41 @@ export default function MainLandingNav({
                       </Button>
                     </Link>
                   ) : (
-                    <Link
-                      href={'/admin'}
-                      className="flex items-center space-x-2"
-                    >
-                      <Avatar className="w-8 h-8">
-                        <AvatarImage
-                          alt={user.name ?? ''}
-                          src={user.picture ?? ''}
-                        />
-                        <AvatarFallback>
-                          {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
-                        </AvatarFallback>
-                      </Avatar>
-                      <span className="text-white text-sm">
-                        {t('myAccount')}
-                      </span>
-                    </Link>
+                    <>
+                      <NavLink href="/user" mobile>
+                        {t('profile')}
+                      </NavLink>
+                      {user.role === 'ADMIN' && (
+                        <>
+                          <hr className="my-6 border-t border-solid border-white-opacity-40 w-[100%] ml-0 mx-auto" />
+                          <NavLink href="/admin" mobile>
+                            {t('organization')}
+                          </NavLink>
+                        </>
+                      )}
+                      <hr className="my-6 border-t border-solid border-white-opacity-40 w-[100%] ml-0 mx-auto" />
+                      <Link
+                        href={'/user/edit'}
+                        className="flex items-center space-x-2"
+                      >
+                        <Avatar className="w-8 h-8">
+                          <AvatarImage
+                            alt={user.name ?? ''}
+                            src={user.picture ?? ''}
+                          />
+                          <AvatarFallback>
+                            {user.name
+                              ? user.name.charAt(0).toUpperCase()
+                              : 'U'}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span className="text-white text-sm">
+                          {t('myAccount')}
+                        </span>
+                      </Link>
+                    </>
                   )}
+                  <hr className="my-6 border-t border-solid border-white-opacity-40 w-[100%] ml-0 mx-auto" />
                   <LangSelector />
                 </div>
               </SheetContent>

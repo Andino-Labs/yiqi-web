@@ -26,7 +26,9 @@
     "contactUs": "Contact Us",
     "terms": "Terms",
     "privacy": "Privacy",
-    "security": "Security"
+    "security": "Security",
+    "profile": "Profile",
+    "organization": "Organization"
   },
   "HeroSection": {
     "heroSubtitle": "The Future of Events",
@@ -95,7 +97,7 @@
     "organizers": "Organizers",
     "billing": "Billing",
     "logOut": "Log out",
-    "events":"Events"
+    "events": "Events"
   },
   "SidebarDropdown": {
     "switchOrganization": "Switch Organization"
@@ -113,8 +115,8 @@
     "contactsFor": "Contacts for",
     "backToDashboard": "Back to Organization Dashboard",
     "organizationNotFound": "Organization not found",
-    "createNewEvents":"Create New Events",
-    "events":"Events"
+    "createNewEvents": "Create New Events",
+    "events": "Events"
   },
   "ContactTemplateDownload": {
     "exampleCsvContent": "email,phone,name,age,city\njohn.doe@example.com,123456789,John Doe,25,New York\njane.smith@example.com,987654321,Jane Smith,30,Los Angeles\nrobert.brown@example.com,567890123,Robert Brown,35,Chicago\nemily.davis@example.com,345678901,Emily Davis,28,Miami\nmichael.wilson@example.com,123098456,Michael Wilson,40,Seattle\nsarah.johnson@example.com,789012345,Sarah Johnson,32,Houston\ndavid.martinez@example.com,456789012,David Martinez,29,Dallas\nlinda.hernandez@example.com,890123456,Linda Hernandez,34,San Diego\njames.lopez@example.com,234567890,James Lopez,26,Phoenix\npatricia.gonzalez@example.com,678901234,Patricia Gonzalez,38,San Francisco",
@@ -132,7 +134,7 @@
     "messageValidation": "Message must be at least 1 character."
   },
   "EventsList": {
-    "createNewEvents": "Create New Events",
+    "createNewEvents": "New Event",
     "notFound": "Event not found",
     "Unauthorized": "Unauthorized",
     "orgNotFound": "Organization or Event not found",
@@ -153,8 +155,11 @@
     "payments": "Payments",
     "history": "History",
     "tickets": "Tickets",
-
-    "logOut": "Log out"
+    "logOut": "Log out",
+    "profile": "Profile",
+    "settings": "Settings",
+    "networkingSettings": "Networking",
+    "organization": "Organization"
   },
   "ProfileSettings": {
     "name": "Name",
@@ -173,11 +178,22 @@
     "enterYourCompany": "Enter your Company",
     "enterYourPosition": "Enter your Position",
     "tellUsAboutYourself": "Tell us about yourself",
-
     "setToPublic": "Set to Public",
-    "User": "User"
+    "User": "User",
+    "profileSettings": "Profile Settings",
+    "enterYourX": "Enter your X URL",
+    "enterInstagramURL": "Enter your Instagram URL",
+    "enterWebsiteURL": "Enter your website URL",
+    "enterLinkedinURL": "Enter your LinkedIn URL",
+    "website": "Website",
+    "stopCommunications": "Stop Communications",
+    "disableCommunications": "Disabled Communications",
+    "role": "Role"
   },
   "DeleteAccount": {
+    "settings": "Settings",
+    "name": "Name",
+    "email": "Email",
     "apply": "I want to Apply!",
     "tickets": "Tickets",
     "deleteAccount": "Delete Account",
@@ -348,19 +364,18 @@
     "createCommunityManager": "Create your community manager",
     "form": "Fill in the free fields to continue, you can modify them later!",
 
-    "describe":"Describe your organization",
-    "Color":"Color",
-    "faceBook":"facebook Url",
-    "feacebookDescription":"Enter your organization's url on Facebook",
-    "instagram":"Instagram Url",
-    "instagramDescription":"Enter your organization's url on Instagram",
-    "Tiktok":"Tiktok Url",
-    "tiktokDescription":"Enter your organization's url on Tiktok",
-    "LinkedIn":"LinkedIn url",
-    "LinkedInDescription":"Enter your organization's url on LinkedIn",
-    "Website":"Website",
-    "websiteDescription":"Enter the url of your website"
-
+    "describe": "Describe your organization",
+    "Color": "Color",
+    "faceBook": "facebook Url",
+    "feacebookDescription": "Enter your organization's url on Facebook",
+    "instagram": "Instagram Url",
+    "instagramDescription": "Enter your organization's url on Instagram",
+    "Tiktok": "Tiktok Url",
+    "tiktokDescription": "Enter your organization's url on Tiktok",
+    "LinkedIn": "LinkedIn url",
+    "LinkedInDescription": "Enter your organization's url on LinkedIn",
+    "Website": "Website",
+    "websiteDescription": "Enter the url of your website"
   },
   "AddOrg": {
     "success": "Organization created successfully!",
@@ -566,6 +581,7 @@
     "ticketStatusPending": "Pending",
     "ticketStatusRejected": "Rejected",
     "ticketTitlePage": "Your Tickets",
+    "ticketNo": "You don´t have any tickets",
     "ticketEventImageAlt": "Event Banner",
     "ticketNumber": "Ticket #",
     "ticketLabelView": "View Ticket",

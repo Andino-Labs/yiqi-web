@@ -4,7 +4,7 @@ import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Ticket } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Ticket } from 'lucide-react'
 import Image from 'next/image'
 import { useState } from 'react'
 import { QRModal } from '../qrModal/QrModal'
@@ -73,6 +73,27 @@ export default function TicketsPage({
     checkedInDate: ''
   })
 
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 3
+
+  const totalPages = Math.ceil(tickets.length / itemsPerPage)
+  const currentTickets = tickets.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  )
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(prev => prev + 1)
+    }
+  }
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(prev => prev - 1)
+    }
+  }
+
   const openModal = (
     eventTitle: string,
     attendeeName: string,
@@ -98,13 +119,15 @@ export default function TicketsPage({
 
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-b from-zinc-800 via-zinc-900 to-black text-white">
-        <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <Card className="w-full max-w-4xl mx-auto">
+        <main className="max-w-5xl mx-auto sm:px-6 lg:px-8 py-8">
           <h1 className="text-3xl font-bold mb-6 text-center">
-            {translations.es.ticketTitlePage}
+            {tickets.length === 0
+              ? translations.es.ticketNo
+              : translations.es.ticketTitlePage}
           </h1>
           <div className="space-y-8">
-            {tickets.map(data => (
+            {currentTickets.map(data => (
               <Card
                 key={data.event.id}
                 className="group bg-zinc-900/60 border-zinc-800/50 shadow-lg transition hover:bg-zinc-900/80 hover:shadow-xl"
@@ -198,8 +221,30 @@ export default function TicketsPage({
               </Card>
             ))}
           </div>
+
+          {tickets.length > 0 && (
+            <div className="flex justify-center items-center mt-6 space-x-4">
+              <Button
+                variant="outline"
+                onClick={handlePreviousPage}
+                disabled={currentPage === 1}
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </Button>
+              <span className="text-white">
+                Pagina {currentPage} de {totalPages}
+              </span>
+              <Button
+                variant="outline"
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+              >
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+            </div>
+          )}
         </main>
-      </div>
+      </Card>
 
       <QRModal
         isOpen={modalState.isOpen}

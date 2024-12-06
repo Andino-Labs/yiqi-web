@@ -95,9 +95,11 @@ export async function getUserProfile(currentUserId: string) {
         stopCommunication: true,
         dataCollected: true,
         privacySettings: true,
-        linkedinAccessToken: true
+        linkedinAccessToken: true,
+        role: true
       }
     })
+
     if (!user) return null
     const dataCollected = user.dataCollected as UserDataCollected
     const cleanUserData = {
@@ -120,7 +122,8 @@ export async function getUserProfile(currentUserId: string) {
       communicationStyle: dataCollected?.communicationStyle ?? '',
       professionalValues: dataCollected?.professionalValues ?? '',
       careerAspirations: dataCollected?.careerAspirations ?? '',
-      significantChallenge: dataCollected?.significantChallenge ?? ''
+      significantChallenge: dataCollected?.significantChallenge ?? '',
+      role: user.role
     }
 
     if (currentUserId == userCurrent.id) {
@@ -134,6 +137,7 @@ export async function getUserProfile(currentUserId: string) {
         company: dataCollected?.company ?? '',
         position: dataCollected?.position ?? '',
         shortDescription: dataCollected?.shortDescription ?? '',
+        role: user.role,
         ...filterProfileData(cleanUserData as unknown as User)
       })
     }

@@ -70,8 +70,8 @@ export default function WelcomeScreen({
   const progress = (completedTasks / tasks.length) * 100
 
   return (
-    <div className={`container mx-auto p-2 sm:p-4 bg-primary`}>
-      <div className={`bg-gradient-to-br bg-primary rounded p-2 sm:p-4 `}>
+    <div className={`container mx-auto bg-primary`}>
+      <div className={`bg-gradient-to-br bg-primary rounded`}>
         <Card className={`w-full max-w-4xl mx-auto bg-primary`}>
           <CardHeader>
             <CardTitle

@@ -165,19 +165,21 @@ function UpdateProfileForm({ user }: { user: ProfileWithPrivacy }) {
       transition={{ duration: 0.5 }}
       className="container max-w-4xl pb-10 mx-auto"
     >
-      <Card className="bg-transparent border-none">
+      <Card className="w-full max-w-4xl mx-auto">
         <CardHeader>
           <CardTitle className="text-2xl">{t('profileSettings')}</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <ProfilePictureUpload
-                currentValue={form.watch('picture')}
-                onChange={handleProfilePictureChange}
-                name={form.watch('name')}
-                userPicture={user.picture ?? ''}
-              />
+              <div className="flex justify-center items-center">
+                <ProfilePictureUpload
+                  currentValue={form.watch('picture')}
+                  onChange={handleProfilePictureChange}
+                  name={form.watch('name')}
+                  userPicture={user.picture ?? ''}
+                />
+              </div>
 
               <Separator />
 
@@ -275,7 +277,7 @@ function UpdateProfileForm({ user }: { user: ProfileWithPrivacy }) {
                             <Input
                               type="text"
                               className="pl-9 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
-                              placeholder={t('enterCompany')}
+                              placeholder={t('enterYourCompany')}
                               {...field}
                               value={field.value ?? ''}
                             />
@@ -310,7 +312,7 @@ function UpdateProfileForm({ user }: { user: ProfileWithPrivacy }) {
                             <Input
                               type="text"
                               className="pl-9 focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
-                              placeholder={t('enterPosition')}
+                              placeholder={t('enterYourPosition')}
                               {...field}
                               value={field.value ?? ''}
                             />

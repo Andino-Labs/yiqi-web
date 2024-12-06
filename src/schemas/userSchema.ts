@@ -73,14 +73,16 @@ export const profileFormSchema = baseProfileSchema.extend({
 })
 export const profileDataSchema = baseProfileSchema.extend({
   picture: z.string(),
-  id: z.string()
+  id: z.string(),
+  role: z.string()
 })
 export const profileWithPrivacySchema = baseProfileSchema.extend({
   picture: z.string().optional(),
   id: z.string(),
   privacySettings: privacySettingsSchema,
   linkedinAccessToken: z.string().optional(),
-  isLinkedinLinked: z.boolean().default(false)
+  isLinkedinLinked: z.boolean().default(false),
+  role: z.string()
 })
 
 export const luciaUserSchema = z.object({

@@ -23,7 +23,11 @@ function getLanguageName(lang: Language): string {
   return languageNames[lang]
 }
 
-export default function LangSelector(): JSX.Element {
+interface LangSelectorProps {
+  className?: string
+}
+
+export default function LangSelector({ className }: LangSelectorProps) {
   const localActive = useLocale() as Language
   const [selectedLanguage, setSelectedLanguage] =
     useState<Language>(localActive)
@@ -36,7 +40,7 @@ export default function LangSelector(): JSX.Element {
   }
 
   return (
-    <div className="w-25">
+    <div className={`w-25 ${className}`}>
       <Select defaultValue={localActive} onValueChange={handleLanguageChange}>
         <SelectTrigger
           id="language"

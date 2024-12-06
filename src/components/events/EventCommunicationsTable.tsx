@@ -31,7 +31,7 @@ export default function EventCommunicationsTable({ eventId }: Props) {
 
   return (
     <Table>
-      <TableHeader>
+      <TableHeader className="bg-secondary">
         <TableRow>
           <TableHead>{t('Subject')}</TableHead>
           <TableHead>{t('date')}</TableHead>

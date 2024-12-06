@@ -109,7 +109,7 @@ export default function OrganizationLayout({
 
   return (
     <SidebarProvider className="bg-primary">
-      <div className="flex h-screen w-full bg-primary">
+      <div className="flex h-full w-full bg-primary">
         <Sidebar collapsible="icon" className="bg-primary">
           <SidebarHeader>
             <DropdownMenu>
@@ -181,7 +181,7 @@ export default function OrganizationLayout({
               </DropdownMenuContent>
             </DropdownMenu>
           </header>
-          <div className="flex-1 overflow-auto p-2 sm:p-4 bg-primary">
+          <div className="flex-1 overflow-auto p-2 sm:px-8 sm:py-2 px-4 bg-primary">
             {children}
           </div>
         </main>

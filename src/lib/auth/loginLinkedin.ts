@@ -5,8 +5,7 @@ import jwt from 'jsonwebtoken'
 import { LinkedInJWTSchema } from '@/types/linkedin'
 
 export async function loginLinkedin({ code }: { code: string }) {
-  const redirectUrl = `${process.env.NEXT_PUBLIC_URL}${process.env.NEXT_PUBLIC_LINKEDIN_REDIRECT_AUTH_URI}`
-  console.log(redirectUrl)
+  const redirectUrl = `https://www.yiqi.lat`
 
   try {
     const authClient = new AuthClient({

@@ -16,7 +16,11 @@ export default async function Home() {
     <>
       <div className="fixed inset-0 h-screen w-screen -z-10 bg-black"></div>
       <MainLandingNav
-        user={{ name: user?.name, picture: user?.picture as string }}
+        user={{
+          name: user?.name,
+          picture: user?.picture as string,
+          role: user?.role
+        }}
       />
 
       <div className="lg:max-w-[80%] max-w-[90%] mx-auto">

@@ -18,6 +18,7 @@ import { getEvent } from '../actions/event/getEvent'
 import { getPublicEvents } from '../actions/event/getPublicEvents'
 import { createRegistration } from '@/lib/event/createRegistration'
 import { loginLinkedin } from '@/lib/auth/loginLinkedin'
+import { loginGoogle } from '@/lib/auth/loginGoogle'
 
 export const appRouter = router({
   loginLinkedin: publicProcedure
@@ -25,7 +26,11 @@ export const appRouter = router({
     .mutation(async ({ input }) => {
       return loginLinkedin(input)
     }),
-
+  loginGoogle: publicProcedure
+    .input(z.object({ idToken: z.string({ message: 'idToken prob!!' }) }))
+    .mutation(async ({ input }) => {
+      return loginGoogle(input)
+    }),
   searchUsers: publicProcedure
     .input(z.object({ query: z.string() }))
     .query(async ({ input }) => {
