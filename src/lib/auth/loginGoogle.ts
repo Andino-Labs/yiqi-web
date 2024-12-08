@@ -2,6 +2,7 @@ import { OAuth2Client } from 'google-auth-library'
 import { lucia } from '@/lib/auth/lib'
 import prisma from '@/lib/prisma'
 import { GoogleJWTSchema } from '@/types/google'
+import { downloadAndUploadImage } from '@/lib/downloadAndUploadImage'
 
 const client = new OAuth2Client(
   process.env.GOOGLE_CLIENT_ID!,
@@ -42,12 +43,15 @@ export async function loginGoogle({ idToken }: { idToken: string }) {
     if (existingUser) {
       userId = existingUser.id
     } else {
-      // Create a new user if not found
+      // Download and upload the profile picture to S3
+      const s3ImageUrl = await downloadAndUploadImage(googleUser.picture)
+
+      // Create a new user with the S3 image URL
       const newUser = await prisma.user.create({
         data: {
           name: googleUser.name,
           email,
-          picture: googleUser.picture,
+          picture: s3ImageUrl,
           privacySettings: {
             email: true,
             phoneNumber: true,

@@ -168,6 +168,11 @@ Andino uses a queue-based notification system to handle various types of communi
 
 ### setting up email sending and receiving
 
+The email systems for notifications and inbound emails are based on an event driven system by using cron jobs to poll for stuff and execute.
+For outbound we use resend (https://resend.com/emails) api that is triggered by creating SEND_USER_MESSAGE queue job. You can queue up as many as these as you need without worrying about the order of handling them. They should be handled by src/lib/cron/queueCron.ts.
+
+The inbound system is another cron job that polls the SQS queue for emails. This SQS will only return emails based on the AWS setup for the domain of the email. Once received we simply store the email in the database so that the app can display and it to the correct organization.
+
 1. verify a domain in SES to use. Our platform will use an entire domain to send emails from based on the name of the organization.
 2. setup the MX records for inbound (something like Host:@ value: inbound-smtp.us-east-1.amazonaws.com priority: 10) - use the region that the account is in.
 3. in the SES console, create a receiving rule set with a catch all rule that allows all email to be received and "deliver to s3 bucket". Make a new IAM policy that has the write permissions to the bucket you are using to store. DONOT ASUME THAT THE BUCKET IS CREATED WITH THE CORRECT PERMISSIONS. SO long as u make a IAM policy with the correct permissions, u can use any bucket.

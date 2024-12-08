@@ -1,4 +1,5 @@
 import { googleOAuthClient, lucia } from '@/lib/auth/lib'
+import { downloadAndUploadImage } from '@/lib/downloadAndUploadImage'
 import prisma from '@/lib/prisma'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
@@ -63,7 +64,7 @@ export async function GET(req: NextRequest) {
       data: {
         name: googleData.name,
         email: googleData.email,
-        picture: googleData.picture,
+        picture: await downloadAndUploadImage(googleData.picture),
         privacySettings: {
           email: true,
           phoneNumber: true,

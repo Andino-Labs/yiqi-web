@@ -12,11 +12,6 @@ call_cron() {
 
 # Main loop
 while true; do
-    # call_cron "communityEngagement"
-    # call_cron "dataCollectors"
-    # call_cron "formDataCollector"
-    # call_cron "generateMedias"
-    # call_cron "sendNotifications"
     call_cron "email"
     
     echo "Waiting for 2 minutes..."

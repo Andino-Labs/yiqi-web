@@ -1,34 +1,100 @@
-import * as superjson from 'superjson';
-import * as _trpc_server from '@trpc/server';
+import * as node_modules_superjson_dist from 'node_modules/superjson/dist';
+import * as node_modules__trpc_server_dist from 'node_modules/@trpc/server/dist';
+import { z } from 'zod';
 
 declare enum EventTypeEnum {
     ONLINE = "ONLINE",
     IN_PERSON = "IN_PERSON"
 }
 
-declare const appRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<{
-    ctx: object;
+declare const luciaUserSchema: z.ZodObject<{
+    role: z.ZodEnum<["USER", "ADMIN", "ANDINO_ADMIN", "NEW_USER"]>;
+    id: z.ZodString;
+    name: z.ZodString;
+    email: z.ZodString;
+    picture: z.ZodNullable<z.ZodString>;
+}, "strip", z.ZodTypeAny, {
+    name: string;
+    id: string;
+    email: string;
+    picture: string | null;
+    role: "USER" | "ADMIN" | "ANDINO_ADMIN" | "NEW_USER";
+}, {
+    name: string;
+    id: string;
+    email: string;
+    picture: string | null;
+    role: "USER" | "ADMIN" | "ANDINO_ADMIN" | "NEW_USER";
+}>;
+type LuciaUserType = z.infer<typeof luciaUserSchema>;
+
+type Context = {
+    user: LuciaUserType | null;
+};
+
+declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_modules__trpc_server_dist.RootConfig<{
+    ctx: Context;
     meta: object;
-    errorShape: _trpc_server.DefaultErrorShape;
-    transformer: typeof superjson.default;
+    errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
+    transformer: typeof node_modules_superjson_dist.default;
 }>, {
-    searchUsers: _trpc_server.BuildProcedure<"query", {
-        _config: _trpc_server.RootConfig<{
-            ctx: object;
+    loginLinkedin: node_modules__trpc_server_dist.BuildProcedure<"mutation", {
+        _config: node_modules__trpc_server_dist.RootConfig<{
+            ctx: Context;
             meta: object;
-            errorShape: _trpc_server.DefaultErrorShape;
-            transformer: typeof superjson.default;
+            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
+            transformer: typeof node_modules_superjson_dist.default;
         }>;
         _meta: object;
-        _ctx_out: object;
+        _ctx_out: Context;
+        _input_in: {
+            code: string;
+        };
+        _input_out: {
+            code: string;
+        };
+        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+    }, Response | {
+        sessionId: string;
+    }>;
+    loginGoogle: node_modules__trpc_server_dist.BuildProcedure<"mutation", {
+        _config: node_modules__trpc_server_dist.RootConfig<{
+            ctx: Context;
+            meta: object;
+            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
+            transformer: typeof node_modules_superjson_dist.default;
+        }>;
+        _meta: object;
+        _ctx_out: Context;
+        _input_in: {
+            idToken: string;
+        };
+        _input_out: {
+            idToken: string;
+        };
+        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+    }, Response | {
+        sessionId: string;
+    }>;
+    searchUsers: node_modules__trpc_server_dist.BuildProcedure<"query", {
+        _config: node_modules__trpc_server_dist.RootConfig<{
+            ctx: Context;
+            meta: object;
+            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
+            transformer: typeof node_modules_superjson_dist.default;
+        }>;
+        _meta: object;
+        _ctx_out: Context;
         _input_in: {
             query: string;
         };
         _input_out: {
             query: string;
         };
-        _output_in: typeof _trpc_server.unsetMarker;
-        _output_out: typeof _trpc_server.unsetMarker;
+        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
     }, {
         name: string;
         id: string;
@@ -37,36 +103,50 @@ declare const appRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<
         emailVerified?: Date | null | undefined;
         phoneNumber?: string | null | undefined;
     }[]>;
-    getPublicEvents: _trpc_server.BuildProcedure<"query", {
-        _config: _trpc_server.RootConfig<{
-            ctx: object;
+    getPublicEvents: node_modules__trpc_server_dist.BuildProcedure<"query", {
+        _config: node_modules__trpc_server_dist.RootConfig<{
+            ctx: Context;
             meta: object;
-            errorShape: _trpc_server.DefaultErrorShape;
-            transformer: typeof superjson.default;
+            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
+            transformer: typeof node_modules_superjson_dist.default;
         }>;
-        _ctx_out: object;
-        _input_in: typeof _trpc_server.unsetMarker;
-        _input_out: typeof _trpc_server.unsetMarker;
-        _output_in: typeof _trpc_server.unsetMarker;
-        _output_out: typeof _trpc_server.unsetMarker;
         _meta: object;
+        _ctx_out: Context;
+        _input_in: {
+            type?: string | undefined;
+            title?: string | undefined;
+            startDate?: string | undefined;
+            location?: string | undefined;
+            limit?: number | undefined;
+            page?: number | undefined;
+        } | undefined;
+        _input_out: {
+            type?: string | undefined;
+            title?: string | undefined;
+            startDate?: string | undefined;
+            location?: string | undefined;
+            limit?: number | undefined;
+            page?: number | undefined;
+        } | undefined;
+        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
     }, {
         events: {
             id: string;
+            type: EventTypeEnum;
             title: string;
             startDate: Date;
             endDate: Date;
             organizationId: string;
             customFields: {
                 name: string;
-                type: "number" | "select" | "date" | "text";
+                type: "number" | "date" | "select" | "text";
                 required: boolean;
                 options?: string | undefined;
             }[];
             createdAt: Date;
             updatedAt: Date;
             requiresApproval: boolean;
-            type: EventTypeEnum;
             backgroundColor: string | null;
             heroImage: string | null;
             organization: {
@@ -101,25 +181,25 @@ declare const appRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<
                 name: string;
                 id: string;
                 email: string;
+                stopCommunication: boolean;
+                role: string;
                 privacySettings: {
-                    linkedin: boolean;
-                    website: boolean;
                     email: boolean;
                     phoneNumber: boolean;
+                    linkedin: boolean;
                     x: boolean;
+                    website: boolean;
                 };
-                stopCommunication: boolean;
                 isLinkedinLinked: boolean;
-                instagram?: string | null | undefined;
-                linkedin?: string | null | undefined;
-                website?: string | null | undefined;
                 picture?: string | undefined;
                 phoneNumber?: string | undefined;
-                linkedinAccessToken?: string | undefined;
                 company?: string | null | undefined;
                 position?: string | null | undefined;
                 shortDescription?: string | null | undefined;
+                linkedin?: string | null | undefined;
                 x?: string | null | undefined;
+                instagram?: string | null | undefined;
+                website?: string | null | undefined;
                 professionalMotivations?: string | null | undefined;
                 communicationStyle?: string | null | undefined;
                 professionalValues?: string | null | undefined;
@@ -128,39 +208,46 @@ declare const appRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<
                 resumeUrl?: string | null | undefined;
                 resumeText?: string | null | undefined;
                 resumeLastUpdated?: string | null | undefined;
+                linkedinAccessToken?: string | undefined;
             }[] | null | undefined;
         }[];
         totalCount: number;
     }>;
-    getEvent: _trpc_server.BuildProcedure<"query", {
-        _config: _trpc_server.RootConfig<{
-            ctx: object;
+    getEvent: node_modules__trpc_server_dist.BuildProcedure<"query", {
+        _config: node_modules__trpc_server_dist.RootConfig<{
+            ctx: Context;
             meta: object;
-            errorShape: _trpc_server.DefaultErrorShape;
-            transformer: typeof superjson.default;
+            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
+            transformer: typeof node_modules_superjson_dist.default;
         }>;
         _meta: object;
-        _ctx_out: object;
-        _input_in: string;
-        _input_out: string;
-        _output_in: typeof _trpc_server.unsetMarker;
-        _output_out: typeof _trpc_server.unsetMarker;
+        _ctx_out: Context;
+        _input_in: {
+            eventId: string;
+            includeTickets?: boolean | undefined;
+        };
+        _input_out: {
+            eventId: string;
+            includeTickets?: boolean | undefined;
+        };
+        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
     }, {
         id: string;
+        type: EventTypeEnum;
         title: string;
         startDate: Date;
         endDate: Date;
         organizationId: string;
         customFields: {
             name: string;
-            type: "number" | "select" | "date" | "text";
+            type: "number" | "date" | "select" | "text";
             required: boolean;
             options?: string | undefined;
         }[];
         createdAt: Date;
         updatedAt: Date;
         requiresApproval: boolean;
-        type: EventTypeEnum;
         description?: string | undefined;
         location?: string | null | undefined;
         city?: string | null | undefined;
@@ -186,47 +273,47 @@ declare const appRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<
             description?: string | undefined;
         }[] | null | undefined;
     }>;
-    createRegistration: _trpc_server.BuildProcedure<"mutation", {
-        _config: _trpc_server.RootConfig<{
-            ctx: object;
+    createRegistration: node_modules__trpc_server_dist.BuildProcedure<"mutation", {
+        _config: node_modules__trpc_server_dist.RootConfig<{
+            ctx: Context;
             meta: object;
-            errorShape: _trpc_server.DefaultErrorShape;
-            transformer: typeof superjson.default;
+            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
+            transformer: typeof node_modules_superjson_dist.default;
         }>;
         _meta: object;
-        _ctx_out: object;
+        _ctx_out: Context;
         _input_in: {
             eventId: string;
             registrationData: {
                 name: string;
-                tickets: Record<string, number>;
                 email: string;
+                tickets: Record<string, number>;
             };
         };
         _input_out: {
             eventId: string;
             registrationData: {
                 name: string;
-                tickets: Record<string, number>;
                 email: string;
+                tickets: Record<string, number>;
             };
         };
-        _output_in: typeof _trpc_server.unsetMarker;
-        _output_out: typeof _trpc_server.unsetMarker;
+        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
     }, {
         name: string;
-        tickets: Record<string, number>;
         email: string;
+        tickets: Record<string, number>;
     }>;
-    getUserRegistrationStatus: _trpc_server.BuildProcedure<"query", {
-        _config: _trpc_server.RootConfig<{
-            ctx: object;
+    getUserRegistrationStatus: node_modules__trpc_server_dist.BuildProcedure<"query", {
+        _config: node_modules__trpc_server_dist.RootConfig<{
+            ctx: Context;
             meta: object;
-            errorShape: _trpc_server.DefaultErrorShape;
-            transformer: typeof superjson.default;
+            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
+            transformer: typeof node_modules_superjson_dist.default;
         }>;
         _meta: object;
-        _ctx_out: object;
+        _ctx_out: Context;
         _input_in: {
             userId: string;
             eventId: string;
@@ -235,22 +322,22 @@ declare const appRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<
             userId: string;
             eventId: string;
         };
-        _output_in: typeof _trpc_server.unsetMarker;
-        _output_out: typeof _trpc_server.unsetMarker;
+        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
     }, boolean>;
-    getOrganization: _trpc_server.BuildProcedure<"query", {
-        _config: _trpc_server.RootConfig<{
-            ctx: object;
+    getOrganization: node_modules__trpc_server_dist.BuildProcedure<"query", {
+        _config: node_modules__trpc_server_dist.RootConfig<{
+            ctx: Context;
             meta: object;
-            errorShape: _trpc_server.DefaultErrorShape;
-            transformer: typeof superjson.default;
+            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
+            transformer: typeof node_modules_superjson_dist.default;
         }>;
         _meta: object;
-        _ctx_out: object;
+        _ctx_out: Context;
         _input_in: string;
         _input_out: string;
-        _output_in: typeof _trpc_server.unsetMarker;
-        _output_out: typeof _trpc_server.unsetMarker;
+        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
     }, {
         name: string;
         id: string;

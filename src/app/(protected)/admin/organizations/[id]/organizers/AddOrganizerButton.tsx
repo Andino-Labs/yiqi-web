@@ -6,6 +6,14 @@ import { searchUsers } from '@/services/actions/userActions'
 import { useRouter } from 'next/navigation'
 import { User } from '@prisma/client'
 import { useTranslations } from 'next-intl'
+import { Button } from '@/components/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
 
 export default function AddOrganizerButton({
   organizationId
@@ -55,18 +63,18 @@ export default function AddOrganizerButton({
   }
 
   return (
-    <div className="mt-4">
-      <button
+    <div className="dark:bg-primary ml-auto">
+      <Button
+        className="w-70% dark:bg-neutral-600 font-bold"
         onClick={() => setShowForm(true)}
-        className="bg-blue-500 text-white px-4 py-2 rounded"
       >
         {t('addOrganizer')}
-      </button>
+      </Button>
       {showForm && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
           <form
             onSubmit={handleSubmit}
-            className="bg-white p-4 rounded shadow-lg w-96"
+            className="dark:bg-primary p-4 rounded shadow-lg w-96"
           >
             <h2 className="text-xl font-bold mb-4">{t('addNewOrganizer')}</h2>
             <div className="mb-4">
@@ -83,7 +91,7 @@ export default function AddOrganizerButton({
                     <li
                       key={user.id}
                       onClick={() => handleSelectUser(user)}
-                      className="p-2 hover:bg-gray-100 cursor-pointer"
+                      className="p-2 hover:bg-opposite hover:text-opposite cursor-pointer"
                     >
                       {user.name} ({user.email})
                     </li>
@@ -99,28 +107,47 @@ export default function AddOrganizerButton({
                 </p>
               </div>
             )}
-            <select
+
+            <Select
               value={role}
-              onChange={e => setRole(e.target.value as 'ADMIN' | 'VIEWER')}
-              className="w-full p-2 mb-4 border rounded"
+              onValueChange={value => setRole(value as 'ADMIN' | 'VIEWER')}
             >
-              <option value="VIEWER">{t('viewer')}</option>
-              <option value="ADMIN">{t('admin')}</option>
-            </select>
-            <div className="flex justify-end space-x-2">
-              <button
+              <SelectTrigger className="w-full bg-transparent text-white">
+                <SelectValue
+                  className="bg-transparent text-white"
+                  placeholder="Select one type"
+                />
+              </SelectTrigger>
+              <SelectContent className="bg-zinc-900 border-none text-white">
+                <SelectItem
+                  className="focus:bg-accent/35 focus:text-[#61f1f8]"
+                  value="VIEWER"
+                >
+                  {t('viewer')}
+                </SelectItem>
+                <SelectItem
+                  className="focus:bg-accent/35 focus:text-[#61f1f8]"
+                  value="ADMIN"
+                >
+                  {t('admin')}
+                </SelectItem>
+              </SelectContent>
+            </Select>
+            <div className="flex justify-end space-x-2 mt-4">
+              <Button
                 type="button"
+                className="w-70% dark:bg-transparent border border-white font-bold"
                 onClick={() => setShowForm(false)}
-                className="bg-gray-300 px-4 py-2 rounded"
               >
                 {t('cancel')}
-              </button>
-              <button
+              </Button>
+              <Button
                 type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded"
+                className="w-70% dark:bg-neutral-600 font-bold"
+                onClick={() => setShowForm(true)}
               >
                 {t('add')}
-              </button>
+              </Button>
             </div>
             {error && <p className="text-red-500 mt-2">{error}</p>}
           </form>

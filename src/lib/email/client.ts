@@ -1,18 +1,12 @@
-import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses'
+import { Resend } from 'resend'
 
-const REGION = process.env.AWS_REGION!
-const FROM_EMAIL = process.env.FROM_EMAIL!
-const client = new SESClient({ region: REGION })
+const RESEND_API_KEY = process.env.RESEND_API_KEY!
 
-if (!FROM_EMAIL) {
-  throw new Error('missing FROM_EMAIL in env')
+if (!RESEND_API_KEY) {
+  throw new Error('RESEND_API_KEY missing in env')
 }
 
-if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY) {
-  throw new Error('AWS credentials missing in env')
-}
-
-export const emailClient = client
+export const emailClient = new Resend(RESEND_API_KEY)
 
 export async function sendEmail(
   to: string,
@@ -21,34 +15,17 @@ export async function sendEmail(
   threadId: string,
   fromEmail: string
 ): Promise<void> {
-  const params = {
-    Destination: {
-      ToAddresses: [to]
-    },
-    Message: {
-      Body: {
-        Html: {
-          Charset: 'UTF-8',
-          Data: body
-        }
-      },
-      Subject: {
-        Charset: 'UTF-8',
-        Data: subject
-      }
-    },
-    Source: fromEmail,
-    MessageAttributes: {
-      'Andino-Thread-ID': {
-        DataType: 'String',
-        StringValue: threadId
-      }
-    }
-  }
-
   try {
-    const command = new SendEmailCommand(params)
-    const response = await emailClient.send(command)
+    const response = await emailClient.emails.send({
+      from: fromEmail,
+      to: [to],
+      subject: subject,
+      html: body,
+      headers: {
+        'Andino-Thread-ID': threadId
+      }
+    })
+
     console.log('Email sent successfully:', response)
   } catch (error) {
     console.error('Error sending email:', error)
