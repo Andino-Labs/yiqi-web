@@ -13,7 +13,7 @@ export const MessageSchema = z.object({
   content: z.string(),
   attachement: z.string().nullable(),
   createdAt: z.date(),
-  senderUserId: z.string(),
+  senderUserId: z.string().nullable(),
   destinationUserId: z.string().nullable(),
   senderUser: UserInfoSchema.nullable(),
   destinationUser: UserInfoSchema.nullable(),
@@ -41,7 +41,7 @@ export const OrgMessageListItemSchema = z.object({
       id: z.string(),
       content: z.string(),
       createdAt: z.string(),
-      senderUserId: z.string()
+      senderUserId: z.string().nullable()
     })
     .nullable()
 })

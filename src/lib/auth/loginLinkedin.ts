@@ -3,6 +3,7 @@ import prisma from '@/lib/prisma'
 import { AuthClient } from 'linkedin-api-client'
 import jwt from 'jsonwebtoken'
 import { LinkedInJWTSchema } from '@/types/linkedin'
+import { downloadAndUploadImage } from '@/lib/downloadAndUploadImage'
 
 export async function loginLinkedin({ code }: { code: string }) {
   const redirectUrl = `https://www.yiqi.lat`
@@ -38,11 +39,16 @@ export async function loginLinkedin({ code }: { code: string }) {
     if (existingUser) {
       userId = existingUser.id
     } else {
+      // Download and upload the profile picture to S3
+      const s3ImageUrl = await downloadAndUploadImage(
+        linkedUser.payload.picture
+      )
+
       const user = await prisma.user.create({
         data: {
           name: `${linkedUser.payload.name}`,
           email: linkedUser.payload.email.toLowerCase(),
-          picture: linkedUser.payload.picture,
+          picture: s3ImageUrl,
           privacySettings: {
             email: true,
             phoneNumber: true,

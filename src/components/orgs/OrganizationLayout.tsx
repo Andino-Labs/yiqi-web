@@ -9,7 +9,8 @@ import {
   BookUser,
   ChevronDown,
   Building2,
-  Banknote
+  Banknote,
+  Plus
 } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
@@ -73,11 +74,6 @@ export default function OrganizationLayout({
   const navItems = [
     {
       name: `${t('chat')}`,
-      icon: Building2,
-      href: `/admin/organizations/${orgId}/settings`
-    },
-    {
-      name: `${t('chat')}`,
       icon: MessageSquare,
       href: `/admin/organizations/${orgId}/chat`
     },
@@ -100,6 +96,11 @@ export default function OrganizationLayout({
       name: `${t('billing')}`,
       icon: Banknote,
       href: `/admin/organizations/${orgId}/billing`
+    },
+    {
+      name: 'Formularios',
+      icon: Plus,
+      href: `/admin/organizations/${orgId}/forms`
     }
   ]
   const currentOrg = useMemo(
@@ -212,7 +213,7 @@ export function EventText2(props: { id: string }) {
       <h1 className="text-2xl font-bold">{t('createNewEvent')}</h1>
       <Link
         href={`/admin/organizations/${props.id}/events`}
-        className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-gray-700 transition-colors"
+        className="px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-lg text-gray-700 dark:text-primary transition-colors"
       >
         {t('cancel')}
       </Link>

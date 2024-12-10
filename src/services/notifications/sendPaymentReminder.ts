@@ -1,4 +1,4 @@
-import { sendEmailToUser } from '@/lib/email/handlers/sendMessageToUser'
+import { sendEmailToUser } from '@/lib/email/handlers/sendEmailToUser'
 import { MailTemplatesIds } from '@/lib/email/lib'
 import prisma from '@/lib/prisma'
 import { sendUserWhatsappMessage } from '@/lib/whatsapp/sendUserWhatsappMessage'

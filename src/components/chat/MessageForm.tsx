@@ -1,3 +1,5 @@
+'use client'
+
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -16,13 +18,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, Loader2 } from 'lucide-react'
 import {
   MessageThreadType,
   MessageThreadTypeEnum
 } from '@/schemas/messagesSchema'
 import { translations } from '@/lib/translations/translations'
 import { useTranslations } from 'next-intl'
+import { useToast } from '@/hooks/use-toast'
 
 const formSchema = z.object({
   message: z.string().min(1, {
@@ -34,14 +37,19 @@ interface MessageFormProps {
   onSubmit: (values: z.infer<typeof formSchema>) => Promise<void>
   messageType: MessageThreadType
   setMessageType: (type: MessageThreadType) => void
+  allowedMessageTypes: MessageThreadType[]
+  isLoading?: boolean
 }
 
 export function MessageForm({
   onSubmit,
   messageType,
-  setMessageType
+  setMessageType,
+  allowedMessageTypes,
+  isLoading = false
 }: MessageFormProps) {
   const t = useTranslations('BulkSend')
+  const { toast } = useToast()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,16 +57,35 @@ export function MessageForm({
     }
   })
 
+  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      await onSubmit(values)
+      form.reset()
+    } catch (error) {
+      console.error('Error sending message:', error)
+      toast({
+        variant: 'destructive',
+        // TODO: Add error handling
+        title: t('error'),
+        description: t('errorSendingMessage')
+      })
+    }
+  }
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
         <FormField
           control={form.control}
           name="message"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Textarea placeholder={t('typeYourMessage')} {...field} />
+                <Textarea
+                  placeholder={t('typeYourMessage')}
+                  {...field}
+                  disabled={isLoading}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -67,7 +94,7 @@ export function MessageForm({
         <div className="flex justify-between items-center">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline">
+              <Button variant="outline" disabled={isLoading}>
                 {messageType === MessageThreadTypeEnum.Enum.whatsapp
                   ? `${t('whatsapp')}`
                   : `${t('email')}`}
@@ -75,25 +102,25 @@ export function MessageForm({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem
-                onClick={() =>
-                  setMessageType(MessageThreadTypeEnum.Enum.whatsapp)
-                }
-              >
-                {t('whatsapp')}
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => setMessageType(MessageThreadTypeEnum.Enum.email)}
-              >
-                {t('email')}
-              </DropdownMenuItem>
+              {allowedMessageTypes.map(type => (
+                <DropdownMenuItem
+                  onClick={() => setMessageType(type)}
+                  key={type}
+                >
+                  {t(type)}
+                </DropdownMenuItem>
+              ))}
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button type="submit">
-            {t('send')}{' '}
-            {messageType === MessageThreadTypeEnum.Enum.whatsapp
-              ? `${t('whatsapp')}`
-              : `${t('email')}`}
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                {t('sending')}
+              </>
+            ) : (
+              t('send')
+            )}
           </Button>
         </div>
       </form>

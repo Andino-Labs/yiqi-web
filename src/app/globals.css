@@ -118,6 +118,25 @@ body {
   .border-white-opacity-40 {
     border-color: rgba(255, 255, 255, 0.4);
   }
+
+  .dark .mantine-RichTextEditor-content {
+    background-color: #1a1a1a !important;
+    color: white !important;
+  }
+
+  .dark .mantine-RichTextEditor-controlsGroup{
+    background-color: #1a1a1a !important;
+  }
+
+  .dark .mantine-RichTextEditor-control {
+    background-color: black !important;
+    border: 1px solid #111827 !important;
+  }
+  
+  .mantine-RichTextEditor-control:hover {
+    border-color: #374151 !important;
+    background-color: #1f2937 !important;
+  }
 }
 
 @layer base {

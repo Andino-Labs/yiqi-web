@@ -40,9 +40,6 @@ model User {
 
   sentMessages Message[] @relation("senderUser")
 
-  sentNotifications     Notification[] @relation("notificationSender")
-  receivedNotifications Notification[] @relation("notificationUser")
-
   FormSubmission FormSubmission[]
 
   Organizer Organizer[]
@@ -134,11 +131,10 @@ model Organization {
 
   MessageThread MessageThread[]
 
-  Notification Notification[]
-  deletedAt    DateTime?
-  Form         Form[]
-  User         User?          @relation(fields: [userId], references: [id])
-  userId       String?
+  deletedAt DateTime?
+  Form      Form[]
+  User      User?     @relation(fields: [userId], references: [id])
+  userId    String?
 
   OrganizationContact OrganizationContact[]
 }
@@ -197,18 +193,18 @@ model Event {
   requiresApproval Boolean             @default(false)
   registrations    EventRegistration[]
   EventBot         EventBot[]
-  Notification     Notification[]
-  Form             Form[]
-  FormSubmission   FormSubmission[]
-  openGraphImage   String?
-  GeneratedMedia   GeneratedMedia[]
-  queueJobs        QueueJob[]
-  tickets          TicketOfferings[]
-  type             EventTypes          @default(IN_PERSON)
-  deletedAt        DateTime?
-  backgroundColor  String?
-  featuredIn       Json?
-  heroImage        String?
+
+  Form            Form[]
+  FormSubmission  FormSubmission[]
+  openGraphImage  String?
+  GeneratedMedia  GeneratedMedia[]
+  queueJobs       QueueJob[]
+  tickets         TicketOfferings[]
+  type            EventTypes        @default(IN_PERSON)
+  deletedAt       DateTime?
+  backgroundColor String?
+  featuredIn      Json?
+  heroImage       String?
 }
 
 enum TicketCategory {
@@ -358,27 +354,6 @@ model WhatsappIntegration {
   accessToken       String
 }
 
-model Notification {
-  id             String           @id @default(cuid())
-  userId         String?
-  user           User?            @relation("notificationUser", fields: [userId], references: [id])
-  eventId        String?
-  event          Event?           @relation(fields: [eventId], references: [id])
-  senderUser     User?            @relation("notificationSender", fields: [senderUserId], references: [id])
-  senderUserId   String?
-  organization   Organization     @relation(fields: [organizationId], references: [id])
-  organizationId String
-  type           NotificationType
-  sentAt         DateTime?
-  scheduledFor   DateTime // When the reminder should be sent
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  formId         String? // Add this line
-  form           Form?            @relation(fields: [formId], references: [id]) // Add this line
-  extraData      Json?
-  tries          Int              @default(0)
-}
-
 enum NotificationType {
   ORG_INVITE
   RESERVATION_PAYMENT_REMINDER
@@ -401,7 +376,6 @@ model Form {
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   deletedAt      DateTime?
-  Notification   Notification[]
 }
 
 model FormSubmission {
@@ -417,58 +391,6 @@ model FormSubmission {
   updatedAt DateTime @updatedAt
 }
 
-// enum SchedulingType {
-//   ROUND_ROBIN @map("roundRobin")
-//   COLLECTIVE  @map("collective")
-//   MANAGED     @map("managed")
-// }
-
-// enum PeriodType {
-//   UNLIMITED      @map("unlimited")
-//   ROLLING        @map("rolling")
-//   RANGE          @map("range")
-// }
-
-// model EventType {
-//   id          Int      @id @default(autoincrement())
-//   title       String
-//   slug        String   @unique
-//   description String?
-//   length      Int
-//   hidden      Boolean  @default(false)
-//   userId      String
-//   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-//   periodType  PeriodType  @default(UNLIMITED)
-//   periodStartDate DateTime?
-//   periodEndDate   DateTime?
-//   bookings     Booking[]
-// }
-
-// model Booking {
-//   id            Int       @id @default(autoincrement())
-//   userId        String?
-//   user          User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
-//   eventTypeId   Int
-//   eventType     EventType  @relation(fields: [eventTypeId], references: [id])
-//   startTime     DateTime
-//   endTime       DateTime
-//   status        BookingStatus @default(ACCEPTED)
-// }
-
-// model Availability {
-//   id          Int       @id @default(autoincrement())
-//   userId      String
-//   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-//   startTime   DateTime   @db.Time
-//   endTime     DateTime   @db.Time
-// }
-
-// enum BookingStatus {
-//   CANCELLED     @map("cancelled")
-//   ACCEPTED      @map("accepted")
-//   PENDING       @map("pending")
-// }
-
 enum JobStatus {
   PENDING
   PROCESSING
@@ -479,6 +401,7 @@ enum JobStatus {
 enum JobType {
   GENERATE_EVENT_OPEN_GRAPH
   COLLECT_USER_DATA
+  SEND_USER_MESSAGE
   // Add more job types as needed
 }
 
@@ -496,6 +419,8 @@ model QueueJob {
   completedAt DateTime?
   failedAt    DateTime?
   error       String?
+
+  notificationType NotificationType?
 
   // Optional: Add relations if jobs are associated with specific entities
   organizationId String?

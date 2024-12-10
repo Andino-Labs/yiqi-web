@@ -21,6 +21,7 @@ export async function sendUserCommunicationAction(
     destinationUserId: props.destinationUserId,
     content: props.content,
     messageType: props.messageType,
-    orgId: props.orgId
+    orgId: props.orgId,
+    senderUserId: currentUser.id
   })
 }

@@ -1,0 +1,162 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  ### SES Domain Verification ###
+  SESDomainIdentity:
+    Type: AWS::SES::DomainIdentity
+    Properties:
+      Domain: example.com # Replace with your domain name
+
+  ### Route 53 Records for SES ###
+  VerificationRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneName: 'example.com.' # Replace with your hosted zone name
+      Name: '_amazonses.example.com.' # Replace with your SES verification domain
+      Type: TXT
+      TTL: 300
+      ResourceRecords:
+        - !GetAtt SESDomainIdentity.DKIMVerificationToken
+
+  MXRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneName: 'example.com.' # Replace with your hosted zone name
+      Name: 'example.com.' # Replace with your domain
+      Type: MX
+      TTL: 300
+      ResourceRecords:
+        - '10 inbound-smtp.us-east-1.amazonaws.com' # Replace region if needed
+
+  ### S3 Bucket for Email Storage ###
+  EmailStorageBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: email-storage-bucket-example # Replace with your bucket name
+
+  EmailStorageBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref EmailStorageBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ses.amazonaws.com
+            Action: 's3:PutObject'
+            Resource: !Sub '${EmailStorageBucket.Arn}/*'
+
+  ### SNS Topic for Email Notifications ###
+  EmailSNSTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: email-notifications-topic
+
+  SNSTopicPolicy:
+    Type: AWS::SNS::TopicPolicy
+    Properties:
+      Topics:
+        - !Ref EmailSNSTopic
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ses.amazonaws.com
+            Action: 'sns:Publish'
+            Resource: !Ref EmailSNSTopic
+
+  ### SQS Queue for Notifications ###
+  EmailQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: email-queue
+
+  SQSPolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues:
+        - !Ref EmailQueue
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: '*'
+            Action: 'sqs:SendMessage'
+            Resource: !GetAtt EmailQueue.Arn
+            Condition:
+              ArnEquals:
+                'aws:SourceArn': !Ref EmailSNSTopic
+
+  SNSSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      TopicArn: !Ref EmailSNSTopic
+      Protocol: sqs
+      Endpoint: !GetAtt EmailQueue.Arn
+
+  ### SES Receipt Rule Set ###
+  SESReceiptRuleSet:
+    Type: AWS::SES::ReceiptRuleSet
+    Properties:
+      RuleSetName: default-rule-set
+
+  SESReceiptRule:
+    Type: AWS::SES::ReceiptRule
+    Properties:
+      RuleSetName: !Ref SESReceiptRuleSet
+      Rule:
+        Name: catch-all-rule
+        Enabled: true
+        Recipients:
+          - example.com
+        Actions:
+          - S3Action:
+              BucketName: !Ref EmailStorageBucket
+          - SNSAction:
+              TopicArn: !Ref EmailSNSTopic
+        ScanEnabled: false
+
+  ### IAM User for Local Testing ###
+  TestUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: email-test-user
+      Policies:
+        - PolicyName: SQSAccessPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: 'sqs:ReceiveMessage'
+                Resource: !GetAtt EmailQueue.Arn
+
+  TestUserAccessKey:
+    Type: AWS::IAM::AccessKey
+    Properties:
+      UserName: !Ref TestUser
+
+Outputs:
+  SESDomainIdentityArn:
+    Description: ARN of SES Domain Identity
+    Value: !GetAtt SESDomainIdentity.DomainIdentityArn
+
+  EmailBucketName:
+    Description: Name of the S3 Bucket for Email Storage
+    Value: !Ref EmailStorageBucket
+
+  EmailQueueURL:
+    Description: URL of the SQS Queue
+    Value: !Ref EmailQueue
+
+  EmailSNSTopicARN:
+    Description: ARN of the SNS Topic
+    Value: !Ref EmailSNSTopic
+
+  TestUserAccessKeyId:
+    Description: Access Key ID for Testing
+    Value: !Ref TestUserAccessKey
+
+  TestUserSecretAccessKey:
+    Description: Secret Access Key for Testing
+    Value: !GetAtt TestUserAccessKey.SecretAccessKey

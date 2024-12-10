@@ -52,7 +52,8 @@
     "highlightsSubtitle": "Join these amazing communities and connect with like-minded people",
     "eventsNear": "Events near",
     "seeAllEvents": "See all events",
-    "noEventsFound": "No events found"
+    "noEventsFound": "No events found",
+    "noDescriptionAvailable": "No description available"
   },
   "AccountDropdown": {
     "guestUser": "Guest User",
@@ -107,9 +108,15 @@
     "clickToContinue": "Click one chat to continue"
   },
   "EventsPage": {
+    "editEvent": "Edit Event",
     "createNewEvent": "Create New Event",
     "events": "Events",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "defaultValueH1": "Welcome to the Rich Text Editor",
+    "defaultValueP": "This editor supports",
+    "defaultValueStrong": "bold",
+    "defaultValueItalic": "italic",
+    "defaultValueP2": "and many other formatting options. You can also embed images and YouTube videos!"
   },
   "contactFor": {
     "contactsFor": "Contacts for",
@@ -131,7 +138,12 @@
     "whatsapp": "WhatsApp",
     "email": "Email",
     "send": "Send",
-    "messageValidation": "Message must be at least 1 character."
+    "messageValidation": "Message must be at least 1 character.",
+    "success": "Success",
+    "messagesSentSuccessfully": "Messages have been queued for sending",
+    "error": "Error",
+    "errorSendingMessages": "There was an error sending the messages",
+    "sending": "Sending..."
   },
   "EventsList": {
     "createNewEvents": "New Event",
@@ -191,6 +203,11 @@
     "role": "Role"
   },
   "DeleteAccount": {
+    "editEvent": "Edit event",
+    "uploadImage": "Upload image",
+    "viewEvent": "View event",
+    "allowedFormats": "Allowed formats",
+    "location": "Location",
     "settings": "Settings",
     "name": "Name",
     "email": "Email",
@@ -223,6 +240,8 @@
     "website": "Website",
     "enterWebsiteURL": "Enter your website URL",
     "manageOrganizersFor": "Tech Innovators",
+    "organizer": "Organizer",
+    "rol": "Role",
     "backToOrganizationDashboard": "A community of tech enthusiasts driving innovation.",
     "communityName": "Tech Innovators",
     "communityDescription": "Una comunidad de entusiastas de la tecnología impulsando la innovación.",
@@ -318,7 +337,8 @@
     "date": "Sent Date",
     "sentTo": "Sent to",
     "UserEventList": "User Event List",
-    "Address": "Address"
+    "Address": "Address",
+    "Going": "Going"
   },
   "TicketType": {
     "ticketName": "Ticket Name",
@@ -522,7 +542,9 @@
     "settingsOrganizationFormColor": "Color",
     "settingsOrganizationFormUrl": "Url de",
     "settingsOrganizationFormSaved": "Guardar Cambios",
-    "eventRegister": "Register"
+    "eventRegister": "Register",
+    "noNameAvailable": "No name available",
+    "noDescriptionAvailable": "No description available"
   },
   "EventDescription": {
     "eventAbout": "About Event",

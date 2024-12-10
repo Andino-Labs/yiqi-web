@@ -68,6 +68,7 @@ export type SendMailInput<T extends MailTemplatesIds> = {
   subject: string
   dynamicTemplateData: TemplatePropsMap[T]
   threadId: string // Dynamic props mapped based on template ID
+  fromEmail: string
 }
 
 // Define the input type that enforces correct template-data pairing
@@ -82,7 +83,8 @@ export async function sendEmailForTemplate<T extends MailTemplatesIds>({
   subject,
   templateId,
   dynamicTemplateData,
-  threadId
+  threadId,
+  fromEmail
 }: SendMailInput<T>) {
   const Component = MailTemplateMap[templateId]
 
@@ -93,7 +95,7 @@ export async function sendEmailForTemplate<T extends MailTemplatesIds>({
   )
 
   // Use your email client to send the email
-  return await sendEmail(toEmail, subject, renderedBody, threadId)
+  return await sendEmail(toEmail, subject, renderedBody, threadId, fromEmail)
 }
 
 // The sendEmail function, now strongly typed for templateId and dynamic data

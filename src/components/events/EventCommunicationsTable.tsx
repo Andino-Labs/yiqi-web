@@ -42,8 +42,8 @@ export default function EventCommunicationsTable({ eventId }: Props) {
         {communications.map(comm => (
           <TableRow key={comm.id}>
             <TableCell>{comm.type}</TableCell>
-            <TableCell>{comm.sentAt}</TableCell>
-            <TableCell>{comm.user.name}</TableCell>
+            <TableCell>{comm.sentAt.toLocaleString()}</TableCell>
+            <TableCell>{comm.user?.name}</TableCell>
           </TableRow>
         ))}
       </TableBody>

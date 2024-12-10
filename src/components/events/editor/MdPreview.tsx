@@ -62,16 +62,16 @@ export function MdPreview({
               ? ''
               : darkMode
                 ? `
-                prose-headings:text-white
-                prose-p:text-gray-200
-                prose-strong:text-white
-                prose-em:text-gray-200
-                prose-li:text-gray-200
-                prose-code:text-gray-200
-                prose-blockquote:text-gray-200
-                prose-a:text-blue-400
-                hover:prose-a:text-blue-300
-                prose-pre:bg-gray-800
+                prose-headings:text-primary
+                prose-p:text-primary
+                prose-strong:text-primary
+                prose-em:text-primary
+                prose-li:text-primary
+                prose-code:text-primary
+                prose-blockquote:text-primary
+                prose-a:text-primary
+                hover:prose-a:text-primary
+                prose-pre:bg-primary
               `
                 : `
                 prose-headings:text-gray-900

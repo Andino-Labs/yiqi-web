@@ -5,6 +5,7 @@ import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 import jwt from 'jsonwebtoken'
 import { LinkedInJWTSchema } from '@/types/linkedin'
+import { downloadAndUploadImage } from '@/lib/downloadAndUploadImage'
 
 // http://localhost:3000/api/auth/linkedin/callback
 export async function GET(req: NextRequest) {
@@ -55,7 +56,7 @@ export async function GET(req: NextRequest) {
         data: {
           name: `${linkedUser.payload.name}`,
           email: linkedUser.payload.email.toLowerCase(),
-          picture: linkedUser.payload.picture,
+          picture: await downloadAndUploadImage(linkedUser.payload.picture),
           privacySettings: {
             email: true,
             phoneNumber: true,

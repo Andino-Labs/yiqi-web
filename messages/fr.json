@@ -105,9 +105,15 @@
     "clickToContinue": "Cliquez sur une discussion pour continuer"
   },
   "EventsPage": {
+    "editEvent": "Modifier l'événement",
     "createNewEvent": "Créer un nouvel événement",
     "events": "Événements",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "defaultValueH1": "Bienvenue dans l'éditeur de texte enrichi",
+    "defaultValueP": "Cet éditeur prend en charge",
+    "defaultValueStrong": "gras",
+    "defaultValueItalic": "italique",
+    "defaultValueP2": "et de nombreuses autres options de formatage. Vous pouvez également insérer des images et des vidéos YouTube !"
   },
   "contactFor": {
     "contactsFor": "Contacts pour",
@@ -176,6 +182,11 @@
     "User": "Utilisateur"
   },
   "DeleteAccount": {
+    "uploadImage": "Télécharger l'image",
+    "location": "Emplacement",
+    "allowedFormats": "Formats autorisés",
+    "editEvent": "Éditer l'événement",
+    "viewEvent": "Voir l'événement",
     "settings": "Paramètres",
     "name": "Nom",
     "email": "Adresse e-mail",
@@ -208,6 +219,8 @@
     "website": "Site Web",
     "enterWebsiteURL": "Entrez l'URL de votre site Web",
     "manageOrganizersFor": "Tech Innovators",
+    "organizer": "Organisateur",
+    "rol": "Rôle",
     "backToOrganizationDashboard": "Une communauté de passionnés de technologie qui stimule l'innovation.",
     "communityName": "Tech Innovators",
     "communityDescription": "Une communauté de passionnés de technologie qui stimule l'innovation.",

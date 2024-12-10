@@ -27,6 +27,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   if (!user) {
     redirect(`/auth`)
   }
+  console.log(user)
 
   if (user.role === Roles.ADMIN) {
     return (
@@ -35,7 +36,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           orgId={params.id}
           userProps={{
             id: user.id,
-            picture: user.picture!,
+            picture: user.picture,
             email: user.email,
             name: user.name
           }}

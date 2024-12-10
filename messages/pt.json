@@ -105,9 +105,15 @@
     "clickToContinue": "Clique num chat para continuar"
   },
   "EventsPage": {
+    "editEvent": "Editar Evento",
     "createNewEvent": "Criar Novo Evento",
     "events": "Eventos",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "defaultValueH1": "Bem-vindo ao Editor de Texto Rico",
+    "defaultValueP": "Este editor suporta",
+    "defaultValueStrong": "negrito",
+    "defaultValueItalic": "itálico",
+    "defaultValueP2": "e muitas outras opções de formatação. Você também pode inserir imagens e vídeos do YouTube!"
   },
   "contactFor": {
     "contactsFor": "Contactos para",
@@ -176,6 +182,11 @@
     "User": "Utilizador"
   },
   "DeleteAccount": {
+    "uploadImage": "Carregar imagem",
+    "viewEvent": "Ver evento",
+    "editEvent": "Editar evento",
+    "allowedFormats": "Formatos permitidos",
+    "location": "Localização",
     "settings": "Configurações",
     "name": "Nome",
     "email": "E-mail",
@@ -208,6 +219,8 @@
     "website": "Website",
     "enterWebsiteURL": "Insira o URL do seu website",
     "manageOrganizersFor": "Inovadores Tecnológicos",
+    "organizer": "Organizador",
+    "rol": "Função",
     "backToOrganizationDashboard": "Uma comunidade de entusiastas de tecnologia a impulsionar a inovação.",
     "communityName": "Inovadores Tecnológicos",
     "communityDescription": "Uma comunidade de entusiastas de tecnologia a impulsionar a inovação.",

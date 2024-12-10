@@ -1,17 +1,16 @@
-import { GenerateEventOpenGraphJobSchema } from '@/schemas/mediaJobs'
 import prisma from '../prisma'
-import { handleGenerateEventOpenGraph } from '@/services/media/handleGenerateEventOpenGraph'
+import { sendUserCommunicationAction } from '@/services/actions/communications/sendUserCommunications'
+import { SendBaseMessageToUserPropsSchema } from '@/services/notifications/sendBaseMessageToUser'
 
-export async function generateMediasCron() {
+export async function processQueueJobs() {
   // Find jobs that need to be processed
   const jobs = await prisma.queueJob.findMany({
     where: {
-      type: 'GENERATE_EVENT_OPEN_GRAPH',
       status: 'PENDING',
-      attempts: { lt: 3 } // Only get jobs that have been attempted less than 3 times
+      attempts: { lt: 3 }
     },
     orderBy: [{ priority: 'desc' }, { createdAt: 'asc' }],
-    take: 5
+    take: 10 // Process 10 jobs at a time
   })
 
   const results = await Promise.all(
@@ -28,11 +27,15 @@ export async function generateMediasCron() {
         })
 
         // Process the job based on its type
-        if (job.type === 'GENERATE_EVENT_OPEN_GRAPH') {
-          const { eventId } = GenerateEventOpenGraphJobSchema.parse(job.data)
-          await handleGenerateEventOpenGraph({ eventId })
-        } else {
-          throw new Error(`Unsupported job type: ${job.type}`)
+        switch (job.type) {
+          case 'SEND_USER_MESSAGE': {
+            const data = SendBaseMessageToUserPropsSchema.parse(job.data)
+            await sendUserCommunicationAction(data)
+            break
+          }
+          // Add other job types here
+          default:
+            throw new Error(`Unsupported job type: ${job.type}`)
         }
 
         // Update job status to COMPLETED

@@ -52,7 +52,8 @@
     "highlightsSubtitle": "Únete a estas increíbles comunidades y conecta con personas afines",
     "eventsNear": "Eventos cerca de ti",
     "seeAllEvents": "Ver todos los eventos",
-    "noEventsFound": "No se encontraron eventos"
+    "noEventsFound": "No se encontraron eventos",
+    "noDescriptionAvailable": "No hay descripción disponible"
   },
   "AccountDropdown": {
     "guestUser": "Usuario Invitado",
@@ -108,8 +109,14 @@
   },
   "EventsPage": {
     "createNewEvent": "Crear Nuevo Evento",
+    "editEvent": "Editar Evento",
     "events": "Eventos",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "defaultValueH1": "Bienvenido al Editor de Texto Enriquecido",
+    "defaultValueP": "Este editor soporta",
+    "defaultValueStrong": "negrita",
+    "defaultValueItalic": "cursiva", 
+    "defaultValueP2": "y muchas otras opciones de formato. ¡También puedes insertar imágenes y videos de YouTube!"
   },
   "contactFor": {
     "contactsFor": "Contactos de",
@@ -191,6 +198,11 @@
     "role": "Rol"
   },
   "DeleteAccount": {
+    "viewEvent": "Ver evento",
+    "editEvent": "Editar evento",
+    "uploadImage":"Subir imagen",
+    "allowedFormats": "Formatos permitidos: ",
+    "location": "Ubicación",
     "settings": "Configuración",
     "name": "Nombre",
     "email": "Correo electrónico",
@@ -223,6 +235,8 @@
     "website": "Sitio web",
     "enterWebsiteURL": "Ingresa tu URL del sitio web",
     "manageOrganizersFor": "Administrar Organizadores para",
+    "organizer": "Organizador",
+    "rol": "Rol",
     "backToOrganizationDashboard": "Volver al Panel de la Organización",
     "communityName": "Tech Innovators",
     "communityDescription": "Una comunidad de entusiastas de la tecnología impulsando la innovación.",
@@ -318,7 +332,8 @@
     "date": "Fecha de envío",
     "sentTo": "Enviado a",
     "UserEventList": "Lista de eventos del usuario",
-    "Address": "Dirección"
+    "Address": "Dirección",
+    "Going": "Asistirán"
   },
   "TicketType": {
     "ticketName": "Nombre del ticket",
@@ -521,7 +536,9 @@
     "settingsOrganizationFormColor": "Color",
     "settingsOrganizationFormUrl": "URL de",
     "settingsOrganizationFormSaved": "Guardar cambios",
-    "eventRegister": "Registrar"
+    "eventRegister": "Registrar",
+    "noNameAvailable": "No hay nombre disponible",
+    "noDescriptionAvailable": "No hay descripción disponible"
   },
   "EventDescription": {
     "eventAbout": "Acerca del evento",

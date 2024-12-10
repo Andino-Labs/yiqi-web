@@ -20,8 +20,9 @@ export default async function Page({
 
   const chats = await getOrganizationMessageThreads(params.id)
   const messages = await getUserMessageList(params.userId, params.id)
-
-  if (user.role === Roles.USER) {
+  console.log('messages', messages.length)
+  console.log('id ', params.id)
+  if (user.role === Roles.ADMIN) {
     return (
       <main className="flex flex-col items-center justify-center">
         <OrganizationLayout
@@ -34,13 +35,14 @@ export default async function Page({
           }}
         >
           <div className="w-full flex justify-end mb-4">
-            <BulkSendModal />
+            <BulkSendModal allowedMessageTypes={chats.map(chat => chat.type)} />
           </div>
           <ActiveChatComponent chats={chats} activeUserId={params.userId}>
             <ConnectedChat
               defaultMessages={messages}
               userId={params.userId}
               orgId={params.id}
+              allowedMessageTypes={chats.map(chat => chat.type)}
             />
           </ActiveChatComponent>
         </OrganizationLayout>

@@ -42,7 +42,7 @@ const PlaceAutocomplete = ({
     <input
       ref={inputRef}
       className={`p-2 rounded-lg w-full text-green-dark placeholder-green-dark border-2 border-grey-secondary
-      focus:border-green-dark`}
+      focus:border-white-dark dark:bg-primary dark:text-primary`}
       name={fieldName}
       onBlur={() => {
         onSetAddress('')

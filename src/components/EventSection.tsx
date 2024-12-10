@@ -50,12 +50,11 @@ export default function EventSection({
           <div className="flex flex-col sm:flex-row sm:justify-end items-center sm:items-end sm:mt-0">
             <Link
               href={`/admin/organizations/${orgId}/events/new`}
-              className="font-bold text-primary hover:opacity-90 transition-opacity rounded-md text-center w-full sm:w-auto px-4 py-2"
+              className="font-bold dark:text-primary hover:opacity-90 transition-opacity rounded-md text-center w-full sm:w-auto px-4 py-2 dark:bg-neutral-600"
               style={{
                 paddingLeft: '1.2rem',
                 paddingRight: '1.2rem',
-                whiteSpace: 'normal',
-                backgroundColor: 'gray'
+                whiteSpace: 'normal'
               }}
             >
               {t('createNewEvents')}

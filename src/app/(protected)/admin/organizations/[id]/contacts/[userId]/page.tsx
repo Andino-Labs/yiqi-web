@@ -42,6 +42,9 @@ export default async function ContactDetailsPage({
                 defaultMessages={messages}
                 userId={params.userId}
                 orgId={params.id}
+                allowedMessageTypes={messages.map(
+                  message => message.messageThread.type
+                )}
               />
             </div>
           </Tabs.Content>

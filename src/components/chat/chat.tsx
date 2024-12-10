@@ -1,47 +1,15 @@
+'use client'
 import { Card, CardContent } from '@/components/ui/card'
-import Link from 'next/link'
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup
 } from '@/components/ui/resizable'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { MessagesSquare, Users } from 'lucide-react'
+import { MessagesSquare } from 'lucide-react'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { OrgMessageListItemSchemaType } from '@/schemas/messagesSchema'
 import { useTranslations } from 'next-intl'
-
-function Chats({
-  contextUserName,
-  lastMessage,
-  contextUserId
-}: OrgMessageListItemSchemaType) {
-  function getFirst5Words(str: string): string {
-    const words = str.split(' ')
-    const first5Words = words.slice(0, 5)
-    return first5Words.join(' ') + (words.length > 5 ? '...' : '')
-  }
-
-  return (
-    <Link prefetch={true} href={`/chat/${contextUserId}`}>
-      <div className="border-b last:border-b-0">
-        <div className="flex flex-row items-start gap-3 p-3 hover:bg-accent">
-          <Avatar>
-            <AvatarFallback>
-              <Users />
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col items-start gap-1">
-            <p className="font-bold">{contextUserName}</p>
-            <p className="text-muted-foreground text-sm">
-              {getFirst5Words(lastMessage?.content ?? '')}
-            </p>
-          </div>
-        </div>
-      </div>
-    </Link>
-  )
-}
+import ChatSelector from './ChatSelector'
 
 export default function ChatComponent({
   chats
@@ -61,7 +29,7 @@ export default function ChatComponent({
               <ScrollArea className="flex-1">
                 <div className="pr-4">
                   {chats.map((chat, index) => (
-                    <Chats key={index} {...chat} />
+                    <ChatSelector key={index} {...chat} />
                   ))}
                 </div>
               </ScrollArea>

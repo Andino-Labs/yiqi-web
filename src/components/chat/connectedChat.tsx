@@ -11,23 +11,26 @@ import {
 } from '@/schemas/messagesSchema'
 import { MessageForm } from './MessageForm'
 import { useTranslations } from 'next-intl'
+import MessageListItem from './MessageListItem'
 
 export default function ConnectedChat({
   defaultMessages,
   userId,
-  orgId
+  orgId,
+  allowedMessageTypes
 }: {
   defaultMessages: MessageList
   userId: string
   orgId: string
+  allowedMessageTypes: MessageThreadType[]
 }) {
   const t = useTranslations('ConnectedChat')
   const [messages, setMessages] = useState(defaultMessages)
   const [messageType, setMessageType] = useState<MessageThreadType>(
-    defaultMessages.at(0)?.messageThread.type ||
-      MessageThreadTypeEnum.Enum.whatsapp
+    allowedMessageTypes[0] || MessageThreadTypeEnum.Enum.whatsapp
   )
   const [isLoading, setIsLoading] = useState(false)
+  const [isSending, setIsSending] = useState(false)
   const [hasMore, setHasMore] = useState(true)
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const observerRef = useRef<IntersectionObserver | null>(null)
@@ -89,6 +92,7 @@ export default function ConnectedChat({
   }, [messages])
 
   async function onSubmit(values: { message: string }) {
+    setIsSending(true)
     try {
       const newMessage = await sendUserCommunicationAction({
         destinationUserId: userId,
@@ -99,6 +103,9 @@ export default function ConnectedChat({
       setMessages(prev => [newMessage, ...prev])
     } catch (error) {
       console.error('Failed to send message:', error)
+      throw error // Re-throw to be caught by the form's error handler
+    } finally {
+      setIsSending(false)
     }
   }
 
@@ -108,13 +115,7 @@ export default function ConnectedChat({
         {isLoading && <div ref={loadingRef}>{t('loading')}</div>}
         {messages
           .map(message => (
-            <div key={message.id} className="mb-4">
-              <p className="font-bold">{message.messageThread.type}</p>
-              <p className="font-bold">
-                {message.senderUser?.name || 'Unknown'}
-              </p>
-              <p>{message.content}</p>
-            </div>
+            <MessageListItem key={message.id} message={message} />
           ))
           .reverse()}
       </ScrollArea>
@@ -122,6 +123,8 @@ export default function ConnectedChat({
         onSubmit={onSubmit}
         messageType={messageType}
         setMessageType={setMessageType}
+        allowedMessageTypes={allowedMessageTypes}
+        isLoading={isSending}
       />
     </div>
   )

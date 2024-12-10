@@ -130,8 +130,6 @@ export async function createRegistration(
     // Setup notifications
     await setupInitialEventNotifications({
       userId: user.id,
-      eventId: event.id,
-      eventStartDate: new Date(event.startDate),
       orgId: event.organizationId
     })
 

@@ -110,18 +110,6 @@ export async function submitForm(formId: string, submissionData: unknown) {
     }
   })
 
-  await prisma.notification.create({
-    data: {
-      userId: currentUser.id,
-      organizationId: form.organizationId,
-      eventId: form.eventId,
-      formId: form.id,
-      // todo fix this
-      type: 'ORG_INVITE',
-      scheduledFor: new Date()
-    }
-  })
-
   return submission
 }
 
