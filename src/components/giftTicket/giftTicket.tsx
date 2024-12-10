@@ -121,9 +121,12 @@ function GiftUser(props:{
             <DialogTitle className="flex space-x-3">
                 {`Gift a ticket to ${props.userName}`}</DialogTitle>
             <DialogDescription>
-              Make changes to your profile here. Click save when you're done.
+              {`${props.userName} will recieve a notification as soon as you gift them the ticket`}
             </DialogDescription>
           </DialogHeader>
+          <div className="flex flex-col space-y-3 justify-start">
+            
+          </div>
           
           <DialogFooter className="sm:justify-start">
             <Button type="submit">Save changes</Button>
