@@ -105,7 +105,7 @@ export function EventAdminView({ registrations, eventId }: Props) {
         {/* gift ticket */}
 
         <TabsContent value="giftTicket">
-          <GiftTicket/>          
+          <GiftTicket eventId={eventId} />
         </TabsContent>
 
       </Tabs>

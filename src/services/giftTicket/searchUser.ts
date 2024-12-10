@@ -4,13 +4,13 @@ import prisma from '@/lib/prisma'
 
 export async function SearchUser(
     text: string
-){
-    try{
+) {
+    try {
         const user = await prisma.user.findMany({
-            where:{
-                OR:[
+            where: {
+                OR: [
                     {
-                        name:{
+                        name: {
                             contains: text,
                             mode: "insensitive"
                         },
@@ -22,21 +22,22 @@ export async function SearchUser(
                         }
                     }
                 ]
-                
+
             },
-            select:{
-                name:true,
+            select: {
+                name: true,
                 email: true,
-                picture: true,        
+                picture: true,
+                id: true
             }
         })
 
         return user
-        
-        
-    } catch(error){
+
+
+    } catch (error) {
         throw new Error(`${error}`)
-    } finally{
+    } finally {
         await prisma.$disconnect()
     }
 }
