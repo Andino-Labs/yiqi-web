@@ -107,7 +107,6 @@ export function EventAdminView({ registrations, eventId }: Props) {
         <TabsContent value="giftTicket">
           <GiftTicket eventId={eventId} />
         </TabsContent>
-
       </Tabs>
     </div>
   )
