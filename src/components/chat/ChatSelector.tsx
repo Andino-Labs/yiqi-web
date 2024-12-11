@@ -29,7 +29,9 @@ export default function ChatSelector({
     <Link href={`/admin/organizations/${orgId}/chat/${contextUserId}`}>
       <div
         className={`border-b last:border-b-0 transition-all ${
-          isActive ? 'bg-gray-100' : 'hover:bg-gray-50'
+          isActive
+            ? 'bg-sidebar-accent text-sidebar-accent-foreground'
+            : 'hover:bg-sidebar-accent/60'
         }`}
       >
         <div className="flex items-center gap-3 p-4">
@@ -39,7 +41,7 @@ export default function ChatSelector({
           </Avatar>
           <div className="flex-1">
             <div className="flex justify-between items-center">
-              <p className="font-bold text-secondary">{contextUserName}</p>
+              <p className="font-bold dark:text-gray-400">{contextUserName}</p>
               {type === 'email' ? (
                 <Mail className="h-5 w-5 text-gray-400" />
               ) : (

@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
 import { importUsersAction } from '@/services/actions/importActions'
 import { useTranslations } from 'next-intl'
@@ -60,12 +61,12 @@ export function ImportContactButton(params: { organizationId: string }) {
   }
 
   return (
-    <button
-      className={`bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+    <Button
+      className="w-70% dark:bg-neutral-600 font-bold"
       onClick={handleImportContacts}
       disabled={isLoading}
     >
       {isLoading ? `${t('importing')}` : `${t('importContacts')}`}
-    </button>
+    </Button>
   )
 }

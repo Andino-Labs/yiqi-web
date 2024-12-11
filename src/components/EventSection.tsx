@@ -44,7 +44,7 @@ export default function EventSection({
 
   return (
     <>
-      <section className="w-full p-4 rounded-lg border text-card-foreground shadow-sm h-full h-fit bg-primary">
+      <section className="w-full sm:p-4 rounded-lg sm:border text-card-foreground shadow-sm h-full h-fit bg-primary">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">{t('events')}</h1>
           <div className="flex flex-col sm:flex-row sm:justify-end items-center sm:items-end sm:mt-0">
@@ -73,7 +73,7 @@ export default function EventSection({
           </div>
         </div>
         {/* Lista de eventos */}
-        <div className="events-list overflow-y-auto bg-gray-800 rounded-lg">
+        <div className="events-list overflow-y-auto rounded-lg cursor-pointer">
           {paginatedEvents.map(event => (
             <div
               key={event.id}

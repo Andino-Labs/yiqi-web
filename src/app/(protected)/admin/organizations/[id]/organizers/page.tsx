@@ -31,8 +31,8 @@ export default async function OrganizersPage({
           picture: user.picture ?? ''
         }}
       >
-        <section className="w-full h-screen p-4 rounded-lg border text-card-foreground shadow-sm bg-primary">
-          <div className="flex w-full justify-between">
+        <section className="w-full h-screen sm:p-4 rounded-lg sm:border text-card-foreground shadow-sm bg-primary">
+          <div className="flex w-full justify-between gap-2">
             <h1 className="text-xl sm:text-2xl font-bold">
               {t('manageOrganizersFor') + ' '} {organization.name}
             </h1>

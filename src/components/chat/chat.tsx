@@ -45,7 +45,7 @@ export default function ChatComponent({
           >
             <div className="h-full flex flex-col">
               <div className="p-4">
-                <h2 className="text-lg font-semibold">{t('chats')}</h2>
+                <h2 className="text-lg font-semibold">{t('messages')}</h2>
               </div>
               <ScrollArea className="flex-1">
                 <div className="pr-4 space-y-2">

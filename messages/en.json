@@ -124,6 +124,8 @@
     "defaultValueP2": "and many other formatting options. You can also embed images and YouTube videos!"
   },
   "contactFor": {
+    "contact": "Contact",
+    "email": "Email",
     "contactsFor": "Contacts for",
     "backToDashboard": "Back to Organization Dashboard",
     "organizationNotFound": "Organization not found",
@@ -491,7 +493,7 @@
     "number": "Phone Number:",
     "additionalData": "Additional Data:",
     "AttendedEvents": "Attended Events:",
-    "Status": "Status:",
+    "Status": "Status",
     "back": "Back to Contacts"
   },
   "user": {

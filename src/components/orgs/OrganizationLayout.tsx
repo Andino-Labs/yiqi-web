@@ -37,6 +37,7 @@ import { getAllOrganizationsForCurrentUser } from '@/services/actions/organizati
 import { useEffect, useMemo, useState } from 'react'
 import { OrganizationType } from '@/schemas/organizerSchema'
 import { useTranslations } from 'next-intl'
+import { Button } from '../ui/button'
 
 interface UserProps {
   name: string
@@ -49,16 +50,27 @@ interface AdminLayoutProps {
   children: React.ReactNode
   userProps: UserProps
   orgId: string
+  showExtraButton?: boolean
+  buttonName?: string
+  dialogTriggerRef?: React.RefObject<HTMLButtonElement>
 }
 
 export default function OrganizationLayout({
   children,
   userProps,
-  orgId
+  orgId,
+  showExtraButton = false,
+  buttonName = '',
+  dialogTriggerRef
 }: AdminLayoutProps) {
   const t = useTranslations('Sidebar')
   const [organizations, setOrganizations] = useState<OrganizationType[]>([])
 
+  const handleBulkSendClick = () => {
+    if (dialogTriggerRef?.current) {
+      dialogTriggerRef.current.click()
+    }
+  }
   useEffect(() => {
     async function fetchOrganizations() {
       try {
@@ -152,37 +164,49 @@ export default function OrganizationLayout({
         <main className="flex flex-col flex-1 h-full overflow-hidden bg-primary">
           <header className="flex items-center justify-between p-4 shadow-md bg-primary">
             <SidebarTrigger className="bg-primary text-primary" />
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src={userProps.picture ?? ''} alt="User" />
-                  <AvatarFallback>U</AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end" forceMount>
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">
-                      {userProps.name}
-                    </p>
-                    <p className="text-xs leading-none text-muted-foreground">
-                      {userProps.email}
-                    </p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <SignOutButton>
-                    <div className="flex items-center gap-4">
-                      <span>{t('logOut')}</span>
-                      <LogOut className="h-4 w-4" />
+            <div className="flex items-center gap-4">
+              {/* Botón para enviar masivamente */}
+              {showExtraButton && (
+                <Button
+                  variant="outline"
+                  className="font-bold"
+                  onClick={handleBulkSendClick}
+                >
+                  {buttonName}
+                </Button>
+              )}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src={userProps.picture ?? ''} alt="User" />
+                    <AvatarFallback>U</AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">
+                        {userProps.name}
+                      </p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {userProps.email}
+                      </p>
                     </div>
-                  </SignOutButton>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <SignOutButton>
+                      <div className="flex items-center gap-4">
+                        <span>{t('logOut')}</span>
+                        <LogOut className="h-4 w-4" />
+                      </div>
+                    </SignOutButton>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </header>
-          <div className="flex-1 overflow-auto p-2 sm:px-8 sm:py-2 px-4 bg-primary">
+          <div className="flex-1 overflow-auto px-4 bg-primary h-screen">
             {children}
           </div>
         </main>

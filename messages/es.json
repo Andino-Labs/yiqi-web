@@ -124,6 +124,8 @@
     "defaultValueP2": "y muchas otras opciones de formato. ¡También puedes insertar imágenes y videos de YouTube!"
   },
   "contactFor": {
+    "contact": "Contacto",
+    "email": "Email",
     "contactsFor": "Contactos de",
     "backToDashboard": "Volver al Tablero de la Organización",
     "organizationNotFound": "Organización no encontrada",

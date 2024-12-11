@@ -20,9 +20,11 @@ import { sendBulkNotifications } from '@/services/actions/notifications/sendBulk
 import { useParams } from 'next/navigation'
 
 export function BulkSendModal({
-  allowedMessageTypes
+  allowedMessageTypes,
+  dialogTriggerRef
 }: {
   allowedMessageTypes: MessageThreadType[]
+  dialogTriggerRef?: React.RefObject<HTMLButtonElement> | null
 }) {
   const t = useTranslations('BulkSend')
   const { toast } = useToast()
@@ -71,7 +73,10 @@ export function BulkSendModal({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="w-70% dark:bg-neutral-600 font-bold">
+        <Button
+          ref={dialogTriggerRef}
+          className="w-70% dark:bg-neutral-600 font-bold hidden"
+        >
           {t('bulkSendButton')}
         </Button>
       </DialogTrigger>

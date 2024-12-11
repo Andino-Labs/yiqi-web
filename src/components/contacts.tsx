@@ -29,7 +29,7 @@ export default function ContactText(props: {
         </h1>
         <ImportContactButton organizationId={props.organizationId} />
       </div>
-      <div className="mb-4">
+      <div className="mb-2 mt-2">
         <ImportContactTemplateButton />
       </div>
       <ul className="space-y-2">

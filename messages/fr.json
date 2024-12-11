@@ -121,6 +121,8 @@
     "defaultValueP2": "et de nombreuses autres options de formatage. Vous pouvez également insérer des images et des vidéos YouTube !"
   },
   "contactFor": {
+    "contact": "Contact",
+    "email": "Email",
     "contactsFor": "Contacts pour",
     "backToDashboard": "Retour au tableau de bord de l'organisation",
     "organizationNotFound": "Organisation non trouvée",
