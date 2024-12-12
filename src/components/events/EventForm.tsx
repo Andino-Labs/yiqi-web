@@ -17,8 +17,6 @@ import {
   EventInputSchema,
   EventInputType,
   EventTicketInputType,
-  EventTypeEnum,
-  SavedEventType,
   SavedTicketOfferingType
 } from '@/schemas/eventSchema'
 import { useRouter } from 'next/navigation'
@@ -49,10 +47,11 @@ import {
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { UploadIcon } from '@radix-ui/react-icons'
+import { EventType } from '@/services/actions/event/getEvent'
 
 type Props = {
   organizationId: string
-  event?: SavedEventType
+  event?: EventType
   hasStripeAccount: boolean
 }
 
@@ -148,7 +147,7 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
       requiresApproval: event?.requiresApproval ?? false,
       openGraphImage: event?.openGraphImage ?? null,
       maxAttendees: event?.maxAttendees ?? undefined,
-      type: event?.type ?? EventTypeEnum.IN_PERSON
+      type: event?.type ?? undefined
     }
   })
 

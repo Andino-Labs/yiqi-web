@@ -115,7 +115,7 @@
     "defaultValueH1": "Bienvenido al Editor de Texto Enriquecido",
     "defaultValueP": "Este editor soporta",
     "defaultValueStrong": "negrita",
-    "defaultValueItalic": "cursiva", 
+    "defaultValueItalic": "cursiva",
     "defaultValueP2": "y muchas otras opciones de formato. ¡También puedes insertar imágenes y videos de YouTube!"
   },
   "contactFor": {
@@ -200,7 +200,7 @@
   "DeleteAccount": {
     "viewEvent": "Ver evento",
     "editEvent": "Editar evento",
-    "uploadImage":"Subir imagen",
+    "uploadImage": "Subir imagen",
     "allowedFormats": "Formatos permitidos: ",
     "location": "Ubicación",
     "settings": "Configuración",

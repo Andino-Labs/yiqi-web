@@ -2,7 +2,7 @@
 
 import { SearchUser } from '@/services/giftTicket/searchUser'
 import { Input } from '../ui/input'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { EllipsisVertical, Loader2 } from 'lucide-react'
 
@@ -17,14 +17,26 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '../ui/button'
 
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+
 import giftTicket from '@/services/giftTicket/createRegistration'
 import { LuciaUserType } from '@/schemas/userSchema'
 import { RegistrationInput } from '@/schemas/eventSchema'
 
 import { useToast } from '@/hooks/use-toast'
 import { ToastAction } from '../ui/toast'
-
-
+import { EventType } from '@/services/actions/event/getEvent'
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel
+} from '../ui/form'
+import { z } from 'zod'
+import { createNewUser } from '@/services/giftTicket/createAccountAndGiftTicket'
 
 export interface SearchResults {
   name: string | undefined
@@ -33,7 +45,17 @@ export interface SearchResults {
   picture: string | undefined | null
 }
 
-export default function GiftTicket(props: { eventId: string | undefined }) {
+// form schema for unregistered users
+
+const formSchema = z.object({
+  name: z.string(),
+  email: z.string()
+})
+
+export default function GiftTicket(props: {
+  eventId: string | undefined
+  event: EventType
+}) {
   const [results, setResults] = useState<SearchResults[]>([])
   const [searchTerm, setSearchTerm] = useState('')
 
@@ -101,6 +123,7 @@ export default function GiftTicket(props: { eventId: string | undefined }) {
                     picture={result.picture as string}
                     userId={result.id}
                     eventId={props.eventId as string}
+                    event={props.event}
                   />
                 </li>
               ))}
@@ -110,9 +133,18 @@ export default function GiftTicket(props: { eventId: string | undefined }) {
 
         {/* No Results */}
         {searchTerm && results && results.length === 0 && (
-          <p className="text-sm text-muted-foreground mt-3">
-            No users found matching {searchTerm}.
-          </p>
+          <div className="w-full flex items-center justify-center">
+            <div className="flex flex-col space-y-2 justify-center">
+              <p className="text-sm text-muted-foreground mt-3 text-center">
+                No users found matching {searchTerm}.
+              </p>
+              <GiftUnregisteredUser
+                searchTerm={searchTerm as string}
+                event={props.event}
+                eventId={props.eventId}
+              />
+            </div>
+          </div>
         )}
       </div>
     </div>
@@ -127,29 +159,55 @@ function GiftUser(props: {
   email: string | undefined
   eventId: string | undefined
   picture: string | undefined
+  event: EventType
 }) {
-
   const { toast } = useToast()
   const [loading, setLoading] = useState<boolean>(false)
+  const [ticketSelections, setTicketSelections] = useState<
+    Record<string, number>
+  >({})
+
+  const ticket = props.event.tickets[0]
+
+  // code to update quantity of ticket
+  const handleQuantityChange = (ticketId: string, change: number) => {
+    setTicketSelections(prev => {
+      const newQty = Math.max(0, Math.min(5, change))
+      console.log(`Updating ticket ${ticketId}: ${0} -> ${newQty}`)
+      return { ...prev, [ticketId]: newQty }
+    })
+  }
+
+  // assigning value for the contextUser object
   const contextUser: LuciaUserType = {
     email: props.email as string,
     id: props.userId as string,
     name: props.userName as string,
     picture: props.picture as string,
-    role: "USER"
+    role: 'USER'
   }
 
+  // eventId for the event which ticket will be given out from
   const eventId = props.eventId as string
 
+  // registration object used to create the registration for the selected user
   const registrationInput: RegistrationInput = {
     email: props.email as string,
     name: props.userName as string,
-    tickets: { "VIP": 1 }
+    tickets: ticketSelections
   }
 
+  const [open, setOpen] = useState<boolean>()
 
+  useEffect(() => {
+    if (!ticketSelections[ticket.id]) {
+      handleQuantityChange(ticket.id, 1)
+      console.log(ticketSelections)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ticket])
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <EllipsisVertical className="stroke-accent-foreground cursor-pointer" />
       </DialogTrigger>
@@ -166,38 +224,207 @@ function GiftUser(props: {
         <DialogFooter className="sm:justify-start">
           <Button
             type="submit"
-            onClick={() => async function submit() {
+            onClick={async function submit() {
               setLoading(true)
+              console.log('loading')
               try {
                 await giftTicket(contextUser, eventId, registrationInput)
-                setLoading(false)
 
                 toast({
-                  title: "Gift Ticket sent! ",
+                  title: 'Gift Ticket sent! ',
                   description: `Your ticket has successfully been gifted to ${props.userName}`,
                   action: (
-                    <ToastAction altText="Goto schedule to undo">ok</ToastAction>
-                  ),
+                    <ToastAction altText="Goto schedule to undo">
+                      ok
+                    </ToastAction>
+                  )
                 })
+                setLoading(false)
+                setOpen(false)
               } catch (error) {
                 console.log(error)
+                setLoading(false)
                 toast({
-                  title: "Unable to send gift Ticket! ",
+                  title: 'Unable to send gift Ticket! ',
                   description: `An error occured while sending the gift ticket to ${props.userName}`,
                   action: (
-                    <ToastAction altText="Goto schedule to undo">ok</ToastAction>
-                  ),
+                    <ToastAction altText="Goto schedule to undo">
+                      ok
+                    </ToastAction>
+                  )
                 })
               }
             }}
           >
             {loading === true ? (
-              'Gift Ticket'
-            ) : (
               <Loader2 className="animate-spin" />
+            ) : (
+              <p>Gift Ticket</p>
             )}
           </Button>
         </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+// modal for unregistered users
+
+function GiftUnregisteredUser(props: {
+  searchTerm: string | undefined
+  event: EventType
+  eventId: string | undefined
+}) {
+  const [open, setOpen] = useState<boolean>()
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: '',
+      email: ''
+    }
+  })
+
+  const { toast } = useToast()
+  const [loading, setLoading] = useState<boolean>(false)
+  const [ticketSelections, setTicketSelections] = useState<
+    Record<string, number>
+  >({})
+
+  const ticket = props.event.tickets[0]
+
+  const handleQuantityChange = (ticketId: string, change: number) => {
+    setTicketSelections(prev => {
+      const newQty = Math.max(0, Math.min(5, change))
+      console.log(`Updating ticket ${ticketId}: ${0} -> ${newQty}`)
+      return { ...prev, [ticketId]: newQty }
+    })
+  }
+
+  // function to create new user and gift ticket
+  const createUser = async (values: z.infer<typeof formSchema>) => {
+    console.log(values)
+    try {
+      setLoading(true)
+      // first create new user
+      const newUser = await createNewUser(values.name, values.email)
+
+      // assigning value for the contextUser object based on the newly created user's data
+      const contextUser: LuciaUserType = {
+        email: values.email as string,
+        id: newUser.id as string,
+        name: values.name as string,
+        picture: newUser.picture as string,
+        role: 'USER'
+      }
+
+      // eventId for the event which ticket will be given out from
+      const eventId = props.eventId as string
+
+      // registration object used to create the registration for the selected user
+      const registrationInput: RegistrationInput = {
+        email: values.email as string,
+        name: values.name as string,
+        tickets: ticketSelections
+      }
+
+      // gifting ticket function
+
+      await giftTicket(contextUser, eventId, registrationInput)
+      toast({
+        title: 'Gift Ticket sent! ',
+        description: `Your ticket has successfully been gifted to ${values.name}`,
+        action: <ToastAction altText="Goto schedule to undo">ok</ToastAction>
+      })
+      setLoading(false)
+      setOpen(false)
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+      toast({
+        title: 'Unable to send gift Ticket! ',
+        description: `An error occured while sending the gift ticket to ${values.name}`,
+        action: <ToastAction altText="Goto schedule to undo">ok</ToastAction>
+      })
+    }
+  }
+
+  useEffect(() => {
+    if (!ticketSelections[ticket.id]) {
+      handleQuantityChange(ticket.id, 1)
+      console.log(ticketSelections)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ticket])
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button className="w-full bg-accent">
+          Create a custom invitation for {props.searchTerm}
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px] flex flex-col justify-start">
+        <DialogHeader>
+          <DialogTitle className="flex space-x-3">
+            {`You need to create an account for ${props.searchTerm} first`}
+          </DialogTitle>
+          <DialogDescription>
+            Create an account for {props.searchTerm}.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="flex flex-col space-y-2 justify-start">
+          <Form {...form}>
+            <form
+              className="flex flex-col space-y-3"
+              onSubmit={form.handleSubmit(createUser)}
+            >
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>userName</FormLabel>
+                    <FormControl>
+                      <Input {...field} type="text" />
+                    </FormControl>
+                    <FormDescription>
+                      This will be the user name given to {props.searchTerm}{' '}
+                      when the account is created.
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
+              {/*  email */}
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email Address</FormLabel>
+                    <FormControl>
+                      <Input {...field} type="email" />
+                    </FormControl>
+                    <FormDescription>
+                      Ensure that this is the exact email address for{' '}
+                      {props.searchTerm}. If the email address is not correct,
+                      the account will be created for the wrong person!
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
+
+              <Button className="w-full text-center">
+                {loading === true ? (
+                  <Loader2 className="animate-spin" />
+                ) : (
+                  'Submit'
+                )}
+              </Button>
+            </form>
+          </Form>
+        </div>
       </DialogContent>
     </Dialog>
   )

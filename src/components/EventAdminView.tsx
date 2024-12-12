@@ -10,13 +10,15 @@ import { EventRegistrationsSchemaType } from '@/schemas/eventSchema'
 import { useTranslations } from 'next-intl'
 import { PersonIcon } from '@radix-ui/react-icons'
 import GiftTicket from './giftTicket/giftTicket'
+import { EventType } from '@/services/actions/event/getEvent'
 
 type Props = {
   registrations: EventRegistrationsSchemaType[]
   eventId: string
+  event: EventType
 }
 
-export function EventAdminView({ registrations, eventId }: Props) {
+export function EventAdminView({ registrations, eventId, event }: Props) {
   const t = useTranslations('DeleteAccount')
 
   return (
@@ -105,7 +107,7 @@ export function EventAdminView({ registrations, eventId }: Props) {
         {/* gift ticket */}
 
         <TabsContent value="giftTicket">
-          <GiftTicket eventId={eventId} />
+          <GiftTicket eventId={eventId} event={event} />
         </TabsContent>
       </Tabs>
     </div>

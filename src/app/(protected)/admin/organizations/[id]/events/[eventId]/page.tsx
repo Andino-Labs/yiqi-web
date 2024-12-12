@@ -16,7 +16,10 @@ export default async function EventDetailsPage({
 }: {
   params: { id: string; eventId: string }
 }) {
-  const event = await getEvent({ eventId: params.eventId })
+  const event = await getEvent({
+    eventId: params.eventId,
+    includeTickets: true
+  })
   const user = await getUser()
   const attendees = await getEventRegistrations(params.eventId)
 
@@ -136,6 +139,7 @@ export default async function EventDetailsPage({
               <EventAdminView
                 registrations={attendees}
                 eventId={params.eventId}
+                event={event}
               />
             </div>
           </div>
