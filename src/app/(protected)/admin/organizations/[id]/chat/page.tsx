@@ -1,10 +1,9 @@
 import { getUser } from '@/lib/auth/lucia'
 import { redirect } from 'next/navigation'
 import { Roles } from '@prisma/client'
-import ChatComponent from '@/components/chat/chat'
-import { BulkSendModal } from '@/components/chat/BulkSendModal'
-import OrganizationLayout from '@/components/orgs/OrganizationLayout'
 import { getOrganizationMessageThreads } from '@/services/actions/communications/getOrganizationMessageThreads'
+import { ChatSection } from './ChatSection'
+import ChatComponent from '@/components/chat/chat'
 
 export default async function Page({ params }: { params: { id: string } }) {
   const user = await getUser()
@@ -18,20 +17,9 @@ export default async function Page({ params }: { params: { id: string } }) {
   if (user.role === Roles.ADMIN) {
     return (
       <main className="flex flex-col items-center justify-center">
-        <OrganizationLayout
-          orgId={params.id}
-          userProps={{
-            picture: user.picture!,
-            email: user.email,
-            name: user.name,
-            id: user.id
-          }}
-        >
-          <div className="w-full flex justify-end mb-4">
-            <BulkSendModal allowedMessageTypes={chats.map(chat => chat.type)} />
-          </div>
+        <ChatSection orgId={params.id} user={user} isActive={false}>
           <ChatComponent chats={chats} />
-        </OrganizationLayout>
+        </ChatSection>
       </main>
     )
   } else if (user.role === Roles.NEW_USER) {

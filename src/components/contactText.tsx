@@ -35,14 +35,15 @@ export function ContactText2(props: {
 
   return (
     <div className="space-y-2">
-      <p>
-        <strong>{t('Name')}</strong> {props.name}
+      <p className="text-sm">
+        <strong className="text-s">{t('Name')}</strong> {props.name}
       </p>
-      <p>
-        <strong>{t('Email')}</strong> {props.email}
+      <p className="text-sm">
+        <strong className="text-s">{t('Email')}</strong> {props.email}
       </p>
-      <p>
-        <strong>{t('number')}</strong> {props.phoneNumber || 'N/A'}
+      <p className="text-sm">
+        <strong className="text-s">{t('number')}</strong>{' '}
+        {props.phoneNumber || 'N/A'}
       </p>
       <h3 className="text-lg font-semibold mt-4 mb-2">{t('additionalData')}</h3>
     </div>

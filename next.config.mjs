@@ -10,6 +10,11 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
+        protocol: 'https',
+        hostname: 'example.com',
+        pathname: '/**',
+      },
+      {
         hostname: 'lh3.googleusercontent.com'
       },
       {

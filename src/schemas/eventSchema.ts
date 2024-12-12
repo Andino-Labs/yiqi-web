@@ -26,6 +26,7 @@ export const EventTicketOfferingInputSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   category: z.enum(['GENERAL', 'VIP', 'BACKSTAGE']),
   description: z.string().optional(),
+  id: z.string().optional(),
   price: z.number().min(0, 'Price must be positive'),
   limit: z.number().min(1, 'Limit must be at least 1'),
   ticketsPerPurchase: z

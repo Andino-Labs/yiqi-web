@@ -11,9 +11,6 @@ export const createConnectAccount = async (organizationId: string) => {
       },
       fees: {
         payer: 'account'
-      },
-      losses: {
-        payments: 'application'
       }
     }
   })

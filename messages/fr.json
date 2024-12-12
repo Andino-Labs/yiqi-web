@@ -102,7 +102,12 @@
   },
   "Chat": {
     "chats": "Discussions",
-    "clickToContinue": "Cliquez sur une discussion pour continuer"
+    "messages": "Messages",
+    "clickToContinue": "Cliquez sur une discussion pour continuer",
+    "previewHTML": "Aperçu HTML",
+    "emailPreview": "Aperçu de l'e-mail",
+    "seeMore": "Voir plus",
+    "seeLess": "Voir moins"
   },
   "EventsPage": {
     "editEvent": "Modifier l'événement",
@@ -116,6 +121,8 @@
     "defaultValueP2": "et de nombreuses autres options de formatage. Vous pouvez également insérer des images et des vidéos YouTube !"
   },
   "contactFor": {
+    "contact": "Contact",
+    "email": "Email",
     "contactsFor": "Contacts pour",
     "backToDashboard": "Retour au tableau de bord de l'organisation",
     "organizationNotFound": "Organisation introuvable",

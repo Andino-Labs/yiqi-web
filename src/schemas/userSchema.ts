@@ -77,12 +77,15 @@ export const profileDataSchema = baseProfileSchema.extend({
   role: z.string()
 })
 export const profileWithPrivacySchema = baseProfileSchema.extend({
-  picture: z.string().optional(),
   id: z.string(),
+  picture: z.string().optional(),
   privacySettings: privacySettingsSchema,
   linkedinAccessToken: z.string().optional(),
   isLinkedinLinked: z.boolean().default(false),
   role: z.string()
+})
+export const createOrgContactSchema = profileWithPrivacySchema.extend({
+  id: z.string().optional().nullish()
 })
 
 export const luciaUserSchema = z.object({
@@ -99,3 +102,4 @@ export type ProfileDataValues = z.infer<typeof profileDataSchema>
 export type ProfileFormValues = z.infer<typeof profileFormSchema>
 export type ProfileWithPrivacy = z.infer<typeof profileWithPrivacySchema>
 export type PrivacySettings = z.infer<typeof privacySettingsSchema>
+export type CreateOrgContactType = z.infer<typeof createOrgContactSchema>

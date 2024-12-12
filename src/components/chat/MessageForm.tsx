@@ -74,7 +74,10 @@ export function MessageForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+      <form
+        onSubmit={form.handleSubmit(handleSubmit)}
+        className="border-t space-y-4 p-4"
+      >
         <FormField
           control={form.control}
           name="message"
@@ -112,7 +115,7 @@ export function MessageForm({
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button type="submit" disabled={isLoading}>
+          <Button variant={'outline'} type="submit" disabled={isLoading}>
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

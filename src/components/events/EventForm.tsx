@@ -96,9 +96,9 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
         name: 'General',
         category: 'GENERAL',
         description: '',
-        price: 0,
+        price: 0.00,
         limit: 100,
-        ticketsPerPurchase: 1
+        ticketsPerPurchase: 1,
       }
     ]
   )

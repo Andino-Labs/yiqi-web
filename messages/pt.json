@@ -102,7 +102,12 @@
   },
   "Chat": {
     "chats": "Chats",
-    "clickToContinue": "Clique num chat para continuar"
+    "messages": "Messages",
+    "clickToContinue": "Clique num chat para continuar",
+    "previewHTML": "Visualizar HTML",
+    "emailPreview": "Visualização de Email",
+    "seeMore": "Ver mais",
+    "seeLess": "Ver menos"
   },
   "EventsPage": {
     "editEvent": "Editar Evento",
@@ -116,6 +121,8 @@
     "defaultValueP2": "e muitas outras opções de formatação. Você também pode inserir imagens e vídeos do YouTube!"
   },
   "contactFor": {
+    "contact": "Contacto",
+    "email": "Email",
     "contactsFor": "Contactos para",
     "backToDashboard": "Voltar ao Painel da Organização",
     "organizationNotFound": "Organização não encontrada",

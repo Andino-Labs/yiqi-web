@@ -30,7 +30,7 @@ export function ImportContactTemplateButton() {
 
   return (
     <button
-      className="text-blue-500 hover:text-blue-700 hover:underline text-sm"
+      className="text-gray-500 hover:text-gray-700 hover:underline text-sm"
       onClick={handleOnClickButton}
     >
       {t('downloadCsvTemplate')}

@@ -110,14 +110,22 @@ export default function ConnectedChat({
   }
 
   return (
-    <div className="flex flex-col h-full w-full">
-      <ScrollArea className="flex-grow" ref={scrollAreaRef}>
-        {isLoading && <div ref={loadingRef}>{t('loading')}</div>}
-        {messages
-          .map(message => (
-            <MessageListItem key={message.id} message={message} />
-          ))
-          .reverse()}
+    <>
+      <ScrollArea className="flex-1">
+        <div className="flex flex-col h-full">
+          <div className="p-4">
+            <div className="flex flex-col h-full w-full">
+              <ScrollArea className="flex-grow" ref={scrollAreaRef}>
+                {isLoading && <div ref={loadingRef}>{t('loading')}</div>}
+                {messages
+                  .map(message => (
+                    <MessageListItem key={message.id} message={message} />
+                  ))
+                  .reverse()}
+              </ScrollArea>
+            </div>
+          </div>
+        </div>
       </ScrollArea>
       <MessageForm
         onSubmit={onSubmit}
@@ -126,6 +134,6 @@ export default function ConnectedChat({
         allowedMessageTypes={allowedMessageTypes}
         isLoading={isSending}
       />
-    </div>
+    </>
   )
 }
