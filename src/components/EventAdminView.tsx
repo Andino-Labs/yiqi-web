@@ -71,7 +71,7 @@ export function EventAdminView({ registrations, eventId, event }: Props) {
           >
             <div className="flex items-center">
               <Gift className="h-7 w-7 mr-2" />
-              <span className="hidden sm:inline">{t("gift")}</span>
+              <span className="hidden sm:inline">{t('gift')}</span>
             </div>
           </TabsTrigger>
         </TabsList>
