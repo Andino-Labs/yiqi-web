@@ -68,8 +68,8 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<
       },
       | Response
       | {
-          sessionId: string
-        }
+        sessionId: string
+      }
     >
     loginGoogle: node_modules__trpc_server_dist.BuildProcedure<
       'mutation',
@@ -93,8 +93,8 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<
       },
       | Response
       | {
-          sessionId: string
-        }
+        sessionId: string
+      }
     >
     searchUsers: node_modules__trpc_server_dist.BuildProcedure<
       'query',
@@ -137,25 +137,25 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<
         _meta: object
         _ctx_out: Context
         _input_in:
-          | {
-              type?: string | undefined
-              title?: string | undefined
-              startDate?: string | undefined
-              location?: string | undefined
-              limit?: number | undefined
-              page?: number | undefined
-            }
-          | undefined
+        | {
+          type?: string | undefined
+          title?: string | undefined
+          startDate?: string | undefined
+          location?: string | undefined
+          limit?: number | undefined
+          page?: number | undefined
+        }
+        | undefined
         _input_out:
-          | {
-              type?: string | undefined
-              title?: string | undefined
-              startDate?: string | undefined
-              location?: string | undefined
-              limit?: number | undefined
-              page?: number | undefined
-            }
-          | undefined
+        | {
+          type?: string | undefined
+          title?: string | undefined
+          startDate?: string | undefined
+          location?: string | undefined
+          limit?: number | undefined
+          page?: number | undefined
+        }
+        | undefined
         _output_in: typeof node_modules__trpc_server_dist.unsetMarker
         _output_out: typeof node_modules__trpc_server_dist.unsetMarker
       },
@@ -203,48 +203,48 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<
           maxAttendees?: number | null | undefined
           openGraphImage?: string | null | undefined
           featuredIn?:
-            | {
-                name: string
-                url: string
-              }[]
-            | null
-            | undefined
+          | {
+            name: string
+            url: string
+          }[]
+          | null
+          | undefined
           hosts?:
-            | {
-                name: string
-                id: string
-                email: string
-                stopCommunication: boolean
-                role: string
-                privacySettings: {
-                  email: boolean
-                  phoneNumber: boolean
-                  linkedin: boolean
-                  x: boolean
-                  website: boolean
-                }
-                isLinkedinLinked: boolean
-                picture?: string | undefined
-                phoneNumber?: string | undefined
-                company?: string | null | undefined
-                position?: string | null | undefined
-                shortDescription?: string | null | undefined
-                linkedin?: string | null | undefined
-                x?: string | null | undefined
-                instagram?: string | null | undefined
-                website?: string | null | undefined
-                professionalMotivations?: string | null | undefined
-                communicationStyle?: string | null | undefined
-                professionalValues?: string | null | undefined
-                careerAspirations?: string | null | undefined
-                significantChallenge?: string | null | undefined
-                resumeUrl?: string | null | undefined
-                resumeText?: string | null | undefined
-                resumeLastUpdated?: string | null | undefined
-                linkedinAccessToken?: string | undefined
-              }[]
-            | null
-            | undefined
+          | {
+            name: string
+            id: string
+            email: string
+            stopCommunication: boolean
+            role: string
+            privacySettings: {
+              email: boolean
+              phoneNumber: boolean
+              linkedin: boolean
+              x: boolean
+              website: boolean
+            }
+            isLinkedinLinked: boolean
+            picture?: string | undefined
+            phoneNumber?: string | undefined
+            company?: string | null | undefined
+            position?: string | null | undefined
+            shortDescription?: string | null | undefined
+            linkedin?: string | null | undefined
+            x?: string | null | undefined
+            instagram?: string | null | undefined
+            website?: string | null | undefined
+            professionalMotivations?: string | null | undefined
+            communicationStyle?: string | null | undefined
+            professionalValues?: string | null | undefined
+            careerAspirations?: string | null | undefined
+            significantChallenge?: string | null | undefined
+            resumeUrl?: string | null | undefined
+            resumeText?: string | null | undefined
+            resumeLastUpdated?: string | null | undefined
+            linkedinAccessToken?: string | undefined
+          }[]
+          | null
+          | undefined
         }[]
         totalCount: number
       }
@@ -296,25 +296,25 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<
         maxAttendees?: number | null | undefined
         openGraphImage?: string | null | undefined
         tickets?:
-          | {
-              name: string
-              category: 'GENERAL' | 'VIP' | 'BACKSTAGE'
-              price: number
-              limit: number
-              ticketsPerPurchase: number
-              description?: string | undefined
-            }[]
-          | {
-              name: string
-              id: string
-              category: 'GENERAL' | 'VIP' | 'BACKSTAGE'
-              price: number
-              limit: number
-              ticketsPerPurchase: number
-              description?: string | undefined
-            }[]
-          | null
-          | undefined
+        | {
+          name: string
+          category: 'GENERAL' | 'VIP' | 'BACKSTAGE'
+          price: number
+          limit: number
+          ticketsPerPurchase: number
+          description?: string | undefined
+        }[]
+        | {
+          name: string
+          id: string
+          category: 'GENERAL' | 'VIP' | 'BACKSTAGE'
+          price: number
+          limit: number
+          ticketsPerPurchase: number
+          description?: string | undefined
+        }[]
+        | null
+        | undefined
       }
     >
     createRegistration: node_modules__trpc_server_dist.BuildProcedure<

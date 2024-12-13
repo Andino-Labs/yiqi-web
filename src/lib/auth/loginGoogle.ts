@@ -33,15 +33,22 @@ export async function loginGoogle({ idToken }: { idToken: string }) {
 
     // Convert email to lowercase for consistency
     const email = googleUser.email.toLowerCase()
-    let userId: string = ''
+    let user
 
     // Check if the user already exists in the database
     const existingUser = await prisma.user.findUnique({
-      where: { email }
+      where: { email },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        picture: true,
+        role: true
+      }
     })
 
     if (existingUser) {
-      userId = existingUser.id
+      user = existingUser
     } else {
       // Download and upload the profile picture to S3
       const s3ImageUrl = await downloadAndUploadImage(googleUser.picture)
@@ -59,15 +66,21 @@ export async function loginGoogle({ idToken }: { idToken: string }) {
             x: true,
             website: true
           }
+        },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          picture: true,
+          role: true
         }
       })
-      userId = newUser.id
+      user = newUser
     }
-
     // Create a session for the authenticated user
-    const session = await lucia.createSession(userId, {})
+    const session = await lucia.createSession(user.id, {})
 
-    return { sessionId: session.id }
+    return { sessionId: session.id, user }
   } catch (error) {
     console.error('Error during Google authentication:', error)
     return new Response('Internal Server Error', { status: 500 })

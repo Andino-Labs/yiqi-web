@@ -4,6 +4,7 @@ import { publicProcedure, router } from './util'
 import { getUserRegistrationStatus } from '../actions/eventActions'
 import { getOrganization } from '../actions/organizationActions'
 import {
+  createRegisterSchema,
   getEventFilterSchema,
   getPublicEventsFilterSchema,
   registrationInputSchema,
@@ -12,24 +13,30 @@ import {
 import {
   SearchUserResultSchema,
   UserRegistrationStatusSchema,
-  OrganizationSchema
+  OrganizationSchema,
+  AuthSchemaSchema
 } from '@/schemas/apiSchemas'
 import { getEvent } from '../actions/event/getEvent'
 import { getPublicEvents } from '../actions/event/getPublicEvents'
 import { createRegistration } from '@/lib/event/createRegistration'
 import { loginLinkedin } from '@/lib/auth/loginLinkedin'
 import { loginGoogle } from '@/lib/auth/loginGoogle'
+import { checkExistingRegistration } from '../actions/event/checkExistingRegistration'
+import { createCheckoutSessionMobile } from '../actions/billing/createCheckoutSessionMobile'
+import { markRegistrationPaidMobile } from '../actions/event/markRegistrationPaidMobile'
 
 export const appRouter = router({
   loginLinkedin: publicProcedure
     .input(z.object({ code: z.string() }))
     .mutation(async ({ input }) => {
-      return loginLinkedin(input)
+      const result = await loginLinkedin(input)
+      return AuthSchemaSchema.parse(result)
     }),
   loginGoogle: publicProcedure
     .input(z.object({ idToken: z.string({ message: 'idToken prob!!' }) }))
     .mutation(async ({ input }) => {
-      return loginGoogle(input)
+      const result = await loginGoogle(input)
+      return AuthSchemaSchema.parse(result)
     }),
   searchUsers: publicProcedure
     .input(z.object({ query: z.string() }))
@@ -70,7 +77,7 @@ export const appRouter = router({
         input.registrationData
       )
 
-      return registrationInputSchema.parse(registration)
+      return createRegisterSchema.parse(registration)
     }),
 
   getUserRegistrationStatus: publicProcedure
@@ -94,6 +101,48 @@ export const appRouter = router({
       const organization = await getOrganization(input)
       if (!organization) throw new Error('Organization not found')
       return OrganizationSchema.parse(organization)
+    }),
+  checkExistingRegistration: publicProcedure
+    .input(
+      z.object({
+        eventId: z.string()
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      if (!ctx.user) {
+        return null
+      }
+
+      return await checkExistingRegistration(input.eventId, ctx.user.email)
+    }),
+
+  createCheckoutSession: publicProcedure
+    .input(
+      z.object({
+        registrationId: z.string()
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      if (!ctx.user) {
+        throw new Error('User not signed in')
+      }
+
+      const session = await createCheckoutSessionMobile(input.registrationId)
+      return session
+    }),
+  markRegistrationPaid: publicProcedure
+    .input(
+      z.object({
+        registrationId: z.string()
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      if (!ctx.user) {
+        throw new Error('User not signed in')
+      }
+
+      const status = await markRegistrationPaidMobile(input.registrationId)
+      return status
     })
 })
 

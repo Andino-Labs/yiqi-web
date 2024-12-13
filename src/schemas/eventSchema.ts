@@ -116,7 +116,21 @@ export const EventRegistrationSchema = z.object({
   user: userSchema,
   tickets: z.array(TicketSchema)
 })
-
+// Registration result schema
+export const createRegisterSchema = z.object({
+  success: z.boolean(),
+  registration: z.object({
+    id: z.string(),
+    userId: z.string(),
+    status: z.enum(['PENDING', 'APPROVED', 'REJECTED']),
+    customFields: z.record(z.any()),
+    createdAt: z.date(),
+    updatedAt: z.date(),
+    paid: z.boolean(),
+    paymentId: z.string().nullable()
+  }),
+  message: z.string()
+})
 export const createCustomFieldSchema = (field: CustomFieldInputType) => {
   switch (field.type) {
     case 'text':
@@ -164,13 +178,7 @@ export const SavedEventSchema = EventInputSchema.extend({
     .optional()
     .nullable()
     .transform(val => val ?? []),
-  tickets: z
-    .union([
-      z.array(EventTicketOfferingInputSchema),
-      z.array(SavedTicketOfferingSchema)
-    ])
-    .optional()
-    .nullable()
+  tickets: z.array(SavedTicketOfferingSchema).optional().nullable()
 })
 
 export const PublicEventSchema = SavedEventSchema.extend({

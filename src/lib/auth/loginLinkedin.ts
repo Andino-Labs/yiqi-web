@@ -28,7 +28,7 @@ export async function loginLinkedin({ code }: { code: string }) {
       })
     )
 
-    let userId = ''
+    let user
 
     const existingUser = await prisma.user.findUnique({
       where: {
@@ -37,14 +37,14 @@ export async function loginLinkedin({ code }: { code: string }) {
     })
 
     if (existingUser) {
-      userId = existingUser.id
+      user = existingUser
     } else {
       // Download and upload the profile picture to S3
       const s3ImageUrl = await downloadAndUploadImage(
         linkedUser.payload.picture
       )
 
-      const user = await prisma.user.create({
+      const newUser = await prisma.user.create({
         data: {
           name: `${linkedUser.payload.name}`,
           email: linkedUser.payload.email.toLowerCase(),
@@ -58,14 +58,12 @@ export async function loginLinkedin({ code }: { code: string }) {
           }
         }
       })
-      userId = user.id
+      user = newUser
     }
 
-    const session = await lucia.createSession(userId, {})
+    const session = await lucia.createSession(user.id, {})
 
-    return {
-      sessionId: session.id
-    }
+    return { sessionId: session.id, user }
   } catch (error) {
     console.error('Error during LinkedIn authentication:', error)
     return new Response('Internal Server Error', { status: 500 })
