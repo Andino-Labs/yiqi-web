@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { profileWithPrivacySchema, userSchema } from './userSchema'
+import { EventTypes } from '@prisma/client'
 
 export enum AttendeeStatus {
   PENDING = 'PENDING',
@@ -7,10 +8,10 @@ export enum AttendeeStatus {
   REJECTED = 'REJECTED'
 }
 
-export enum EventTypeEnum {
-  ONLINE = 'ONLINE',
-  IN_PERSON = 'IN_PERSON'
-}
+// export enum EventTypeEnum {
+//   ONLINE = 'ONLINE',
+//   IN_PERSON = 'IN_PERSON'
+// }
 
 export const CustomFieldSchema = z.object({
   name: z.string().min(1, 'Field name is required'),
@@ -52,7 +53,8 @@ export const EventInputSchema = z.object({
   maxAttendees: z.number().int().positive().optional().nullable(),
   requiresApproval: z.boolean().default(false),
   openGraphImage: z.string().optional().nullable(),
-  type: z.nativeEnum(EventTypeEnum)
+  // type: z.nativeEnum(EventTypeEnum)
+  type: z.nativeEnum(EventTypes)
 })
 
 export const EventCommunitySchema = z.object({
@@ -74,7 +76,8 @@ export const EventCommunitySchema = z.object({
   maxAttendees: z.number().int().positive().optional().nullable(),
   requiresApproval: z.boolean().default(false),
   openGraphImage: z.string().optional().nullable(),
-  type: z.nativeEnum(EventTypeEnum)
+  // type: z.nativeEnum(EventTypeEnum)
+  type: z.nativeEnum(EventTypes)
 })
 
 export const EventSchema = EventInputSchema.extend({

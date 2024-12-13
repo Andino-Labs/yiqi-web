@@ -16,8 +16,7 @@ import { createEvent } from '@/services/actions/event/createEvent'
 import {
   EventInputSchema,
   EventInputType,
-  EventTicketInputType,
-  SavedTicketOfferingType
+  EventTicketInputType
 } from '@/schemas/eventSchema'
 import { useRouter } from 'next/navigation'
 import { MapPin, Clock, Users } from 'lucide-react'
@@ -88,17 +87,23 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
   const router = useRouter()
   const t = useTranslations('DeleteAccount')
   const tPage = useTranslations('EventsPage')
-  const [tickets, setTickets] = useState<
-    EventTicketInputType[] | SavedTicketOfferingType[]
-  >(
-    event?.tickets ?? [
+  const [tickets, setTickets] = useState<EventTicketInputType[]>(
+    event?.tickets?.map(ticket => ({
+      name: ticket.name,
+      category: ticket.category,
+      description: ticket.description || '',
+      price: Number(ticket.price),
+      limit: ticket.limit,
+      ticketsPerPurchase: ticket.ticketsPerPurchase,
+      id: ticket.id
+    })) ?? [
       {
         name: 'General',
         category: 'GENERAL',
         description: '',
-        price: 0.00,
+        price: 0,
         limit: 100,
-        ticketsPerPurchase: 1,
+        ticketsPerPurchase: 1
       }
     ]
   )
@@ -259,7 +264,14 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
 
         if (event) {
           // Update existing event
-          await updateEvent(event.id, eventData, tickets)
+          await updateEvent(
+            event.id,
+            eventData,
+            tickets.map(ticket => ({
+              ...ticket,
+              price: Number(ticket.price)
+            }))
+          )
         } else {
           // Create new event
           await createEvent(organizationId, eventData, tickets)
