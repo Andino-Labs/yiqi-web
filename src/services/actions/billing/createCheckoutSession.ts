@@ -25,7 +25,11 @@ export const createCheckoutSession = async (registrationId: string) => {
   if (registration.paymentId) {
     try {
       const session = await stripe.checkout.sessions.retrieve(
-        registration.paymentId
+        registration.paymentId,
+        {},
+        {
+          stripeAccount: stripeAccountId
+        }
       )
 
       if (!session.client_secret) {
