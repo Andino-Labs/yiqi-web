@@ -56,6 +56,7 @@ const formSchema = z.object({
 export default function GiftTicket(props: {
   eventId: string | undefined
   event: EventType
+  senderName: string | undefined
 }) {
   const [results, setResults] = useState<SearchResults[]>([])
   const [searchTerm, setSearchTerm] = useState('')
@@ -123,6 +124,7 @@ export default function GiftTicket(props: {
                     userId={result.id}
                     eventId={props.eventId as string}
                     event={props.event}
+                    senderName={props.senderName}
                   />
                 </li>
               ))}
@@ -141,6 +143,7 @@ export default function GiftTicket(props: {
                 searchTerm={searchTerm as string}
                 event={props.event}
                 eventId={props.eventId}
+                senderName={props.senderName}
               />
             </div>
           </div>
@@ -159,6 +162,7 @@ function GiftUser(props: {
   eventId: string | undefined
   picture: string | undefined
   event: EventType
+  senderName: string | undefined
 }) {
   const { toast } = useToast()
   const [loading, setLoading] = useState<boolean>(false)
@@ -228,7 +232,12 @@ function GiftUser(props: {
               setLoading(true)
               console.log('loading')
               try {
-                await giftTicket(contextUser, eventId, registrationInput)
+                await giftTicket(
+                  contextUser,
+                  eventId,
+                  registrationInput,
+                  props.senderName as string
+                )
 
                 toast({
                   title: `${t('sent')}`,
@@ -274,6 +283,7 @@ function GiftUnregisteredUser(props: {
   searchTerm: string | undefined
   event: EventType
   eventId: string | undefined
+  senderName: string | undefined
 }) {
   const [open, setOpen] = useState<boolean>()
 
@@ -332,7 +342,12 @@ function GiftUnregisteredUser(props: {
 
       // gifting ticket function
 
-      await giftTicket(contextUser, eventId, registrationInput)
+      await giftTicket(
+        contextUser,
+        eventId,
+        registrationInput,
+        props.senderName as string
+      )
       toast({
         title: `${t('sent')}`,
         description: `${t('sentBody', { userName: values.name })}`,

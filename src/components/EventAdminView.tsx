@@ -16,9 +16,15 @@ type Props = {
   registrations: EventRegistrationsSchemaType[]
   eventId: string
   event: EventType
+  senderName: string | undefined
 }
 
-export function EventAdminView({ registrations, eventId, event }: Props) {
+export function EventAdminView({
+  registrations,
+  eventId,
+  event,
+  senderName
+}: Props) {
   const t = useTranslations('DeleteAccount')
 
   return (
@@ -107,7 +113,7 @@ export function EventAdminView({ registrations, eventId, event }: Props) {
         {/* gift ticket */}
 
         <TabsContent value="giftTicket">
-          <GiftTicket eventId={eventId} event={event} />
+          <GiftTicket eventId={eventId} event={event} senderName={senderName} />
         </TabsContent>
       </Tabs>
     </div>

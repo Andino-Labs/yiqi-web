@@ -8,10 +8,17 @@ import {
 } from '@/schemas/eventSchema'
 import { LuciaUserType } from '@/schemas/userSchema'
 
+import { Resend } from 'resend'
+
+import GiftEmail from '../../../emails/giftedTicket'
+
+const resend = new Resend(process.env.NEXT_PUBLICK_RESEND_APIKEY)
+
 export default async function giftTicket(
   contextUser: LuciaUserType | null,
   eventId: string,
-  registrationData: RegistrationInput
+  registrationData: RegistrationInput,
+  senderName: string | undefined
 ) {
   try {
     // Validate input data
@@ -113,6 +120,17 @@ export default async function giftTicket(
         data: ticketCreations
       })
     }
+
+    resend.emails.send({
+      from: 'yiqi@resend.dev',
+      to: `${user.email}`,
+      subject: `You have been gifted a ticket to attend ${event.title}`,
+      react: GiftEmail({
+        eventName: event.title as string,
+        receiverName: user.name as string,
+        senderName: senderName as string
+      })
+    })
 
     return {
       success: true,
