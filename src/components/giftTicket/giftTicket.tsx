@@ -37,6 +37,7 @@ import {
 } from '../ui/form'
 import { z } from 'zod'
 import { createNewUser } from '@/services/giftTicket/createAccountAndGiftTicket'
+import { useTranslations } from 'next-intl'
 
 export interface SearchResults {
   name: string | undefined
@@ -58,6 +59,7 @@ export default function GiftTicket(props: {
 }) {
   const [results, setResults] = useState<SearchResults[]>([])
   const [searchTerm, setSearchTerm] = useState('')
+  const t = useTranslations("Gift")
 
   async function search(value: string) {
     setSearchTerm(value)
@@ -72,17 +74,16 @@ export default function GiftTicket(props: {
     <div className="flex flex-col space-y-3">
       {/* title and description */}
       <div className="">
-        <h2 className="text-xl font-semibold mb-2">Gift Ticket</h2>
+        <h2 className="text-xl font-semibold mb-2">{t("gift")}</h2>
         <p className="text-muted-foreground">
-          You can easily give out free tickets to people by simply searching
-          their name or email address
+          {t("giftBody")}
         </p>
       </div>
 
       {/* form */}
       <div className="flex flex-col space-y-3">
         <div className="flex justify-start flex-col">
-          <label htmlFor="search">Search</label>
+          <label htmlFor="search">{t("Search")}</label>
           <Input
             type="text"
             placeholder="search username or email"
@@ -92,7 +93,7 @@ export default function GiftTicket(props: {
 
         {searchTerm && results && results.length > 0 && (
           <div>
-            <h3 className="font-semibold mt-3">Search Results</h3>
+            <h3 className="font-semibold mt-3">{t("results")}</h3>
             <ul className="space-y-2 w-full bg-accent/60 p-5 rounded-2xl">
               {results.map((result, index) => (
                 <li
@@ -136,7 +137,7 @@ export default function GiftTicket(props: {
           <div className="w-full flex items-center justify-center">
             <div className="flex flex-col space-y-2 justify-center">
               <p className="text-sm text-muted-foreground mt-3 text-center">
-                No users found matching {searchTerm}.
+                {t("noResults", { searchTerm })}.
               </p>
               <GiftUnregisteredUser
                 searchTerm={searchTerm as string}
@@ -168,6 +169,7 @@ function GiftUser(props: {
   >({})
 
   const ticket = props.event.tickets[0]
+  const t = useTranslations("Gift")
 
   // code to update quantity of ticket
   const handleQuantityChange = (ticketId: string, change: number) => {
@@ -214,10 +216,10 @@ function GiftUser(props: {
       <DialogContent className="sm:max-w-[425px] flex flex-col justify-start">
         <DialogHeader>
           <DialogTitle className="flex space-x-3">
-            {`Gift a ticket to ${props.userName}`}
+            {t("giftTo", { userName: props.userName })}
           </DialogTitle>
           <DialogDescription>
-            Make changes to your profile here. Click save when you&#39;re done.
+            {t("giftDesc", { userName: props.userName })}
           </DialogDescription>
         </DialogHeader>
 
@@ -231,11 +233,11 @@ function GiftUser(props: {
                 await giftTicket(contextUser, eventId, registrationInput)
 
                 toast({
-                  title: 'Gift Ticket sent! ',
-                  description: `Your ticket has successfully been gifted to ${props.userName}`,
+                  title: `${t('sent')}`,
+                  description: `${t("sentBody", { userName: props.userName })}`,
                   action: (
                     <ToastAction altText="Goto schedule to undo">
-                      ok
+                      {t("ok")}
                     </ToastAction>
                   )
                 })
@@ -245,11 +247,11 @@ function GiftUser(props: {
                 console.log(error)
                 setLoading(false)
                 toast({
-                  title: 'Unable to send gift Ticket! ',
-                  description: `An error occured while sending the gift ticket to ${props.userName}`,
+                  title: `${t("error")}`,
+                  description: `${t("errorBody", { userName: props.userName })}`,
                   action: (
                     <ToastAction altText="Goto schedule to undo">
-                      ok
+                      {t("ok")}
                     </ToastAction>
                   )
                 })
@@ -259,7 +261,7 @@ function GiftUser(props: {
             {loading === true ? (
               <Loader2 className="animate-spin" />
             ) : (
-              <p>Gift Ticket</p>
+              <p>{t("gift")}</p>
             )}
           </Button>
         </DialogFooter>
@@ -292,6 +294,8 @@ function GiftUnregisteredUser(props: {
   >({})
 
   const ticket = props.event.tickets[0]
+
+  const t = useTranslations("Gift")
 
   const handleQuantityChange = (ticketId: string, change: number) => {
     setTicketSelections(prev => {
@@ -332,9 +336,9 @@ function GiftUnregisteredUser(props: {
 
       await giftTicket(contextUser, eventId, registrationInput)
       toast({
-        title: 'Gift Ticket sent! ',
-        description: `Your ticket has successfully been gifted to ${values.name}`,
-        action: <ToastAction altText="Goto schedule to undo">ok</ToastAction>
+        title: `${t("sent")}`,
+        description: `${t("sentBody", { userName: values.name })}`,
+        action: <ToastAction altText="Goto schedule to undo">{t("ok")}</ToastAction>
       })
       setLoading(false)
       setOpen(false)
@@ -342,9 +346,9 @@ function GiftUnregisteredUser(props: {
       console.log(error)
       setLoading(false)
       toast({
-        title: 'Unable to send gift Ticket! ',
-        description: `An error occured while sending the gift ticket to ${values.name}`,
-        action: <ToastAction altText="Goto schedule to undo">ok</ToastAction>
+        title: `${t("error")}`,
+        description: `${t("errorBody", { userName: values.name })}`,
+        action: <ToastAction altText="Goto schedule to undo">{t("ok")}</ToastAction>
       })
     }
   }
@@ -361,16 +365,16 @@ function GiftUnregisteredUser(props: {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="w-full bg-accent">
-          Create a custom invitation for {props.searchTerm}
+          {t("customInvite", { searchTerm: props.searchTerm })}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] flex flex-col justify-start">
         <DialogHeader>
           <DialogTitle className="flex space-x-3">
-            {`You need to create an account for ${props.searchTerm} first`}
+            {t("customTitle", { searchTerm: props.searchTerm })}
           </DialogTitle>
           <DialogDescription>
-            Create an account for {props.searchTerm}.
+            {t("createAccount", { searchTerm: props.searchTerm })}.
           </DialogDescription>
         </DialogHeader>
 
@@ -385,13 +389,12 @@ function GiftUnregisteredUser(props: {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>userName</FormLabel>
+                    <FormLabel>{t("userName")}</FormLabel>
                     <FormControl>
                       <Input {...field} type="text" />
                     </FormControl>
                     <FormDescription>
-                      This will be the user name given to {props.searchTerm}{' '}
-                      when the account is created.
+                      {t("nameDesc", { searchTerm: props.searchTerm })}
                     </FormDescription>
                   </FormItem>
                 )}
@@ -402,14 +405,12 @@ function GiftUnregisteredUser(props: {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email Address</FormLabel>
+                    <FormLabel>{t("email")}</FormLabel>
                     <FormControl>
                       <Input {...field} type="email" />
                     </FormControl>
                     <FormDescription>
-                      Ensure that this is the exact email address for{' '}
-                      {props.searchTerm}. If the email address is not correct,
-                      the account will be created for the wrong person!
+                      {t("emailDesc", { searchTerm: props.searchTerm })}
                     </FormDescription>
                   </FormItem>
                 )}
@@ -419,7 +420,7 @@ function GiftUnregisteredUser(props: {
                 {loading === true ? (
                   <Loader2 className="animate-spin" />
                 ) : (
-                  'Submit'
+                  `${t('Submit')}`
                 )}
               </Button>
             </form>

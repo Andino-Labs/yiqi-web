@@ -291,9 +291,9 @@
     "importing": "A importar...",
     "importContacts": "Importar Contactos",
     "noOrganizationFound": "Nenhuma organização encontrada",
-    "networkingSettings": "Definições de Networking"
+    "networkingSettings": "Definições de Networking",
+    "gift": "Bilhete de Oferta"
   },
-
   "AdminLayout": {
     "organization": "Organização",
     "settings": "Definições",
@@ -368,7 +368,6 @@
     "manage": "Quero gerir a minha comunidade!",
     "createCommunityManager": "Crie o seu gestor de comunidade",
     "form": "Preencha os campos livres para continuar, poderá modificá-los mais tarde!",
-
     "describe": "Descreva a sua organização",
     "Color": "Cor",
     "faceBook": "URL do Facebook",
@@ -428,7 +427,6 @@
     "linkedInUrl": "Forneça o URL do seu perfil do LinkedIn.",
     "apply": "Candidatar-se ao bootcamp"
   },
-
   "Grill": {
     "notSupported": "O seu navegador não suporta a etiqueta de vídeo.",
     "reserved": "Obrigado por reservar o seu bilhete para a Edição de Halloween do Tech Grill",
@@ -495,7 +493,6 @@
     "activity": "O seu histórico de atividades aparecerá aqui",
     "logout": "Sair"
   },
-
   "Community": {
     "communities": "Comunidades",
     "noCommunitiesFound": "Nenhuma comunidade encontrada neste momento.",
@@ -609,5 +606,27 @@
     "eventCheckInTableTicketId": "ID do Bilhete",
     "eventCheckInTableCheckIn": "Validado",
     "eventCheckinBackButton": "Voltar aos Bilhetes"
+  },
+  "Gift": {
+    "gift": "Bilhete de Oferta",
+    "giftBody": "Podes oferecer bilhetes gratuitos às pessoas simplesmente pesquisando o nome ou endereço de e-mail delas",
+    "Search": "Pesquisar",
+    "results": "Resultados da Pesquisa",
+    "noResults": "Não foram encontrados utilizadores que correspondam a {searchTerm}",
+    "giftTo": "Oferecer um bilhete a {userName}",
+    "giftDesc": "Ao clicar no botão abaixo, vais enviar um bilhete gratuito a {userName}",
+    "sent": "Bilhete de Oferta enviado!",
+    "sentBody": "O teu bilhete foi enviado com sucesso para ${userName}",
+    "ok": "OK",
+    "error": "Não foi possível enviar o bilhete de oferta!",
+    "errorBody": "Ocorreu um erro ao enviar o bilhete de oferta para ${userName}",
+    "customInvite": "Criar um convite personalizado para {searchTerm}",
+    "customTitle": "É necessário criar uma conta para {searchTerm} primeiro",
+    "createAccount": "Criar uma conta para {searchTerm}",
+    "userName": "Nome de Utilizador",
+    "nameDesc": "Este será o nome de utilizador atribuído a {searchTerm} quando a conta for criada.",
+    "email": "Endereço de Email",
+    "emailDesc": "Certifica-te de que este é o endereço de email exato para {searchTerm}. Se o endereço de email não estiver correto, a conta será criada para a pessoa errada!",
+    "Submit": "Submeter"
   }
 }

@@ -307,9 +307,9 @@
     "importing": "Importando...",
     "importContacts": "Importar Contactos",
     "noOrganizationFound": "No se encontró la organización",
-    "networkingSettings": "Networking"
+    "networkingSettings": "Networking",
+    "gift": "Billete de regalo"
   },
-
   "AdminLayout": {
     "organization": "Organizaciones",
     "settings": "Configuración",
@@ -510,7 +510,6 @@
     "activity": "Aquí aparecerá tu historial de actividades",
     "logout": "Cerrar sesión"
   },
-
   "Community": {
     "communities": "Comunidades",
     "noCommunitiesFound": "No se encontraron comunidades en este momento.",
@@ -627,5 +626,27 @@
     "eventCheckInTableTicketId": "ID de entrada",
     "eventCheckInTableCheckIn": "Verificado",
     "eventCheckinBackButton": "Volver a entradas"
+  },
+  "Gift": {
+    "gift": "Entrada de Regalo",
+    "giftBody": "Puedes regalar entradas gratis a las personas simplemente buscando su nombre o dirección de correo electrónico",
+    "Search": "Buscar",
+    "results": "Resultados de la Búsqueda",
+    "noResults": "No se encontraron usuarios que coincidan con {searchTerm}",
+    "giftTo": "Regalar una entrada a {userName}",
+    "giftDesc": "Al hacer clic en el botón de abajo, enviarás una entrada gratuita a {userName}",
+    "sent": "¡Entrada de Regalo enviada!",
+    "sentBody": "Tu entrada ha sido enviada exitosamente a ${userName}",
+    "ok": "Aceptar",
+    "error": "¡No se pudo enviar la entrada de regalo!",
+    "errorBody": "Ocurrió un error al enviar la entrada de regalo a ${userName}",
+    "customInvite": "Crear una invitación personalizada para {searchTerm}",
+    "customTitle": "Debes crear una cuenta para {searchTerm} primero",
+    "createAccount": "Crear una cuenta para {searchTerm}",
+    "userName": "Nombre de Usuario",
+    "nameDesc": "Este será el nombre de usuario asignado a {searchTerm} cuando se cree la cuenta.",
+    "email": "Dirección de Correo Electrónico",
+    "emailDesc": "Asegúrate de que esta sea la dirección de correo electrónico exacta de {searchTerm}. Si la dirección de correo electrónico no es correcta, ¡la cuenta será creada para la persona equivocada!",
+    "Submit": "Enviar"
   }
 }
