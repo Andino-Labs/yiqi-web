@@ -16,7 +16,9 @@ import { createEvent } from '@/services/actions/event/createEvent'
 import {
   EventInputSchema,
   EventInputType,
-  EventTicketInputType
+  EventTicketInputType,
+  EventTypeEnum
+  // SavedEventType
 } from '@/schemas/eventSchema'
 import { useRouter } from 'next/navigation'
 import { MapPin, Clock, Users } from 'lucide-react'
@@ -51,6 +53,7 @@ import { EventType } from '@/services/actions/event/getEvent'
 type Props = {
   organizationId: string
   event?: EventType
+  // event?: SavedEventType
   hasStripeAccount: boolean
 }
 
@@ -152,7 +155,7 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
       requiresApproval: event?.requiresApproval ?? false,
       openGraphImage: event?.openGraphImage ?? null,
       maxAttendees: event?.maxAttendees ?? undefined,
-      type: event?.type ?? undefined
+      type: event?.type ?? EventTypeEnum.IN_PERSON
     }
   })
 
@@ -240,6 +243,7 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
   }
 
   async function onSubmit(values: z.infer<typeof EventFormInputSchema>) {
+    console.log('starting')
     if (!loading) {
       setLoading(true)
       try {
@@ -285,6 +289,10 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
       }
     }
   }
+
+  console.dir(form.formState.errors)
+  console.log(form.getValues('title'))
+  console.log(form.getValues('type'))
 
   return (
     <Form {...form}>

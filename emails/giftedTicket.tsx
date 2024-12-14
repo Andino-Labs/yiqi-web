@@ -11,7 +11,6 @@ import {
   Link,
   Button
 } from '@react-email/components'
-import { GiftIcon } from 'lucide-react'
 
 export default function GiftEmail(props: {
   receiverName: string
@@ -45,15 +44,24 @@ export default function GiftEmail(props: {
           }
         }}
       >
-        <div className="bg-zinc-600 flex flex-col space-y-5">
+        <div className="bg-zinc-600 block">
           <Container className="bg-black text-white w-full h-fit p-10">
-            <div className="flex flex-col space-y-3 justify-center items-center">
-              <GiftIcon className="w-24 h-24 m-5 stroke-[#04F1FF]" />
-              <div className="justfy-center flex flex-col space-y-1 items-center">
-                <h3 className="text-2xl mb-1 font-bold m-0">
+            <div className="block space-y-3 justify-center items-center">
+              {/* <GiftIcon className="w-24 h-24 m-5 stroke-[#04F1FF] text-center" /> */}
+              <div className="w-fit mx-auto">
+                <Img
+                  alt="Instagram"
+                  height="200"
+                  // src="https://i.ibb.co/KVztkZm/Boxing-Day-bro.png"
+                  src="https://i.ibb.co/9gKrN3t/Halloween-tickets-bro.png"
+                  width="200"
+                />
+              </div>
+              <div className="justfy-center block items-center">
+                <h3 className="text-2xl mb-1 text-center font-bold m-0">
                   Hello {props.receiverName},
                 </h3>
-                <p className="text-muted-foreground text-lg m-0">
+                <p className="text-muted-foreground text-lg m-0 text-center">
                   You have been gifted a free ticket to attend the{' '}
                   {props.eventName} by {props.senderName}
                 </p>
