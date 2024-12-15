@@ -127,6 +127,9 @@
     "backToDashboard": "Retour au tableau de bord de l'organisation",
     "organizationNotFound": "Organisation introuvable",
     "events": "Événements",
+    "page": "Page",
+    "of": "de",
+    "action": "Action",
     "createNewEvents": "Créer de Nouveaux Événements"
   },
   "ContactTemplateDownload": {

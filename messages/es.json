@@ -129,6 +129,10 @@
     "contactsFor": "Contactos de",
     "backToDashboard": "Volver al Tablero de la Organización",
     "organizationNotFound": "Organización no encontrada",
+    "page": "Página",
+    "of": "de",
+    "event": "Evento",
+    "action": "Acción",
     "createNewEvents": "Crear Nuevos Eventos",
     "events": "Eventos"
   },

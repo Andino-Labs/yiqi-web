@@ -130,6 +130,9 @@
     "backToDashboard": "Back to Organization Dashboard",
     "organizationNotFound": "Organization not found",
     "createNewEvents": "Create New Events",
+    "page": "Page",
+    "action": "Action",
+    "of": "of",
     "events": "Events"
   },
   "ContactTemplateDownload": {
