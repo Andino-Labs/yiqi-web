@@ -3,10 +3,11 @@
 import { useState } from 'react'
 import { Button } from '../ui/button'
 import { ChevronUpIcon, Cross2Icon } from '@radix-ui/react-icons'
-import { EventTypeEnum } from '@/schemas/eventSchema'
+// import { EventTypeEnum } from '@/schemas/eventSchema'
 import { ChevronDownIcon } from 'lucide-react'
 import useWindowSize from '@/hooks/useWindowSize'
 import { useTranslations } from 'next-intl'
+import { EventTypes } from '@prisma/client'
 
 interface SearchFormProps {
   onSearch: (filters: {
@@ -23,7 +24,7 @@ export default function SearchForm({ onSearch, locations }: SearchFormProps) {
   const [location, setLocation] = useState('')
   const [title, setTitle] = useState('')
   const [startDate, setStartDate] = useState('')
-  const [type, setType] = useState<EventTypeEnum | ''>('')
+  const [type, setType] = useState<EventTypes | ''>('')
   const [showAdditionalFilters, setShowAdditionalFilters] = useState(false)
   const { width } = useWindowSize()
 
@@ -33,10 +34,10 @@ export default function SearchForm({ onSearch, locations }: SearchFormProps) {
     e.preventDefault()
 
     const backendEventType =
-      type === EventTypeEnum.ONLINE
-        ? EventTypeEnum.ONLINE
-        : type === EventTypeEnum.IN_PERSON
-          ? EventTypeEnum.IN_PERSON
+      type === EventTypes.ONLINE
+        ? EventTypes.ONLINE
+        : type === EventTypes.IN_PERSON
+          ? EventTypes.IN_PERSON
           : ''
     const filters = {
       title,
@@ -179,15 +180,13 @@ export default function SearchForm({ onSearch, locations }: SearchFormProps) {
                         : 'border-gray-300 focus:outline-none focus:border-blue-500'
                     }`}
                     value={type}
-                    onChange={e => setType(e.target.value as EventTypeEnum)}
+                    onChange={e => setType(e.target.value as EventTypes)}
                   >
                     <option value="" className="text-gray-400">
                       {t('selectEventType')}
                     </option>
-                    <option value={EventTypeEnum.ONLINE}>{t('virtual')}</option>
-                    <option value={EventTypeEnum.IN_PERSON}>
-                      {t('onsite')}
-                    </option>
+                    <option value={EventTypes.ONLINE}>{t('virtual')}</option>
+                    <option value={EventTypes.IN_PERSON}>{t('onsite')}</option>
                   </select>
                   {type && (
                     <button

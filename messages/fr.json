@@ -125,11 +125,12 @@
     "email": "Email",
     "contactsFor": "Contacts pour",
     "backToDashboard": "Retour au tableau de bord de l'organisation",
-    "organizationNotFound": "Organisation non trouvée",
-    "createNewEvents": "Nouvel Événement",
+    "organizationNotFound": "Organisation introuvable",
     "events": "Événements",
     "page": "Page",
-    "of": "de"
+    "of": "de",
+    "action": "Action",
+    "createNewEvents": "Créer de Nouveaux Événements"
   },
   "ContactTemplateDownload": {
     "exampleCsvContent": "email,téléphone,nom,âge,ville\njohn.doe@example.com,123456789,John Doe,25,New York\njane.smith@example.com,987654321,Jane Smith,30,Los Angeles\nrobert.brown@example.com,567890123,Robert Brown,35,Chicago\nemily.davis@example.com,345678901,Emily Davis,28,Miami\nmichael.wilson@example.com,123098456,Michael Wilson,40,Seattle\nsarah.johnson@example.com,789012345,Sarah Johnson,32,Houston\ndavid.martinez@example.com,456789012,David Martinez,29,Dallas\nlinda.hernandez@example.com,890123456,Linda Hernandez,34,San Diego\njames.lopez@example.com,234567890,James Lopez,26,Phoenix\npatricia.gonzalez@example.com,678901234,Patricia Gonzalez,38,San Francisco",
@@ -293,7 +294,8 @@
     "importing": "Importation...",
     "importContacts": "Importer des contacts",
     "noOrganizationFound": "Aucune organisation trouvée",
-    "networkingSettings": "Paramètres de mise en réseau"
+    "networkingSettings": "Paramètres de mise en réseau",
+    "gift": "Billet cadeau"
   },
   "AdminLayout": {
     "organization": "Organisation",
@@ -368,7 +370,19 @@
     "Begin": "Commencer",
     "manage": "Je veux gérer ma communauté !",
     "createCommunityManager": "Créez votre gestionnaire de communauté",
-    "form": "Remplissez les champs libres pour continuer, vous pourrez les modifier plus tard !"
+    "form": "Remplissez les champs libres pour continuer, vous pourrez les modifier plus tard !",
+    "describe": "Décrivez votre organisation",
+    "Color": "Couleur",
+    "faceBook": "URL de Facebook",
+    "feacebookDescription": "Entrez l'URL de votre organisation sur Facebook",
+    "instagram": "URL d'Instagram",
+    "instagramDescription": "Entrez l'URL de votre organisation sur Instagram",
+    "Tiktok": "URL de Tiktok",
+    "tiktokDescription": "Entrez l'URL de votre organisation sur Tiktok",
+    "LinkedIn": "URL de LinkedIn",
+    "LinkedInDescription": "Entrez l'URL de votre organisation sur LinkedIn",
+    "Website": "Site web",
+    "websiteDescription": "Entrez l'URL de votre site web"
   },
   "AddOrg": {
     "success": "Organisation créée avec succès !",
@@ -482,7 +496,6 @@
     "activity": "Votre historique d'activité apparaîtra ici",
     "logout": "Déconnexion"
   },
-
   "Community": {
     "communities": "Communautés",
     "noCommunitiesFound": "Aucune communauté trouvée pour le moment.",
@@ -596,5 +609,27 @@
     "eventCheckInTableTicketId": "ID du billet",
     "eventCheckInTableCheckIn": "Validé",
     "eventCheckinBackButton": "Retour aux billets"
+  },
+  "Gift": {
+    "gift": "Billet Cadeau",
+    "giftBody": "Vous pouvez facilement offrir des billets gratuits à des personnes en recherchant simplement leur nom ou leur adresse e-mail",
+    "Search": "Rechercher",
+    "results": "Résultats de Recherche",
+    "noResults": "Aucun utilisateur trouvé correspondant à {searchTerm}",
+    "giftTo": "Offrir un billet à {userName}",
+    "giftDesc": "En cliquant sur le bouton ci-dessous, vous enverrez un billet gratuit à {userName}",
+    "sent": "Billet Cadeau envoyé !",
+    "sentBody": "Votre billet a été envoyé avec succès à ${userName}",
+    "ok": "OK",
+    "error": "Impossible d'envoyer le Billet Cadeau !",
+    "errorBody": "Une erreur s'est produite lors de l'envoi du billet cadeau à ${userName}",
+    "customInvite": "Créer une invitation personnalisée pour {searchTerm}",
+    "customTitle": "Vous devez d'abord créer un compte pour {searchTerm}",
+    "createAccount": "Créer un compte pour {searchTerm}",
+    "userName": "Nom d'Utilisateur",
+    "nameDesc": "Ce sera le nom d'utilisateur attribué à {searchTerm} lors de la création du compte.",
+    "email": "Adresse Email",
+    "emailDesc": "Assurez-vous que c'est l'adresse e-mail exacte pour {searchTerm}. Si l'adresse e-mail est incorrecte, le compte sera créé pour la mauvaise personne !",
+    "Submit": "Soumettre"
   }
 }

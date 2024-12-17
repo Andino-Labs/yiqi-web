@@ -129,10 +129,11 @@
     "contactsFor": "Contacts for",
     "backToDashboard": "Back to Organization Dashboard",
     "organizationNotFound": "Organization not found",
-    "createNewEvents": "New Event",
-    "events": "Events",
+    "createNewEvents": "Create New Events",
     "page": "Page",
-    "of": "of"
+    "action": "Action",
+    "of": "of",
+    "events": "Events"
   },
   "ContactTemplateDownload": {
     "exampleCsvContent": "email,phone,name,age,city\njohn.doe@example.com,123456789,John Doe,25,New York\njane.smith@example.com,987654321,Jane Smith,30,Los Angeles\nrobert.brown@example.com,567890123,Robert Brown,35,Chicago\nemily.davis@example.com,345678901,Emily Davis,28,Miami\nmichael.wilson@example.com,123098456,Michael Wilson,40,Seattle\nsarah.johnson@example.com,789012345,Sarah Johnson,32,Houston\ndavid.martinez@example.com,456789012,David Martinez,29,Dallas\nlinda.hernandez@example.com,890123456,Linda Hernandez,34,San Diego\njames.lopez@example.com,234567890,James Lopez,26,Phoenix\npatricia.gonzalez@example.com,678901234,Patricia Gonzalez,38,San Francisco",
@@ -314,9 +315,9 @@
     "importing": "Importing...",
     "importContacts": "Import Contacts",
     "noOrganizationFound": "No organization found",
-    "networkingSettings": "Networking Settings"
+    "networkingSettings": "Networking Settings",
+    "gift": "Gift Ticket"
   },
-
   "AdminLayout": {
     "organization": "Organization",
     "settings": "Settings",
@@ -391,7 +392,19 @@
     "Begin": "Begin",
     "manage": "I want to manage my community!",
     "createCommunityManager": "Create your community manager",
-    "form": "Fill in the free fields to continue, you can modify them later!"
+    "form": "Fill in the free fields to continue, you can modify them later!",
+    "describe": "Describe your organization",
+    "Color": "Color",
+    "faceBook": "facebook Url",
+    "feacebookDescription": "Enter your organization's url on Facebook",
+    "instagram": "Instagram Url",
+    "instagramDescription": "Enter your organization's url on Instagram",
+    "Tiktok": "Tiktok Url",
+    "tiktokDescription": "Enter your organization's url on Tiktok",
+    "LinkedIn": "LinkedIn url",
+    "LinkedInDescription": "Enter your organization's url on LinkedIn",
+    "Website": "Website",
+    "websiteDescription": "Enter the url of your website"
   },
   "AddOrg": {
     "success": "Organization created successfully!",
@@ -505,7 +518,6 @@
     "activity": "Your activity history will appear here",
     "logout": "Log out"
   },
-
   "Community": {
     "communities": "Communities",
     "noCommunitiesFound": "No communities found at this time.",
@@ -593,7 +605,6 @@
     "stripeAccountActiveDescription": "Your Stripe account is fully set up and ready to accept payments.",
     "stripeViewDashboard": "View Stripe Dashboard"
   },
-
   "Ticket": {
     "ticketStatusApproved": "Approved",
     "ticketStatusPending": "Pending",
@@ -623,5 +634,27 @@
     "eventCheckInTableTicketId": "Ticket ID",
     "eventCheckInTableCheckIn": "Checked In",
     "eventCheckinBackButton": "Go to Tickets"
+  },
+  "Gift": {
+    "gift": "Gift Ticket",
+    "giftBody": "You can easily give out free tickets to people by simply searching their name or email address",
+    "Search": "Search",
+    "results": "Search Results",
+    "noResults": "No users found matching {searchTerm}",
+    "giftTo": "Gift a ticket to {userName}",
+    "giftDesc": "By clicking on the button below, you will send a free ticket to {userName}",
+    "sent": "Gift Ticket sent!",
+    "sentBody": "Your ticket has successfully been gifted to ${userName}",
+    "ok": "ok",
+    "error": "Unable to send gift Ticket!",
+    "errorBody": "An error occured while sending the gift ticket to ${userName}",
+    "customInvite": "Create a custom invitation for {searchTerm}",
+    "customTitle": "You need to create an account for {searchTerm} first",
+    "createAccount": "Create an account for {searchTerm}",
+    "userName": "User Name",
+    "nameDesc": "This will be the user name given to {searchTerm} when the account is created.",
+    "email": "Email Address",
+    "emailDesc": "Ensure that this is the exact email address for {searchTerm}. If the email address is not correct, the account will be created for the wrong person! ",
+    "Submit": "Submit"
   }
 }

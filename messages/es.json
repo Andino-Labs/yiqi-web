@@ -120,7 +120,7 @@
     "defaultValueH1": "Bienvenido al Editor de Texto Enriquecido",
     "defaultValueP": "Este editor soporta",
     "defaultValueStrong": "negrita",
-    "defaultValueItalic": "cursiva", 
+    "defaultValueItalic": "cursiva",
     "defaultValueP2": "y muchas otras opciones de formato. ¡También puedes insertar imágenes y videos de YouTube!"
   },
   "contactFor": {
@@ -129,12 +129,12 @@
     "contactsFor": "Contactos de",
     "backToDashboard": "Volver al Tablero de la Organización",
     "organizationNotFound": "Organización no encontrada",
-    "createNewEvents": "Nuevo Evento",
-    "events": "Eventos",
     "page": "Página",
     "of": "de",
     "event": "Evento",
-    "action": "Acción"
+    "action": "Acción",
+    "createNewEvents": "Crear Nuevos Eventos",
+    "events": "Eventos"
   },
   "ContactTemplateDownload": {
     "exampleCsvContent": "email,phone,name,age,city\njuan.doe@ejemplo,123456789,Juan Doe,25,Nueva York\njane.smith@ejemplo.com,987654321,Jane Smith,30,Los Angeles\nroberto.brown@ejemplo.com,567890123,Roberto Brown,35,Chicago\nemilia.davis@ejemplo.com,345678901,Emilia Davis,28,Miami\nmichael.wilson@ejemplo.com,123098456,Michael Wilson,40,Seattle\nsarah.johnson@ejemplo.com,789012345,Sarah Johnson,32,Houston\ndavid.martinez@ejemplo.com,456789012,David Martinez,29,Dallas\nlinda.hernandez@ejemplo.com,890123456,Linda Hernandez,34,San Diego\njames.lopez@ejemplo.com,234567890,James Lopez,26,Fénix\npatricia.gonzalez@ejemplo.com,678901234,Patricia González,38,San Francisco",
@@ -203,15 +203,15 @@
     "enterInstagramURL": "Introduce tu link de Instagram",
     "enterWebsiteURL": "Introduce tu link de sitio web",
     "enterLinkedinURL": "Introduce tu link de LinkedIn",
-    "website":"Sitio web",
-    "stopCommunications":"Detener Comunicaciones",
+    "website": "Sitio web",
+    "stopCommunications": "Detener Comunicaciones",
     "disableCommunications": "Deshabilitar todas las comunicaciones",
     "role": "Rol"
   },
   "DeleteAccount": {
     "viewEvent": "Ver evento",
     "editEvent": "Editar evento",
-    "uploadImage":"Subir imagen",
+    "uploadImage": "Subir imagen",
     "allowedFormats": "Formatos permitidos: ",
     "location": "Ubicación",
     "settings": "Configuración",
@@ -311,9 +311,9 @@
     "importing": "Importando...",
     "importContacts": "Importar Contactos",
     "noOrganizationFound": "No se encontró la organización",
-    "networkingSettings": "Networking"
+    "networkingSettings": "Networking",
+    "gift": "Billete de regalo"
   },
-
   "AdminLayout": {
     "organization": "Organizaciones",
     "settings": "Configuración",
@@ -388,7 +388,19 @@
     "Begin": "Comenzar",
     "manage": "¡Quiero gestionar mi comunidad!",
     "createCommunityManager": "Crea tu gestor de comunidad",
-    "form": "¡Rellena los campos libres para continuar, podrás modificarlos más tarde!"
+    "form": "¡Rellena los campos libres para continuar, podrás modificarlos más tarde!",
+    "describe": "Describe tu organización",
+    "Color": "Color",
+    "faceBook": "URL de Facebook",
+    "feacebookDescription": "Ingresa la URL de tu organización en Facebook",
+    "instagram": "URL de Instagram",
+    "instagramDescription": "Ingresa la URL de tu organización en Instagram",
+    "Tiktok": "URL de Tiktok",
+    "tiktokDescription": "Ingresa la URL de tu organización en Tiktok",
+    "LinkedIn": "URL de LinkedIn",
+    "LinkedInDescription": "Ingresa la URL de tu organización en LinkedIn",
+    "Website": "Sitio web",
+    "websiteDescription": "Ingresa la URL de tu sitio web"
   },
   "AddOrg": {
     "success": "¡Organización creada con éxito!",
@@ -502,7 +514,6 @@
     "activity": "Aquí aparecerá tu historial de actividades",
     "logout": "Cerrar sesión"
   },
-
   "Community": {
     "communities": "Comunidades",
     "noCommunitiesFound": "No se encontraron comunidades en este momento.",
@@ -619,5 +630,27 @@
     "eventCheckInTableTicketId": "ID de entrada",
     "eventCheckInTableCheckIn": "Verificado",
     "eventCheckinBackButton": "Volver a entradas"
+  },
+  "Gift": {
+    "gift": "Entrada de Regalo",
+    "giftBody": "Puedes regalar entradas gratis a las personas simplemente buscando su nombre o dirección de correo electrónico",
+    "Search": "Buscar",
+    "results": "Resultados de la Búsqueda",
+    "noResults": "No se encontraron usuarios que coincidan con {searchTerm}",
+    "giftTo": "Regalar una entrada a {userName}",
+    "giftDesc": "Al hacer clic en el botón de abajo, enviarás una entrada gratuita a {userName}",
+    "sent": "¡Entrada de Regalo enviada!",
+    "sentBody": "Tu entrada ha sido enviada exitosamente a ${userName}",
+    "ok": "Aceptar",
+    "error": "¡No se pudo enviar la entrada de regalo!",
+    "errorBody": "Ocurrió un error al enviar la entrada de regalo a ${userName}",
+    "customInvite": "Crear una invitación personalizada para {searchTerm}",
+    "customTitle": "Debes crear una cuenta para {searchTerm} primero",
+    "createAccount": "Crear una cuenta para {searchTerm}",
+    "userName": "Nombre de Usuario",
+    "nameDesc": "Este será el nombre de usuario asignado a {searchTerm} cuando se cree la cuenta.",
+    "email": "Dirección de Correo Electrónico",
+    "emailDesc": "Asegúrate de que esta sea la dirección de correo electrónico exacta de {searchTerm}. Si la dirección de correo electrónico no es correcta, ¡la cuenta será creada para la persona equivocada!",
+    "Submit": "Enviar"
   }
 }
