@@ -170,7 +170,11 @@ function GiftUser(props: {
     Record<string, number>
   >({})
 
+  // if (!props.event.tickets || !props.event.tickets[0]) {
+  //   throw new Error('no tickets')
+  // }
   const ticket = props.event.tickets[0]
+
   const t = useTranslations('Gift')
 
   // code to update quantity of ticket
@@ -301,6 +305,9 @@ function GiftUnregisteredUser(props: {
     Record<string, number>
   >({})
 
+  // if (!props.event.tickets || !props.event.tickets[0]) {
+  //   throw new Error('no tickets')
+  // }
   const ticket = props.event.tickets[0]
 
   const t = useTranslations('Gift')

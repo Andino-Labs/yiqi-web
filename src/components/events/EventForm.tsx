@@ -16,9 +16,8 @@ import { createEvent } from '@/services/actions/event/createEvent'
 import {
   EventInputSchema,
   EventInputType,
-  EventTicketInputType,
-  EventTypeEnum
-  // SavedEventType
+  EventTicketInputType
+  // EventTypeEnum,
 } from '@/schemas/eventSchema'
 import { useRouter } from 'next/navigation'
 import { MapPin, Clock, Users } from 'lucide-react'
@@ -155,7 +154,7 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
       requiresApproval: event?.requiresApproval ?? false,
       openGraphImage: event?.openGraphImage ?? null,
       maxAttendees: event?.maxAttendees ?? undefined,
-      type: event?.type ?? EventTypeEnum.IN_PERSON
+      type: event?.type ?? 'IN_PERSON'
     }
   })
 

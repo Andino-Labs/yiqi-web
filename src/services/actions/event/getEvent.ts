@@ -9,7 +9,7 @@ export async function getEvent({
 }: GetEventFilterSchemaType) {
   const event = await prisma.event.findUniqueOrThrow({
     where: { id: eventId },
-    include: { tickets: includeTickets === false }
+    include: { tickets: includeTickets || false }
   })
 
   return event
