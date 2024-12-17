@@ -1,6 +1,6 @@
 {
   "name": "@andino-labs/yiqi-client",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "types": "dist/index.d.mts",
   "files": [
     "dist",
