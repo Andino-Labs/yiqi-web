@@ -24,6 +24,8 @@ import { loginGoogle } from '@/lib/auth/loginGoogle'
 import { checkExistingRegistration } from '../actions/event/checkExistingRegistration'
 import { createCheckoutSessionMobile } from '../actions/billing/createCheckoutSessionMobile'
 import { markRegistrationPaidMobile } from '../actions/event/markRegistrationPaidMobile'
+import getCommunities from '@/services/actions/communities/getCommunities'
+import { GetCommunitiesParamsSchema } from '@/schemas/communitySchema'
 
 export const appRouter = router({
   loginLinkedin: publicProcedure
@@ -143,6 +145,12 @@ export const appRouter = router({
 
       const status = await markRegistrationPaidMobile(input.registrationId)
       return status
+    }),
+  getCommunities: publicProcedure
+    .input(z.optional(GetCommunitiesParamsSchema))
+    .query(async ({ input }) => {
+      const communties = await getCommunities(input)
+      return communties
     })
 })
 

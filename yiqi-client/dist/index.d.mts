@@ -279,132 +279,269 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<
         endDate: Date
         organizationId: string
         customFields: {
-          name: string
-          type: 'number' | 'date' | 'select' | 'text'
-          required: boolean
-          options?: string | undefined
-        }[]
-        createdAt: Date
-        updatedAt: Date
-        requiresApproval: boolean
-        description?: string | undefined
-        location?: string | null | undefined
-        city?: string | null | undefined
-        state?: string | null | undefined
-        country?: string | null | undefined
-        virtualLink?: string | null | undefined
-        maxAttendees?: number | null | undefined
-        openGraphImage?: string | null | undefined
-        tickets?:
-        | {
-          name: string
-          category: 'GENERAL' | 'VIP' | 'BACKSTAGE'
-          price: number
-          limit: number
-          ticketsPerPurchase: number
-          description?: string | undefined
-        }[]
-        | {
-          name: string
-          id: string
-          category: 'GENERAL' | 'VIP' | 'BACKSTAGE'
-          price: number
-          limit: number
-          ticketsPerPurchase: number
-          description?: string | undefined
-        }[]
-        | null
-        | undefined
+          name: string;
+          type: "number" | "date" | "select" | "text";
+          required: boolean;
+          options?: string | undefined;
+        }[];
+        createdAt: Date;
+        updatedAt: Date;
+        requiresApproval: boolean;
+        description?: string | undefined;
+        location?: string | null | undefined;
+        city?: string | null | undefined;
+        state?: string | null | undefined;
+        country?: string | null | undefined;
+        virtualLink?: string | null | undefined;
+        maxAttendees?: number | null | undefined;
+        openGraphImage?: string | null | undefined;
+        tickets?: {
+          name: string;
+          id: string;
+          category: "GENERAL" | "VIP" | "BACKSTAGE";
+          price: number;
+          limit: number;
+          ticketsPerPurchase: number;
+          description?: string | undefined;
+        }[] | null | undefined;
+      }>;
+    createRegistration: node_modules__trpc_server_dist.BuildProcedure<"mutation", {
+      _config: node_modules__trpc_server_dist.RootConfig<{
+        ctx: Context;
+        meta: object;
+        errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
+        transformer: typeof node_modules_superjson_dist.default;
+      }>;
+      _meta: object;
+      _ctx_out: Context;
+      _input_in: {
+        eventId: string;
+        registrationData: {
+          name: string;
+          email: string;
+          tickets: Record<string, number>;
+        };
+      };
+      _input_out: {
+        eventId: string;
+        registrationData: {
+          name: string;
+          email: string;
+          tickets: Record<string, number>;
+        };
+      };
+      _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
+      _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+    }, {
+      message: string;
+      success: boolean;
+      registration: {
+        id: string;
+        status: "PENDING" | "APPROVED" | "REJECTED";
+        customFields: Record<string, any>;
+        createdAt: Date;
+        updatedAt: Date;
+        userId: string;
+        paid: boolean;
+        paymentId: string | null;
+      };
+    }>;
+    getUserRegistrationStatus: node_modules__trpc_server_dist.BuildProcedure<"query", {
+      _config: node_modules__trpc_server_dist.RootConfig<{
+        ctx: Context
+        meta: object
+        errorShape: node_modules__trpc_server_dist.DefaultErrorShape
+        transformer: typeof node_modules_superjson_dist.default
+      }>
+      _meta: object
+      _ctx_out: Context
+      _input_in: {
+        userId: string
+        eventId: string
       }
-    >
-    createRegistration: node_modules__trpc_server_dist.BuildProcedure<
-      'mutation',
-      {
-        _config: node_modules__trpc_server_dist.RootConfig<{
-          ctx: Context
-          meta: object
-          errorShape: node_modules__trpc_server_dist.DefaultErrorShape
-          transformer: typeof node_modules_superjson_dist.default
-        }>
-        _meta: object
-        _ctx_out: Context
-        _input_in: {
-          eventId: string
-          registrationData: {
-            name: string
-            email: string
-            tickets: Record<string, number>
-          }
-        }
-        _input_out: {
-          eventId: string
-          registrationData: {
-            name: string
-            email: string
-            tickets: Record<string, number>
-          }
-        }
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker
-      },
-      {
-        name: string
-        email: string
-        tickets: Record<string, number>
+      _input_out: {
+        userId: string
+        eventId: string
       }
-    >
-    getUserRegistrationStatus: node_modules__trpc_server_dist.BuildProcedure<
-      'query',
-      {
-        _config: node_modules__trpc_server_dist.RootConfig<{
-          ctx: Context
-          meta: object
-          errorShape: node_modules__trpc_server_dist.DefaultErrorShape
-          transformer: typeof node_modules_superjson_dist.default
-        }>
-        _meta: object
-        _ctx_out: Context
-        _input_in: {
-          userId: string
-          eventId: string
-        }
-        _input_out: {
-          userId: string
-          eventId: string
-        }
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker
-      },
+      _output_in: typeof node_modules__trpc_server_dist.unsetMarker
+      _output_out: typeof node_modules__trpc_server_dist.unsetMarker
+    },
       boolean
     >
     getOrganization: node_modules__trpc_server_dist.BuildProcedure<
       'query',
       {
         _config: node_modules__trpc_server_dist.RootConfig<{
-          ctx: Context
-          meta: object
-          errorShape: node_modules__trpc_server_dist.DefaultErrorShape
-          transformer: typeof node_modules_superjson_dist.default
-        }>
-        _meta: object
-        _ctx_out: Context
-        _input_in: string
-        _input_out: string
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker
-      },
-      {
-        name: string
-        id: string
-        description: string | null
-        createdAt: Date
-        updatedAt: Date
-        userId: string
-        logo: string | null
-      }
-    >
-  }
->
-type AppRouter = typeof appRouter
+          ctx: Context;
+          meta: object;
+          errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
+          transformer: typeof node_modules_superjson_dist.default;
+        }>;
+        _meta: object;
+        _ctx_out: Context;
+        _input_in: string;
+        _input_out: string;
+        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+      }, {
+        name: string;
+        id: string;
+        description: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        userId: string;
+        logo: string | null;
+      }>;
+    checkExistingRegistration: node_modules__trpc_server_dist.BuildProcedure<"mutation", {
+      _config: node_modules__trpc_server_dist.RootConfig<{
+        ctx: Context;
+        meta: object;
+        errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
+        transformer: typeof node_modules_superjson_dist.default;
+      }>;
+      _meta: object;
+      _ctx_out: Context;
+      _input_in: {
+        eventId: string;
+      };
+      _input_out: {
+        eventId: string;
+      };
+      _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
+      _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+    }, {
+      id: string;
+      status: "PENDING" | "APPROVED" | "REJECTED";
+      customFields: Record<string, any>;
+      createdAt: Date;
+      updatedAt: Date;
+      tickets: {
+        id: string;
+        category: "GENERAL" | "VIP" | "BACKSTAGE";
+        checkedInDate: Date | null;
+        user?: {
+          name: string;
+          id: string;
+          email: string;
+          picture: string | null;
+          emailVerified?: Date | null | undefined;
+          phoneNumber?: string | null | undefined;
+        } | null | undefined;
+        ticketType?: {
+          name: string;
+          id: string;
+          category: "GENERAL" | "VIP" | "BACKSTAGE";
+          price: number;
+          limit: number;
+          ticketsPerPurchase: number;
+          description?: string | undefined;
+        } | null | undefined;
+      }[];
+      userId: string;
+      user: {
+        name: string;
+        id: string;
+        email: string;
+        picture: string | null;
+        emailVerified?: Date | null | undefined;
+        phoneNumber?: string | null | undefined;
+      };
+      paid: boolean;
+      paymentId: string | null;
+    } | null>;
+    createCheckoutSession: node_modules__trpc_server_dist.BuildProcedure<"mutation", {
+      _config: node_modules__trpc_server_dist.RootConfig<{
+        ctx: Context;
+        meta: object;
+        errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
+        transformer: typeof node_modules_superjson_dist.default;
+      }>;
+      _meta: object;
+      _ctx_out: Context;
+      _input_in: {
+        registrationId: string;
+      };
+      _input_out: {
+        registrationId: string;
+      };
+      _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
+      _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+    }, {
+      clientSecret: string;
+      connectAccountId: string;
+    }>;
+    markRegistrationPaid: node_modules__trpc_server_dist.BuildProcedure<"mutation", {
+      _config: node_modules__trpc_server_dist.RootConfig<{
+        ctx: Context;
+        meta: object;
+        errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
+        transformer: typeof node_modules_superjson_dist.default;
+      }>;
+      _meta: object;
+      _ctx_out: Context;
+      _input_in: {
+        registrationId: string;
+      };
+      _input_out: {
+        registrationId: string;
+      };
+      _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
+      _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+    }, {
+      success: boolean;
+      error: string;
+    } | {
+      success: boolean;
+      error?: undefined;
+    }>;
+    getCommunities: node_modules__trpc_server_dist.BuildProcedure<"query", {
+      _config: node_modules__trpc_server_dist.RootConfig<{
+        ctx: Context;
+        meta: object;
+        errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
+        transformer: typeof node_modules_superjson_dist.default;
+      }>;
+      _meta: object;
+      _ctx_out: Context;
+      _input_in: {
+        limit?: number | undefined;
+        page?: number | undefined;
+        search?: string | undefined;
+      } | undefined;
+      _input_out: {
+        limit: number;
+        page: number;
+        search?: string | undefined;
+      } | undefined;
+      _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
+      _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+    }, {
+      communities: {
+        name: string;
+        id: string;
+        description: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        colour: string | null;
+        logo: string | null;
+        stripeAccountId: string | null;
+        linkedin?: string | null | undefined;
+        instagram?: string | null | undefined;
+        website?: string | null | undefined;
+        userId?: string | null | undefined;
+        facebook?: string | null | undefined;
+        tiktok?: string | null | undefined;
+      }[];
+      pagination: {
+        page: number;
+        limit: number;
+        total: number;
+        totalPages: number;
+        hasMore: boolean;
+        nextPage: number | null;
+      };
+    }>;
+  }>;
+type AppRouter = typeof appRouter;
 
 export type { AppRouter }
