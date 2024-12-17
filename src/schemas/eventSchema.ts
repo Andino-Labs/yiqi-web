@@ -8,7 +8,6 @@ export enum AttendeeStatus {
   REJECTED = 'REJECTED'
 }
 
-// export type EventTypeEnum = 'ONLINE' | 'IN_PERSON';
 export const EventTypeSchema = z.enum(['ONLINE', 'IN_PERSON'])
 export type EventTypeEnum = z.infer<typeof EventTypeSchema>
 
