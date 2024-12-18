@@ -623,5 +623,21 @@
     "eventCheckInTableTicketId": "Ticket ID",
     "eventCheckInTableCheckIn": "Checked In",
     "eventCheckinBackButton": "Go to Tickets"
+  },
+  "yiqiForm": {
+    "formNotFound": "Form not found",
+    "brokenLinkOrDeleted": "The link you followed may be broken or the form has been deleted.",
+    "createNewForm": "Create a new form",
+    "responsesSent": "Your responses have been sent successfully",
+    "errorOccurred": "An error occurred",
+    "loginToContinue": "Log in to continue",
+    "loginToFillForm": "To fill out this form, you must log in",
+    "or": "or",
+    "submit": "Submit",
+    "clear": "Clear",
+    "fieldRequired": "This field is required",
+    "writeYourAnswer": "Write your answer...",
+    "other": "Other",
+    "writeHere": "Write here..."
   }
 }

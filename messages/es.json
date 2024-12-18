@@ -619,5 +619,21 @@
     "eventCheckInTableTicketId": "ID de entrada",
     "eventCheckInTableCheckIn": "Verificado",
     "eventCheckinBackButton": "Volver a entradas"
-  }
+  },
+  "yiqiForm": {
+  "formNotFound": "Formulario no encontrado",
+  "brokenLinkOrDeleted": "El enlace que has seguido puede estar roto o el formulario ha sido eliminado.",
+  "createNewForm": "Crear un nuevo formulario",
+  "responsesSent": "Tus respuestas se han enviado correctamente",
+  "errorOccurred": "Ocurrió un error",
+  "loginToContinue": "Inicia sesión para continuar",
+  "loginToFillForm": "Para rellenar este formulario, debes iniciar sesión",
+  "or": "o",
+  "submit": "Enviar",
+  "clear": "Limpiar",
+  "fieldRequired": "Este campo es requerido",
+  "writeYourAnswer": "Escribe tu respuesta...",
+  "other": "Otro",
+  "writeHere": "Escribe aquí..."
+}
 }

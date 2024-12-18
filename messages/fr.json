@@ -596,5 +596,21 @@
     "eventCheckInTableTicketId": "ID du billet",
     "eventCheckInTableCheckIn": "Validé",
     "eventCheckinBackButton": "Retour aux billets"
-  }
+  },
+  "yiqiForm": {
+  "formNotFound": "Formulaire introuvable",
+  "brokenLinkOrDeleted": "Le lien que vous avez suivi peut être cassé ou le formulaire a été supprimé.",
+  "createNewForm": "Créer un nouveau formulaire",
+  "responsesSent": "Vos réponses ont été envoyées avec succès",
+  "errorOccurred": "Une erreur est survenue",
+  "loginToContinue": "Connectez-vous pour continuer",
+  "loginToFillForm": "Pour remplir ce formulaire, vous devez vous connecter",
+  "or": "ou",
+  "submit": "Envoyer",
+  "clear": "Effacer",
+  "fieldRequired": "Ce champ est requis",
+  "writeYourAnswer": "Écrivez votre réponse...",
+  "other": "Autre",
+  "writeHere": "Écrivez ici..."
+}
 }
