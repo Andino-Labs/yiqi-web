@@ -24,7 +24,7 @@ const ticketSchema = z.object({
   userId: z.string(),
   checkedInDate: z.date().nullable(),
   checkedInByUserId: z.string().nullable(),
-  category: z.enum(['GENERAL', 'VIP', 'STUDENT']),
+  category: z.enum(['GENERAL', 'VIP', 'BACKSTAGE']),
   ticketTypeId: z.string(),
   registration: registrationSchema,
   status: z.enum(['APPROVED', 'PENDING', 'CANCELLED'])

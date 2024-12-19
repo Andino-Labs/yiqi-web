@@ -26,6 +26,8 @@ import { createCheckoutSessionMobile } from '../actions/billing/createCheckoutSe
 import { markRegistrationPaidMobile } from '../actions/event/markRegistrationPaidMobile'
 import getCommunities from '@/services/actions/communities/getCommunities'
 import { GetCommunitiesParamsSchema } from '@/schemas/communitySchema'
+import getCommunityDetails from '../actions/communities/getCommunityDetails'
+import { getTicketsWithEvents } from '../actions/tickets/ticketActions'
 
 export const appRouter = router({
   loginLinkedin: publicProcedure
@@ -151,7 +153,26 @@ export const appRouter = router({
     .query(async ({ input }) => {
       const communties = await getCommunities(input)
       return communties
-    })
+    }),
+
+  getCommunityDetails: publicProcedure
+    .input(
+      z.object({
+        communityId: z.string()
+      })
+    )
+    .query(async ({ input }) => {
+      const communties = await getCommunityDetails(input.communityId)
+      return communties
+    }),
+  getTicketsWithEvents: publicProcedure.query(async ({ ctx }) => {
+    if (!ctx.user) {
+      throw new Error('User not signed in')
+    }
+
+    const tickets = await getTicketsWithEvents(ctx.user?.id)
+    return tickets
+  })
 })
 
 // Export type router type signature,
