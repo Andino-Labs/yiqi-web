@@ -132,7 +132,7 @@ export const appRouter = router({
         registrationId: z.string()
       })
     )
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input }) => {
       const status = await markRegistrationPaidMobile(input.registrationId)
       return status
     }),
