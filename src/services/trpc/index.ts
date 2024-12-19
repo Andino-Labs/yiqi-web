@@ -71,10 +71,6 @@ export const appRouter = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      if (!ctx.user) {
-        throw new Error('User not signed in')
-      }
-
       const registration = await createRegistration(
         ctx.user,
         input.eventId,
@@ -126,11 +122,7 @@ export const appRouter = router({
         registrationId: z.string()
       })
     )
-    .mutation(async ({ input, ctx }) => {
-      if (!ctx.user) {
-        throw new Error('User not signed in')
-      }
-
+    .mutation(async ({ input }) => {
       const session = await createCheckoutSessionMobile(input.registrationId)
       return session
     }),
@@ -141,10 +133,6 @@ export const appRouter = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      if (!ctx.user) {
-        throw new Error('User not signed in')
-      }
-
       const status = await markRegistrationPaidMobile(input.registrationId)
       return status
     }),
