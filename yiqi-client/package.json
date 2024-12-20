@@ -7,14 +7,15 @@
     "index.d.ts"
   ],
   "dependencies": {
+    "@andino-labs/yiqi-client": "file:",
     "@trpc/server": "10.45.2"
   },
   "devDependencies": {
     "@types/react": "^18.x.x",
+    "dts-bundle-generator": "^8.x.x",
     "trpc-openapi": "^1.x.x",
     "ts-node": "^10.x.x",
-    "typescript": "^4.x.x",
-    "dts-bundle-generator": "^8.x.x"
+    "typescript": "^4.x.x"
   },
   "peerDependencies": {
     "react": "^18.x.x"
