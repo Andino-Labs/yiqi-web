@@ -6,7 +6,7 @@ export async function createNewUser(name: string, email: string) {
   try {
     const user = await prisma.user.findUnique({
       where: {
-        email,
+        email
       }
     })
     if (!user) {
