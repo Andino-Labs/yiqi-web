@@ -2,6 +2,7 @@
 
 import prisma from '@/lib/prisma'
 import { GetEventFilterSchemaType } from '@/schemas/eventSchema'
+import { SavedEventSchema } from '@/schemas/eventSchema'
 
 export async function getEvent({
   eventId,
@@ -12,7 +13,7 @@ export async function getEvent({
     include: { tickets: includeTickets || false }
   })
 
-  return event
+  return SavedEventSchema.parse(event)
 }
 
 export type EventType = Awaited<ReturnType<typeof getEvent>>

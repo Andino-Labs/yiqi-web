@@ -17,7 +17,6 @@ import {
   EventInputSchema,
   EventInputType,
   EventTicketInputType
-  // EventTypeEnum,
 } from '@/schemas/eventSchema'
 import { useRouter } from 'next/navigation'
 import { MapPin, Clock, Users } from 'lucide-react'
@@ -53,7 +52,6 @@ import { Switch } from '@/components/ui/switch'
 type Props = {
   organizationId: string
   event?: EventType
-  // event?: SavedEventType
   hasStripeAccount: boolean
 }
 

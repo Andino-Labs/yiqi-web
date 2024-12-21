@@ -51,7 +51,6 @@ export const EventInputSchema = z.object({
   maxAttendees: z.number().int().positive().optional().nullable(),
   requiresApproval: z.boolean().default(false),
   openGraphImage: z.string().optional().nullable(),
-  // type: z.nativeEnum(EventTypes)
   type: z.enum(['ONLINE', 'IN_PERSON']),
   latLon: z
     .object({
@@ -81,7 +80,6 @@ export const EventCommunitySchema = z.object({
   maxAttendees: z.number().int().positive().optional().nullable(),
   requiresApproval: z.boolean().default(false),
   openGraphImage: z.string().optional().nullable(),
-  // type: z.nativeEnum(EventTypeEnum)
   type: z.nativeEnum(EventTypes)
 })
 
@@ -92,7 +90,7 @@ export const TicketCategorySchema = z.enum(['GENERAL', 'VIP', 'BACKSTAGE'])
 
 export const SavedTicketOfferingSchema = EventTicketOfferingInputSchema.extend({
   id: z.string(),
-  price: z.coerce.number()
+  price: z.coerce.number(),
 })
 
 export type EventTicketInputType = z.infer<
@@ -183,7 +181,8 @@ export const SavedEventSchema = EventInputSchema.extend({
     .optional()
     .nullable()
     .transform(val => val ?? []),
-  tickets: z.array(SavedTicketOfferingSchema).optional().nullable()
+  // tickets: z.array(SavedTicketOfferingSchema).optional().nullable()
+  tickets: z.array(SavedTicketOfferingSchema)
 })
 
 export const PublicEventSchema = SavedEventSchema.extend({

@@ -36,7 +36,7 @@ import {
   FormLabel
 } from '../ui/form'
 import { z } from 'zod'
-import { createNewUser } from '@/services/giftTicket/createAccountAndGiftTicket'
+import { createNewUser } from '@/services/giftTicket/createAccount'
 import { useTranslations } from 'next-intl'
 
 export interface SearchResults {
@@ -170,9 +170,6 @@ function GiftUser(props: {
     Record<string, number>
   >({})
 
-  // if (!props.event.tickets || !props.event.tickets[0]) {
-  //   throw new Error('no tickets')
-  // }
   const ticket = props.event.tickets[0]
 
   const t = useTranslations('Gift')
@@ -305,9 +302,6 @@ function GiftUnregisteredUser(props: {
     Record<string, number>
   >({})
 
-  // if (!props.event.tickets || !props.event.tickets[0]) {
-  //   throw new Error('no tickets')
-  // }
   const ticket = props.event.tickets[0]
 
   const t = useTranslations('Gift')
@@ -331,9 +325,9 @@ function GiftUnregisteredUser(props: {
       // assigning value for the contextUser object based on the newly created user's data
       const contextUser: LuciaUserType = {
         email: values.email as string,
-        id: newUser.id as string,
+        id: newUser?.id as string,
         name: values.name as string,
-        picture: newUser.picture as string,
+        picture: newUser?.picture as string,
         role: 'USER'
       }
 
