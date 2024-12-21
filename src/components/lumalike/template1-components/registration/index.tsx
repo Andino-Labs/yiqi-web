@@ -180,7 +180,7 @@ export function Registration({
       <CardContent className="p-6 space-y-6">
         <div className="flex items-start gap-4">
           <div className="rounded-full bg-primary/10 p-2">
-            <Calendar className="h-6 w-6 text-primary text-white" />
+            <Calendar className="h-6 w-6 text-white" />
           </div>
           <div>
             <div className="font-semibold text-lg mb-1 text-white">
@@ -211,7 +211,7 @@ export function Registration({
             <Button
               ref={dialogTriggerRef}
               size="lg"
-              className="w-full text-white"
+              className="w-full text-black font-extrabold bg-cyan-300 hover:bg-cyan-700"
               disabled={!hasSelectedTickets}
             >
               {isFreeEvent ? `${t('eventRegister')}` : `${t('eventPurchase')}`}

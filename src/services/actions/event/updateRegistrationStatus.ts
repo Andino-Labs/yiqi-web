@@ -27,5 +27,20 @@ export async function updateRegistrationStatus(
     data: { status }
   })
 
+  if (status === 'APPROVED') {
+    await prisma.queueJob.create({
+      data: {
+        type: 'SEND_USER_MESSAGE',
+        data: {
+          userId: registration.userId,
+          eventId: registration.eventId
+        },
+        notificationType: 'RESERVATION_CONFIRMED',
+        userId: registration.userId,
+        eventId: registration.eventId
+      }
+    })
+  }
+
   return updatedRegistration
 }

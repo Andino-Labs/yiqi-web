@@ -46,13 +46,28 @@ export async function markRegistrationPaid(registrationId: string) {
     }
 
     // Update registration to paid
-    await prisma.eventRegistration.update({
-      where: { id: registrationId },
-      data: {
-        paid: true,
-        status: AttendeeStatus.APPROVED
-      }
-    })
+    await Promise.all([
+      prisma.eventRegistration.update({
+        where: { id: registrationId },
+        data: {
+          paid: true,
+          status: AttendeeStatus.APPROVED
+        }
+      }),
+
+      prisma.queueJob.create({
+        data: {
+          type: 'SEND_USER_MESSAGE',
+          data: {
+            userId: registration.userId,
+            eventId: registration.eventId
+          },
+          notificationType: 'RESERVATION_CONFIRMED',
+          userId: registration.userId,
+          eventId: registration.eventId
+        }
+      })
+    ])
 
     return { success: true }
   } catch (error) {

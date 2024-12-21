@@ -36,7 +36,8 @@ export async function createEvent(
       ...validatedData,
       organizationId: orgId,
       startDate: new Date(validatedData.startDate),
-      endDate: new Date(validatedData.endDate)
+      endDate: new Date(validatedData.endDate),
+      latLon: validatedData.latLon ?? undefined
     }
   })
 

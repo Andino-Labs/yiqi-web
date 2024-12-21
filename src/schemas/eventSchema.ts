@@ -52,7 +52,14 @@ export const EventInputSchema = z.object({
   requiresApproval: z.boolean().default(false),
   openGraphImage: z.string().optional().nullable(),
   // type: z.nativeEnum(EventTypes)
-  type: z.enum(['ONLINE', 'IN_PERSON'])
+  type: z.enum(['ONLINE', 'IN_PERSON']),
+  latLon: z
+    .object({
+      lat: z.number().optional().nullable(),
+      lon: z.number().optional().nullable()
+    })
+    .optional()
+    .nullable()
 })
 
 export const EventCommunitySchema = z.object({

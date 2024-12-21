@@ -121,7 +121,13 @@
     "defaultValueP": "Este editor soporta",
     "defaultValueStrong": "negrita",
     "defaultValueItalic": "cursiva",
+<<<<<<< HEAD
     "defaultValueP2": "y muchas otras opciones de formato. ¡También puedes insertar imágenes y videos de YouTube!"
+=======
+    "defaultValueP2": "y muchas otras opciones de formato. ¡También puedes insertar imágenes y videos de YouTube!",
+    "requiresApproval": "Requiere Aprobación",
+    "requiresApprovalDescription": "Cuando está activado, los asistentes necesitarán aprobación"
+>>>>>>> 7cdcaa5e27f5b740edef8ff44e16306f3a53422c
   },
   "contactFor": {
     "contact": "Contacto",

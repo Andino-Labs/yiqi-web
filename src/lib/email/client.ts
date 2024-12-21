@@ -2,12 +2,6 @@ import { Resend } from 'resend'
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY!
 
-if (!RESEND_API_KEY) {
-  throw new Error('RESEND_API_KEY missing in env')
-}
-
-export const emailClient = new Resend(RESEND_API_KEY)
-
 export async function sendEmail(
   to: string,
   subject: string,
@@ -15,6 +9,11 @@ export async function sendEmail(
   threadId: string,
   fromEmail: string
 ): Promise<void> {
+  if (!RESEND_API_KEY) {
+    throw new Error('RESEND_API_KEY missing in env')
+  }
+
+  const emailClient = new Resend(RESEND_API_KEY)
   try {
     const response = await emailClient.emails.send({
       from: fromEmail,

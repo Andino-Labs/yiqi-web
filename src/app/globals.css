@@ -147,3 +147,9 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+input[type='date']::-webkit-calendar-picker-indicator,
+input[type='time']::-webkit-calendar-picker-indicator {
+  color: white;
+  filter: invert(1);
+}

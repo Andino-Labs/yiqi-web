@@ -82,7 +82,7 @@ export default function MainLandingNav({
                 <Button
                   size="sm"
                   variant="default"
-                  className="font-semibold bg-gradient-to-r from-[#04F1FF] to-[#6de4e8] text-black hover:opacity-90 transition-opacity w-full sm:w-auto"
+                  className="font-semibold bg-gradient-to-r from-[#04F1FF] to-[#6de4e8] text-white hover:opacity-90 transition-opacity w-full sm:w-auto"
                   onClick={handleOpenRegistrationDialog}
                 >
                   {buttonName}

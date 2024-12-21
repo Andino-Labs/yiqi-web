@@ -179,6 +179,10 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
             city?: string | null | undefined;
             state?: string | null | undefined;
             country?: string | null | undefined;
+            latLon?: {
+                lat?: number | null | undefined;
+                lon?: number | null | undefined;
+            } | null | undefined;
             virtualLink?: string | null | undefined;
             maxAttendees?: number | null | undefined;
             openGraphImage?: string | null | undefined;
@@ -262,6 +266,10 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         city?: string | null | undefined;
         state?: string | null | undefined;
         country?: string | null | undefined;
+        latLon?: {
+            lat?: number | null | undefined;
+            lon?: number | null | undefined;
+        } | null | undefined;
         virtualLink?: string | null | undefined;
         maxAttendees?: number | null | undefined;
         openGraphImage?: string | null | undefined;

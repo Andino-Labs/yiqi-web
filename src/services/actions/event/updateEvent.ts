@@ -101,7 +101,10 @@ export async function updateEvent(
   // Update the event
   const updatedEvent = await prisma.event.update({
     where: { id: eventId },
-    data: parsedEventData
+    data: {
+      ...parsedEventData,
+      latLon: parsedEventData.latLon ?? undefined
+    }
   })
 
   return SavedEventSchema.parse({ ...updatedEvent, tickets: parsedTickets })

@@ -13,7 +13,8 @@ call_cron() {
 # Main loop
 while true; do
     call_cron "email"
-    
+    call_cron "jobs"
+
     echo "Waiting for 2 minutes..."
     sleep 10
 done

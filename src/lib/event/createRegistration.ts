@@ -103,6 +103,9 @@ export async function createRegistration(
       }
     })
 
+    // if ticket requires payment we need to ensure we dont send them a message
+    let ticketsRequirePayment = false
+
     // If registration is approved (no approval required), create tickets
     if (registration.status === AttendeeStatus.APPROVED) {
       const ticketCreations = Object.entries(validatedData.tickets).flatMap(
@@ -110,6 +113,10 @@ export async function createRegistration(
           const ticketType = event.tickets.find(t => t.id === ticketTypeId)
           if (!ticketType)
             throw new Error(`Invalid ticket type ID: ${ticketTypeId}`)
+
+          if (ticketType.price.toNumber() > 0) {
+            ticketsRequirePayment = true
+          }
 
           return Array(quantity)
             .fill(null)
@@ -122,9 +129,26 @@ export async function createRegistration(
         }
       )
 
-      await prisma.ticket.createMany({
-        data: ticketCreations
-      })
+      await Promise.all([
+        prisma.ticket.createMany({
+          data: ticketCreations
+        }),
+        // send them their tickets
+        ticketsRequirePayment
+          ? null
+          : prisma.queueJob.create({
+              data: {
+                type: 'SEND_USER_MESSAGE',
+                data: {
+                  userId: user.id,
+                  eventId: event.id
+                },
+                notificationType: 'RESERVATION_CONFIRMED',
+                userId: user.id,
+                eventId: event.id
+              }
+            })
+      ])
     }
 
     // Setup notifications

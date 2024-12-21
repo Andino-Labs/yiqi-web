@@ -48,6 +48,7 @@ import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { UploadIcon } from '@radix-ui/react-icons'
 import { EventType } from '@/services/actions/event/getEvent'
+import { Switch } from '@/components/ui/switch'
 
 type Props = {
   organizationId: string
@@ -67,6 +68,10 @@ type LocationDetails = {
   city: string
   state: string
   country: string
+  latLon: {
+    lat: number
+    lon: number
+  }
 }
 
 const currentDate = new Date()
@@ -479,10 +484,19 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
                       fieldName="location"
                       onSetAddress={field.onChange}
                       onAfterSelection={value => {
-                        if (value) {
-                          setLocationDetails(
-                            getLocationDetails(value.address_components)
+                        if (value?.address_components && value?.geometry) {
+                          const locationDetails = getLocationDetails(
+                            value.address_components
                           )
+                          if (locationDetails) {
+                            setLocationDetails({
+                              ...locationDetails,
+                              latLon: {
+                                lat: value.geometry?.location?.lat() ?? 0,
+                                lon: value.geometry?.location?.lng() ?? 0
+                              }
+                            })
+                          }
                         }
                       }}
                     />
@@ -536,6 +550,26 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
                         e.target.value === '' ? null : Number(e.target.value)
                       field.onChange(value)
                     }}
+                  />
+                )}
+              />
+            </div>
+
+            {/* Requires Approval */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Users className="h-5 w-5" />
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                  {tPage('requiresApproval')}
+                </span>
+              </div>
+              <FormField
+                control={form.control}
+                name="requiresApproval"
+                render={({ field }) => (
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
                   />
                 )}
               />
