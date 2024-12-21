@@ -12,7 +12,7 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'example.com',
-        pathname: '/**',
+        pathname: '/**'
       },
       {
         hostname: 'lh3.googleusercontent.com'

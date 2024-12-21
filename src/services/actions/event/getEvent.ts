@@ -1,20 +1,19 @@
 'use server'
 
-import { SavedEventType } from '@/schemas/eventSchema'
 import prisma from '@/lib/prisma'
-import {
-  SavedEventSchema,
-  GetEventFilterSchemaType
-} from '@/schemas/eventSchema'
+import { GetEventFilterSchemaType } from '@/schemas/eventSchema'
+import { SavedEventSchema } from '@/schemas/eventSchema'
 
 export async function getEvent({
   eventId,
   includeTickets
-}: GetEventFilterSchemaType): Promise<SavedEventType> {
+}: GetEventFilterSchemaType) {
   const event = await prisma.event.findUniqueOrThrow({
     where: { id: eventId },
-    include: includeTickets ? { tickets: true } : undefined
+    include: { tickets: includeTickets || false }
   })
 
   return SavedEventSchema.parse(event)
 }
+
+export type EventType = Awaited<ReturnType<typeof getEvent>>
