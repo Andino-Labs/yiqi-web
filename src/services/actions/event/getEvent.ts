@@ -1,19 +1,29 @@
 'use server'
 
 import prisma from '@/lib/prisma'
-import { GetEventFilterSchemaType } from '@/schemas/eventSchema'
-import { SavedEventSchema } from '@/schemas/eventSchema'
+import { NewEventSchema } from '@/schemas/eventSchema';
 
 export async function getEvent({
   eventId,
   includeTickets
-}: GetEventFilterSchemaType) {
+}: {
+  eventId: string,
+  includeTickets?: boolean
+}) {
   const event = await prisma.event.findUniqueOrThrow({
     where: { id: eventId },
     include: { tickets: includeTickets || false }
   })
 
-  return SavedEventSchema.parse(event)
+  const formattedEvent = {
+    ...event,
+    tickets: event.tickets?.map((ticket) => ({
+      ...ticket,
+      price: ticket.price.toNumber(), // Convert Decimal to number
+    })),
+  };
+
+  return NewEventSchema.parse(formattedEvent)
 }
 
 export type EventType = Awaited<ReturnType<typeof getEvent>>

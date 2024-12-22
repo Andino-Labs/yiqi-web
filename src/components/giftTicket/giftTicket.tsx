@@ -170,6 +170,7 @@ function GiftUser(props: {
     Record<string, number>
   >({})
 
+  if (!props.event.tickets) throw new Error('no ticket found')
   const ticket = props.event.tickets[0]
 
   const t = useTranslations('Gift')
@@ -302,6 +303,7 @@ function GiftUnregisteredUser(props: {
     Record<string, number>
   >({})
 
+  if (!props.event.tickets) throw new Error('no ticket found')
   const ticket = props.event.tickets[0]
 
   const t = useTranslations('Gift')

@@ -257,11 +257,54 @@ export const getPublicEventsFilterSchema = z.object({
   page: z.number().optional(),
   limit: z.number().optional()
 })
+
 export const getEventFilterSchema = z.object({
   eventId: z.string(),
   includeTickets: z.boolean().optional()
 })
 
+
+// new schema for getEvent
+
+export const TicketOfferingsSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  category: z.enum(["GENERAL", "VIP", "BACKSTAGE"]),
+  description: z.string().nullable(),
+  price: z.number(),
+  limit: z.number(),
+  ticketsPerPurchase: z.number(),
+  eventId: z.string(),
+});
+
+export const NewEventSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  subtitle: z.string().nullable(),
+  description: z.string().nullable(),
+  startDate: z.date(),
+  endDate: z.date(),
+  location: z.string().nullable(),
+  city: z.string().nullable(),
+  state: z.string().nullable(),
+  country: z.string().nullable(),
+  latLon: z.any().nullable(), // Adjust based on your expected JSON shape
+  virtualLink: z.string().nullable(),
+  maxAttendees: z.number().nullable(),
+  organizationId: z.string(),
+  customFields: z.any().nullable(), // Adjust based on your expected JSON shape
+  createdAt: z.date(),
+  updatedAt: z.date(),
+  requiresApproval: z.boolean(),
+  openGraphImage: z.string().nullable(),
+  type: z.enum(["ONLINE", "IN_PERSON"]),
+  deletedAt: z.date().nullable(),
+  backgroundColor: z.string().nullable(),
+  featuredIn: z.any().nullable(), // Adjust based on your expected JSON shape
+  heroImage: z.string().nullable(),
+  tickets: z.array(TicketOfferingsSchema).optional(), // Include tickets if present
+});
+
+
 export type RegistrationInput = z.infer<typeof registrationInputSchema>
 export type GetPublicEventsInput = z.infer<typeof getPublicEventsFilterSchema>
-export type GetEventFilterSchemaType = z.infer<typeof getEventFilterSchema>
