@@ -4,11 +4,7 @@ import {
   Head,
   Html,
   Tailwind,
-  Text,
-  Column,
-  Row,
   Img,
-  Link,
   Button
 } from '@react-email/components'
 
@@ -81,66 +77,6 @@ export default function GiftEmail(props: {
             </div>
           </Container>
 
-          {/* footer */}
-          <Container className="bg-black/60 text-white px-10 py-5">
-            <Row>
-              <Column colSpan={4}>
-                <Img
-                  alt="Yiqi logo logo"
-                  height="42"
-                  src="https://i.ibb.co/Jn4fKsw/logo.png"
-                />
-                <Text className="my-[8px] text-[16px] font-semibold leading-[24px] text-gray-500">
-                  Yiqi
-                </Text>
-                <Text className="mb-[0px] mt-[4px] text-[16px] leading-[24px] text-gray-500">
-                  Connect in a different way
-                </Text>
-              </Column>
-              <Column align="left" className="table-cell align-bottom">
-                <Row className="table-cell h-[44px] w-[56px] align-bottom">
-                  <Column className="pr-[8px]">
-                    <Link href="#">
-                      <Img
-                        alt="Facebook"
-                        height="36"
-                        src="https://react.email/static/facebook-logo.png"
-                        width="36"
-                      />
-                    </Link>
-                  </Column>
-                  <Column className="pr-[8px]">
-                    <Link href="#">
-                      <Img
-                        alt="X"
-                        height="36"
-                        src="https://react.email/static/x-logo.png"
-                        width="36"
-                      />
-                    </Link>
-                  </Column>
-                  <Column>
-                    <Link href="#">
-                      <Img
-                        alt="Instagram"
-                        height="36"
-                        src="https://react.email/static/instagram-logo.png"
-                        width="36"
-                      />
-                    </Link>
-                  </Column>
-                </Row>
-                <Row>
-                  <Text className="my-[8px] text-[16px] font-semibold leading-[24px] text-gray-500">
-                    123 Main Street Anytown, CA 12345
-                  </Text>
-                  <Text className="mb-[0px] mt-[4px] text-[16px] font-semibold leading-[24px] text-gray-500">
-                    mail@example.com +123456789
-                  </Text>
-                </Row>
-              </Column>
-            </Row>
-          </Container>
         </div>
       </Tailwind>
     </Html>
