@@ -263,19 +263,18 @@ export const getEventFilterSchema = z.object({
   includeTickets: z.boolean().optional()
 })
 
-
 // new schema for getEvent
 
 export const TicketOfferingsSchema = z.object({
   id: z.string(),
   name: z.string(),
-  category: z.enum(["GENERAL", "VIP", "BACKSTAGE"]),
+  category: z.enum(['GENERAL', 'VIP', 'BACKSTAGE']),
   description: z.string().nullable(),
   price: z.number(),
   limit: z.number(),
   ticketsPerPurchase: z.number(),
-  eventId: z.string(),
-});
+  eventId: z.string()
+})
 
 export const NewEventSchema = z.object({
   id: z.string(),
@@ -297,14 +296,13 @@ export const NewEventSchema = z.object({
   updatedAt: z.date(),
   requiresApproval: z.boolean(),
   openGraphImage: z.string().nullable(),
-  type: z.enum(["ONLINE", "IN_PERSON"]),
+  type: z.enum(['ONLINE', 'IN_PERSON']),
   deletedAt: z.date().nullable(),
   backgroundColor: z.string().nullable(),
   featuredIn: z.any().nullable(), // Adjust based on your expected JSON shape
   heroImage: z.string().nullable(),
-  tickets: z.array(TicketOfferingsSchema).optional(), // Include tickets if present
-});
-
+  tickets: z.array(TicketOfferingsSchema).optional() // Include tickets if present
+})
 
 export type RegistrationInput = z.infer<typeof registrationInputSchema>
 export type GetPublicEventsInput = z.infer<typeof getPublicEventsFilterSchema>

@@ -1,13 +1,13 @@
 'use server'
 
 import prisma from '@/lib/prisma'
-import { NewEventSchema } from '@/schemas/eventSchema';
+import { NewEventSchema } from '@/schemas/eventSchema'
 
 export async function getEvent({
   eventId,
   includeTickets
 }: {
-  eventId: string,
+  eventId: string
   includeTickets?: boolean
 }) {
   const event = await prisma.event.findUniqueOrThrow({
@@ -17,11 +17,11 @@ export async function getEvent({
 
   const formattedEvent = {
     ...event,
-    tickets: event.tickets?.map((ticket) => ({
+    tickets: event.tickets?.map(ticket => ({
       ...ticket,
-      price: ticket.price.toNumber(), // Convert Decimal to number
-    })),
-  };
+      price: ticket.price.toNumber() // Convert Decimal to number
+    }))
+  }
 
   return NewEventSchema.parse(formattedEvent)
 }
