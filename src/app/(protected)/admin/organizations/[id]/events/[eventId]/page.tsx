@@ -16,7 +16,10 @@ export default async function EventDetailsPage({
 }: {
   params: { id: string; eventId: string }
 }) {
-  const event = await getEvent({ eventId: params.eventId })
+  const event = await getEvent({
+    eventId: params.eventId,
+    includeTickets: true
+  })
   const user = await getUser()
   const attendees = await getEventRegistrations(params.eventId)
 
@@ -47,13 +50,13 @@ export default async function EventDetailsPage({
           }}
         >
           {/* Header */}
-          <div className="w-full sm:border text-card-foreground shadow-sm h-screen h-fit mx-auto dark:bg-primary sm:py-4 sm:px-2 rounded">
+          <div className="w-full border text-card-foreground shadow-sm h-fit mx-auto dark:bg-primary py-4 px-2 rounded">
             <div className="w-full flex flex-row sm:flex-row justify-between items-center">
               {/* Back Button and Title */}
               <div className="flex items-center space-x">
                 <Link
                   href={`/admin/organizations/${params.id}/events`}
-                  className="flex items-center justify-center dark:bg-primary dark:text-primary dark:text-gray-100 hover:bg-gray-300 rounded-md p-2"
+                  className="flex items-center justify-center dark:bg-primary dark:text-gray-100 hover:bg-gray-300 rounded-md p-2"
                   aria-label={t('backToEvents')}
                 >
                   <ArrowLeft className="w-5 h-5" />
@@ -88,7 +91,7 @@ export default async function EventDetailsPage({
             </div>
 
             {/* Event Details Section */}
-            <section className="w-full bg-primary sm:px-4 py-3 sm:px-6 py-6">
+            <section className="w-full bg-primary px-4 py-3 sm:px-6 md:py-6">
               <h2 className="text-xl font-bold text-secondary dark:text-gray-100">
                 {t('eventDetails')}
               </h2>
@@ -136,6 +139,8 @@ export default async function EventDetailsPage({
               <EventAdminView
                 registrations={attendees}
                 eventId={params.eventId}
+                event={event}
+                senderName={user.name}
               />
             </div>
           </div>

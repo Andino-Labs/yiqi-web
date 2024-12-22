@@ -59,7 +59,7 @@
     "settings": "Definições",
     "signOut": "Terminar Sessão",
     "defaultAvatarAlt": "Avatar do Utilizador",
-    "myAccount":"Minha Conta"
+    "myAccount": "Minha Conta"
   },
   "WelcomeNewOrg": {
     "welcomeScreenTitle": "Bem-vindo, Novo Administrador!",
@@ -126,10 +126,11 @@
     "contactsFor": "Contactos para",
     "backToDashboard": "Voltar ao Painel da Organização",
     "organizationNotFound": "Organização não encontrada",
-    "createNewEvents": "Novo Evento",
     "events": "Eventos",
+    "createNewEvents": "Criar Novos Eventos",
     "page": "Página",
-    "of": "de"    
+    "of": "de",
+    "action": "Ação"
   },
   "ContactTemplateDownload": {
     "exampleCsvContent": "email,telefone,nome,idade,cidade\njohn.doe@example.com,123456789,John Doe,25,Nova Iorque\njane.smith@example.com,987654321,Jane Smith,30,Los Angeles\nrobert.brown@example.com,567890123,Robert Brown,35,Chicago\nemily.davis@example.com,345678901,Emily Davis,28,Miami\nmichael.wilson@example.com,123098456,Michael Wilson,40,Seattle\nsarah.johnson@example.com,789012345,Sarah Johnson,32,Houston\ndavid.martinez@example.com,456789012,David Martinez,29,Dallas\nlinda.hernandez@example.com,890123456,Linda Hernandez,34,San Diego\njames.lopez@example.com,234567890,James Lopez,26,Fénix\npatricia.gonzalez@example.com,678901234,Patricia Gonzalez,38,San Francisco",
@@ -293,9 +294,9 @@
     "importing": "A importar...",
     "importContacts": "Importar Contactos",
     "noOrganizationFound": "Nenhuma organização encontrada",
-    "networkingSettings": "Definições de Networking"
+    "networkingSettings": "Definições de Networking",
+    "gift": "Bilhete de Oferta"
   },
-
   "AdminLayout": {
     "organization": "Organização",
     "settings": "Definições",
@@ -369,7 +370,19 @@
     "Begin": "Começar",
     "manage": "Quero gerir a minha comunidade!",
     "createCommunityManager": "Crie o seu gestor de comunidade",
-    "form": "Preencha os campos livres para continuar, poderá modificá-los mais tarde!"
+    "form": "Preencha os campos livres para continuar, poderá modificá-los mais tarde!",
+    "describe": "Descreva a sua organização",
+    "Color": "Cor",
+    "faceBook": "URL do Facebook",
+    "feacebookDescription": "Insira o URL da sua organização no Facebook",
+    "instagram": "URL do Instagram",
+    "instagramDescription": "Insira o URL da sua organização no Instagram",
+    "Tiktok": "URL do Tiktok",
+    "tiktokDescription": "Insira o URL da sua organização no Tiktok",
+    "LinkedIn": "URL do LinkedIn",
+    "LinkedInDescription": "Insira o URL da sua organização no LinkedIn",
+    "Website": "Website",
+    "websiteDescription": "Insira o URL do seu website"
   },
   "AddOrg": {
     "success": "Organização criada com sucesso!",
@@ -417,7 +430,6 @@
     "linkedInUrl": "Forneça o URL do seu perfil do LinkedIn.",
     "apply": "Candidatar-se ao bootcamp"
   },
-
   "Grill": {
     "notSupported": "O seu navegador não suporta a etiqueta de vídeo.",
     "reserved": "Obrigado por reservar o seu bilhete para a Edição de Halloween do Tech Grill",
@@ -484,7 +496,6 @@
     "activity": "O seu histórico de atividades aparecerá aqui",
     "logout": "Sair"
   },
-
   "Community": {
     "communities": "Comunidades",
     "noCommunitiesFound": "Nenhuma comunidade encontrada neste momento.",
@@ -598,5 +609,27 @@
     "eventCheckInTableTicketId": "ID do Bilhete",
     "eventCheckInTableCheckIn": "Validado",
     "eventCheckinBackButton": "Voltar aos Bilhetes"
+  },
+  "Gift": {
+    "gift": "Bilhete de Oferta",
+    "giftBody": "Podes oferecer bilhetes gratuitos às pessoas simplesmente pesquisando o nome ou endereço de e-mail delas",
+    "Search": "Pesquisar",
+    "results": "Resultados da Pesquisa",
+    "noResults": "Não foram encontrados utilizadores que correspondam a {searchTerm}",
+    "giftTo": "Oferecer um bilhete a {userName}",
+    "giftDesc": "Ao clicar no botão abaixo, vais enviar um bilhete gratuito a {userName}",
+    "sent": "Bilhete de Oferta enviado!",
+    "sentBody": "O teu bilhete foi enviado com sucesso para ${userName}",
+    "ok": "OK",
+    "error": "Não foi possível enviar o bilhete de oferta!",
+    "errorBody": "Ocorreu um erro ao enviar o bilhete de oferta para ${userName}",
+    "customInvite": "Criar um convite personalizado para {searchTerm}",
+    "customTitle": "É necessário criar uma conta para {searchTerm} primeiro",
+    "createAccount": "Criar uma conta para {searchTerm}",
+    "userName": "Nome de Utilizador",
+    "nameDesc": "Este será o nome de utilizador atribuído a {searchTerm} quando a conta for criada.",
+    "email": "Endereço de Email",
+    "emailDesc": "Certifica-te de que este é o endereço de email exato para {searchTerm}. Se o endereço de email não estiver correto, a conta será criada para a pessoa errada!",
+    "Submit": "Submeter"
   }
 }

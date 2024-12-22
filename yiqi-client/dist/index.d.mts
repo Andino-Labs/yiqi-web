@@ -2,11 +2,6 @@ import * as node_modules_superjson_dist from 'node_modules/superjson/dist';
 import * as node_modules__trpc_server_dist from 'node_modules/@trpc/server/dist';
 import { z } from 'zod';
 
-declare enum EventTypeEnum {
-    ONLINE = "ONLINE",
-    IN_PERSON = "IN_PERSON"
-}
-
 declare const luciaUserSchema: z.ZodObject<{
     role: z.ZodEnum<["USER", "ADMIN", "ANDINO_ADMIN", "NEW_USER"]>;
     id: z.ZodString;
@@ -147,7 +142,7 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
     }, {
         events: {
             id: string;
-            type: EventTypeEnum;
+            type: "ONLINE" | "IN_PERSON";
             title: string;
             startDate: Date;
             endDate: Date;
@@ -252,7 +247,7 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
     }, {
         id: string;
-        type: EventTypeEnum;
+        type: "ONLINE" | "IN_PERSON";
         title: string;
         startDate: Date;
         endDate: Date;

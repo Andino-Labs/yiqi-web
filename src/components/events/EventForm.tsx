@@ -16,10 +16,7 @@ import { createEvent } from '@/services/actions/event/createEvent'
 import {
   EventInputSchema,
   EventInputType,
-  EventTicketInputType,
-  EventTypeEnum,
-  SavedEventType,
-  SavedTicketOfferingType
+  EventTicketInputType
 } from '@/schemas/eventSchema'
 import { useRouter } from 'next/navigation'
 import { MapPin, Clock, Users } from 'lucide-react'
@@ -49,11 +46,12 @@ import {
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { UploadIcon } from '@radix-ui/react-icons'
+import { EventType } from '@/services/actions/event/getEvent'
 import { Switch } from '@/components/ui/switch'
 
 type Props = {
   organizationId: string
-  event?: SavedEventType
+  event?: EventType
   hasStripeAccount: boolean
 }
 
@@ -94,10 +92,16 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
   const router = useRouter()
   const t = useTranslations('DeleteAccount')
   const tPage = useTranslations('EventsPage')
-  const [tickets, setTickets] = useState<
-    EventTicketInputType[] | SavedTicketOfferingType[]
-  >(
-    event?.tickets ?? [
+  const [tickets, setTickets] = useState<EventTicketInputType[]>(
+    event?.tickets?.map(ticket => ({
+      name: ticket.name,
+      category: ticket.category,
+      description: ticket.description || '',
+      price: Number(ticket.price),
+      limit: ticket.limit,
+      ticketsPerPurchase: ticket.ticketsPerPurchase,
+      id: ticket.id
+    })) ?? [
       {
         name: 'General',
         category: 'GENERAL',
@@ -153,7 +157,7 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
       requiresApproval: event?.requiresApproval ?? false,
       openGraphImage: event?.openGraphImage ?? null,
       maxAttendees: event?.maxAttendees ?? undefined,
-      type: event?.type ?? EventTypeEnum.IN_PERSON
+      type: event?.type ?? 'IN_PERSON'
     }
   })
 
@@ -241,6 +245,7 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
   }
 
   async function onSubmit(values: z.infer<typeof EventFormInputSchema>) {
+    console.log('starting')
     if (!loading) {
       setLoading(true)
       try {
@@ -265,7 +270,14 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
 
         if (event) {
           // Update existing event
-          await updateEvent(event.id, eventData, tickets)
+          await updateEvent(
+            event.id,
+            eventData,
+            tickets.map(ticket => ({
+              ...ticket,
+              price: Number(ticket.price)
+            }))
+          )
         } else {
           // Create new event
           await createEvent(organizationId, eventData, tickets)
@@ -279,6 +291,10 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
       }
     }
   }
+
+  console.dir(form.formState.errors)
+  console.log(form.getValues('title'))
+  console.log(form.getValues('type'))
 
   return (
     <Form {...form}>
