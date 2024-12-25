@@ -3,8 +3,6 @@
 import Link from 'next/link'
 import {
   User,
-  CreditCard,
-  History,
   Ticket,
   Speech,
   LogOut,
@@ -58,16 +56,6 @@ export default function UserLayout({ children, userProps }: UserLayoutProps) {
       href: `/user/edit`
     },
     {
-      name: `${t('payments')}`,
-      icon: CreditCard,
-      href: `/user/payments`
-    },
-    {
-      name: `${t('history')}`,
-      icon: History,
-      href: `/user/history`
-    },
-    {
       name: `${t('tickets')}`,
       icon: Ticket,
       href: `/user/tickets`
@@ -109,7 +97,7 @@ export default function UserLayout({ children, userProps }: UserLayoutProps) {
             </SidebarGroup>
           </SidebarContent>
         </Sidebar>
-        <div className="flex-1 overflow-auto bg-gray-100 bg-primary">
+        <div className="flex-1 overflow-auto bg-primary">
           <header className="flex items-center justify-between p-4 shadow-md bg-primary">
             <SidebarTrigger />
 

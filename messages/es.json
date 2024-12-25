@@ -120,8 +120,10 @@
     "defaultValueH1": "Bienvenido al Editor de Texto Enriquecido",
     "defaultValueP": "Este editor soporta",
     "defaultValueStrong": "negrita",
-    "defaultValueItalic": "cursiva", 
-    "defaultValueP2": "y muchas otras opciones de formato. ¡También puedes insertar imágenes y videos de YouTube!"
+    "defaultValueItalic": "cursiva",
+    "defaultValueP2": "y muchas otras opciones de formato. ¡También puedes insertar imágenes y videos de YouTube!",
+    "requiresApproval": "Requiere Aprobación",
+    "requiresApprovalDescription": "Cuando está activado, los asistentes necesitarán aprobación"
   },
   "contactFor": {
     "contact": "Contacto",
@@ -203,15 +205,15 @@
     "enterInstagramURL": "Introduce tu link de Instagram",
     "enterWebsiteURL": "Introduce tu link de sitio web",
     "enterLinkedinURL": "Introduce tu link de LinkedIn",
-    "website":"Sitio web",
-    "stopCommunications":"Detener Comunicaciones",
+    "website": "Sitio web",
+    "stopCommunications": "Detener Comunicaciones",
     "disableCommunications": "Deshabilitar todas las comunicaciones",
     "role": "Rol"
   },
   "DeleteAccount": {
     "viewEvent": "Ver evento",
     "editEvent": "Editar evento",
-    "uploadImage":"Subir imagen",
+    "uploadImage": "Subir imagen",
     "allowedFormats": "Formatos permitidos: ",
     "location": "Ubicación",
     "settings": "Configuración",

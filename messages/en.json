@@ -121,7 +121,9 @@
     "defaultValueP": "This editor supports",
     "defaultValueStrong": "bold",
     "defaultValueItalic": "italic",
-    "defaultValueP2": "and many other formatting options. You can also embed images and YouTube videos!"
+    "defaultValueP2": "and many other formatting options. You can also embed images and YouTube videos!",
+    "requiresApproval": "Requires Approval",
+    "requiresApprovalDescription": "When enabled, attendees will need manual approval"
   },
   "contactFor": {
     "contact": "Contact",
@@ -132,7 +134,8 @@
     "createNewEvents": "New Event",
     "events": "Events",
     "page": "Page",
-    "of": "of"
+    "of": "of",
+    "action": "Action"
   },
   "ContactTemplateDownload": {
     "exampleCsvContent": "email,phone,name,age,city\njohn.doe@example.com,123456789,John Doe,25,New York\njane.smith@example.com,987654321,Jane Smith,30,Los Angeles\nrobert.brown@example.com,567890123,Robert Brown,35,Chicago\nemily.davis@example.com,345678901,Emily Davis,28,Miami\nmichael.wilson@example.com,123098456,Michael Wilson,40,Seattle\nsarah.johnson@example.com,789012345,Sarah Johnson,32,Houston\ndavid.martinez@example.com,456789012,David Martinez,29,Dallas\nlinda.hernandez@example.com,890123456,Linda Hernandez,34,San Diego\njames.lopez@example.com,234567890,James Lopez,26,Phoenix\npatricia.gonzalez@example.com,678901234,Patricia Gonzalez,38,San Francisco",

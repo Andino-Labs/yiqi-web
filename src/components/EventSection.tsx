@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { ArrowLeft, ArrowRight, Eye, Trash } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Eye } from 'lucide-react'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { EventCommunityType } from '@/schemas/eventSchema'
@@ -65,7 +65,7 @@ export default function EventSection({
         {/* Encabezado para la tabla */}
         <div className="hidden sm:grid grid-cols-12 bg-gray-700 p-4 rounded">
           <div className="col-span-6 text-sm font-semibold text-primary">
-            {t('event')}
+            {t('events')}
           </div>
           <div className="col-span-3 text-sm font-semibold text-primary"></div>
           <div className="col-span-3 text-sm font-semibold text-primary text-right">
@@ -73,7 +73,7 @@ export default function EventSection({
           </div>
         </div>
         {/* Lista de eventos */}
-        <div className="events-list overflow-y-auto rounded-lg cursor-pointer">
+        <div className="events-list overflow-y-auto rounded-lg ">
           {paginatedEvents.map(event => (
             <div
               key={event.id}
@@ -106,9 +106,6 @@ export default function EventSection({
                   >
                     <Eye className="w-5 h-5" />
                   </Link>
-                  <button className="text-red-600 hover:text-red-50 mt-2 sm:mt-0">
-                    <Trash className="w-5 h-5" />
-                  </button>
                 </div>
               </div>
             </div>
