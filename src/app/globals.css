@@ -83,13 +83,13 @@ body {
     --sidebar-accent: 240 3.7% 15.9%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;  
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
     --bg-primary: 0 0 0;
-    --bg-secondary: 128 128 128; 
-    --bg-opposite: 255 255 255; 
+    --bg-secondary: 128 128 128;
+    --bg-opposite: 255 255 255;
     --text-primary: 255 255 255;
     --text-secondary: 128 128 128;
     --text-opposite: 0 0 0;
@@ -124,7 +124,7 @@ body {
     color: white !important;
   }
 
-  .dark .mantine-RichTextEditor-controlsGroup{
+  .dark .mantine-RichTextEditor-controlsGroup {
     background-color: #1a1a1a !important;
   }
 
@@ -132,7 +132,7 @@ body {
     background-color: black !important;
     border: 1px solid #111827 !important;
   }
-  
+
   .mantine-RichTextEditor-control:hover {
     border-color: #374151 !important;
     background-color: #1f2937 !important;
@@ -146,4 +146,10 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+input[type='date']::-webkit-calendar-picker-indicator,
+input[type='time']::-webkit-calendar-picker-indicator {
+  color: white;
+  filter: invert(1);
 }

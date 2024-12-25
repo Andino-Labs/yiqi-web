@@ -49,6 +49,7 @@ import {
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { UploadIcon } from '@radix-ui/react-icons'
+import { Switch } from '@/components/ui/switch'
 
 type Props = {
   organizationId: string
@@ -531,6 +532,26 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
                         e.target.value === '' ? null : Number(e.target.value)
                       field.onChange(value)
                     }}
+                  />
+                )}
+              />
+            </div>
+
+            {/* Requires Approval */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Users className="h-5 w-5" />
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                  {tPage('requiresApproval')}
+                </span>
+              </div>
+              <FormField
+                control={form.control}
+                name="requiresApproval"
+                render={({ field }) => (
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
                   />
                 )}
               />
