@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 export const organizationSchema = z.object({
+  id: z.string(),
   logo: z.string().url(),
   name: z.string()
 })
@@ -27,7 +28,7 @@ const ticketSchema = z.object({
   category: z.enum(['GENERAL', 'VIP', 'BACKSTAGE']),
   ticketTypeId: z.string(),
   registration: registrationSchema,
-  status: z.enum(['APPROVED', 'PENDING', 'CANCELLED'])
+  status: z.enum(['APPROVED', 'PENDING', 'REJECTED'])
 })
 
 export const eventSchema = z.object({

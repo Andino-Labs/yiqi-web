@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { searchUsers } from '../actions/userActions'
+import { searchUsers, updateUserProfile } from '../actions/userActions'
 import { publicProcedure, router } from './util'
 import { getUserRegistrationStatus } from '../actions/eventActions'
 import { getOrganization } from '../actions/organizationActions'
@@ -28,6 +28,15 @@ import getCommunities from '@/services/actions/communities/getCommunities'
 import { GetCommunitiesParamsSchema } from '@/schemas/communitySchema'
 import getCommunityDetails from '../actions/communities/getCommunityDetails'
 import { getTicketsWithEvents } from '../actions/tickets/ticketActions'
+import {
+  deleteUserAccount,
+  getCurrentUserProfile,
+  saveNetworkingProfile
+} from '../actions/mobileUserAction'
+import {
+  profileWithPrivacySchema,
+  userDataCollectedShema
+} from '@/schemas/userSchema'
 
 export const appRouter = router({
   loginLinkedin: publicProcedure
@@ -160,7 +169,39 @@ export const appRouter = router({
 
     const tickets = await getTicketsWithEvents(ctx.user?.id)
     return tickets
-  })
+  }),
+  getUserProfile: publicProcedure.query(async ({ ctx }) => {
+    if (!ctx.user) {
+      throw new Error('User not signed in')
+    }
+
+    return await getCurrentUserProfile(ctx.user?.id)
+  }),
+  updateUserProfile: publicProcedure
+    .input(profileWithPrivacySchema)
+    .mutation(async ({ ctx, input }) => {
+      if (!ctx.user) {
+        throw new Error('User not signed in')
+      }
+      if (input.id !== ctx.user.id) {
+        throw new Error("You don't have permession")
+      }
+      return await updateUserProfile(input)
+    }),
+  deleteUserAccount: publicProcedure.mutation(async ({ ctx }) => {
+    if (!ctx.user) {
+      throw new Error('User not signed in')
+    }
+    return await deleteUserAccount(ctx.user.id)
+  }),
+  saveNetworkingProfile: publicProcedure
+    .input(userDataCollectedShema)
+    .mutation(async ({ ctx, input }) => {
+      if (!ctx.user) {
+        throw new Error('User not signed in')
+      }
+      return await saveNetworkingProfile(ctx.user.id, input)
+    })
 })
 
 // Export type router type signature,
