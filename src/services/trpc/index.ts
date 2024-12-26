@@ -29,14 +29,12 @@ import { GetCommunitiesParamsSchema } from '@/schemas/communitySchema'
 import getCommunityDetails from '../actions/communities/getCommunityDetails'
 import { getTicketsWithEvents } from '../actions/tickets/ticketActions'
 import {
-  deleteUserAccount,
-  getCurrentUserProfile,
-  saveNetworkingProfile
-} from '../actions/mobileUserAction'
-import {
   profileWithPrivacySchema,
   userDataCollectedShema
 } from '@/schemas/userSchema'
+import { fetchAndFormatUserProfile } from '@/lib/user/fetchAndFormatUserProfile'
+import { deleteUser } from '@/lib/user/deleteUser'
+import { updateNetworkingProfile } from '@/lib/user/updateNetworkingProfile'
 
 export const appRouter = router({
   loginLinkedin: publicProcedure
@@ -175,7 +173,7 @@ export const appRouter = router({
       throw new Error('User not signed in')
     }
 
-    return await getCurrentUserProfile(ctx.user?.id)
+    return await fetchAndFormatUserProfile(ctx.user?.id, true)
   }),
   updateUserProfile: publicProcedure
     .input(profileWithPrivacySchema)
@@ -192,7 +190,7 @@ export const appRouter = router({
     if (!ctx.user) {
       throw new Error('User not signed in')
     }
-    return await deleteUserAccount(ctx.user.id)
+    return await deleteUser(ctx.user.id)
   }),
   saveNetworkingProfile: publicProcedure
     .input(userDataCollectedShema)
@@ -200,7 +198,7 @@ export const appRouter = router({
       if (!ctx.user) {
         throw new Error('User not signed in')
       }
-      return await saveNetworkingProfile(ctx.user.id, input)
+      return await updateNetworkingProfile(ctx.user.id, input)
     })
 })
 
