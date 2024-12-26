@@ -9,10 +9,17 @@ import prisma from '../prisma'
 import setupInitialEventNotifications from '@/services/notifications/setupInitialNotifications'
 import { LuciaUserType } from '@/schemas/userSchema'
 
+import { Resend } from 'resend'
+
+import GiftEmail from '../../../emails/giftedTicket'
+
+const resend = new Resend(process.env.NEXT_PUBLICK_RESEND_APIKEY)
+
 export async function createRegistration(
   contextUser: LuciaUserType | null,
   eventId: string,
-  registrationData: RegistrationInput
+  registrationData: RegistrationInput,
+  senderName?: string | undefined
 ) {
   try {
     // Validate input data
@@ -150,6 +157,17 @@ export async function createRegistration(
             })
       ])
     }
+
+    resend.emails.send({
+      from: 'yiqi@resend.dev',
+      to: `${user.email}`,
+      subject: `You have been gifted a ticket to attend ${event.title}`,
+      react: GiftEmail({
+        eventName: event.title as string,
+        receiverName: user.name as string,
+        senderName: senderName as string
+      })
+    })
 
     // Setup notifications
     await setupInitialEventNotifications({

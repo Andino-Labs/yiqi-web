@@ -1,7 +1,7 @@
 'use server'
 
 import prisma from '@/lib/prisma'
-import { NewEventSchema } from '@/schemas/eventSchema'
+import { SavedEventSchema } from '@/schemas/eventSchema'
 
 export async function getEvent({
   eventId,
@@ -23,7 +23,7 @@ export async function getEvent({
     }))
   }
 
-  return NewEventSchema.parse(formattedEvent)
+  return SavedEventSchema.parse(formattedEvent)
 }
 
 export type EventType = Awaited<ReturnType<typeof getEvent>>

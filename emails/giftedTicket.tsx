@@ -76,7 +76,6 @@ export default function GiftEmail(props: {
               </Button>
             </div>
           </Container>
-
         </div>
       </Tailwind>
     </Html>

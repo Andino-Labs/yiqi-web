@@ -20,7 +20,6 @@ import { Button } from '../ui/button'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
-import giftTicket from '@/services/giftTicket/createRegistration'
 import { LuciaUserType } from '@/schemas/userSchema'
 import { RegistrationInput } from '@/schemas/eventSchema'
 
@@ -38,6 +37,7 @@ import {
 import { z } from 'zod'
 import { createNewUser } from '@/services/giftTicket/createAccount'
 import { useTranslations } from 'next-intl'
+import { createRegistration } from '@/lib/event/createRegistration'
 
 export interface SearchResults {
   name: string | undefined
@@ -234,7 +234,7 @@ function GiftUser(props: {
               setLoading(true)
               console.log('loading')
               try {
-                await giftTicket(
+                await createRegistration(
                   contextUser,
                   eventId,
                   registrationInput,
@@ -345,7 +345,7 @@ function GiftUnregisteredUser(props: {
 
       // gifting ticket function
 
-      await giftTicket(
+      await createRegistration(
         contextUser,
         eventId,
         registrationInput,
