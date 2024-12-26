@@ -73,6 +73,7 @@
     "@trpc/server": "10.45.2",
     "@types/mailparser": "^3.4.5",
     "@vis.gl/react-google-maps": "^1.1.0",
+    "andino-web": "file:",
     "arctic": "^1.9.2",
     "axios": "^1.7.7",
     "class-variance-authority": "^0.7.0",
