@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Menu, TicketSlash, Users } from 'lucide-react'
+import { Menu, TicketSlash, Users, LogOut } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -16,6 +16,7 @@ import { AccountDropdown } from '../AccountDropdown'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import LangSelector from '../languageSelector'
+import SignOutButton from '../auth/sign-out'
 
 interface User {
   name?: string
@@ -190,6 +191,15 @@ export default function MainLandingNav({
                           {t('myAccount')}
                         </span>
                       </Link>
+                      <hr className="my-6 border-t border-solid border-white-opacity-40 w-[100%] ml-0 mx-auto" />
+                      <SignOutButton>
+                        <div className="flex items-center space-x-2 px-2">
+                          <LogOut className="h-4 w-4 text-muted-foreground" />
+                          <span className="text-white text-sm">
+                            {t('signOut')}
+                          </span>
+                        </div>
+                      </SignOutButton>
                     </>
                   )}
                   <hr className="my-6 border-t border-solid border-white-opacity-40 w-[100%] ml-0 mx-auto" />

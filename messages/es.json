@@ -28,7 +28,8 @@
     "privacy": "Privacidad",
     "security": "Seguridad",
     "profile": "Perfil",
-    "organization": "Organización"
+    "organization": "Organización",
+    "signOut": "Cerrar sesión"
   },
   "HeroSection": {
     "heroSubtitle": "El Futuro de los Eventos",

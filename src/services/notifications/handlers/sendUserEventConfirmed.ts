@@ -1,3 +1,4 @@
+import { generateCalendarEvent } from '@/lib/calendar'
 import { sendEmailToUser } from '@/lib/email/handlers/sendEmailToUser'
 import { MailTemplatesIds } from '@/lib/email/lib'
 import prisma from '@/lib/prisma'
@@ -42,12 +43,26 @@ export async function sendUserEventConfirmed(props: QueueJob) {
     })
     return MessageSchema.parse(result)
   } else if (thread.type === MessageThreadTypeEnum.Enum.email) {
+    const calendarEvent = await generateCalendarEvent({
+      start: event.startDate,
+      end: event.endDate,
+      title: event.title,
+      description: event.description ?? '',
+      location: event.location ?? undefined
+    })
     await sendEmailToUser({
       templateId: MailTemplatesIds.RESERVATION_CONFIRMED,
       dynamicTemplateData: { user, event },
       destinationUserId: user.id,
       threadId: thread.id,
-      subject: `Confirmación de reserva para ${event.title} de ${event.organization.name}`
+      subject: `Confirmación de reserva para ${event.title} de ${event.organization.name}`,
+      attachments: [
+        {
+          filename: 'event.ics',
+          content: calendarEvent,
+          contentType: 'text/calendar; method=REQUEST'
+        }
+      ]
     })
 
     const latestData = await prisma.message.findFirstOrThrow({

@@ -50,7 +50,7 @@ const PublicEventsList = ({ events, showHeader = true }: Props) => {
     <section id="events" className="w-full bg-black min-h-screen relative">
       <div className="relative w-full py-12">
         <div className="max-w-7xl mx-auto">
-          {showHeader && <EventHeader />}
+          {events.length > 5 && showHeader && <EventHeader />}
           {events.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {events.map(event => (

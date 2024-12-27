@@ -50,7 +50,7 @@ jobs:
       STRIPE_WEBHOOK_SECRET: 'whsec_dummy'
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: 'pk_test_dummy'
       OPENAI_API_KEY: 'dummy'
-
+      JWT_SECRET: 'dummy'
     steps:
       - uses: actions/checkout@v3
 

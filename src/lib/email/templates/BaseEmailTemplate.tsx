@@ -1,13 +1,11 @@
 import { ReactElement } from 'react'
-
 import {
   Html,
   Head,
   Body,
   Container,
   Text,
-  Link,
-  Img
+  Link
 } from '@react-email/components'
 
 // Define the props types for each template
@@ -26,11 +24,6 @@ export function BaseEmailTemplate({
 
       <Body className="bg-gray-100">
         <Container className="mx-auto my-8 p-6 bg-white rounded-lg shadow-lg">
-          <Img
-            src="https://via.placeholder.com/600x300"
-            alt="Imagen del evento"
-            className="w-full mb-6 rounded-lg"
-          />
           <Text className="text-lg text-gray-600 mb-4">{content}</Text>
 
           <Text className="text-md text-gray-500 mt-6">

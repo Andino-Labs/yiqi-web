@@ -1,14 +1,22 @@
-import { Resend } from 'resend'
+import { CreateEmailOptions, Resend } from 'resend'
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY!
 
-export async function sendEmail(
-  to: string,
-  subject: string,
-  body: string,
-  threadId: string,
+export async function sendEmail({
+  to,
+  subject,
+  body,
+  threadId,
+  fromEmail,
+  attachments
+}: {
+  to: string
+  subject: string
+  body: string
+  threadId: string
   fromEmail: string
-): Promise<void> {
+  attachments?: CreateEmailOptions['attachments']
+}): Promise<void> {
   if (!RESEND_API_KEY) {
     throw new Error('RESEND_API_KEY missing in env')
   }
@@ -22,7 +30,8 @@ export async function sendEmail(
       html: body,
       headers: {
         'Andino-Thread-ID': threadId
-      }
+      },
+      attachments
     })
 
     console.log('Email sent successfully:', response)

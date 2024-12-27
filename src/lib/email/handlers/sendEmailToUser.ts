@@ -6,6 +6,7 @@ import {
   TemplatePropsMap
 } from '../lib'
 import createMessageRecord from '@/lib/communications/createMessageRecord'
+import { CreateEmailOptions } from 'resend'
 
 // Define the input type that enforces correct template-data pairing
 export type SendEmailToUserType<T extends MailTemplatesIds> = {
@@ -15,15 +16,14 @@ export type SendEmailToUserType<T extends MailTemplatesIds> = {
   destinationUserId: string
   threadId: string
   content?: string | undefined
-  attachement?: string
   senderUserId?: string
+  attachments?: CreateEmailOptions['attachments']
 }
 
 export async function sendEmailToUser<T extends MailTemplatesIds>({
   destinationUserId,
   threadId,
   content,
-  attachement,
   senderUserId,
   ...sendMailInput
 }: SendEmailToUserType<T>) {
@@ -55,7 +55,6 @@ export async function sendEmailToUser<T extends MailTemplatesIds>({
 
   return createMessageRecord({
     content: content || textContent,
-    attachement,
     destinationUserId,
     messageThreadId: thread.id,
     senderUserId
