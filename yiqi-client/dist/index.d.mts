@@ -1,5 +1,5 @@
-import * as node_modules_superjson_dist from 'node_modules/superjson/dist';
-import * as node_modules__trpc_server_dist from 'node_modules/@trpc/server/dist';
+import * as superjson from 'superjson';
+import * as _trpc_server from '@trpc/server';
 import { z } from 'zod';
 
 declare enum EventTypeEnum {
@@ -32,18 +32,18 @@ type Context = {
     user: LuciaUserType | null;
 };
 
-declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_modules__trpc_server_dist.RootConfig<{
+declare const appRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<{
     ctx: Context;
     meta: object;
-    errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-    transformer: typeof node_modules_superjson_dist.default;
+    errorShape: _trpc_server.DefaultErrorShape;
+    transformer: typeof superjson.default;
 }>, {
-    loginLinkedin: node_modules__trpc_server_dist.BuildProcedure<"mutation", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    loginLinkedin: _trpc_server.BuildProcedure<"mutation", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
@@ -53,8 +53,8 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         _input_out: {
             code: string;
         };
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, {
         user: {
             name: string;
@@ -65,12 +65,12 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         };
         sessionId: string;
     }>;
-    loginGoogle: node_modules__trpc_server_dist.BuildProcedure<"mutation", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    loginGoogle: _trpc_server.BuildProcedure<"mutation", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
@@ -80,8 +80,8 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         _input_out: {
             idToken: string;
         };
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, {
         user: {
             name: string;
@@ -92,12 +92,12 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         };
         sessionId: string;
     }>;
-    searchUsers: node_modules__trpc_server_dist.BuildProcedure<"query", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    searchUsers: _trpc_server.BuildProcedure<"query", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
@@ -107,8 +107,8 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         _input_out: {
             query: string;
         };
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, {
         name: string;
         id: string;
@@ -117,12 +117,12 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         emailVerified?: Date | null | undefined;
         phoneNumber?: string | null | undefined;
     }[]>;
-    getPublicEvents: node_modules__trpc_server_dist.BuildProcedure<"query", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    getPublicEvents: _trpc_server.BuildProcedure<"query", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
@@ -142,8 +142,8 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
             limit?: number | undefined;
             page?: number | undefined;
         } | undefined;
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, {
         events: {
             id: string;
@@ -231,12 +231,12 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         }[];
         totalCount: number;
     }>;
-    getEvent: node_modules__trpc_server_dist.BuildProcedure<"query", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    getEvent: _trpc_server.BuildProcedure<"query", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
@@ -248,8 +248,8 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
             eventId: string;
             includeTickets?: boolean | undefined;
         };
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, {
         id: string;
         type: EventTypeEnum;
@@ -288,12 +288,12 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
             description?: string | undefined;
         }[] | null | undefined;
     }>;
-    createRegistration: node_modules__trpc_server_dist.BuildProcedure<"mutation", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    createRegistration: _trpc_server.BuildProcedure<"mutation", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
@@ -313,8 +313,8 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
                 tickets: Record<string, number>;
             };
         };
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, {
         message: string;
         success: boolean;
@@ -329,12 +329,12 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
             paymentId: string | null;
         };
     }>;
-    getUserRegistrationStatus: node_modules__trpc_server_dist.BuildProcedure<"query", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    getUserRegistrationStatus: _trpc_server.BuildProcedure<"query", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
@@ -346,22 +346,22 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
             userId: string;
             eventId: string;
         };
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, boolean>;
-    getOrganization: node_modules__trpc_server_dist.BuildProcedure<"query", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    getOrganization: _trpc_server.BuildProcedure<"query", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
         _input_in: string;
         _input_out: string;
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, {
         name: string;
         id: string;
@@ -371,12 +371,12 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         userId: string;
         logo: string | null;
     }>;
-    checkExistingRegistration: node_modules__trpc_server_dist.BuildProcedure<"mutation", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    checkExistingRegistration: _trpc_server.BuildProcedure<"mutation", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
@@ -386,8 +386,8 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         _input_out: {
             eventId: string;
         };
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, {
         id: string;
         status: "PENDING" | "APPROVED" | "REJECTED";
@@ -428,12 +428,12 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         paid: boolean;
         paymentId: string | null;
     } | null>;
-    createCheckoutSession: node_modules__trpc_server_dist.BuildProcedure<"mutation", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    createCheckoutSession: _trpc_server.BuildProcedure<"mutation", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
@@ -443,18 +443,18 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         _input_out: {
             registrationId: string;
         };
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, {
         clientSecret: string;
         connectAccountId: string;
     }>;
-    markRegistrationPaid: node_modules__trpc_server_dist.BuildProcedure<"mutation", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    markRegistrationPaid: _trpc_server.BuildProcedure<"mutation", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
@@ -464,8 +464,8 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         _input_out: {
             registrationId: string;
         };
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, {
         success: boolean;
         error: string;
@@ -473,12 +473,12 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         success: boolean;
         error?: undefined;
     }>;
-    getCommunities: node_modules__trpc_server_dist.BuildProcedure<"query", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    getCommunities: _trpc_server.BuildProcedure<"query", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
@@ -492,8 +492,8 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
             page: number;
             search?: string | undefined;
         } | undefined;
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, {
         communities: {
             name: string;
@@ -519,6 +519,354 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
             hasMore: boolean;
             nextPage: number | null;
         };
+    }>;
+    getCommunityDetails: _trpc_server.BuildProcedure<"query", {
+        _config: _trpc_server.RootConfig<{
+            ctx: Context;
+            meta: object;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
+        }>;
+        _meta: object;
+        _ctx_out: Context;
+        _input_in: {
+            communityId: string;
+        };
+        _input_out: {
+            communityId: string;
+        };
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
+    }, {
+        organization: {
+            name: string;
+            id: string;
+            description: string | null;
+            createdAt: Date;
+            updatedAt: Date;
+            colour: string | null;
+            logo: string | null;
+            stripeAccountId: string | null;
+            linkedin?: string | null | undefined;
+            instagram?: string | null | undefined;
+            website?: string | null | undefined;
+            userId?: string | null | undefined;
+            facebook?: string | null | undefined;
+            tiktok?: string | null | undefined;
+        };
+        events: {
+            id: string;
+            type: EventTypeEnum;
+            title: string;
+            startDate: Date;
+            endDate: Date;
+            requiresApproval: boolean;
+            description?: string | undefined;
+            location?: string | null | undefined;
+            city?: string | null | undefined;
+            state?: string | null | undefined;
+            country?: string | null | undefined;
+            latLon?: {
+                lat?: number | null | undefined;
+                lon?: number | null | undefined;
+            } | null | undefined;
+            virtualLink?: string | null | undefined;
+            maxAttendees?: number | null | undefined;
+            openGraphImage?: string | null | undefined;
+        }[];
+        members: {
+            name: string;
+            id: string;
+            email: string;
+            picture: string | null;
+            emailVerified?: Date | null | undefined;
+            phoneNumber?: string | null | undefined;
+        }[];
+        organizers: {
+            name: string;
+            id: string;
+            email: string;
+            picture: string | null;
+            emailVerified?: Date | null | undefined;
+            phoneNumber?: string | null | undefined;
+        }[];
+    }>;
+    getTicketsWithEvents: _trpc_server.BuildProcedure<"query", {
+        _config: _trpc_server.RootConfig<{
+            ctx: Context;
+            meta: object;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
+        }>;
+        _ctx_out: Context;
+        _input_in: typeof _trpc_server.unsetMarker;
+        _input_out: typeof _trpc_server.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
+        _meta: object;
+    }, {
+        event: {
+            id: string;
+            type: "IN_PERSON" | "VIRTUAL";
+            title: string;
+            startDate: Date;
+            endDate: Date;
+            organizationId: string;
+            openGraphImage: string;
+            organization: {
+                name: string;
+                id: string;
+                logo: string;
+            };
+        };
+        tickets: {
+            id: string;
+            status: "PENDING" | "APPROVED" | "REJECTED";
+            description: string | null;
+            userId: string;
+            category: "GENERAL" | "VIP" | "BACKSTAGE";
+            checkedInDate: Date | null;
+            registration: {
+                customFields: {
+                    name: string;
+                    email: string;
+                    tickets: Record<string, number>;
+                };
+                paid: boolean;
+                paymentId: string | null;
+            };
+            registrationId: string;
+            checkedInByUserId: string | null;
+            ticketTypeId: string;
+        }[];
+    }[]>;
+    getUserProfile: _trpc_server.BuildProcedure<"query", {
+        _config: _trpc_server.RootConfig<{
+            ctx: Context;
+            meta: object;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
+        }>;
+        _ctx_out: Context;
+        _input_in: typeof _trpc_server.unsetMarker;
+        _input_out: typeof _trpc_server.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
+        _meta: object;
+    }, {
+        name: string;
+        id: string;
+        email: string;
+        stopCommunication: boolean;
+        role: string;
+        privacySettings: {
+            email: boolean;
+            phoneNumber: boolean;
+            linkedin: boolean;
+            x: boolean;
+            website: boolean;
+        };
+        isLinkedinLinked: boolean;
+        picture?: string | undefined;
+        phoneNumber?: string | undefined;
+        company?: string | null | undefined;
+        position?: string | null | undefined;
+        shortDescription?: string | null | undefined;
+        linkedin?: string | null | undefined;
+        x?: string | null | undefined;
+        instagram?: string | null | undefined;
+        website?: string | null | undefined;
+        professionalMotivations?: string | null | undefined;
+        communicationStyle?: string | null | undefined;
+        professionalValues?: string | null | undefined;
+        careerAspirations?: string | null | undefined;
+        significantChallenge?: string | null | undefined;
+        resumeUrl?: string | null | undefined;
+        resumeText?: string | null | undefined;
+        resumeLastUpdated?: string | null | undefined;
+        linkedinAccessToken?: string | undefined;
+    } | null>;
+    updateUserProfile: _trpc_server.BuildProcedure<"mutation", {
+        _config: _trpc_server.RootConfig<{
+            ctx: Context;
+            meta: object;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
+        }>;
+        _meta: object;
+        _ctx_out: Context;
+        _input_in: {
+            name: string;
+            id: string;
+            email: string;
+            role: string;
+            picture?: string | undefined;
+            phoneNumber?: string | undefined;
+            company?: string | null | undefined;
+            position?: string | null | undefined;
+            shortDescription?: string | null | undefined;
+            linkedin?: string | null | undefined;
+            x?: string | null | undefined;
+            instagram?: string | null | undefined;
+            website?: string | null | undefined;
+            professionalMotivations?: string | null | undefined;
+            communicationStyle?: string | null | undefined;
+            professionalValues?: string | null | undefined;
+            careerAspirations?: string | null | undefined;
+            significantChallenge?: string | null | undefined;
+            resumeUrl?: string | null | undefined;
+            resumeText?: string | null | undefined;
+            resumeLastUpdated?: string | null | undefined;
+            stopCommunication?: boolean | undefined;
+            privacySettings?: {
+                email?: boolean | undefined;
+                phoneNumber?: boolean | undefined;
+                linkedin?: boolean | undefined;
+                x?: boolean | undefined;
+                website?: boolean | undefined;
+            } | undefined;
+            linkedinAccessToken?: string | undefined;
+            isLinkedinLinked?: boolean | undefined;
+        };
+        _input_out: {
+            name: string;
+            id: string;
+            email: string;
+            stopCommunication: boolean;
+            role: string;
+            privacySettings: {
+                email: boolean;
+                phoneNumber: boolean;
+                linkedin: boolean;
+                x: boolean;
+                website: boolean;
+            };
+            isLinkedinLinked: boolean;
+            picture?: string | undefined;
+            phoneNumber?: string | undefined;
+            company?: string | null | undefined;
+            position?: string | null | undefined;
+            shortDescription?: string | null | undefined;
+            linkedin?: string | null | undefined;
+            x?: string | null | undefined;
+            instagram?: string | null | undefined;
+            website?: string | null | undefined;
+            professionalMotivations?: string | null | undefined;
+            communicationStyle?: string | null | undefined;
+            professionalValues?: string | null | undefined;
+            careerAspirations?: string | null | undefined;
+            significantChallenge?: string | null | undefined;
+            resumeUrl?: string | null | undefined;
+            resumeText?: string | null | undefined;
+            resumeLastUpdated?: string | null | undefined;
+            linkedinAccessToken?: string | undefined;
+        };
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
+    }, {
+        name: string;
+        id: string;
+        email: string;
+        stopCommunication: boolean;
+        role: string;
+        privacySettings: {
+            email: boolean;
+            phoneNumber: boolean;
+            linkedin: boolean;
+            x: boolean;
+            website: boolean;
+        };
+        isLinkedinLinked: boolean;
+        picture?: string | undefined;
+        phoneNumber?: string | undefined;
+        company?: string | null | undefined;
+        position?: string | null | undefined;
+        shortDescription?: string | null | undefined;
+        linkedin?: string | null | undefined;
+        x?: string | null | undefined;
+        instagram?: string | null | undefined;
+        website?: string | null | undefined;
+        professionalMotivations?: string | null | undefined;
+        communicationStyle?: string | null | undefined;
+        professionalValues?: string | null | undefined;
+        careerAspirations?: string | null | undefined;
+        significantChallenge?: string | null | undefined;
+        resumeUrl?: string | null | undefined;
+        resumeText?: string | null | undefined;
+        resumeLastUpdated?: string | null | undefined;
+        linkedinAccessToken?: string | undefined;
+    }>;
+    deleteUserAccount: _trpc_server.BuildProcedure<"mutation", {
+        _config: _trpc_server.RootConfig<{
+            ctx: Context;
+            meta: object;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
+        }>;
+        _ctx_out: Context;
+        _input_in: typeof _trpc_server.unsetMarker;
+        _input_out: typeof _trpc_server.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
+        _meta: object;
+    }, {
+        success: boolean;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: string;
+    }>;
+    saveNetworkingProfile: _trpc_server.BuildProcedure<"mutation", {
+        _config: _trpc_server.RootConfig<{
+            ctx: Context;
+            meta: object;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
+        }>;
+        _meta: object;
+        _ctx_out: Context;
+        _input_in: {
+            company?: string | null | undefined;
+            position?: string | null | undefined;
+            shortDescription?: string | null | undefined;
+            linkedin?: string | null | undefined;
+            x?: string | null | undefined;
+            instagram?: string | null | undefined;
+            website?: string | null | undefined;
+            professionalMotivations?: string | null | undefined;
+            communicationStyle?: string | null | undefined;
+            professionalValues?: string | null | undefined;
+            careerAspirations?: string | null | undefined;
+            significantChallenge?: string | null | undefined;
+            resumeUrl?: string | null | undefined;
+            resumeText?: string | null | undefined;
+            resumeLastUpdated?: string | null | undefined;
+        };
+        _input_out: {
+            company?: string | null | undefined;
+            position?: string | null | undefined;
+            shortDescription?: string | null | undefined;
+            linkedin?: string | null | undefined;
+            x?: string | null | undefined;
+            instagram?: string | null | undefined;
+            website?: string | null | undefined;
+            professionalMotivations?: string | null | undefined;
+            communicationStyle?: string | null | undefined;
+            professionalValues?: string | null | undefined;
+            careerAspirations?: string | null | undefined;
+            significantChallenge?: string | null | undefined;
+            resumeUrl?: string | null | undefined;
+            resumeText?: string | null | undefined;
+            resumeLastUpdated?: string | null | undefined;
+        };
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
+    }, {
+        success: boolean;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: string;
     }>;
 }>;
 type AppRouter = typeof appRouter;
