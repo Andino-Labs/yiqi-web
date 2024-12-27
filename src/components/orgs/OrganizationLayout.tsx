@@ -9,7 +9,7 @@ import {
   BookUser,
   ChevronDown,
   Building2,
-  Banknote,
+  // Banknote,
   Plus
 } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -104,11 +104,11 @@ export default function OrganizationLayout({
       icon: Users,
       href: `/admin/organizations/${orgId}/organizers`
     },
-    {
-      name: `${t('billing')}`,
-      icon: Banknote,
-      href: `/admin/organizations/${orgId}/billing`
-    },
+    // {
+    //   name: `${t('billing')}`,
+    //   icon: Banknote,
+    //   href: `/admin/organizations/${orgId}/billing`
+    // },
     {
       name: 'Formularios',
       icon: Plus,
