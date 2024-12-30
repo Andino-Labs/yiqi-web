@@ -2,20 +2,29 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@radix-ui/react-tabs'
 import { Button } from '@/components/ui/button'
-import { MailsIcon, Send, SettingsIcon } from 'lucide-react'
+import { MailsIcon, Send, SettingsIcon, Gift } from 'lucide-react'
 
 import EventRegistrationTable from './events/EventRegistrationTable'
 import EventCommunicationsTable from './events/EventCommunicationsTable'
 import { EventRegistrationsSchemaType } from '@/schemas/eventSchema'
 import { useTranslations } from 'next-intl'
 import { PersonIcon } from '@radix-ui/react-icons'
+import GiftTicket from './giftTicket/giftTicket'
+import { EventType } from '@/services/actions/event/getEvent'
 
 type Props = {
   registrations: EventRegistrationsSchemaType[]
   eventId: string
+  event: EventType
+  senderName: string | undefined
 }
 
-export function EventAdminView({ registrations, eventId }: Props) {
+export function EventAdminView({
+  registrations,
+  eventId,
+  event,
+  senderName
+}: Props) {
   const t = useTranslations('DeleteAccount')
 
   return (
@@ -60,6 +69,17 @@ export function EventAdminView({ registrations, eventId }: Props) {
               <span className="hidden sm:inline">{t('communications')}</span>
             </div>
           </TabsTrigger>
+          {/* gift ticket */}
+          <TabsTrigger
+            value="giftTicket"
+            className="px-4 py-2 rounded-t-md flex items-center transition-all"
+            data-state="active" // Aquí también se utiliza la propiedad data-state
+          >
+            <div className="flex items-center">
+              <Gift className="h-7 w-7 mr-2" />
+              <span className="hidden sm:inline">{t('gift')}</span>
+            </div>
+          </TabsTrigger>
         </TabsList>
 
         {/* Contenido de los Tabs */}
@@ -88,6 +108,12 @@ export function EventAdminView({ registrations, eventId }: Props) {
             </Button>
             <EventCommunicationsTable eventId={eventId} />
           </div>
+        </TabsContent>
+
+        {/* gift ticket */}
+
+        <TabsContent value="giftTicket">
+          <GiftTicket eventId={eventId} event={event} senderName={senderName} />
         </TabsContent>
       </Tabs>
     </div>
