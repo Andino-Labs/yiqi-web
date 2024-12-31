@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { profileWithPrivacySchema, userSchema } from './userSchema'
+import { EventTypes } from '@prisma/client'
 
 export enum AttendeeStatus {
   PENDING = 'PENDING',
@@ -24,6 +25,7 @@ export const EventTicketOfferingInputSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   category: z.enum(['GENERAL', 'VIP', 'BACKSTAGE']),
   description: z.string().optional(),
+  id: z.string().optional(),
   price: z.number().min(0, 'Price must be positive'),
   limit: z.number().min(1, 'Limit must be at least 1'),
   ticketsPerPurchase: z
@@ -78,7 +80,7 @@ export const EventCommunitySchema = z.object({
   maxAttendees: z.number().int().positive().optional().nullable(),
   requiresApproval: z.boolean().default(false),
   openGraphImage: z.string().optional().nullable(),
-  type: z.enum(['ONLINE', 'IN_PERSON'])
+  type: z.nativeEnum(EventTypes)
 })
 
 export const EventSchema = EventInputSchema.extend({
@@ -179,7 +181,8 @@ export const SavedEventSchema = EventInputSchema.extend({
     .optional()
     .nullable()
     .transform(val => val ?? []),
-  tickets: z.array(SavedTicketOfferingSchema).optional().nullable()
+  // tickets: z.array(SavedTicketOfferingSchema).optional().nullable()
+  tickets: z.array(SavedTicketOfferingSchema).optional()
 })
 
 export const PublicEventSchema = SavedEventSchema.extend({
@@ -254,6 +257,7 @@ export const getPublicEventsFilterSchema = z.object({
   page: z.number().optional(),
   limit: z.number().optional()
 })
+
 export const getEventFilterSchema = z.object({
   eventId: z.string(),
   includeTickets: z.boolean().optional()
@@ -261,4 +265,3 @@ export const getEventFilterSchema = z.object({
 
 export type RegistrationInput = z.infer<typeof registrationInputSchema>
 export type GetPublicEventsInput = z.infer<typeof getPublicEventsFilterSchema>
-export type GetEventFilterSchemaType = z.infer<typeof getEventFilterSchema>
