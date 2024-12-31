@@ -7,6 +7,7 @@ import {
   EventTicketOfferingInputSchema,
   SavedEventSchema
 } from '@/schemas/eventSchema'
+import { EventTypes } from '@prisma/client'
 
 export async function createEvent(
   orgId: string,
