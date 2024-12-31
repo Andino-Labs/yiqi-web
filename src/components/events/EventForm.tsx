@@ -629,11 +629,7 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
                   <DialogTitle>{t('stripeAccountRequired')}</DialogTitle>
                   <DialogDescription>
                     {t('stripeSetupInfo')}
-                    {/* <Link
-                      href={`/admin/organizations/${organizationId}/billing`}
-                    >
-                      {t('clickHereStart')}
-                    </Link> */}
+
                   </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
