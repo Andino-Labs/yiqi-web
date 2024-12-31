@@ -47,7 +47,7 @@ export default async function EventDetailsPage({
           }}
         >
           {/* Header */}
-          <div className="w-full sm:border text-card-foreground shadow-sm h-screen h-fit mx-auto dark:bg-primary sm:py-4 sm:px-2 rounded">
+          <div className="w-full sm:border text-card-foreground shadow-sm h-fit mx-auto dark:bg-primary sm:py-4 sm:px-2 rounded">
             <div className="w-full flex flex-row sm:flex-row justify-between items-center">
               {/* Back Button and Title */}
               <div className="flex items-center space-x">
