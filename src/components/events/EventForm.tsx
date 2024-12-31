@@ -627,10 +627,7 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>{t('stripeAccountRequired')}</DialogTitle>
-                  <DialogDescription>
-                    {t('stripeSetupInfo')}
-
-                  </DialogDescription>
+                  <DialogDescription>{t('stripeSetupInfo')}</DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
                   <Button
