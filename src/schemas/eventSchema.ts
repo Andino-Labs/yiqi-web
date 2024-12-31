@@ -50,7 +50,7 @@ export const EventInputSchema = z.object({
   maxAttendees: z.number().int().positive().optional().nullable(),
   requiresApproval: z.boolean().default(false),
   openGraphImage: z.string().optional().nullable(),
-  type: z.nativeEnum(EventTypeEnum),
+  type: z.enum(['ONLINE', 'IN_PERSON']),
   latLon: z
     .object({
       lat: z.number().optional().nullable(),
@@ -79,7 +79,8 @@ export const EventCommunitySchema = z.object({
   maxAttendees: z.number().int().positive().optional().nullable(),
   requiresApproval: z.boolean().default(false),
   openGraphImage: z.string().optional().nullable(),
-  type: z.nativeEnum(EventTypeEnum)
+  type: z.enum(['ONLINE', 'IN_PERSON']),
+
 })
 
 export const EventSchema = EventInputSchema.extend({
