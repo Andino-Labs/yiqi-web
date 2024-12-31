@@ -293,7 +293,8 @@
     "importing": "A importar...",
     "importContacts": "Importar Contactos",
     "noOrganizationFound": "Nenhuma organização encontrada",
-    "networkingSettings": "Definições de Networking"
+    "networkingSettings": "Definições de Networking",
+    "gift": "Bilhete de Oferta"
   },
   "AdminLayout": {
     "organization": "Organização",

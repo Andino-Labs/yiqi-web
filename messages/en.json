@@ -318,7 +318,8 @@
     "importing": "Importing...",
     "importContacts": "Import Contacts",
     "noOrganizationFound": "No organization found",
-    "networkingSettings": "Networking Settings"
+    "networkingSettings": "Networking Settings",
+    "gift": "Gift Ticket"
   },
   "AdminLayout": {
     "organization": "Organization",

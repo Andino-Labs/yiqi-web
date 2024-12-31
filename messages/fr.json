@@ -293,7 +293,8 @@
     "importing": "Importation...",
     "importContacts": "Importer des contacts",
     "noOrganizationFound": "Aucune organisation trouvée",
-    "networkingSettings": "Paramètres de mise en réseau"
+    "networkingSettings": "Paramètres de mise en réseau",
+    "gift": "Billet Cadeau"
   },
   "AdminLayout": {
     "organization": "Organisation",

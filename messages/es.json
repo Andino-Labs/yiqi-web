@@ -314,7 +314,8 @@
     "importing": "Importando...",
     "importContacts": "Importar Contactos",
     "noOrganizationFound": "No se encontró la organización",
-    "networkingSettings": "Networking"
+    "networkingSettings": "Networking",
+    "gift": "Entrada de Regalo"
   },
   "AdminLayout": {
     "organization": "Organizaciones",
