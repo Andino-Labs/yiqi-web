@@ -87,8 +87,8 @@ export async function createRegistration(
     let user = contextUser
       ? contextUser
       : await prisma.user.findUnique({
-        where: { email: validatedData.email.toLocaleLowerCase() }
-      })
+          where: { email: validatedData.email.toLocaleLowerCase() }
+        })
 
     if (!user) {
       user = await prisma.user.create({
@@ -144,17 +144,17 @@ export async function createRegistration(
         ticketsRequirePayment
           ? null
           : prisma.queueJob.create({
-            data: {
-              type: 'SEND_USER_MESSAGE',
               data: {
+                type: 'SEND_USER_MESSAGE',
+                data: {
+                  userId: user.id,
+                  eventId: event.id
+                },
+                notificationType: 'RESERVATION_CONFIRMED',
                 userId: user.id,
                 eventId: event.id
-              },
-              notificationType: 'RESERVATION_CONFIRMED',
-              userId: user.id,
-              eventId: event.id
-            }
-          })
+              }
+            })
       ])
     }
 

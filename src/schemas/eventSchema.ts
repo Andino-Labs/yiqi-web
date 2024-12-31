@@ -10,7 +10,6 @@ export enum AttendeeStatus {
 export const EventTypeSchema = z.enum(['ONLINE', 'IN_PERSON'])
 export type EventTypeEnum = z.infer<typeof EventTypeSchema>
 
-
 export const CustomFieldSchema = z.object({
   name: z.string().min(1, 'Field name is required'),
   type: z.enum(['text', 'number', 'select', 'date']),
@@ -79,8 +78,7 @@ export const EventCommunitySchema = z.object({
   maxAttendees: z.number().int().positive().optional().nullable(),
   requiresApproval: z.boolean().default(false),
   openGraphImage: z.string().optional().nullable(),
-  type: z.enum(['ONLINE', 'IN_PERSON']),
-
+  type: z.enum(['ONLINE', 'IN_PERSON'])
 })
 
 export const EventSchema = EventInputSchema.extend({

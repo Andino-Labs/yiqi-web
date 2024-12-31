@@ -68,10 +68,11 @@ export default function SearchForm({ onSearch, locations }: SearchFormProps) {
               <input
                 type="text"
                 placeholder={t('searchByTitle')}
-                className={`border-b-2 text-sm p-2 w-full rounded-md ${!title
+                className={`border-b-2 text-sm p-2 w-full rounded-md ${
+                  !title
                     ? 'border-gray-400 text-gray-500'
                     : 'border-gray-300 focus:outline-none focus:border-blue-500'
-                  }`}
+                }`}
                 value={title}
                 onChange={e => setTitle(e.target.value)}
               />
@@ -95,10 +96,11 @@ export default function SearchForm({ onSearch, locations }: SearchFormProps) {
             <label className="text-gray-500 text-sm">{t('location')}</label>
             <div className="relative">
               <select
-                className={`border-b-2 text-sm p-[0.659375rem] w-full rounded-md bg-white pl-[0.15625rem] ${!location
+                className={`border-b-2 text-sm p-[0.659375rem] w-full rounded-md bg-white pl-[0.15625rem] ${
+                  !location
                     ? 'border-gray-400 text-gray-500'
                     : 'border-gray-300 focus:outline-none focus:border-blue-500'
-                  }`}
+                }`}
                 value={location}
                 onChange={e => setLocation(e.target.value)}
               >
@@ -155,10 +157,11 @@ export default function SearchForm({ onSearch, locations }: SearchFormProps) {
                 <div className="relative">
                   <input
                     type="date"
-                    className={`border-b-2 text-sm p-2 w-full rounded-md ${!startDate
+                    className={`border-b-2 text-sm p-2 w-full rounded-md ${
+                      !startDate
                         ? 'border-gray-400 text-gray-500'
                         : 'border-gray-300 focus:outline-none focus:border-blue-500'
-                      }`}
+                    }`}
                     value={startDate}
                     onChange={e => setStartDate(e.target.value)}
                   />
@@ -171,10 +174,11 @@ export default function SearchForm({ onSearch, locations }: SearchFormProps) {
                 </label>
                 <div className="relative">
                   <select
-                    className={`border-b-2 text-sm p-2 w-full rounded-md bg-white pl-[0.15625rem] ${!type
+                    className={`border-b-2 text-sm p-2 w-full rounded-md bg-white pl-[0.15625rem] ${
+                      !type
                         ? 'border-gray-400 text-gray-500'
                         : 'border-gray-300 focus:outline-none focus:border-blue-500'
-                      }`}
+                    }`}
                     value={type}
                     onChange={e => setType(e.target.value as EventTypes)}
                   >
