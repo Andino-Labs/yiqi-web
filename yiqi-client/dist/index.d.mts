@@ -209,7 +209,7 @@ declare const appRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<
                     website: boolean;
                 };
                 isLinkedinLinked: boolean;
-                picture?: string | undefined;
+                picture?: string | null | undefined;
                 phoneNumber?: string | undefined;
                 company?: string | null | undefined;
                 position?: string | null | undefined;
@@ -447,7 +447,6 @@ declare const appRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<
         _output_out: typeof _trpc_server.unsetMarker;
     }, {
         clientSecret: string;
-        connectAccountId: string;
     }>;
     markRegistrationPaid: _trpc_server.BuildProcedure<"mutation", {
         _config: _trpc_server.RootConfig<{
@@ -498,18 +497,14 @@ declare const appRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<
         communities: {
             name: string;
             id: string;
+            linkedin: string | null;
+            instagram: string | null;
+            website: string | null;
             description: string | null;
-            createdAt: Date;
-            updatedAt: Date;
             colour: string | null;
             logo: string | null;
-            stripeAccountId: string | null;
-            linkedin?: string | null | undefined;
-            instagram?: string | null | undefined;
-            website?: string | null | undefined;
-            userId?: string | null | undefined;
-            facebook?: string | null | undefined;
-            tiktok?: string | null | undefined;
+            facebook: string | null;
+            tiktok: string | null;
         }[];
         pagination: {
             page: number;
@@ -541,18 +536,14 @@ declare const appRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<
         organization: {
             name: string;
             id: string;
+            linkedin: string | null;
+            instagram: string | null;
+            website: string | null;
             description: string | null;
-            createdAt: Date;
-            updatedAt: Date;
             colour: string | null;
             logo: string | null;
-            stripeAccountId: string | null;
-            linkedin?: string | null | undefined;
-            instagram?: string | null | undefined;
-            website?: string | null | undefined;
-            userId?: string | null | undefined;
-            facebook?: string | null | undefined;
-            tiktok?: string | null | undefined;
+            facebook: string | null;
+            tiktok: string | null;
         };
         events: {
             id: string;
@@ -667,7 +658,7 @@ declare const appRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<
             website: boolean;
         };
         isLinkedinLinked: boolean;
-        picture?: string | undefined;
+        picture?: string | null | undefined;
         phoneNumber?: string | undefined;
         company?: string | null | undefined;
         position?: string | null | undefined;
@@ -700,7 +691,7 @@ declare const appRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<
             id: string;
             email: string;
             role: string;
-            picture?: string | undefined;
+            picture?: string | null | undefined;
             phoneNumber?: string | undefined;
             company?: string | null | undefined;
             position?: string | null | undefined;
@@ -742,7 +733,7 @@ declare const appRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<
                 website: boolean;
             };
             isLinkedinLinked: boolean;
-            picture?: string | undefined;
+            picture?: string | null | undefined;
             phoneNumber?: string | undefined;
             company?: string | null | undefined;
             position?: string | null | undefined;
@@ -764,37 +755,40 @@ declare const appRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<
         _output_in: typeof _trpc_server.unsetMarker;
         _output_out: typeof _trpc_server.unsetMarker;
     }, {
-        name: string;
-        id: string;
-        email: string;
-        stopCommunication: boolean;
-        role: string;
-        privacySettings: {
-            email: boolean;
-            phoneNumber: boolean;
-            linkedin: boolean;
-            x: boolean;
-            website: boolean;
+        success: boolean;
+        user: {
+            name: string;
+            id: string;
+            email: string;
+            stopCommunication: boolean;
+            role: string;
+            privacySettings: {
+                email: boolean;
+                phoneNumber: boolean;
+                linkedin: boolean;
+                x: boolean;
+                website: boolean;
+            };
+            isLinkedinLinked: boolean;
+            picture?: string | null | undefined;
+            phoneNumber?: string | undefined;
+            company?: string | null | undefined;
+            position?: string | null | undefined;
+            shortDescription?: string | null | undefined;
+            linkedin?: string | null | undefined;
+            x?: string | null | undefined;
+            instagram?: string | null | undefined;
+            website?: string | null | undefined;
+            professionalMotivations?: string | null | undefined;
+            communicationStyle?: string | null | undefined;
+            professionalValues?: string | null | undefined;
+            careerAspirations?: string | null | undefined;
+            significantChallenge?: string | null | undefined;
+            resumeUrl?: string | null | undefined;
+            resumeText?: string | null | undefined;
+            resumeLastUpdated?: string | null | undefined;
+            linkedinAccessToken?: string | undefined;
         };
-        isLinkedinLinked: boolean;
-        picture?: string | undefined;
-        phoneNumber?: string | undefined;
-        company?: string | null | undefined;
-        position?: string | null | undefined;
-        shortDescription?: string | null | undefined;
-        linkedin?: string | null | undefined;
-        x?: string | null | undefined;
-        instagram?: string | null | undefined;
-        website?: string | null | undefined;
-        professionalMotivations?: string | null | undefined;
-        communicationStyle?: string | null | undefined;
-        professionalValues?: string | null | undefined;
-        careerAspirations?: string | null | undefined;
-        significantChallenge?: string | null | undefined;
-        resumeUrl?: string | null | undefined;
-        resumeText?: string | null | undefined;
-        resumeLastUpdated?: string | null | undefined;
-        linkedinAccessToken?: string | undefined;
     }>;
     deleteUserAccount: _trpc_server.BuildProcedure<"mutation", {
         _config: _trpc_server.RootConfig<{
