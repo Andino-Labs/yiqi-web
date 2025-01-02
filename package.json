@@ -110,7 +110,7 @@
     "tailwind-merge": "^2.5.3",
     "tailwindcss-animate": "^1.0.7",
     "tiktoken": "^1.0.17",
-    "tsup": "^8.3.0",
+    "tsup": "^8.3.5",
     "zod": "^3.23.8"
   },
   "devDependencies": {
@@ -128,6 +128,6 @@
     "tailwindcss": "^3.4.1",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5"
+    "typescript": "5.6.3"
   }
 }

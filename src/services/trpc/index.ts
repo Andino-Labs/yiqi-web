@@ -184,7 +184,12 @@ export const appRouter = router({
       if (input.id !== ctx.user.id) {
         throw new Error("You don't have permession")
       }
-      return await updateUserProfile(input)
+
+      const response = await updateUserProfile(input)
+      return {
+        success: response.success,
+        user: profileWithPrivacySchema.parse(response.user)
+      }
     }),
   deleteUserAccount: publicProcedure.mutation(async ({ ctx }) => {
     if (!ctx.user) {

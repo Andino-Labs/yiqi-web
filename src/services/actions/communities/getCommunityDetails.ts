@@ -1,5 +1,6 @@
 'use server'
 
+import { userSchema } from '@/schemas/userSchema'
 import { PublicCommunitySchema } from '@/schemas/communitySchema'
 import { getOrganizationContacts } from '../contactActions'
 import { getOrganizationEvents } from '../event/getOrganizationEvents'
@@ -18,6 +19,6 @@ export default async function getCommunityDetails(communityId: string) {
     organization: PublicCommunitySchema.parse(organization),
     events: events,
     members: members,
-    organizers: organizers.map(el => el.user)
+    organizers: organizers.map(el => userSchema.parse(el.user))
   }
 }
