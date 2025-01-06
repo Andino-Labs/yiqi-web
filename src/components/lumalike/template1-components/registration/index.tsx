@@ -55,6 +55,7 @@ export function Registration({
   const [existingRegistration, setExistingRegistration] =
     useState<EventRegistrationSchemaType | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [currentRegistrationId, setCurrentRegistrationId] = useState<
     string | undefined
   >()
@@ -71,13 +72,9 @@ export function Registration({
 
   useEffect(() => {
     async function checkRegistration() {
-      if (user?.email) {
-        const registration = await checkExistingRegistration(
-          event.id,
-          user.email
-        )
-        setExistingRegistration(registration)
-      }
+      const registration = await checkExistingRegistration(event.id)
+      setExistingRegistration(registration)
+
       setIsLoading(false)
     }
     checkRegistration()
@@ -113,6 +110,7 @@ export function Registration({
     }
 
     try {
+      setIsSubmitting(true)
       const result = await createRegistration(event.id, {
         ...values,
         tickets: ticketSelections
@@ -138,13 +136,26 @@ export function Registration({
         title: `${t('eventRegistrationError')}`,
         variant: 'destructive'
       })
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
   const handlePaymentComplete = async () => {
-    const result = await markRegistrationPaid(currentRegistrationId!)
-    if (result.success) {
-      setPaymentCompleted(true)
+    try {
+      setIsSubmitting(true)
+      const result = await markRegistrationPaid(currentRegistrationId!)
+      if (result.success) {
+        setPaymentCompleted(true)
+      }
+    } catch (error) {
+      console.error('Error processing payment:', error)
+      toast({
+        title: 'Error processing payment',
+        variant: 'destructive'
+      })
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -153,7 +164,7 @@ export function Registration({
   }
 
   if (paymentCompleted && currentRegistrationId) {
-    return <PaymentConfirmed eventId={event.id} userEmail={user.email!} />
+    return <PaymentConfirmed eventId={event.id} />
   }
 
   if (existingRegistration) {
@@ -239,6 +250,7 @@ export function Registration({
                 isFreeEvent={isFreeEvent}
                 registrationId={currentRegistrationId}
                 onPaymentComplete={handlePaymentComplete}
+                isSubmitting={isSubmitting}
               />
             </motion.div>
           </DialogContent>

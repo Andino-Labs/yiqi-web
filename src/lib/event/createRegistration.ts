@@ -8,6 +8,7 @@ import {
 import prisma from '../prisma'
 import setupInitialEventNotifications from '@/services/notifications/setupInitialNotifications'
 import { LuciaUserType } from '@/schemas/userSchema'
+import { setRegistrationCookie } from '../utils/cookies'
 
 export async function createRegistration(
   contextUser: LuciaUserType | null,
@@ -102,6 +103,8 @@ export async function createRegistration(
         paid: false // Set to true when implementing payments
       }
     })
+
+    await setRegistrationCookie(eventId, registration.id)
 
     // if ticket requires payment we need to ensure we dont send them a message
     let ticketsRequirePayment = false

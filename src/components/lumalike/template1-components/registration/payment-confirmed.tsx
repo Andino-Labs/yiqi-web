@@ -11,13 +11,9 @@ import { useRouter } from 'next/navigation'
 
 interface PaymentConfirmedProps {
   eventId: string
-  userEmail: string
 }
 
-export function PaymentConfirmed({
-  eventId,
-  userEmail
-}: PaymentConfirmedProps) {
+export function PaymentConfirmed({ eventId }: PaymentConfirmedProps) {
   const router = useRouter()
   const t = useTranslations('RegistrationComponent')
   const [isOpen, setIsOpen] = useState(true)
@@ -27,7 +23,7 @@ export function PaymentConfirmed({
 
   useEffect(() => {
     async function loadData() {
-      const reg = await checkExistingRegistration(eventId, userEmail)
+      const reg = await checkExistingRegistration(eventId)
       if (reg) {
         setRegistration(reg)
         const profile = await getUserProfile(reg.userId)
@@ -43,7 +39,7 @@ export function PaymentConfirmed({
       }
     }
     loadData()
-  }, [eventId, userEmail])
+  }, [eventId])
 
   if (!registration) {
     return null

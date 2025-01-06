@@ -97,7 +97,7 @@ export default function MainLandingNav({
                 <Users size={16} />
                 <span>{t('communities')}</span>
               </NavLink>
-              {!user || Object.keys(user).length === 0 ? (
+              {!user?.role || Object.keys(user).length === 0 ? (
                 <Link href={'/user'}>
                   <Button size="sm" variant="default" className="font-semibold">
                     {t('login')}
@@ -148,7 +148,7 @@ export default function MainLandingNav({
                     {t('events')}
                   </NavLink>
                   <hr className="my-6 border-t border-solid border-white-opacity-40 w-[100%] ml-0 mx-auto" />
-                  {!user ? (
+                  {!user?.role ? (
                     <Link href={'/user'}>
                       <Button
                         size="sm"
