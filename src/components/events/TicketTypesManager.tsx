@@ -134,7 +134,7 @@ export function TicketTypesManager({
             </FormItem>
 
             <FormItem>
-              <FormLabel>{t('Price')}</FormLabel>
+              <FormLabel>{`${t('Price')} (Soles)`}</FormLabel>
               <FormControl>
                 <Input
                   type="number"

@@ -62,10 +62,7 @@ export default async function Page({ params }: { params: { id: string } }) {
               </div>
 
               {/* Formulario del evento */}
-              <EventForm
-                organizationId={params.id}
-                hasStripeAccount={organization?.stripeAccountId !== null}
-              />
+              <EventForm organizationId={params.id} />
             </div>
           </div>
         </OrganizationLayout>

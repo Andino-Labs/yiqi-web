@@ -265,3 +265,24 @@ export const getEventFilterSchema = z.object({
 
 export type RegistrationInput = z.infer<typeof registrationInputSchema>
 export type GetPublicEventsInput = z.infer<typeof getPublicEventsFilterSchema>
+export type GetEventFilterSchemaType = z.infer<typeof getEventFilterSchema>
+
+export const organizationSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  colour: z.string().nullable(),
+  description: z.string().nullable(),
+  logo: z.string().nullable(),
+  facebook: z.string().nullable(),
+  instagram: z.string().nullable(),
+  tiktok: z.string().nullable(),
+  linkedin: z.string().nullable(),
+  website: z.string().nullable(),
+  billingInfo: z
+    .object({
+      accountName: z.string(),
+      accountNumber: z.string(),
+      country: z.string()
+    })
+    .nullable()
+})

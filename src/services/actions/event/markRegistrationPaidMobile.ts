@@ -10,11 +10,7 @@ export async function markRegistrationPaidMobile(registrationId: string) {
     const registration = await prisma.eventRegistration.findUnique({
       where: { id: registrationId },
       include: {
-        event: {
-          include: {
-            organization: true
-          }
-        }
+        event: true
       }
     })
 
@@ -26,15 +22,10 @@ export async function markRegistrationPaidMobile(registrationId: string) {
       return { success: false, error: 'No payment ID found' }
     }
 
-    if (!registration.event.organization.stripeAccountId) {
-      return { success: false, error: 'No stripe account ID found' }
-    }
-
     // Verify payment status with Stripe Payment Intent
     const paymentIntent = await stripe.paymentIntents.retrieve(
       registration.paymentId,
-      { expand: ['charges'] }, // Include charges to check for payment status
-      { stripeAccount: registration.event.organization.stripeAccountId }
+      { expand: ['charges'] } // Include charges to check for payment status
     )
 
     if (paymentIntent.status !== 'succeeded') {

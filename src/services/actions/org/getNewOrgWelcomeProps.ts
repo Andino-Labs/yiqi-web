@@ -6,7 +6,7 @@ export async function getNewOrgWelcomeProps(organizationId: string) {
   const [org, contacts, event] = await Promise.all([
     prisma.organization.findUnique({
       where: { id: organizationId },
-      select: { stripeAccountId: true }
+      select: { billingInfo: true }
     }),
     prisma.organizationContact.findFirst({
       where: { organizationId }
@@ -20,7 +20,7 @@ export async function getNewOrgWelcomeProps(organizationId: string) {
     hasContacts: !!contacts,
     hasEvents: !!event,
     hasNotifications: !!true,
-    isStripeSetup: !!org?.stripeAccountId,
+    isStripeSetup: !!org?.billingInfo,
     hasFirstRegistration: event
       ? (await prisma.eventRegistration.findFirst({
           where: { eventId: event.id }

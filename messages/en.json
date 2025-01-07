@@ -594,7 +594,13 @@
     "registrationContinuePayment": "Continuar con el Pago",
     "stripeAccountActive": "Stripe Account Active",
     "stripeAccountActiveDescription": "Your Stripe account is fully set up and ready to accept payments.",
-    "stripeViewDashboard": "View Stripe Dashboard"
+    "stripeViewDashboard": "View Stripe Dashboard",
+    "paymentConfirmedTitle": "Payment Confirmed!",
+    "paymentConfirmedDescription": "Your registration has been confirmed. You can view your tickets below.",
+    "viewTickets": "View My Tickets",
+    "completeYourProfile": "Complete Your Profile",
+    "profileCompletionBenefits": "Complete your profile to enhance your networking experience and get personalized recommendations for future events.",
+    "completeProfile": "Complete Profile"
   },
   "Ticket": {
     "ticketStatusApproved": "Approved",

@@ -16,7 +16,8 @@ import { createEvent } from '@/services/actions/event/createEvent'
 import {
   EventInputSchema,
   EventInputType,
-  EventTicketInputType
+  EventTicketInputType,
+  SavedEventType
 } from '@/schemas/eventSchema'
 import { useRouter } from 'next/navigation'
 import { MapPin, Clock, Users } from 'lucide-react'
@@ -35,23 +36,14 @@ import { AddressAutocomplete } from '../forms/AddressAutocomplete'
 import { getLocationDetails } from '@/lib/utils'
 import { updateEvent } from '@/services/actions/event/updateEvent'
 import { MarkdownEditor } from './editor/mdEditor'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter
-} from '@/components/ui/dialog'
 import { useTranslations } from 'next-intl'
 import { UploadIcon } from '@radix-ui/react-icons'
-import { EventType } from '@/services/actions/event/getEvent'
+// import { EventType } from '@/services/actions/event/getEvent'
 import { Switch } from '@/components/ui/switch'
 
 type Props = {
   organizationId: string
-  event?: EventType
-  hasStripeAccount: boolean
+  event?: SavedEventType
 }
 
 export const EventFormInputSchema = EventInputSchema.extend({
@@ -87,7 +79,7 @@ const defaultMinEndTimeStr = defaultEndDate
   .split('T')[1]
   .slice(0, 5)
 
-export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
+export function EventForm({ organizationId, event }: Props) {
   const router = useRouter()
   const t = useTranslations('DeleteAccount')
   const tPage = useTranslations('EventsPage')
@@ -122,7 +114,6 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
   `
   const [loading, setLoading] = useState(false)
   const [showTicketManager, setShowTicketManager] = useState(false)
-  const [showStripeDialog, setShowStripeDialog] = useState(false)
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(
     event?.openGraphImage ?? null
@@ -297,10 +288,7 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="max-w-5xl mx-auto p-2 mb-4 md:p-6 dark:bg-primary rounded-lg shadow-lg"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <div className="mb-4">
           <FormField
             control={form.control}
@@ -575,13 +563,7 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
             {/* Tickets */}
             <div
               className="flex items-center justify-between cursor-pointer"
-              onClick={() => {
-                if (hasStripeAccount) {
-                  setShowTicketManager(!showTicketManager)
-                } else {
-                  setShowStripeDialog(true)
-                }
-              }}
+              onClick={() => setShowTicketManager(!showTicketManager)}
             >
               <span>{t('tickets')}</span>
               <span>{showTicketManager ? `${t('hide')}` : `${t('edit')}`}</span>
@@ -621,24 +603,6 @@ export function EventForm({ organizationId, event, hasStripeAccount }: Props) {
                 }}
               />
             )}
-
-            {/* Stripe Dialog */}
-            <Dialog open={showStripeDialog} onOpenChange={setShowStripeDialog}>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>{t('stripeAccountRequired')}</DialogTitle>
-                  <DialogDescription>{t('stripeSetupInfo')}</DialogDescription>
-                </DialogHeader>
-                <DialogFooter>
-                  <Button
-                    className="dark:bg-neutral-600 font-bold"
-                    onClick={() => setShowStripeDialog(false)}
-                  >
-                    {t('close')}
-                  </Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
 
             {/* Submit */}
             <div className="pt-4">

@@ -14,7 +14,6 @@ export async function processQueueJobs() {
     orderBy: [{ priority: 'desc' }, { createdAt: 'asc' }],
     take: 10 // Process 10 jobs at a time
   })
-
   const results = await Promise.all(
     jobs.map(async job => {
       try {

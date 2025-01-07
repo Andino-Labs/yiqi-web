@@ -6,6 +6,8 @@ import prisma from '@/lib/prisma'
 import { Roles } from '@prisma/client'
 import { getUser } from '@/lib/auth/lucia'
 import { OrganizationSchema } from '@/schemas/organizerSchema'
+import { PublicCommunitySchema } from '@/schemas/communitySchema'
+import { AdminOrganizationSchema } from '@/schemas/adminSchema'
 
 export async function createOrganization(
   data: Parameters<typeof organizationService.create>[0],
@@ -56,9 +58,23 @@ export async function getAllOrganizationsForCurrentUser() {
 }
 
 export async function getOrganization(id: string) {
-  return await prisma.organization.findUnique({
+  const org = await prisma.organization.findUnique({
     where: { id }
   })
+
+  if (!org) return null
+
+  return PublicCommunitySchema.parse(org)
+}
+
+export async function getAdminOrganization(id: string) {
+  const org = await prisma.organization.findUnique({
+    where: { id }
+  })
+
+  if (!org) return null
+
+  return AdminOrganizationSchema.parse(org)
 }
 
 export async function updateOrganization(

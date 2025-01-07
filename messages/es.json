@@ -590,7 +590,13 @@
     "registrationContinuePayment": "Continuar con el pago",
     "stripeAccountActive": "Cuenta de Stripe activa",
     "stripeAccountActiveDescription": "Tu cuenta de Stripe está completamente configurada y lista para aceptar pagos.",
-    "stripeViewDashboard": "Ver panel de Stripe"
+    "stripeViewDashboard": "Ver panel de Stripe",
+    "paymentConfirmedTitle": "¡Pago Confirmado!",
+    "paymentConfirmedDescription": "Tu registro ha sido confirmado. Puedes ver tus entradas a continuación.",
+    "viewTickets": "Ver Mis Entradas",
+    "completeYourProfile": "Completa Tu Perfil",
+    "profileCompletionBenefits": "Completa tu perfil para mejorar tu experiencia de networking y recibir recomendaciones personalizadas para futuros eventos.",
+    "completeProfile": "Completar Perfil"
   },
   "Ticket": {
     "ticketStatusApproved": "Aprobado",

@@ -8,25 +8,14 @@ export const createCheckoutSession = async (registrationId: string) => {
     where: { id: registrationId },
     include: {
       tickets: { include: { ticketType: true } },
-      event: {
-        include: {
-          organization: true
-        }
-      }
+      event: true
     }
   })
-
-  const stripeAccountId = registration.event.organization.stripeAccountId
-
-  if (!stripeAccountId) {
-    throw new Error('Organization does not have a stripe account')
-  }
 
   if (registration.paymentId) {
     try {
       const session = await stripe.checkout.sessions.retrieve(
-        registration.paymentId,
-        {}
+        registration.paymentId
       )
 
       if (!session.client_secret) {

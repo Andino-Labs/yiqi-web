@@ -110,22 +110,22 @@ model VerificationToken {
 }
 
 model Organization {
-  id              String      @id @default(cuid())
-  name            String
-  colour          String?
-  description     String?
-  logo            String?
-  events          Event[]
-  organizers      Organizer[]
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-  queueJobs       QueueJob[]
-  stripeAccountId String? // This is where you store the Stripe account ID
-  facebook        String?
-  instagram       String?
-  tiktok          String?
-  linkedin        String?
-  website         String?
+  id          String      @id @default(cuid())
+  name        String
+  colour      String?
+  description String?
+  logo        String?
+  events      Event[]
+  organizers  Organizer[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  queueJobs   QueueJob[]
+  billingInfo Json? // Store bank account details: accountName, accountNumber, country
+  facebook    String?
+  instagram   String?
+  tiktok      String?
+  linkedin    String?
+  website     String?
 
   integration Integration[]
 

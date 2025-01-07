@@ -6,15 +6,11 @@ export const PublicCommunitySchema = z.object({
   colour: z.string().nullable(),
   description: z.string().nullable(),
   logo: z.string().nullable(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  stripeAccountId: z.string().nullable(),
-  facebook: z.string().nullable().optional(),
-  instagram: z.string().nullable().optional(),
-  tiktok: z.string().nullable().optional(),
-  linkedin: z.string().nullable().optional(),
-  website: z.string().nullable().optional(),
-  userId: z.string().nullable().optional()
+  facebook: z.string().nullable(),
+  instagram: z.string().nullable(),
+  tiktok: z.string().nullable(),
+  linkedin: z.string().nullable(),
+  website: z.string().nullable()
 })
 
 export const GetCommunitiesParamsSchema = z.object({

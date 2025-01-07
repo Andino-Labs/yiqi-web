@@ -68,11 +68,7 @@ export default async function Page({
                 </Link>
               </div>
 
-              <EventForm
-                organizationId={organization.id}
-                hasStripeAccount={organization?.stripeAccountId !== null}
-                event={event}
-              />
+              <EventForm organizationId={organization.id} event={event} />
             </div>
           </div>
         </OrganizationLayout>

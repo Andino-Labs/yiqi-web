@@ -8,26 +8,15 @@ export const createCheckoutSessionMobile = async (registrationId: string) => {
     where: { id: registrationId },
     include: {
       tickets: { include: { ticketType: true } },
-      event: {
-        include: {
-          organization: true
-        }
-      }
+      event: true
     }
   })
-
-  const stripeAccountId = registration.event.organization.stripeAccountId
-
-  if (!stripeAccountId) {
-    throw new Error('Organization does not have a Stripe account')
-  }
 
   // If a Payment Intent already exists
   if (registration.paymentId) {
     try {
       const paymentIntent = await stripe.paymentIntents.retrieve(
-        registration.paymentId,
-        { stripeAccount: stripeAccountId }
+        registration.paymentId
       )
 
       if (!paymentIntent.client_secret) {
@@ -35,8 +24,7 @@ export const createCheckoutSessionMobile = async (registrationId: string) => {
       }
 
       return {
-        clientSecret: paymentIntent.client_secret,
-        connectAccountId: stripeAccountId
+        clientSecret: paymentIntent.client_secret
       }
     } catch (error) {
       console.error('Error retrieving Payment Intent', error)
@@ -80,31 +68,17 @@ export const createCheckoutSessionMobile = async (registrationId: string) => {
     }
   )
 
-  const commission = 0.03
-
-  const application_fee_amount = Math.round(
-    lineItems.reduce((acc, item) => {
-      return acc + item.price_data.unit_amount * item.quantity
-    }, 0) * commission
-  )
-
   const totalAmount = lineItems.reduce(
     (acc, item) => acc + item.price_data.unit_amount * item.quantity,
     0
   )
 
   // Create Payment Intent
-  const paymentIntent = await stripe.paymentIntents.create(
-    {
-      amount: totalAmount,
-      currency: 'pen',
-      application_fee_amount,
-      payment_method_types: ['card']
-    },
-    {
-      stripeAccount: stripeAccountId
-    }
-  )
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: totalAmount,
+    currency: 'pen',
+    payment_method_types: ['card']
+  })
 
   if (!paymentIntent.client_secret) {
     throw new Error('Payment Intent not created')
@@ -116,7 +90,6 @@ export const createCheckoutSessionMobile = async (registrationId: string) => {
   })
 
   return {
-    clientSecret: paymentIntent.client_secret,
-    connectAccountId: stripeAccountId
+    clientSecret: paymentIntent.client_secret
   }
 }

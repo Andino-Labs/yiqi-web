@@ -1,13 +1,8 @@
 import React from 'react'
-import StripeConnect from '@/components/billing/StripeConnect'
 import OrganizationLayout from '@/components/orgs/OrganizationLayout'
 import { getUser } from '@/lib/auth/lucia'
 import { redirect } from 'next/navigation'
-import { getOrganization } from '@/services/actions/organizationActions'
-import { stripe } from '@/lib/stripe'
-import { Button } from '@/components/ui/button'
-import { ExternalLink } from 'lucide-react'
-import { translations } from '@/lib/translations/translations'
+import { getAdminOrganization } from '@/services/actions/organizationActions'
 import {
   Card,
   CardContent,
@@ -15,13 +10,14 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
+import { BankAccountForm } from '@/components/billing/BankAccountForm'
 
 export default async function OrganizationBillingPage({
   params
 }: {
   params: { id: string }
 }) {
-  const organization = await getOrganization(params.id)
+  const organization = await getAdminOrganization(params.id)
   const user = await getUser()
 
   if (!user) {
@@ -32,50 +28,54 @@ export default async function OrganizationBillingPage({
     redirect('/')
   }
 
-  // If org has a Stripe account, check its status
-  let stripeAccountStatus = null
-  if (organization.stripeAccountId) {
-    try {
-      const account = await stripe.accounts.retrieve(
-        organization.stripeAccountId
-      )
-      stripeAccountStatus = account.charges_enabled ? 'active' : 'pending'
-    } catch (error) {
-      console.error('Error fetching Stripe account:', error)
-      stripeAccountStatus = 'error'
-    }
-  }
+  const billingInfo =
+    organization.billingInfo && typeof organization.billingInfo === 'object'
+      ? {
+          accountName: String(
+            (organization.billingInfo as Record<string, unknown>).accountName ||
+              ''
+          ),
+          accountNumber: String(
+            (organization.billingInfo as Record<string, unknown>)
+              .accountNumber || ''
+          ),
+          country: String(
+            (organization.billingInfo as Record<string, unknown>).country || ''
+          )
+        }
+      : undefined
 
   return (
     <OrganizationLayout orgId={params.id} userProps={user}>
-      {stripeAccountStatus === 'active' ? (
+      <div className="space-y-6">
         <Card>
           <CardHeader>
-            <CardTitle>{translations.es.stripeAccountActive}</CardTitle>
+            <CardTitle>Billing Information</CardTitle>
             <CardDescription>
-              {translations.es.stripeAccountActiveDescription}
+              Add your bank account details to receive payouts. Payouts are
+              processed once your balance reaches the minimum threshold.
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button asChild className="w-full sm:w-auto">
-              <a
-                href={`https://dashboard.stripe.com/${organization.stripeAccountId}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2"
-              >
-                {translations.es.stripeViewDashboard}
-                <ExternalLink className="h-4 w-4" />
-              </a>
-            </Button>
+            <BankAccountForm
+              organizationId={params.id}
+              initialData={billingInfo}
+            />
           </CardContent>
         </Card>
-      ) : (
-        <StripeConnect
-          accountId={params.id}
-          stripeId={organization.stripeAccountId || ''}
-        />
-      )}
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Purchase History</CardTitle>
+            <CardDescription>
+              Track your event sales and upcoming payouts.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="h-[400px] flex items-center justify-center text-muted-foreground">
+            Purchase history chart coming soon...
+          </CardContent>
+        </Card>
+      </div>
     </OrganizationLayout>
   )
 }
