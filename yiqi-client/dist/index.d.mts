@@ -209,7 +209,7 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
                     website: boolean;
                 };
                 isLinkedinLinked: boolean;
-                picture?: string | undefined;
+                picture?: string | null | undefined;
                 phoneNumber?: string | undefined;
                 company?: string | null | undefined;
                 position?: string | null | undefined;
@@ -658,7 +658,7 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
             website: boolean;
         };
         isLinkedinLinked: boolean;
-        picture?: string | undefined;
+        picture?: string | null | undefined;
         phoneNumber?: string | undefined;
         company?: string | null | undefined;
         position?: string | null | undefined;
@@ -691,7 +691,7 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
             id: string;
             email: string;
             role: string;
-            picture?: string | undefined;
+            picture?: string | null | undefined;
             phoneNumber?: string | undefined;
             company?: string | null | undefined;
             position?: string | null | undefined;
@@ -733,7 +733,7 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
                 website: boolean;
             };
             isLinkedinLinked: boolean;
-            picture?: string | undefined;
+            picture?: string | null | undefined;
             phoneNumber?: string | undefined;
             company?: string | null | undefined;
             position?: string | null | undefined;
@@ -755,37 +755,40 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
         _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
     }, {
-        name: string;
-        id: string;
-        email: string;
-        stopCommunication: boolean;
-        role: string;
-        privacySettings: {
-            email: boolean;
-            phoneNumber: boolean;
-            linkedin: boolean;
-            x: boolean;
-            website: boolean;
+        success: boolean;
+        user: {
+            name: string;
+            id: string;
+            email: string;
+            stopCommunication: boolean;
+            role: string;
+            privacySettings: {
+                email: boolean;
+                phoneNumber: boolean;
+                linkedin: boolean;
+                x: boolean;
+                website: boolean;
+            };
+            isLinkedinLinked: boolean;
+            picture?: string | null | undefined;
+            phoneNumber?: string | undefined;
+            company?: string | null | undefined;
+            position?: string | null | undefined;
+            shortDescription?: string | null | undefined;
+            linkedin?: string | null | undefined;
+            x?: string | null | undefined;
+            instagram?: string | null | undefined;
+            website?: string | null | undefined;
+            professionalMotivations?: string | null | undefined;
+            communicationStyle?: string | null | undefined;
+            professionalValues?: string | null | undefined;
+            careerAspirations?: string | null | undefined;
+            significantChallenge?: string | null | undefined;
+            resumeUrl?: string | null | undefined;
+            resumeText?: string | null | undefined;
+            resumeLastUpdated?: string | null | undefined;
+            linkedinAccessToken?: string | undefined;
         };
-        isLinkedinLinked: boolean;
-        picture?: string | undefined;
-        phoneNumber?: string | undefined;
-        company?: string | null | undefined;
-        position?: string | null | undefined;
-        shortDescription?: string | null | undefined;
-        linkedin?: string | null | undefined;
-        x?: string | null | undefined;
-        instagram?: string | null | undefined;
-        website?: string | null | undefined;
-        professionalMotivations?: string | null | undefined;
-        communicationStyle?: string | null | undefined;
-        professionalValues?: string | null | undefined;
-        careerAspirations?: string | null | undefined;
-        significantChallenge?: string | null | undefined;
-        resumeUrl?: string | null | undefined;
-        resumeText?: string | null | undefined;
-        resumeLastUpdated?: string | null | undefined;
-        linkedinAccessToken?: string | undefined;
     }>;
     deleteUserAccount: node_modules__trpc_server_dist.BuildProcedure<"mutation", {
         _config: node_modules__trpc_server_dist.RootConfig<{
