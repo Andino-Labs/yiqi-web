@@ -123,7 +123,7 @@ export default function GiftTicket(props: {
                     picture={result.picture as string}
                     userId={result.id}
                     eventId={props.eventId as string}
-                    event={props.event}
+                    event={props.event!}
                     senderName={props.senderName}
                   />
                 </li>
@@ -141,7 +141,7 @@ export default function GiftTicket(props: {
               </p>
               <GiftUnregisteredUser
                 searchTerm={searchTerm as string}
-                event={props.event}
+                event={props.event!}
                 eventId={props.eventId}
                 senderName={props.senderName}
               />
@@ -170,7 +170,7 @@ function GiftUser(props: {
     Record<string, number>
   >({})
 
-  if (!props.event.tickets) throw new Error('no ticket found')
+  if (!props.event?.tickets) throw new Error('no ticket found')
   const ticket = props.event.tickets[0]
 
   const t = useTranslations('Gift')
@@ -304,7 +304,8 @@ function GiftUnregisteredUser(props: {
   >({})
 
   if (!props.event.tickets) throw new Error('no ticket found')
-  const ticket = props.event.tickets[0]
+  const ticket = props.event?.tickets[0]
+
 
   const t = useTranslations('Gift')
 
