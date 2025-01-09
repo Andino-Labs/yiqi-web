@@ -184,6 +184,8 @@ function GiftUser(props: {
     })
   }
 
+
+
   // assigning value for the contextUser object
   const contextUser: LuciaUserType = {
     email: props.email as string,
@@ -305,7 +307,6 @@ function GiftUnregisteredUser(props: {
 
   if (!props.event.tickets) throw new Error('no ticket found')
   const ticket = props.event?.tickets[0]
-
 
   const t = useTranslations('Gift')
 

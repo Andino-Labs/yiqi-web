@@ -53,7 +53,7 @@ export default async function EventDetailsPage({
               <div className="flex items-center space-x">
                 <Link
                   href={`/admin/organizations/${params.id}/events`}
-                  className="flex items-center justify-center dark:bg-primary dark:text-primary dark:text-gray-100 hover:bg-gray-300 rounded-md p-2"
+                  className="flex items-center justify-center dark:bg-primary dark:text-gray-100 hover:bg-gray-300 rounded-md p-2"
                   aria-label={t('backToEvents')}
                 >
                   <ArrowLeft className="w-5 h-5" />
@@ -88,7 +88,7 @@ export default async function EventDetailsPage({
             </div>
 
             {/* Event Details Section */}
-            <section className="w-full bg-primary sm:px-4 py-3 sm:px-6 py-6">
+            <section className="w-full bg-primary sm:px-4 sm:py-3 py-6">
               <h2 className="text-xl font-bold text-secondary dark:text-gray-100">
                 {t('eventDetails')}
               </h2>
