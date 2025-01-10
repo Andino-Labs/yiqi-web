@@ -46,10 +46,9 @@ export default function GiftEmail(props: {
               {/* <GiftIcon className="w-24 h-24 m-5 stroke-[#04F1FF] text-center" /> */}
               <div className="w-fit mx-auto">
                 <Img
-                  alt="Instagram"
+                  alt="ticketImg"
                   height="200"
-                  // src="https://i.ibb.co/KVztkZm/Boxing-Day-bro.png"
-                  src="https://i.ibb.co/9gKrN3t/Halloween-tickets-bro.png"
+                  src="https://live.staticflickr.com/65535/54257819388_98065ce020_k.jpg"
                   width="200"
                 />
               </div>
@@ -70,7 +69,7 @@ export default function GiftEmail(props: {
               </p>
               <Button
                 className="box-border w-full rounded-[8px] bg-[#04F1FF] text-black px-[12px] py-[12px] text-center font-semibold"
-                href="https://react.email"
+                href="https://yiqi.lat"
               >
                 View Ticket
               </Button>
