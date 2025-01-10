@@ -320,7 +320,6 @@
     "noOrganizationFound": "No organization found",
     "networkingSettings": "Networking Settings"
   },
-
   "AdminLayout": {
     "organization": "Organization",
     "settings": "Settings",
@@ -509,7 +508,6 @@
     "activity": "Your activity history will appear here",
     "logout": "Log out"
   },
-
   "Community": {
     "communities": "Communities",
     "noCommunitiesFound": "No communities found at this time.",
@@ -603,7 +601,6 @@
     "profileCompletionBenefits": "Complete your profile to enhance your networking experience and get personalized recommendations for future events.",
     "completeProfile": "Complete Profile"
   },
-
   "Ticket": {
     "ticketStatusApproved": "Approved",
     "ticketStatusPending": "Pending",
@@ -633,5 +630,27 @@
     "eventCheckInTableTicketId": "Ticket ID",
     "eventCheckInTableCheckIn": "Checked In",
     "eventCheckinBackButton": "Go to Tickets"
+  },
+  "Gift": {
+    "gift": "Gift Ticket",
+    "giftBody": "You can easily give out free tickets to people by simply searching their name or email address",
+    "Search": "Search",
+    "results": "Search Results",
+    "noResults": "No users found matching {searchTerm}",
+    "giftTo": "Gift a ticket to {userName}",
+    "giftDesc": "By clicking on the button below, you will send a free ticket to {userName}",
+    "sent": "Gift Ticket sent!",
+    "sentBody": "Your ticket has successfully been gifted to {userName}",
+    "ok": "ok",
+    "error": "Unable to send gift Ticket!",
+    "errorBody": "An error occured while sending the gift ticket to {userName}",
+    "customInvite": "Create a custom invitation for {searchTerm}",
+    "customTitle": "You need to create an account for {searchTerm} first",
+    "createAccount": "Create an account for {searchTerm}",
+    "userName": "User Name",
+    "nameDesc": "This will be the user name given to {searchTerm} when the account is created.",
+    "email": "Email Address",
+    "emailDesc": "Ensure that this is the exact email address for {searchTerm}. If the email address is not correct, the account will be created for the wrong person! ",
+    "Submit": "Submit"
   }
 }
