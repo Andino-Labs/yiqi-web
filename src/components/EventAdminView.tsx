@@ -6,16 +6,18 @@ import { MailsIcon, Send, SettingsIcon, Gift } from 'lucide-react'
 
 import EventRegistrationTable from './events/EventRegistrationTable'
 import EventCommunicationsTable from './events/EventCommunicationsTable'
-import { EventRegistrationsSchemaType } from '@/schemas/eventSchema'
+import {
+  EventRegistrationsSchemaType,
+  PublicEventType
+} from '@/schemas/eventSchema'
 import { useTranslations } from 'next-intl'
 import { PersonIcon } from '@radix-ui/react-icons'
 import GiftTicket from './giftTicket/giftTicket'
-import { EventType } from '@/services/actions/event/getEvent'
 
 type Props = {
   registrations: EventRegistrationsSchemaType[]
   eventId: string
-  event: EventType
+  event: PublicEventType
   senderName: string | undefined
 }
 
