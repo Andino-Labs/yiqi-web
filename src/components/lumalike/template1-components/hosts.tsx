@@ -35,7 +35,7 @@ export function Hosts({ hosts }: HostsProps) {
             transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
           >
             <Avatar className="h-16 w-16">
-              <AvatarImage src={host.picture} alt={host.name} />
+              <AvatarImage src={host.picture || undefined} alt={host.name} />
               <AvatarFallback>{host.name[0]}</AvatarFallback>
             </Avatar>
             <div>
