@@ -293,7 +293,8 @@
     "importing": "Importation...",
     "importContacts": "Importer des contacts",
     "noOrganizationFound": "Aucune organisation trouvée",
-    "networkingSettings": "Paramètres de mise en réseau"
+    "networkingSettings": "Paramètres de mise en réseau",
+    "gift": "Billet Cadeau"
   },
   "AdminLayout": {
     "organization": "Organisation",
@@ -482,7 +483,6 @@
     "activity": "Votre historique d'activité apparaîtra ici",
     "logout": "Déconnexion"
   },
-
   "Community": {
     "communities": "Communautés",
     "noCommunitiesFound": "Aucune communauté trouvée pour le moment.",
@@ -596,5 +596,27 @@
     "eventCheckInTableTicketId": "ID du billet",
     "eventCheckInTableCheckIn": "Validé",
     "eventCheckinBackButton": "Retour aux billets"
+  },
+  "Gift": {
+    "gift": "Billet Cadeau",
+    "giftBody": "Vous pouvez facilement offrir des billets gratuits à des personnes en recherchant simplement leur nom ou leur adresse e-mail",
+    "Search": "Rechercher",
+    "results": "Résultats de Recherche",
+    "noResults": "Aucun utilisateur trouvé correspondant à {searchTerm}",
+    "giftTo": "Offrir un billet à {userName}",
+    "giftDesc": "En cliquant sur le bouton ci-dessous, vous enverrez un billet gratuit à {userName}",
+    "sent": "Billet Cadeau envoyé !",
+    "sentBody": "Votre billet a été envoyé avec succès à {userName}",
+    "ok": "OK",
+    "error": "Impossible d'envoyer le Billet Cadeau !",
+    "errorBody": "Une erreur s'est produite lors de l'envoi du billet cadeau à {userName}",
+    "customInvite": "Créer une invitation personnalisée pour {searchTerm}",
+    "customTitle": "Vous devez d'abord créer un compte pour {searchTerm}",
+    "createAccount": "Créer un compte pour {searchTerm}",
+    "userName": "Nom d'Utilisateur",
+    "nameDesc": "Ce sera le nom d'utilisateur attribué à {searchTerm} lors de la création du compte.",
+    "email": "Adresse Email",
+    "emailDesc": "Assurez-vous que c'est l'adresse e-mail exacte pour {searchTerm}. Si l'adresse e-mail est incorrecte, le compte sera créé pour la mauvaise personne !",
+    "Submit": "Soumettre"
   }
 }
