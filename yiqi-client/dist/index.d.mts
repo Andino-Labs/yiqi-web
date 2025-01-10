@@ -149,25 +149,25 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<
         _meta: object
         _ctx_out: Context
         _input_in:
-          | {
-              type?: string | undefined
-              title?: string | undefined
-              startDate?: string | undefined
-              location?: string | undefined
-              limit?: number | undefined
-              page?: number | undefined
-            }
-          | undefined
+        | {
+          type?: string | undefined
+          title?: string | undefined
+          startDate?: string | undefined
+          location?: string | undefined
+          limit?: number | undefined
+          page?: number | undefined
+        }
+        | undefined
         _input_out:
-          | {
-              type?: string | undefined
-              title?: string | undefined
-              startDate?: string | undefined
-              location?: string | undefined
-              limit?: number | undefined
-              page?: number | undefined
-            }
-          | undefined
+        | {
+          type?: string | undefined
+          title?: string | undefined
+          startDate?: string | undefined
+          location?: string | undefined
+          limit?: number | undefined
+          page?: number | undefined
+        }
+        | undefined
         _output_in: typeof node_modules__trpc_server_dist.unsetMarker
         _output_out: typeof node_modules__trpc_server_dist.unsetMarker
       },
@@ -212,84 +212,79 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<
           state?: string | null | undefined
           country?: string | null | undefined
           latLon?:
-            | {
-                lat?: number | null | undefined
-                lon?: number | null | undefined
-              }
-            | null
-            | undefined
+          | {
+            lat?: number | null | undefined
+            lon?: number | null | undefined
+          }
+          | null
+          | undefined
           virtualLink?: string | null | undefined
           maxAttendees?: number | null | undefined
           openGraphImage?: string | null | undefined
           featuredIn?:
-            | {
-                name: string
-                url: string
-              }[]
-            | null
-            | undefined
+          | {
+            name: string
+            url: string
+          }[]
+          | null
+          | undefined
           hosts?:
-            | {
-                name: string
-                id: string
-                email: string
-                stopCommunication: boolean
-                role: string
-                privacySettings: {
-                  email: boolean
-                  phoneNumber: boolean
-                  linkedin: boolean
-                  x: boolean
-                  website: boolean
-                }
-                isLinkedinLinked: boolean
-                picture?: string | null | undefined
-                phoneNumber?: string | undefined
-                company?: string | null | undefined
-                position?: string | null | undefined
-                shortDescription?: string | null | undefined
-                linkedin?: string | null | undefined
-                x?: string | null | undefined
-                instagram?: string | null | undefined
-                website?: string | null | undefined
-                professionalMotivations?: string | null | undefined
-                communicationStyle?: string | null | undefined
-                professionalValues?: string | null | undefined
-                careerAspirations?: string | null | undefined
-                significantChallenge?: string | null | undefined
-                resumeUrl?: string | null | undefined
-                resumeText?: string | null | undefined
-                resumeLastUpdated?: string | null | undefined
-                linkedinAccessToken?: string | undefined
-              }[]
-            | null
-            | undefined
-        }[]
-        totalCount: number
+          | {
+            name: string
+            id: string
+            email: string
+            stopCommunication: boolean
+            role: string
+            privacySettings: {
+              email: boolean;
+              phoneNumber: boolean;
+              linkedin: boolean;
+              x: boolean;
+              website: boolean;
+            };
+            isLinkedinLinked: boolean;
+            picture?: string | null | undefined;
+            phoneNumber?: string | undefined;
+            company?: string | null | undefined;
+            position?: string | null | undefined;
+            shortDescription?: string | null | undefined;
+            linkedin?: string | null | undefined;
+            x?: string | null | undefined;
+            instagram?: string | null | undefined;
+            website?: string | null | undefined;
+            professionalMotivations?: string | null | undefined;
+            communicationStyle?: string | null | undefined;
+            professionalValues?: string | null | undefined;
+            careerAspirations?: string | null | undefined;
+            significantChallenge?: string | null | undefined;
+            resumeUrl?: string | null | undefined;
+            resumeText?: string | null | undefined;
+            resumeLastUpdated?: string | null | undefined;
+            linkedinAccessToken?: string | undefined;
+          }[] | null | undefined;
+        }[];
+        totalCount: number;
+      }>;
+    getEvent: node_modules__trpc_server_dist.BuildProcedure<"query", {
+      _config: node_modules__trpc_server_dist.RootConfig<{
+        ctx: Context
+        meta: object
+        errorShape: node_modules__trpc_server_dist.DefaultErrorShape
+        transformer: typeof node_modules_superjson_dist.default
+      }>
+      _meta: object
+      _ctx_out: Context
+      _input_in: {
+        eventId: string
+        includeTickets?: boolean | undefined
       }
-    >
-    getEvent: node_modules__trpc_server_dist.BuildProcedure<
-      'query',
-      {
-        _config: node_modules__trpc_server_dist.RootConfig<{
-          ctx: Context
-          meta: object
-          errorShape: node_modules__trpc_server_dist.DefaultErrorShape
-          transformer: typeof node_modules_superjson_dist.default
-        }>
-        _meta: object
-        _ctx_out: Context
-        _input_in: {
-          eventId: string
-          includeTickets?: boolean | undefined
-        }
-        _input_out: {
-          eventId: string
-          includeTickets?: boolean | undefined
-        }
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker
-      },
+      _input_out: {
+        eventId: string
+        includeTickets?: boolean | undefined
+      }
+      _output_in: typeof node_modules__trpc_server_dist.unsetMarker
+      _output_out: typeof node_modules__trpc_server_dist.unsetMarker
+    },
       {
         id: string
         type: EventTypeEnum
@@ -312,27 +307,27 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<
         state?: string | null | undefined
         country?: string | null | undefined
         latLon?:
-          | {
-              lat?: number | null | undefined
-              lon?: number | null | undefined
-            }
-          | null
-          | undefined
+        | {
+          lat?: number | null | undefined
+          lon?: number | null | undefined
+        }
+        | null
+        | undefined
         virtualLink?: string | null | undefined
         maxAttendees?: number | null | undefined
         openGraphImage?: string | null | undefined
         tickets?:
-          | {
-              name: string
-              id: string
-              category: 'GENERAL' | 'VIP' | 'BACKSTAGE'
-              price: number
-              limit: number
-              ticketsPerPurchase: number
-              description?: string | undefined
-            }[]
-          | null
-          | undefined
+        | {
+          name: string
+          id: string
+          category: 'GENERAL' | 'VIP' | 'BACKSTAGE'
+          price: number
+          limit: number
+          ticketsPerPurchase: number
+          description?: string | undefined
+        }[]
+        | null
+        | undefined
       }
     >
     createRegistration: node_modules__trpc_server_dist.BuildProcedure<
@@ -461,28 +456,28 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<
           category: 'GENERAL' | 'VIP' | 'BACKSTAGE'
           checkedInDate: Date | null
           user?:
-            | {
-                name: string
-                id: string
-                email: string
-                picture: string | null
-                emailVerified?: Date | null | undefined
-                phoneNumber?: string | null | undefined
-              }
-            | null
-            | undefined
+          | {
+            name: string
+            id: string
+            email: string
+            picture: string | null
+            emailVerified?: Date | null | undefined
+            phoneNumber?: string | null | undefined
+          }
+          | null
+          | undefined
           ticketType?:
-            | {
-                name: string
-                id: string
-                category: 'GENERAL' | 'VIP' | 'BACKSTAGE'
-                price: number
-                limit: number
-                ticketsPerPurchase: number
-                description?: string | undefined
-              }
-            | null
-            | undefined
+          | {
+            name: string
+            id: string
+            category: 'GENERAL' | 'VIP' | 'BACKSTAGE'
+            price: number
+            limit: number
+            ticketsPerPurchase: number
+            description?: string | undefined
+          }
+          | null
+          | undefined
         }[]
         userId: string
         user: {
@@ -542,13 +537,13 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<
         _output_out: typeof node_modules__trpc_server_dist.unsetMarker
       },
       | {
-          success: boolean
-          error: string
-        }
+        success: boolean
+        error: string
+      }
       | {
-          success: boolean
-          error?: undefined
-        }
+        success: boolean
+        error?: undefined
+      }
     >
     getCommunities: node_modules__trpc_server_dist.BuildProcedure<
       'query',
@@ -562,19 +557,19 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<
         _meta: object
         _ctx_out: Context
         _input_in:
-          | {
-              limit?: number | undefined
-              page?: number | undefined
-              search?: string | undefined
-            }
-          | undefined
+        | {
+          limit?: number | undefined
+          page?: number | undefined
+          search?: string | undefined
+        }
+        | undefined
         _input_out:
-          | {
-              limit: number
-              page: number
-              search?: string | undefined
-            }
-          | undefined
+        | {
+          limit: number
+          page: number
+          search?: string | undefined
+        }
+        | undefined
         _output_in: typeof node_modules__trpc_server_dist.unsetMarker
         _output_out: typeof node_modules__trpc_server_dist.unsetMarker
       },
@@ -647,12 +642,12 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<
           state?: string | null | undefined
           country?: string | null | undefined
           latLon?:
-            | {
-                lat?: number | null | undefined
-                lon?: number | null | undefined
-              }
-            | null
-            | undefined
+          | {
+            lat?: number | null | undefined
+            lon?: number | null | undefined
+          }
+          | null
+          | undefined
           virtualLink?: string | null | undefined
           maxAttendees?: number | null | undefined
           openGraphImage?: string | null | undefined
@@ -751,176 +746,167 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<
         stopCommunication: boolean
         role: string
         privacySettings: {
-          email: boolean
-          phoneNumber: boolean
-          linkedin: boolean
-          x: boolean
-          website: boolean
-        }
-        isLinkedinLinked: boolean
-        picture?: string | null | undefined
-        phoneNumber?: string | undefined
-        company?: string | null | undefined
-        position?: string | null | undefined
-        shortDescription?: string | null | undefined
-        linkedin?: string | null | undefined
-        x?: string | null | undefined
-        instagram?: string | null | undefined
-        website?: string | null | undefined
-        professionalMotivations?: string | null | undefined
-        communicationStyle?: string | null | undefined
-        professionalValues?: string | null | undefined
-        careerAspirations?: string | null | undefined
-        significantChallenge?: string | null | undefined
-        resumeUrl?: string | null | undefined
-        resumeText?: string | null | undefined
-        resumeLastUpdated?: string | null | undefined
-        linkedinAccessToken?: string | undefined
-      } | null
-    >
-    updateUserProfile: node_modules__trpc_server_dist.BuildProcedure<
-      'mutation',
-      {
-        _config: node_modules__trpc_server_dist.RootConfig<{
-          ctx: Context
-          meta: object
-          errorShape: node_modules__trpc_server_dist.DefaultErrorShape
-          transformer: typeof node_modules_superjson_dist.default
-        }>
-        _meta: object
-        _ctx_out: Context
-        _input_in: {
-          name: string
-          id: string
-          email: string
-          role: string
-          picture?: string | null | undefined
-          phoneNumber?: string | undefined
-          company?: string | null | undefined
-          position?: string | null | undefined
-          shortDescription?: string | null | undefined
-          linkedin?: string | null | undefined
-          x?: string | null | undefined
-          instagram?: string | null | undefined
-          website?: string | null | undefined
-          professionalMotivations?: string | null | undefined
-          communicationStyle?: string | null | undefined
-          professionalValues?: string | null | undefined
-          careerAspirations?: string | null | undefined
-          significantChallenge?: string | null | undefined
-          resumeUrl?: string | null | undefined
-          resumeText?: string | null | undefined
-          resumeLastUpdated?: string | null | undefined
-          stopCommunication?: boolean | undefined
-          privacySettings?:
-            | {
-                email?: boolean | undefined
-                phoneNumber?: boolean | undefined
-                linkedin?: boolean | undefined
-                x?: boolean | undefined
-                website?: boolean | undefined
-              }
-            | undefined
-          linkedinAccessToken?: string | undefined
-          isLinkedinLinked?: boolean | undefined
-        }
-        _input_out: {
-          name: string
-          id: string
-          email: string
-          stopCommunication: boolean
-          role: string
-          privacySettings: {
-            email: boolean
-            phoneNumber: boolean
-            linkedin: boolean
-            x: boolean
-            website: boolean
-          }
-          isLinkedinLinked: boolean
-          picture?: string | null | undefined
-          phoneNumber?: string | undefined
-          company?: string | null | undefined
-          position?: string | null | undefined
-          shortDescription?: string | null | undefined
-          linkedin?: string | null | undefined
-          x?: string | null | undefined
-          instagram?: string | null | undefined
-          website?: string | null | undefined
-          professionalMotivations?: string | null | undefined
-          communicationStyle?: string | null | undefined
-          professionalValues?: string | null | undefined
-          careerAspirations?: string | null | undefined
-          significantChallenge?: string | null | undefined
-          resumeUrl?: string | null | undefined
-          resumeText?: string | null | undefined
-          resumeLastUpdated?: string | null | undefined
-          linkedinAccessToken?: string | undefined
-        }
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker
-      },
-      {
+          email: boolean;
+          phoneNumber: boolean;
+          linkedin: boolean;
+          x: boolean;
+          website: boolean;
+        };
+        isLinkedinLinked: boolean;
+        picture?: string | null | undefined;
+        phoneNumber?: string | undefined;
+        company?: string | null | undefined;
+        position?: string | null | undefined;
+        shortDescription?: string | null | undefined;
+        linkedin?: string | null | undefined;
+        x?: string | null | undefined;
+        instagram?: string | null | undefined;
+        website?: string | null | undefined;
+        professionalMotivations?: string | null | undefined;
+        communicationStyle?: string | null | undefined;
+        professionalValues?: string | null | undefined;
+        careerAspirations?: string | null | undefined;
+        significantChallenge?: string | null | undefined;
+        resumeUrl?: string | null | undefined;
+        resumeText?: string | null | undefined;
+        resumeLastUpdated?: string | null | undefined;
+        linkedinAccessToken?: string | undefined;
+      } | null>;
+    updateUserProfile: node_modules__trpc_server_dist.BuildProcedure<"mutation", {
+      _config: node_modules__trpc_server_dist.RootConfig<{
+        ctx: Context
+        meta: object
+        errorShape: node_modules__trpc_server_dist.DefaultErrorShape
+        transformer: typeof node_modules_superjson_dist.default
+      }>
+      _meta: object
+      _ctx_out: Context
+      _input_in: {
+        name: string;
+        id: string;
+        email: string;
+        role: string;
+        picture?: string | null | undefined;
+        phoneNumber?: string | undefined;
+        company?: string | null | undefined;
+        position?: string | null | undefined;
+        shortDescription?: string | null | undefined;
+        linkedin?: string | null | undefined;
+        x?: string | null | undefined;
+        instagram?: string | null | undefined;
+        website?: string | null | undefined;
+        professionalMotivations?: string | null | undefined;
+        communicationStyle?: string | null | undefined;
+        professionalValues?: string | null | undefined;
+        careerAspirations?: string | null | undefined;
+        significantChallenge?: string | null | undefined;
+        resumeUrl?: string | null | undefined;
+        resumeText?: string | null | undefined;
+        resumeLastUpdated?: string | null | undefined;
+        stopCommunication?: boolean | undefined;
+        privacySettings?: {
+          email?: boolean | undefined;
+          phoneNumber?: boolean | undefined;
+          linkedin?: boolean | undefined;
+          x?: boolean | undefined;
+          website?: boolean | undefined;
+        } | undefined;
+        linkedinAccessToken?: string | undefined;
+        isLinkedinLinked?: boolean | undefined;
+      };
+      _input_out: {
+        name: string;
+        id: string;
+        email: string;
+        stopCommunication: boolean;
+        role: string;
+        privacySettings: {
+          email: boolean;
+          phoneNumber: boolean;
+          linkedin: boolean;
+          x: boolean;
+          website: boolean;
+        };
+        isLinkedinLinked: boolean;
+        picture?: string | null | undefined;
+        phoneNumber?: string | undefined;
+        company?: string | null | undefined;
+        position?: string | null | undefined;
+        shortDescription?: string | null | undefined;
+        linkedin?: string | null | undefined;
+        x?: string | null | undefined;
+        instagram?: string | null | undefined;
+        website?: string | null | undefined;
+        professionalMotivations?: string | null | undefined;
+        communicationStyle?: string | null | undefined;
+        professionalValues?: string | null | undefined;
+        careerAspirations?: string | null | undefined;
+        significantChallenge?: string | null | undefined;
+        resumeUrl?: string | null | undefined;
+        resumeText?: string | null | undefined;
+        resumeLastUpdated?: string | null | undefined;
+        linkedinAccessToken?: string | undefined;
+      };
+      _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
+      _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+    }, {
+      success: boolean;
+      user: {
+        name: string;
+        id: string;
+        email: string;
+        stopCommunication: boolean;
+        role: string;
+        privacySettings: {
+          email: boolean;
+          phoneNumber: boolean;
+          linkedin: boolean;
+          x: boolean;
+          website: boolean;
+        };
+        isLinkedinLinked: boolean;
+        picture?: string | null | undefined;
+        phoneNumber?: string | undefined;
+        company?: string | null | undefined;
+        position?: string | null | undefined;
+        shortDescription?: string | null | undefined;
+        linkedin?: string | null | undefined;
+        x?: string | null | undefined;
+        instagram?: string | null | undefined;
+        website?: string | null | undefined;
+        professionalMotivations?: string | null | undefined;
+        communicationStyle?: string | null | undefined;
+        professionalValues?: string | null | undefined;
+        careerAspirations?: string | null | undefined;
+        significantChallenge?: string | null | undefined;
+        resumeUrl?: string | null | undefined;
+        resumeText?: string | null | undefined;
+        resumeLastUpdated?: string | null | undefined;
+        linkedinAccessToken?: string | undefined;
+      };
+    }>;
+    deleteUserAccount: node_modules__trpc_server_dist.BuildProcedure<"mutation", {
+      _config: node_modules__trpc_server_dist.RootConfig<{
+        ctx: Context
+        meta: object
+        errorShape: node_modules__trpc_server_dist.DefaultErrorShape
+        transformer: typeof node_modules_superjson_dist.default
+      }>
+      _ctx_out: Context
+      _input_in: typeof node_modules__trpc_server_dist.unsetMarker
+      _input_out: typeof node_modules__trpc_server_dist.unsetMarker
+      _output_in: typeof node_modules__trpc_server_dist.unsetMarker
+      _output_out: typeof node_modules__trpc_server_dist.unsetMarker
+      _meta: object
+    },
+      | {
         success: boolean
-        user: {
-          name: string
-          id: string
-          email: string
-          stopCommunication: boolean
-          role: string
-          privacySettings: {
-            email: boolean
-            phoneNumber: boolean
-            linkedin: boolean
-            x: boolean
-            website: boolean
-          }
-          isLinkedinLinked: boolean
-          picture?: string | null | undefined
-          phoneNumber?: string | undefined
-          company?: string | null | undefined
-          position?: string | null | undefined
-          shortDescription?: string | null | undefined
-          linkedin?: string | null | undefined
-          x?: string | null | undefined
-          instagram?: string | null | undefined
-          website?: string | null | undefined
-          professionalMotivations?: string | null | undefined
-          communicationStyle?: string | null | undefined
-          professionalValues?: string | null | undefined
-          careerAspirations?: string | null | undefined
-          significantChallenge?: string | null | undefined
-          resumeUrl?: string | null | undefined
-          resumeText?: string | null | undefined
-          resumeLastUpdated?: string | null | undefined
-          linkedinAccessToken?: string | undefined
-        }
+        error?: undefined
       }
-    >
-    deleteUserAccount: node_modules__trpc_server_dist.BuildProcedure<
-      'mutation',
-      {
-        _config: node_modules__trpc_server_dist.RootConfig<{
-          ctx: Context
-          meta: object
-          errorShape: node_modules__trpc_server_dist.DefaultErrorShape
-          transformer: typeof node_modules_superjson_dist.default
-        }>
-        _ctx_out: Context
-        _input_in: typeof node_modules__trpc_server_dist.unsetMarker
-        _input_out: typeof node_modules__trpc_server_dist.unsetMarker
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker
-        _meta: object
-      },
       | {
-          success: boolean
-          error?: undefined
-        }
-      | {
-          success: boolean
-          error: string
-        }
+        success: boolean
+        error: string
+      }
     >
     saveNetworkingProfile: node_modules__trpc_server_dist.BuildProcedure<
       'mutation',
@@ -971,13 +957,13 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<
         _output_out: typeof node_modules__trpc_server_dist.unsetMarker
       },
       | {
-          success: boolean
-          error?: undefined
-        }
+        success: boolean
+        error?: undefined
+      }
       | {
-          success: boolean
-          error: string
-        }
+        success: boolean
+        error: string
+      }
     >
   }
 >
