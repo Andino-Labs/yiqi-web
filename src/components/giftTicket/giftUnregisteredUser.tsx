@@ -60,8 +60,6 @@ export function GiftUnregisteredUser(props: {
     Record<string, number>
   >({})
 
-  // if (!props.event.tickets) throw new Error('no ticket found')
-  // const ticket = props.event?.tickets[0]
   const t = useTranslations('Gift')
 
   const handleQuantityChange = (ticketId: string, change: number) => {
@@ -88,7 +86,7 @@ export function GiftUnregisteredUser(props: {
         id: newUser?.id as string,
         name: values.name as string,
         picture: newUser?.picture as string,
-        role: 'USER'
+        role: 'NEW_USER' // here i used the NEW_USER literal because the account is just created and the initial role will be NEW_USER. If i attempt to dynamically state the role, it will throw an error because the typing strictly follows the provided literals in the LuciaUserType
       }
 
       // eventId for the event which ticket will be given out from
@@ -107,7 +105,7 @@ export function GiftUnregisteredUser(props: {
         contextUser,
         eventId,
         registrationInput
-        // props.senderName as string
+        // props.senderName as string  // this part is commented out because the email template is not on this branch. when we merge i will include it as an optional prop in the server action. This prop enables the reciever to know the name of the sender.
       )
       toast({
         title: `${t('sent')}`,

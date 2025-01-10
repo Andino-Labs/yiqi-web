@@ -106,7 +106,7 @@ export function GiftUser(props: {
                   contextUser,
                   eventId,
                   registrationInput
-                  //   props.senderName as string
+                  //   props.senderName as string  // this part is commented out because the email template is not on this branch. when we merge i will include it as an optional prop in the server action. This prop enables the reciever to know the name of the sender.
                 )
 
                 toast({

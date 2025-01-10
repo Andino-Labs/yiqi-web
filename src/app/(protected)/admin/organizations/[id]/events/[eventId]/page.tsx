@@ -50,7 +50,7 @@ export default async function EventDetailsPage({
           }}
         >
           {/* Header */}
-          <div className="w-full sm:border text-card-foreground shadow-sm h-fit mx-auto dark:bg-primary sm:py-4 sm:px-2 rounded">
+          <div className="w-full sm:border text-card-foreground shadow-sm h-fit mx-auto dark:bg-primary sm:py-4 sm:px-2 rounded"> {/* i made some changes here because h-screen and h-fit conflict each other. Also, with h-fit, it gives the div more flexibility in terms of it's hight. thus we won't have overflowing children components*/}
             <div className="w-full flex flex-row sm:flex-row justify-between items-center">
               {/* Back Button and Title */}
               <div className="flex items-center space-x">

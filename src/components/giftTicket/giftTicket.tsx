@@ -14,11 +14,11 @@ export interface SearchResults {
   email: string | undefined
   id: string | undefined
   picture: string | undefined | null
-}
+} // this interface is used to determine the data to be pulled from the search results.
 
 export default function GiftTicket(props: {
   eventId: string | undefined
-  event: SavedEventType
+  event: SavedEventType // this savedEventType is gotten from the getEvent.ts. Since the Promise of the server action is of this type, it is logical to use it as the type for the event here it is also the same type that is gotten on the parent page.tsx
   senderName: string | undefined
 }) {
   const [results, setResults] = useState<SearchResults[]>([])
@@ -80,7 +80,7 @@ export default function GiftTicket(props: {
                       </p>
                     </div>
                   </div>
-                  {/* modal for registered user */}
+                  {/* modal for registered user: if the search terms matches with any user's details in the db, this modal will be displayed */}
                   <GiftUser
                     userName={result.name}
                     email={result.email}
@@ -104,7 +104,7 @@ export default function GiftTicket(props: {
                 {t('noResults', { searchTerm })}.
               </p>
 
-              {/* modal for unregistered users */}
+              {/* modal for unregistered users: if the search terms does not match with any user in the db, we can assume that the user does not exist(does not have an account). this modal enables the admin to create an account for the user then it calls the server action that creates tickets */}
               <GiftUnregisteredUser
                 searchTerm={searchTerm as string}
                 event={props.event!}

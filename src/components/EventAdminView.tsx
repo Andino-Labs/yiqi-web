@@ -17,7 +17,7 @@ import GiftTicket from './giftTicket/giftTicket'
 type Props = {
   registrations: EventRegistrationsSchemaType[]
   eventId: string
-  event: SavedEventType
+  event: SavedEventType // i added this prop here because it makes it possible to get the required types for an event which is then passed to the gift ticket client component.
   senderName?: string | undefined
 }
 
@@ -72,7 +72,7 @@ export function EventAdminView({
             </div>
           </TabsTrigger>
 
-          {/* gift ticket */}
+          {/* gift ticket: this is the trigger to the gift ticket tab. */}
           <TabsTrigger
             value="giftTicket"
             className="px-4 py-2 rounded-t-md flex items-center transition-all"
@@ -112,7 +112,7 @@ export function EventAdminView({
             <EventCommunicationsTable eventId={eventId} />
           </div>
         </TabsContent>
-        {/* gift ticket */}
+        {/* gift ticket content: this is the content on the gift ticket tab. here i am importing the GiftTicket client component that handles the gifting logic */}
 
         <TabsContent value="giftTicket">
           <GiftTicket eventId={eventId} event={event} senderName={senderName} />
