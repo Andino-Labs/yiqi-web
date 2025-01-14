@@ -35,6 +35,7 @@ export const FormFieldSchema = z.object({
   isFocused: z.boolean(),
   isRequired: z.boolean()
 })
+export type InputTypesUnion = keyof typeof InputTypes
 export type FormProps = z.infer<typeof FormFieldSchema>
 export type ItemTypeProps = z.infer<typeof ItemTypePropsSchema>
 export const FormStatus = z.enum(['draft', 'published', 'archived'])
@@ -74,3 +75,42 @@ export const FormModelSchema = FormSchema.extend({
 // Type inference
 export type Form = z.infer<typeof FormSchema>
 export type FormModel = z.infer<typeof FormModelSchema>
+
+//Response
+export const FieldReponseSchemas = {
+  [InputTypes.TEXT]: z.string().min(1, 'Este campo es requerido.'),
+  [InputTypes.TEXTAREA]: z.string().min(1, 'Este campo es requerido.'),
+  [InputTypes.RADIO]: z
+    .object({
+      id: z.string(),
+      text: z.string().optional(),
+      isEtc: z.boolean().optional()
+    })
+    .refine(data => data.id, 'Este campo es requerido.')
+    .refine(data => {
+      if (data.isEtc && (!data.text || !/\w+/.test(data.text.trim()))) {
+        return false
+      }
+      return true
+    }, 'Cuando isEtc es verdadero, el texto es requerido.'),
+  [InputTypes.CHECKBOX]: z
+    .record(
+      z
+        .object({
+          id: z.string(),
+          text: z.string(),
+          checked: z.boolean()
+        })
+        .optional()
+    )
+    .refine(data => Object.values(data).some(item => item?.checked), {
+      message: 'Debes seleccionar al menos una opción.'
+    }),
+  [InputTypes.SELECT]: z
+    .object({
+      id: z.string(),
+      text: z.string()
+    })
+    .refine(data => data.id, 'Este campo es requerido.')
+}
+export type FieldResponseKeys = keyof typeof FieldReponseSchemas
