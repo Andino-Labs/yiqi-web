@@ -1,4 +1,3 @@
-import { User, Event } from '@prisma/client'
 import { ReactElement } from 'react'
 
 import {
@@ -19,12 +18,26 @@ import {
 } from '@react-email/components'
 import { BASE_URL } from '@/lib/env'
 
+export interface InvoiceItem {
+  description: string
+  amount: number
+}
+
 export interface InvoiceEmailTemplateProps {
-  user: User
-  event: Event
+  user: {
+    id: string
+    name: string
+    email: string
+  }
+  event: {
+    id: string
+    title: string
+    startDate: Date
+    endDate: Date
+  }
   amount: number
   invoiceNumber: string
-  items: Array<{ description: string; amount: number }>
+  items: InvoiceItem[]
 }
 
 export function InvoiceEmailTemplate({

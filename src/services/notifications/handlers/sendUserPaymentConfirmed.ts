@@ -43,7 +43,11 @@ export async function sendUserPaymentConfirmed(props: QueueJob) {
     })
     return MessageSchema.parse(result)
   } else if (thread.type === MessageThreadTypeEnum.Enum.email) {
-    const invoice = await getInvoiceData(user.id, event.id)
+    const invoice = await getInvoiceData(
+      user.id,
+      event.id,
+      `21211212-${event.id}-${user.id}`
+    )
     await sendEmailToUser({
       templateId: MailTemplatesIds.PAYMENT_CONFIRMED,
       dynamicTemplateData: {
@@ -51,7 +55,7 @@ export async function sendUserPaymentConfirmed(props: QueueJob) {
         user,
         items: invoice.items,
         amount: invoice.amount,
-        invoiceNumber: `21211212-${event.id}-${user.id}`
+        invoiceNumber: invoice.invoiceNumber
       },
       destinationUserId: user.id,
       threadId: thread.id,
