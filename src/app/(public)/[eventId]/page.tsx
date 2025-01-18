@@ -68,7 +68,9 @@ export default async function Page({
         event={event}
         user={{
           email: user?.email,
-          name: user?.name
+          name: user?.name,
+          role: user?.role,
+          picture: user?.picture || undefined
         }}
       />
     </>

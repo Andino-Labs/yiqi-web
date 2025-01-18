@@ -18,10 +18,7 @@ import StripeCheckout from '@/components/billing/StripeCheckout'
 interface RegistrationFormProps {
   form: UseFormReturn<RegistrationInput>
   onSubmit: (values: RegistrationInput) => Promise<void>
-  user: {
-    email: string | undefined
-    name: string | undefined
-  }
+  user: { name?: string; picture?: string; email?: string; role?: string }
   isFreeEvent: boolean
   registrationId?: string
   onPaymentComplete?: () => void
@@ -49,15 +46,17 @@ export function RegistrationForm({
     }
   }, [registrationId, isFreeEvent])
 
-  if (showStripeCheckout && registrationId) {
+  if (registrationId && showStripeCheckout && !isFreeEvent) {
     return (
-      <StripeCheckout
-        registrationId={registrationId}
-        onComplete={() => {
-          setShowStripeCheckout(false)
-          onPaymentComplete?.()
-        }}
-      />
+      <div className="w-full">
+        <StripeCheckout
+          registrationId={registrationId}
+          onComplete={() => {
+            setShowStripeCheckout(false)
+            onPaymentComplete?.()
+          }}
+        />
+      </div>
     )
   }
 

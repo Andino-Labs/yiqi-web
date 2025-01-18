@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Calendar } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -35,10 +35,7 @@ import { PaymentConfirmed } from './payment-confirmed'
 
 export type RegistrationProps = {
   event: PublicEventType
-  user: {
-    email: string | undefined
-    name: string | undefined
-  }
+  user: { name?: string; picture?: string; email?: string; role?: string }
   dialogTriggerRef?: React.RefObject<HTMLButtonElement> | null
 }
 
@@ -70,15 +67,17 @@ export function Registration({
     }
   })
 
-  useEffect(() => {
-    async function checkRegistration() {
-      const registration = await checkExistingRegistration(event.id)
-      setExistingRegistration(registration)
+  const checkRegistration = useCallback(async () => {
+    setIsLoading(true)
+    const registration = await checkExistingRegistration(event.id)
+    setExistingRegistration(registration)
 
-      setIsLoading(false)
-    }
+    setIsLoading(false)
+  }, [event.id])
+
+  useEffect(() => {
     checkRegistration()
-  }, [event.id, user?.email])
+  }, [checkRegistration])
 
   const handleQuantityChange = (ticketId: string, change: number) => {
     setTicketSelections(prev => {
@@ -121,8 +120,9 @@ export function Registration({
           setPaymentCompleted(true)
           setIsDialogOpen(false)
         } else {
-          // Store registration ID for payment
+          // For paid events, keep dialog open and show payment
           setCurrentRegistrationId(result.registration.id)
+          // Don't close dialog here - let payment completion handle that
         }
       } else {
         toast({
@@ -137,6 +137,7 @@ export function Registration({
         variant: 'destructive'
       })
     } finally {
+      await checkRegistration()
       setIsSubmitting(false)
     }
   }
@@ -147,6 +148,7 @@ export function Registration({
       const result = await markRegistrationPaid(currentRegistrationId!)
       if (result.success) {
         setPaymentCompleted(true)
+        setIsDialogOpen(false) // Close dialog only after successful payment
       }
     } catch (error) {
       console.error('Error processing payment:', error)
@@ -208,7 +210,15 @@ export function Registration({
           calculateTotal={calculateTotal}
         />
 
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <Dialog
+          open={isDialogOpen}
+          onOpenChange={isOpen => {
+            setIsDialogOpen(isOpen)
+            if (!isOpen) {
+              checkRegistration()
+            }
+          }}
+        >
           <DialogTrigger asChild>
             <Button
               ref={dialogTriggerRef}

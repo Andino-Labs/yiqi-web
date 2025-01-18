@@ -11,6 +11,13 @@ import {
   FormItem,
   FormMessage
 } from '@/components/ui/form'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle
+} from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { createEvent } from '@/services/actions/event/createEvent'
 import {
@@ -41,6 +48,7 @@ import { MarkdownEditor } from './editor/mdEditor'
 import { useTranslations } from 'next-intl'
 import { UploadIcon } from '@radix-ui/react-icons'
 import { Switch } from '@/components/ui/switch'
+import Link from 'next/link'
 
 type Props = {
   organizationId: string
@@ -239,6 +247,9 @@ export function EventForm({ organizationId, event }: Props) {
     }
   }
 
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false)
+  const [savedEventId, setSavedEventId] = useState<string | null>(null)
+
   async function onSubmit(values: z.infer<typeof EventFormInputSchema>) {
     if (!loading) {
       setLoading(true)
@@ -258,21 +269,21 @@ export function EventForm({ organizationId, event }: Props) {
           ...locationDetails,
           startDate: startDateTime,
           endDate: endDateTime,
-          openGraphImage: imageUrl || event?.openGraphImage, // Add the image URL to the payload
+          openGraphImage: imageUrl || event?.openGraphImage,
           description
         }
 
         if (event) {
           // Update existing event
           await updateEvent(event.id, eventData, tickets)
+          setSavedEventId(event.id)
         } else {
           // Create new event
-          await createEvent(organizationId, eventData, tickets)
+          const result = await createEvent(organizationId, eventData, tickets)
+          setSavedEventId(result.id)
         }
 
-        router.push(
-          `/admin/organizations/${organizationId}/events?refresh=true`
-        )
+        setShowSuccessDialog(true)
         setLoading(false)
       } catch (error) {
         setLoading(false)
@@ -282,341 +293,386 @@ export function EventForm({ organizationId, event }: Props) {
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="mb-4">
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input
-                    id="event-name"
-                    placeholder={t('eventName')}
-                    className="text-xl font-medium border rounded-lg px-4 py-2 w-full focus:ring focus:ring-primary"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-[300px,1fr] gap-6">
-          {/* Columna izquierda */}
-          <div className="space-y-4">
-            <div className="border rounded-lg p-4">
-              <label
-                htmlFor="image-upload"
-                className="cursor-pointer hover:outline-gray-600"
-              >
-                <div className="aspect-square bg-primary rounded-md mb-4 relative overflow-hidden flex items-center justify-center border border-gray-900">
-                  {imagePreview ? (
-                    <Image
-                      src={imagePreview}
-                      alt="Event preview"
-                      fill
-                      className="object-cover rounded-md"
+    <>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <div className="mb-4">
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      id="event-name"
+                      placeholder={t('eventName')}
+                      className="text-xl font-medium border rounded-lg px-4 py-2 w-full focus:ring focus:ring-primary"
+                      {...field}
                     />
-                  ) : (
-                    <label
-                      htmlFor="image-upload"
-                      className="flex flex-col items-center justify-center gap-3 cursor-pointer group"
-                    >
-                      <div className="bg-primary p-3 rounded-full group-hover:bg-primary-dark transition">
-                        <UploadIcon className="w-8 h-8 text-white" />
-                      </div>
-                      <span className="text-sm text-gray-600 group-hover:text-gray-800 transition">
-                        {t('uploadImage')}
-                      </span>
-                      <span className="text-xs text-gray-400">
-                        {t('allowedFormats')}: JPG, PNG, GIF
-                      </span>
-                    </label>
-                  )}
-                  <input
-                    id="image-upload"
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handleImageSelect}
-                  />
-                </div>
-              </label>
-              <input
-                id="image-upload"
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handleImageSelect}
-              />
-            </div>
-            {/* Fecha y Hora */}
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-[300px,1fr] gap-6">
+            {/* Columna izquierda */}
             <div className="space-y-4">
-              <div className="grid grid-cols-1 gap-4">
-                {/* Fecha de inicio */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-                    {t('start')}
-                  </label>
-                  <div className="flex space-x-2">
-                    <Clock className="h-10 w-10 mb-2" />
-                    <FormField
-                      control={form.control}
-                      name="startDate"
-                      render={({ field }) => (
-                        <Input
-                          type="date"
-                          className="w-full border rounded-lg px-3 py-2"
-                          {...field}
-                          min={defaultStartDateStr}
-                          onChange={handleOnStartDateChange}
-                        />
-                      )}
+              <div className="border rounded-lg p-4">
+                <label
+                  htmlFor="image-upload"
+                  className="cursor-pointer hover:outline-gray-600"
+                >
+                  <div className="aspect-square bg-primary rounded-md mb-4 relative overflow-hidden flex items-center justify-center border border-gray-900">
+                    {imagePreview ? (
+                      <Image
+                        src={imagePreview}
+                        alt="Event preview"
+                        fill
+                        className="object-cover rounded-md"
+                      />
+                    ) : (
+                      <label
+                        htmlFor="image-upload"
+                        className="flex flex-col items-center justify-center gap-3 cursor-pointer group"
+                      >
+                        <div className="bg-primary p-3 rounded-full group-hover:bg-primary-dark transition">
+                          <UploadIcon className="w-8 h-8 text-white" />
+                        </div>
+                        <span className="text-sm text-gray-600 group-hover:text-gray-800 transition">
+                          {t('uploadImage')}
+                        </span>
+                        <span className="text-xs text-gray-400">
+                          {t('allowedFormats')}: JPG, PNG, GIF
+                        </span>
+                      </label>
+                    )}
+                    <input
+                      id="image-upload"
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleImageSelect}
                     />
-                    <FormField
-                      control={form.control}
-                      name="startTime"
-                      render={({ field }) => (
-                        <Input
-                          type="time"
-                          className="w-full border rounded-lg px-3 py-2"
-                          {...field}
-                          min={minStartTime}
-                          onChange={handleOnStartTimeChange}
-                        />
-                      )}
-                    />
+                  </div>
+                </label>
+                <input
+                  id="image-upload"
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleImageSelect}
+                />
+              </div>
+              {/* Fecha y Hora */}
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 gap-4">
+                  {/* Fecha de inicio */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+                      {t('start')}
+                    </label>
+                    <div className="flex space-x-2">
+                      <Clock className="h-10 w-10 mb-2" />
+                      <FormField
+                        control={form.control}
+                        name="startDate"
+                        render={({ field }) => (
+                          <Input
+                            type="date"
+                            className="w-full border rounded-lg px-3 py-2"
+                            {...field}
+                            min={defaultStartDateStr}
+                            onChange={handleOnStartDateChange}
+                          />
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="startTime"
+                        render={({ field }) => (
+                          <Input
+                            type="time"
+                            className="w-full border rounded-lg px-3 py-2"
+                            {...field}
+                            min={minStartTime}
+                            onChange={handleOnStartTimeChange}
+                          />
+                        )}
+                      />
+                    </div>
+                  </div>
+                  {/* Fecha de fin */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+                      {t('end')}
+                    </label>
+                    <div className="flex space-x-2">
+                      <Clock className="h-10 w-10 mb-2" />
+                      <FormField
+                        control={form.control}
+                        name="endDate"
+                        render={({ field }) => (
+                          <Input
+                            type="date"
+                            className="w-full border rounded-lg px-3 py-2"
+                            {...field}
+                            min={minEndDate}
+                            onChange={handleOnEndDateChange}
+                          />
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="endTime"
+                        render={({ field }) => (
+                          <Input
+                            type="time"
+                            className="w-full border rounded-lg px-3 py-2"
+                            {...field}
+                            min={minEndTime}
+                            onChange={handleOnEndTimeChange}
+                          />
+                        )}
+                      />
+                    </div>
                   </div>
                 </div>
-                {/* Fecha de fin */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-                    {t('end')}
-                  </label>
-                  <div className="flex space-x-2">
-                    <Clock className="h-10 w-10 mb-2" />
-                    <FormField
-                      control={form.control}
-                      name="endDate"
-                      render={({ field }) => (
-                        <Input
-                          type="date"
-                          className="w-full border rounded-lg px-3 py-2"
-                          {...field}
-                          min={minEndDate}
-                          onChange={handleOnEndDateChange}
-                        />
-                      )}
+                <Select defaultValue="GMT-05:00">
+                  <SelectTrigger className="w-full bg-transparent text-white">
+                    <SelectValue
+                      className="bg-transparent text-white"
+                      placeholder={t('selectTimezone')}
                     />
-                    <FormField
-                      control={form.control}
-                      name="endTime"
-                      render={({ field }) => (
-                        <Input
-                          type="time"
-                          className="w-full border rounded-lg px-3 py-2"
-                          {...field}
-                          min={minEndTime}
-                          onChange={handleOnEndTimeChange}
-                        />
-                      )}
-                    />
-                  </div>
+                  </SelectTrigger>
+                  <SelectContent className="bg-zinc-900 border-none text-white">
+                    <SelectItem
+                      className="focus:bg-accent/35 focus:text-[#61f1f8]"
+                      value="GMT-05:00"
+                    >
+                      GMT-05:00 Lima
+                    </SelectItem>
+                    {/* Add more timezones as needed */}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* Columna derecha */}
+            <div className="space-y-6 max-w-3xl">
+              {/* Ubicación */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+                  {t('location')}
+                </label>
+                <div className="flex items-center gap-2">
+                  <MapPin className="h-5 w-5" />
+                  <FormField
+                    control={form.control}
+                    name="location"
+                    render={({ field }) => (
+                      <AddressAutocomplete
+                        defaultValue={field.value ?? ''}
+                        fieldName="location"
+                        onSetAddress={field.onChange}
+                        onAfterSelection={value => {
+                          if (value?.address_components && value?.geometry) {
+                            const locationDetails = getLocationDetails(
+                              value.address_components
+                            )
+                            if (locationDetails) {
+                              setLocationDetails({
+                                ...locationDetails,
+                                latLon: {
+                                  lat: value.geometry?.location?.lat() ?? 0,
+                                  lon: value.geometry?.location?.lng() ?? 0
+                                }
+                              })
+                            }
+                          }
+                        }}
+                      />
+                    )}
+                  />
                 </div>
               </div>
-              <Select defaultValue="GMT-05:00">
-                <SelectTrigger className="w-full bg-transparent text-white">
-                  <SelectValue
-                    className="bg-transparent text-white"
-                    placeholder={t('selectTimezone')}
-                  />
-                </SelectTrigger>
-                <SelectContent className="bg-zinc-900 border-none text-white">
-                  <SelectItem
-                    className="focus:bg-accent/35 focus:text-[#61f1f8]"
-                    value="GMT-05:00"
-                  >
-                    GMT-05:00 Lima
-                  </SelectItem>
-                  {/* Add more timezones as needed */}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          {/* Columna derecha */}
-          <div className="space-y-6 max-w-3xl">
-            {/* Ubicación */}
-            <div>
+              {/* Description */}
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-                {t('location')}
+                {'Descripción'}
               </label>
-              <div className="flex items-center gap-2">
-                <MapPin className="h-5 w-5" />
+              <FormField
+                control={form.control}
+                name="description"
+                render={() => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="max-h-96 overflow-y-auto border rounded p-2">
+                        <MarkdownEditor
+                          initialValue={description}
+                          onChange={val => {
+                            setDescription(val)
+                          }}
+                        />
+                      </div>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              {/* Capacity */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Users className="h-5 w-5" />
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                    {t('capacity')}
+                  </span>
+                </div>
                 <FormField
                   control={form.control}
-                  name="location"
+                  name="maxAttendees"
                   render={({ field }) => (
-                    <AddressAutocomplete
-                      defaultValue={field.value ?? ''}
-                      fieldName="location"
-                      onSetAddress={field.onChange}
-                      onAfterSelection={value => {
-                        if (value?.address_components && value?.geometry) {
-                          const locationDetails = getLocationDetails(
-                            value.address_components
-                          )
-                          if (locationDetails) {
-                            setLocationDetails({
-                              ...locationDetails,
-                              latLon: {
-                                lat: value.geometry?.location?.lat() ?? 0,
-                                lon: value.geometry?.location?.lng() ?? 0
-                              }
-                            })
-                          }
-                        }
+                    <Input
+                      type="number"
+                      placeholder={t('unlimited')}
+                      min={1}
+                      className="w-32 text-right border rounded-lg px-3 py-2"
+                      value={field.value?.toString()}
+                      onChange={e => {
+                        const value =
+                          e.target.value === '' ? null : Number(e.target.value)
+                        field.onChange(value)
                       }}
                     />
                   )}
                 />
               </div>
-            </div>
-            {/* Description */}
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-              {'Descripción'}
-            </label>
-            <FormField
-              control={form.control}
-              name="description"
-              render={() => (
-                <FormItem>
-                  <FormControl>
-                    <div className="max-h-96 overflow-y-auto border rounded p-2">
-                      <MarkdownEditor
-                        initialValue={description}
-                        onChange={val => {
-                          setDescription(val)
-                        }}
-                      />
-                    </div>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
 
-            {/* Capacity */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Users className="h-5 w-5" />
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
-                  {t('capacity')}
-                </span>
+              {/* Requires Approval */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Users className="h-5 w-5" />
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                    {tPage('requiresApproval')}
+                  </span>
+                </div>
+                <FormField
+                  control={form.control}
+                  name="requiresApproval"
+                  render={({ field }) => (
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  )}
+                />
               </div>
-              <FormField
-                control={form.control}
-                name="maxAttendees"
-                render={({ field }) => (
-                  <Input
-                    type="number"
-                    placeholder={t('unlimited')}
-                    min={1}
-                    className="w-32 text-right border rounded-lg px-3 py-2"
-                    value={field.value?.toString()}
-                    onChange={e => {
-                      const value =
-                        e.target.value === '' ? null : Number(e.target.value)
-                      field.onChange(value)
-                    }}
-                  />
-                )}
-              />
-            </div>
 
-            {/* Requires Approval */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Users className="h-5 w-5" />
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
-                  {tPage('requiresApproval')}
-                </span>
-              </div>
-              <FormField
-                control={form.control}
-                name="requiresApproval"
-                render={({ field }) => (
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                )}
-              />
-            </div>
-
-            {/* Tickets */}
-            <div
-              className="flex items-center justify-between cursor-pointer"
-              onClick={() => setShowTicketManager(!showTicketManager)}
-            >
-              <span>{t('tickets')}</span>
-              <span>{showTicketManager ? `${t('hide')}` : `${t('edit')}`}</span>
-            </div>
-
-            {tickets.length > 0 && !showTicketManager && (
-              <div className="space-y-2">
-                {tickets.map((ticket, index) => (
-                  <div
-                    key={index}
-                    className="grid grid-cols-3 gap-4 border-b py-2"
-                  >
-                    <div>
-                      <span>{ticket.name}</span>
-                    </div>
-                    <div className="text-center">
-                      <span className="text-sm text-gray-500">
-                        {ticket.price > 0 ? `$${ticket.price}` : `${t('free')}`}
-                      </span>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-sm text-gray-500">
-                        {ticket.limit} {t('tickets')}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {showTicketManager && (
-              <TicketTypesManager
-                tickets={tickets}
-                onUpdate={newTickets => {
-                  setTickets(newTickets)
-                  setShowTicketManager(false)
-                }}
-              />
-            )}
-
-            {/* Submit */}
-            <div className="pt-4">
-              <Button
-                type="submit"
-                className="w-full dark:bg-neutral-600 font-bold"
+              {/* Tickets */}
+              <div
+                className="flex items-center justify-between cursor-pointer"
+                onClick={() => setShowTicketManager(!showTicketManager)}
               >
-                {loading
-                  ? event
-                    ? `${t('updatingEvent')}`
-                    : `${t('creatingEvent')}`
-                  : event
-                    ? `${t('updateEvent')}`
-                    : `${t('createEvent')}`}
-              </Button>
+                <span>{t('tickets')}</span>
+                <span>
+                  {showTicketManager ? `${t('hide')}` : `${t('edit')}`}
+                </span>
+              </div>
+
+              {tickets.length > 0 && !showTicketManager && (
+                <div className="space-y-2">
+                  {tickets.map((ticket, index) => (
+                    <div
+                      key={index}
+                      className="grid grid-cols-3 gap-4 border-b py-2"
+                    >
+                      <div>
+                        <span>{ticket.name}</span>
+                      </div>
+                      <div className="text-center">
+                        <span className="text-sm text-gray-500">
+                          {ticket.price > 0
+                            ? `S/${ticket.price}`
+                            : `${t('free')}`}
+                        </span>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-sm text-gray-500">
+                          {ticket.limit} {t('tickets')}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {showTicketManager && (
+                <TicketTypesManager
+                  tickets={tickets}
+                  onUpdate={newTickets => {
+                    setTickets(newTickets)
+                    setShowTicketManager(false)
+                  }}
+                />
+              )}
+
+              {/* Submit */}
+              <div className="pt-4">
+                <Button
+                  type="submit"
+                  className="w-full dark:bg-neutral-600 font-bold"
+                >
+                  {loading
+                    ? event
+                      ? `${t('updatingEvent')}`
+                      : `${t('creatingEvent')}`
+                    : event
+                      ? `${t('updateEvent')}`
+                      : `${t('createEvent')}`}
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      </form>
-    </Form>
+        </form>
+      </Form>
+
+      <Dialog
+        open={showSuccessDialog}
+        onOpenChange={open => {
+          setShowSuccessDialog(open)
+          if (!open) {
+            router.push(`/admin/organizations/${organizationId}/events`)
+          }
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {event ? tPage('eventUpdated') : tPage('eventCreated')}
+            </DialogTitle>
+            <DialogDescription className="space-y-4">
+              <p>
+                {event
+                  ? tPage('eventUpdatedDescription')
+                  : tPage('eventCreatedDescription')}
+              </p>
+              <div className="flex justify-end space-x-4">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setShowSuccessDialog(false)
+                    router.push(`/admin/organizations/${organizationId}/events`)
+                  }}
+                >
+                  {tPage('goToEvents')}
+                </Button>
+                <Button asChild>
+                  <Link href={`/${savedEventId}`}>{tPage('viewEvent')}</Link>
+                </Button>
+              </div>
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    </>
   )
 }

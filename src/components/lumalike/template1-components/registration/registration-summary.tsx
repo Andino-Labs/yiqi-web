@@ -26,7 +26,7 @@ export function RegistrationSummary({
               <span>
                 {ticket.price === 0
                   ? `${t('eventFree')}`
-                  : `$${(ticket.price * quantity).toFixed(2)}`}
+                  : `S/ ${(ticket.price * quantity).toFixed(2)}`}
               </span>
             </div>
           )

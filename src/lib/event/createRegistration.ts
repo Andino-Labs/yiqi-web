@@ -8,6 +8,7 @@ import prisma from '../prisma'
 import setupInitialEventNotifications from '@/services/notifications/setupInitialNotifications'
 import { LuciaUserType } from '@/schemas/userSchema'
 import { setRegistrationCookie } from '../utils/cookies'
+import { AttendeeStatus } from '@prisma/client'
 
 export async function createRegistration(
   contextUser: LuciaUserType | null,
@@ -134,7 +135,7 @@ export async function createRegistration(
         data: ticketCreations
       }),
       // send them their tickets
-      ticketsRequirePayment
+      ticketsRequirePayment || registration.status === AttendeeStatus.PENDING
         ? null
         : prisma.queueJob.create({
             data: {

@@ -18,7 +18,7 @@ import { useTranslations } from 'next-intl'
 import LangSelector from '../languageSelector'
 import SignOutButton from '../auth/sign-out'
 
-interface User {
+export interface User {
   name?: string
   picture?: string
   email?: string

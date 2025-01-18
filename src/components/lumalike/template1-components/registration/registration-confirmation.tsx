@@ -106,13 +106,15 @@ export function RegistrationConfirmation({
             : `${t('registrationConfirmedDescription')}`}
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="text-center">
-          <Link href="/user/tickets">
-            <Button>{t('viewMyTickets')}</Button>
-          </Link>
-        </div>
-      </CardContent>
+      {registration.status === 'APPROVED' && (
+        <CardContent className="space-y-4">
+          <div className="text-center">
+            <Link href="/user/tickets">
+              <Button>{t('viewMyTickets')}</Button>
+            </Link>
+          </div>
+        </CardContent>
+      )}
     </Card>
   )
 }
