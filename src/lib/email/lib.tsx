@@ -26,6 +26,9 @@ import {
   BaseEmailTemplateProps
 } from './templates/BaseEmailTemplate'
 import { CreateEmailOptions } from 'resend'
+import InvoiceEmailTemplate, {
+  InvoiceEmailTemplateProps
+} from './templates/invoiceTemplate'
 
 // Enum for template IDs
 export enum MailTemplatesIds {
@@ -34,7 +37,8 @@ export enum MailTemplatesIds {
   RESERVATION_CONFIRMED = 'RESERVATION_CONFIRMED',
   RESERVATION_REJECTED = 'RESERVATION_REJECTED',
   RESERVATION_REMINDER = 'RESERVATION_REMINDER',
-  BASE_EMAIL_TEMPLATE = 'BASE_EMAIL_TEMPLATE'
+  BASE_EMAIL_TEMPLATE = 'BASE_EMAIL_TEMPLATE',
+  PAYMENT_CONFIRMED = 'PAYMENT_CONFIRMED'
   // Add more templates as needed
 }
 
@@ -46,6 +50,7 @@ export interface TemplatePropsMap {
   [MailTemplatesIds.RESERVATION_REJECTED]: EventRegistrationRejectedProps
   [MailTemplatesIds.RESERVATION_REMINDER]: ReservationReminderProps
   [MailTemplatesIds.BASE_EMAIL_TEMPLATE]: BaseEmailTemplateProps
+  [MailTemplatesIds.PAYMENT_CONFIRMED]: InvoiceEmailTemplateProps
   // Add other template mappings as needed
 }
 
@@ -58,7 +63,8 @@ export const MailTemplateMap: {
   [MailTemplatesIds.RESERVATION_CONFIRMED]: EventAttendanceConfirmed,
   [MailTemplatesIds.RESERVATION_REJECTED]: EventRegistrationRejected,
   [MailTemplatesIds.RESERVATION_REMINDER]: ReservationReminder,
-  [MailTemplatesIds.BASE_EMAIL_TEMPLATE]: BaseEmailTemplate
+  [MailTemplatesIds.BASE_EMAIL_TEMPLATE]: BaseEmailTemplate,
+  [MailTemplatesIds.PAYMENT_CONFIRMED]: InvoiceEmailTemplate
   // Add other templates as needed
 }
 
