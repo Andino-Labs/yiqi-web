@@ -216,7 +216,7 @@ export const appRouter = router({
       throw new Error('User not signed in')
     }
 
-    return await getOrganizationsByUser(ctx.user?.id)
+    return await getOrganizationsByUser(ctx.user?.id, true)
   }),
   getEventsByOrganization: publicProcedure
     .input(
