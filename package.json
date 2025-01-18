@@ -132,10 +132,6 @@
     "typescript": "5.6.3"
   },
   "trustedDependencies": [
-    "@prisma/client",
-    "@prisma/engines",
-    "@sentry/cli",
-    "esbuild",
-    "prisma"
+    "@sentry/cli"
   ]
 }

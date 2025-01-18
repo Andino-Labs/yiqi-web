@@ -3,76 +3,8 @@ import { MailTemplatesIds } from '@/lib/email/lib'
 import prisma from '@/lib/prisma'
 import { sendUserWhatsappMessage } from '@/lib/whatsapp/sendUserWhatsappMessage'
 import { MessageSchema, MessageThreadTypeEnum } from '@/schemas/messagesSchema'
+import { getInvoiceData } from '@/services/actions/invoice/getInvoiceData'
 import { QueueJob } from '@prisma/client'
-
-async function getInvoiceData(userId: string, eventId: string) {
-  try {
-    const result = await prisma.$transaction(async prisma => {
-      const user = await prisma.user.findUnique({
-        where: { id: userId },
-        select: {
-          id: true,
-          name: true,
-          email: true
-        }
-      })
-
-      const event = await prisma.event.findUnique({
-        where: { id: eventId },
-        select: {
-          id: true,
-          title: true,
-          startDate: true,
-          endDate: true
-        }
-      })
-
-      const tickets = await prisma.ticket.findMany({
-        where: {
-          userId: userId,
-          registration: {
-            eventId: eventId
-          }
-        },
-        select: {
-          ticketType: {
-            select: {
-              name: true,
-              price: true
-            }
-          }
-        }
-      })
-
-      if (!user || !event || tickets.length === 0) {
-        throw new Error('User, event, or tickets not found')
-      }
-
-      const items = tickets.map(function (ticket) {
-        return {
-          description: ticket.ticketType.name,
-          amount: Number(ticket.ticketType.price)
-        }
-      })
-
-      const amount = items.reduce(function (sum, item) {
-        return sum + item.amount
-      }, 0)
-
-      return {
-        user: user,
-        event: event,
-        amount: amount,
-        items: items
-      }
-    })
-
-    return result
-  } catch (error) {
-    console.error('Error fetching invoice data:', error)
-    throw error
-  }
-}
 
 export async function sendUserPaymentConfirmed(props: QueueJob) {
   const jobdata = await prisma.queueJob.findUniqueOrThrow({
