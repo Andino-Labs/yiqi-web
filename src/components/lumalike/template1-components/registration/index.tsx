@@ -137,7 +137,6 @@ export function Registration({
         variant: 'destructive'
       })
     } finally {
-      window.location.reload()
       setIsSubmitting(false)
     }
   }

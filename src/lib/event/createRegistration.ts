@@ -1,7 +1,6 @@
 'use server'
 
 import {
-  AttendeeStatus,
   RegistrationInput,
   registrationInputSchema
 } from '@/schemas/eventSchema'
