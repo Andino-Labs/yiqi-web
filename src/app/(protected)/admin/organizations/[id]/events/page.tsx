@@ -7,7 +7,7 @@ import { Roles } from '@prisma/client'
 import { getOrganizationEvents } from '@/services/actions/event/getOrganizationEvents'
 import { getTranslations } from 'next-intl/server'
 import EventSection from '@/components/EventSection'
-export const fetchCache = 'default-no-store'
+export const dynamic = 'force-dynamic'
 
 export default async function EventsPage({
   params

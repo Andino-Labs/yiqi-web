@@ -124,7 +124,13 @@
     "defaultValueItalic": "cursiva",
     "defaultValueP2": "y muchas otras opciones de formato. ¡También puedes insertar imágenes y videos de YouTube!",
     "requiresApproval": "Requiere Aprobación",
-    "requiresApprovalDescription": "Cuando está activado, los asistentes necesitarán aprobación"
+    "requiresApprovalDescription": "Cuando está activado, los asistentes necesitarán aprobación",
+    "eventCreated": "Evento Creado Exitosamente",
+    "eventUpdated": "Evento Actualizado Exitosamente",
+    "eventCreatedDescription": "Tu evento ha sido creado y está listo para ser compartido.",
+    "eventUpdatedDescription": "Tu evento ha sido actualizado con los nuevos cambios.",
+    "goToEvents": "Ir a Eventos",
+    "viewEvent": "Ver Evento"
   },
   "contactFor": {
     "contact": "Contacto",

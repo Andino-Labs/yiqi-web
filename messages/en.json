@@ -124,7 +124,13 @@
     "defaultValueItalic": "italic",
     "defaultValueP2": "and many other formatting options. You can also embed images and YouTube videos!",
     "requiresApproval": "Requires Approval",
-    "requiresApprovalDescription": "When enabled, attendees will need manual approval"
+    "requiresApprovalDescription": "When enabled, attendees will need manual approval",
+    "eventCreated": "Event Created Successfully",
+    "eventUpdated": "Event Updated Successfully",
+    "eventCreatedDescription": "Your event has been created and is now ready to be shared.",
+    "eventUpdatedDescription": "Your event has been updated with the new changes.",
+    "goToEvents": "Go to Events",
+    "viewEvent": "View Event"
   },
   "contactFor": {
     "contact": "Contact",

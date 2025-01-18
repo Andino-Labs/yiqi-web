@@ -33,7 +33,7 @@ export function RegistrationSummary({
         })}
         <div className="border-t pt-2 font-medium flex justify-between">
           <span>{t('eventTotal')}</span>
-          <span>${calculateTotal().toFixed(2)}</span>
+          <span>{`S/ ${calculateTotal().toFixed(2)}`}</span>
         </div>
       </div>
     </div>
