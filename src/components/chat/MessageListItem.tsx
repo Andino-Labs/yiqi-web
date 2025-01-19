@@ -14,7 +14,10 @@ import { Eye } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 export default function MessageListItem({ message }: { message: Message }) {
-  const stripHtml = useStripHtml({ html: message.content || '' })
+  const stripHtml = useStripHtml({
+    html: message.content || '',
+    isPlatformMessage: !message.senderUser // If no sender user, it's a platform message
+  })
   const [isExpanded, setIsExpanded] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const handleToggleExpand = () => setIsExpanded(prev => !prev)

@@ -65,6 +65,8 @@ model User {
   userDetailedProfile    String?
   userEmbeddableProfile  String?
   userContentPreferences String?
+
+  NetworkingMatch NetworkingMatch[]
 }
 
 enum Roles {
@@ -206,6 +208,8 @@ model Event {
   backgroundColor String?
   featuredIn      Json?
   heroImage       String?
+
+  NetworkingMatch NetworkingMatch[]
 }
 
 enum TicketCategory {
@@ -256,11 +260,12 @@ model EventRegistration {
   status       AttendeeStatus @default(PENDING)
   customFields Json?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  paid      Boolean  @default(false)
-  paymentId String?
-  tickets   Ticket[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  paid            Boolean           @default(false)
+  paymentId       String?
+  tickets         Ticket[]
+  NetworkingMatch NetworkingMatch[]
 
   @@unique([eventId, userId]) // Add this line
 }
@@ -357,6 +362,7 @@ model WhatsappIntegration {
 
 enum NotificationType {
   ORG_INVITE
+  PAYMENT_CONFIRMED
   RESERVATION_PAYMENT_REMINDER
   RESERVATION_CONFIRMED
   RESERVATION_REJECTED
@@ -443,4 +449,18 @@ model CronLock {
   jobName   String   @unique
   lockedAt  DateTime
   expiresAt DateTime
+}
+
+model NetworkingMatch {
+  id                String            @id @default(cuid())
+  user              User              @relation(fields: [userId], references: [id])
+  userId            String
+  event             Event             @relation(fields: [eventId], references: [id])
+  eventId           String
+  registration      EventRegistration @relation(fields: [registrationId], references: [id])
+  registrationId    String
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  personDescription String
+  matchReason       String
 }

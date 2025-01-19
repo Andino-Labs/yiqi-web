@@ -26,9 +26,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     text ||
     event.subtitle ||
     `Join us at ${event.title} on ${event.startDate.toLocaleDateString()}`
-  console.log('------------------------------------------------------')
-  console.log(text)
-  console.log('------------------------------------------------------')
   return {
     title: event.title,
     description: description,
@@ -68,7 +65,9 @@ export default async function Page({
         event={event}
         user={{
           email: user?.email,
-          name: user?.name
+          name: user?.name,
+          role: user?.role,
+          picture: user?.picture || undefined
         }}
       />
     </>

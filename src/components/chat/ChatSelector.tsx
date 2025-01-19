@@ -16,7 +16,10 @@ export default function ChatSelector({
   isActive = false
 }: OrgMessageListItemSchemaType & { isActive?: boolean }) {
   const orgId = useParams().id
-  const stripHtml = useStripHtml({ html: lastMessage?.content || '' })
+  const stripHtml = useStripHtml({
+    html: lastMessage?.content || '',
+    isPlatformMessage: !lastMessage?.senderUserId // If no sender user ID, it's a platform message
+  })
 
   function getPreviewText(content: string): string {
     const strippedContent = type === 'email' ? stripHtml : content

@@ -5,6 +5,7 @@ import { getOrganization } from '@/services/actions/organizationActions'
 
 import OrganizationLayout from '@/components/orgs/OrganizationLayout'
 import WelcomeScreen from '@/components/orgs/WelcomeNewOrg'
+import RegistrationChart from '@/components/orgs/RegistrationChart'
 import { getNewOrgWelcomeProps } from '@/services/actions/org/getNewOrgWelcomeProps'
 import { getTranslations } from 'next-intl/server'
 
@@ -27,7 +28,6 @@ export default async function Page({ params }: { params: { id: string } }) {
   if (!user) {
     redirect(`/auth`)
   }
-  console.log(user)
 
   if (user.role === Roles.ADMIN) {
     return (
@@ -41,8 +41,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             name: user.name
           }}
         >
-          {/* we only show welcome screen until they got their first event regirstation Maybe change in the future */}
-          {!hasFirstRegistration && (
+          {!hasFirstRegistration ? (
             <WelcomeScreen
               importedContacts={hasContacts}
               paymentsIsSetup={isStripeSetup}
@@ -50,6 +49,10 @@ export default async function Page({ params }: { params: { id: string } }) {
               notificationsSent={hasNotifications}
               orgId={params.id}
             />
+          ) : (
+            <div className="w-full max-w-5xl mx-auto space-y-8 p-8">
+              <RegistrationChart organizationId={params.id} />
+            </div>
           )}
         </OrganizationLayout>
       </main>

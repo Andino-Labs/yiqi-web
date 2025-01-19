@@ -1,13 +1,14 @@
 'use server'
 
 import {
-  AttendeeStatus,
   RegistrationInput,
+  AttendeeStatus,
   registrationInputSchema
 } from '@/schemas/eventSchema'
 import prisma from '../prisma'
 import setupInitialEventNotifications from '@/services/notifications/setupInitialNotifications'
 import { LuciaUserType } from '@/schemas/userSchema'
+import { setRegistrationCookie } from '../utils/cookies'
 
 export async function createRegistration(
   contextUser: LuciaUserType | null,
@@ -103,53 +104,52 @@ export async function createRegistration(
       }
     })
 
+    await setRegistrationCookie(eventId, registration.id)
+
     // if ticket requires payment we need to ensure we dont send them a message
     let ticketsRequirePayment = false
 
-    // If registration is approved (no approval required), create tickets
-    if (registration.status === AttendeeStatus.APPROVED) {
-      const ticketCreations = Object.entries(validatedData.tickets).flatMap(
-        ([ticketTypeId, quantity]) => {
-          const ticketType = event.tickets.find(t => t.id === ticketTypeId)
-          if (!ticketType)
-            throw new Error(`Invalid ticket type ID: ${ticketTypeId}`)
+    const ticketCreations = Object.entries(validatedData.tickets).flatMap(
+      ([ticketTypeId, quantity]) => {
+        const ticketType = event.tickets.find(t => t.id === ticketTypeId)
+        if (!ticketType)
+          throw new Error(`Invalid ticket type ID: ${ticketTypeId}`)
 
-          if (ticketType.price.toNumber() > 0) {
-            ticketsRequirePayment = true
-          }
-
-          return Array(quantity)
-            .fill(null)
-            .map(() => ({
-              registrationId: registration.id,
-              userId: user.id,
-              category: ticketType.category,
-              ticketTypeId: ticketType.id
-            }))
+        if (ticketType.price.toNumber() > 0) {
+          ticketsRequirePayment = true
         }
-      )
 
-      await Promise.all([
-        prisma.ticket.createMany({
-          data: ticketCreations
-        }),
-        // send them their tickets
-        ticketsRequirePayment
-          ? null
-          : prisma.queueJob.create({
+        return Array(quantity)
+          .fill(null)
+          .map(() => ({
+            registrationId: registration.id,
+            userId: user.id,
+            category: ticketType.category,
+            ticketTypeId: ticketType.id
+          }))
+      }
+    )
+
+    await Promise.all([
+      prisma.ticket.createMany({
+        data: ticketCreations
+      }),
+      // send them their tickets
+      ticketsRequirePayment || registration.status === AttendeeStatus.PENDING
+        ? null
+        : prisma.queueJob.create({
+            data: {
+              type: 'SEND_USER_MESSAGE',
               data: {
-                type: 'SEND_USER_MESSAGE',
-                data: {
-                  userId: user.id,
-                  eventId: event.id
-                },
-                notificationType: 'RESERVATION_CONFIRMED',
                 userId: user.id,
                 eventId: event.id
-              }
-            })
-      ])
-    }
+              },
+              notificationType: 'RESERVATION_CONFIRMED',
+              userId: user.id,
+              eventId: event.id
+            }
+          })
+    ])
 
     // Setup notifications
     await setupInitialEventNotifications({

@@ -12,6 +12,8 @@ export const createCheckoutSession = async (registrationId: string) => {
     }
   })
 
+  console.log('registration', registration.tickets)
+
   if (registration.paymentId) {
     try {
       const session = await stripe.checkout.sessions.retrieve(
@@ -67,6 +69,8 @@ export const createCheckoutSession = async (registrationId: string) => {
       }
     }
   )
+
+  console.log('lineItems', lineItems)
 
   const session = await stripe.checkout.sessions.create({
     line_items: lineItems,

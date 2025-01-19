@@ -18,13 +18,11 @@ import StripeCheckout from '@/components/billing/StripeCheckout'
 interface RegistrationFormProps {
   form: UseFormReturn<RegistrationInput>
   onSubmit: (values: RegistrationInput) => Promise<void>
-  user: {
-    email: string | undefined
-    name: string | undefined
-  }
+  user: { name?: string; picture?: string; email?: string; role?: string }
   isFreeEvent: boolean
   registrationId?: string
   onPaymentComplete?: () => void
+  isSubmitting?: boolean
 }
 
 export function RegistrationForm({
@@ -33,7 +31,8 @@ export function RegistrationForm({
   user,
   isFreeEvent,
   registrationId,
-  onPaymentComplete
+  onPaymentComplete,
+  isSubmitting = false
 }: RegistrationFormProps) {
   const [showStripeCheckout, setShowStripeCheckout] = useState(false)
 
@@ -47,15 +46,17 @@ export function RegistrationForm({
     }
   }, [registrationId, isFreeEvent])
 
-  if (showStripeCheckout && registrationId) {
+  if (registrationId && showStripeCheckout && !isFreeEvent) {
     return (
-      <StripeCheckout
-        registrationId={registrationId}
-        onComplete={() => {
-          setShowStripeCheckout(false)
-          onPaymentComplete?.()
-        }}
-      />
+      <div className="w-full">
+        <StripeCheckout
+          registrationId={registrationId}
+          onComplete={() => {
+            setShowStripeCheckout(false)
+            onPaymentComplete?.()
+          }}
+        />
+      </div>
     )
   }
 
@@ -75,7 +76,7 @@ export function RegistrationForm({
                 <Input
                   placeholder={translations.es.eventFormNamePlaceholder}
                   {...field}
-                  disabled={!!user.name}
+                  disabled={!!user.name || isSubmitting}
                   className={user ? 'bg-muted' : ''}
                 />
               </FormControl>
@@ -94,7 +95,7 @@ export function RegistrationForm({
                   type="email"
                   placeholder={translations.es.eventFormEmailPlaceholder}
                   {...field}
-                  disabled={!!user.email}
+                  disabled={!!user.email || isSubmitting}
                   className={user ? 'bg-muted' : ''}
                 />
               </FormControl>
@@ -102,10 +103,19 @@ export function RegistrationForm({
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">
-          {isFreeEvent
-            ? translations.es.eventConfirmRegistration
-            : translations.es.eventConfirmPurchase}
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
+          {isSubmitting ? (
+            <div className="flex items-center gap-2">
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+              {isFreeEvent
+                ? translations.es.eventConfirmRegistration
+                : translations.es.eventConfirmPurchase}
+            </div>
+          ) : isFreeEvent ? (
+            translations.es.eventConfirmRegistration
+          ) : (
+            translations.es.eventConfirmPurchase
+          )}
         </Button>
       </form>
     </Form>

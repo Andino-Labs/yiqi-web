@@ -4,28 +4,6 @@ import prisma from '@/lib/prisma'
 import { ticketEventSchema } from '@/schemas/ticketSchema'
 
 export async function getTicketsWithEvents(userId: string) {
-  const tickets = await prisma.ticket.findMany({
-    where: { userId },
-    include: {
-      registration: true,
-      ticketType: {
-        include: {
-          event: {
-            include: {
-              organization: {
-                select: {
-                  id: true,
-                  name: true,
-                  logo: true
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  })
-
   const events = await prisma.event.findMany({
     where: {
       deletedAt: null,
@@ -46,25 +24,47 @@ export async function getTicketsWithEvents(userId: string) {
           name: true,
           logo: true
         }
+      },
+      tickets: {
+        where: {
+          Ticket: {
+            some: {
+              userId
+            }
+          }
+        },
+        include: {
+          Ticket: {
+            where: {
+              userId
+            },
+            include: {
+              registration: true
+            }
+          }
+        }
       }
+    },
+    orderBy: {
+      startDate: 'desc'
     }
   })
 
   const ticketsWithEvents = events.map(event => {
-    const eventTickets = tickets
-      .filter(ticket => ticket.ticketType.event.id === event.id)
-      .map(ticket => ({
+    const eventTickets = event.tickets.flatMap(ticketType =>
+      ticketType.Ticket.map(ticket => ({
         id: ticket.id,
-        description: ticket.ticketType.description,
+        description: ticketType.description,
         registrationId: ticket.registrationId,
         userId: ticket.userId,
         checkedInDate: ticket.checkedInDate,
         checkedInByUserId: ticket.checkedInByUserId,
-        category: ticket.ticketType.category,
-        ticketTypeId: ticket.ticketType.id,
+        category: ticketType.category,
+        ticketTypeId: ticketType.id,
         registration: ticket.registration,
         status: ticket.registration?.status || 'PENDING'
       }))
+    )
 
     return {
       event: {
@@ -84,6 +84,5 @@ export async function getTicketsWithEvents(userId: string) {
       tickets: eventTickets
     }
   })
-
   return ticketEventSchema.parse(ticketsWithEvents)
 }

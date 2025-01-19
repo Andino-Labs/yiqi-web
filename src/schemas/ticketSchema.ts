@@ -35,7 +35,7 @@ export const eventSchema = z.object({
   title: z.string(),
   startDate: z.date(),
   endDate: z.date(),
-  openGraphImage: z.string().url(),
+  openGraphImage: z.string(),
   type: z.enum(['IN_PERSON', 'VIRTUAL']),
   id: z.string(),
   organizationId: z.string(),

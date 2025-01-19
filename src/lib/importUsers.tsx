@@ -3,6 +3,7 @@
 import prisma from './prisma'
 import { parse } from 'csv-parse/sync'
 import { z } from 'zod'
+import setupInitialEventNotifications from '@/services/notifications/setupInitialNotifications'
 
 type RowType = {
   email: string
@@ -88,6 +89,12 @@ export default async function importUsers(orgId: string, csvText: string) {
                   }
                 })
                 updated = false
+
+                // Setup initial notifications for new users
+                await setupInitialEventNotifications({
+                  orgId,
+                  userId: savedUser.id
+                })
               }
 
               return { ...savedUser, updated }

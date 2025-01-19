@@ -61,7 +61,12 @@ export function QRModal({
         </DialogHeader>
         <div className="flex flex-col items-center p-4 space-y-4">
           <div className="border border-dashed border-zinc-700 p-3 rounded-lg">
-            <QRCodeSVG value={qrData} size={160} />
+            <QRCodeSVG
+              bgColor="#000"
+              fgColor="#fff"
+              value={qrData}
+              size={160}
+            />
           </div>
           <div className="w-full space-y-2">
             {ticketInfo.map(info => (

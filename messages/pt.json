@@ -59,7 +59,7 @@
     "settings": "Definições",
     "signOut": "Terminar Sessão",
     "defaultAvatarAlt": "Avatar do Utilizador",
-    "myAccount":"Minha Conta"
+    "myAccount": "Minha Conta"
   },
   "WelcomeNewOrg": {
     "welcomeScreenTitle": "Bem-vindo, Novo Administrador!",
@@ -129,7 +129,7 @@
     "createNewEvents": "Novo Evento",
     "events": "Eventos",
     "page": "Página",
-    "of": "de"    
+    "of": "de"
   },
   "ContactTemplateDownload": {
     "exampleCsvContent": "email,telefone,nome,idade,cidade\njohn.doe@example.com,123456789,John Doe,25,Nova Iorque\njane.smith@example.com,987654321,Jane Smith,30,Los Angeles\nrobert.brown@example.com,567890123,Robert Brown,35,Chicago\nemily.davis@example.com,345678901,Emily Davis,28,Miami\nmichael.wilson@example.com,123098456,Michael Wilson,40,Seattle\nsarah.johnson@example.com,789012345,Sarah Johnson,32,Houston\ndavid.martinez@example.com,456789012,David Martinez,29,Dallas\nlinda.hernandez@example.com,890123456,Linda Hernandez,34,San Diego\njames.lopez@example.com,234567890,James Lopez,26,Fénix\npatricia.gonzalez@example.com,678901234,Patricia Gonzalez,38,San Francisco",

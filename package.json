@@ -104,8 +104,9 @@
     "react-dropzone": "^14.2.10",
     "react-hook-form": "^7.53.0",
     "react-resizable-panels": "^2.1.4",
+    "recharts": "^2.15.0",
     "resend": "^4.0.1",
-    "stripe": "^17.4.0",
+    "stripe": "17.4.0",
     "superjson": "^2.2.1",
     "tailwind-merge": "^2.5.3",
     "tailwindcss-animate": "^1.0.7",
@@ -129,5 +130,8 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "5.6.3"
-  }
+  },
+  "trustedDependencies": [
+    "@sentry/cli"
+  ]
 }
