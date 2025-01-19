@@ -1,17 +1,37 @@
 'use server'
 
-import client from '@/lib/llm/openAI'
+import { InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime'
 
-const EMBEDDING_MODEL = 'text-embedding-3-large'
+import { bedrockClient } from '@/lib/llm/bedrock'
 
-export async function generateEmbedding(raw: string) {
-  // OpenAI recommends replacing newlines with spaces for best results
+const EMBEDDING_MODEL = 'amazon.titan-embed-g1-text-02'
+
+export async function generateEmbedding(raw: string): Promise<number[]> {
+  // Replace newlines with spaces as recommended for best results
   const input = raw.replace(/\n/g, ' ')
-  const embeddingData = await client.embeddings.create({
-    model: EMBEDDING_MODEL,
-    input
-  })
 
-  const [{ embedding }] = embeddingData.data
-  return embedding
+  const params = {
+    modelId: EMBEDDING_MODEL,
+    contentType: 'application/json',
+    accept: 'application/json',
+    body: JSON.stringify({
+      inputText: input
+    })
+  }
+
+  const command = new InvokeModelCommand(params)
+
+  try {
+    const response = await bedrockClient.send(command)
+
+    if (!response.body) {
+      throw new Error('Empty response from Bedrock')
+    }
+
+    const responseBody = JSON.parse(new TextDecoder().decode(response.body))
+    return responseBody.embedding
+  } catch (error) {
+    console.error('Error generating embedding:', error)
+    throw error
+  }
 }

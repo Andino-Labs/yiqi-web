@@ -1,14 +1,15 @@
 'use server'
 
-import client from '@/lib/llm/openAI'
+import { InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime'
 import prisma from '@/lib/prisma'
 import { translations } from '@/lib/translations/translations'
 import { UserDataCollected, userDataCollectedShema } from '@/schemas/userSchema'
-import { encoding_for_model } from 'tiktoken'
-import { generateEmbedding } from './generateEmbedding'
 import pgvector from 'pgvector'
+import { bedrockClient } from '@/lib/llm/bedrock'
+import { generateEmbedding } from './generateEmbedding'
 
-const createPrompt = (collectedData: UserDataCollected) => `
+function createPrompt(collectedData: UserDataCollected): string {
+  return `
 Objective:
 Using the provided user data, generate a detailed user profile that can help in matching them with potential co-founders or networking opportunities aligned with their goals and interests.
 
@@ -117,19 +118,43 @@ ${translations.es.communicationStyleLabel}: ${collectedData.communicationStyle}
 ${translations.es.professionalValuesLabel}: ${collectedData.professionalValues}
 ${translations.es.careerAspirationsLabel}: ${collectedData.careerAspirations}
 ${translations.es.significantChallengeLabel}: ${collectedData.significantChallenge}
-
- 
-
-
 `
+}
+const MODEL = 'anthropic.claude-3-sonnet-20240229-v3:0'
+const SUMMARY_MODEL = 'anthropic.claude-3-sonnet-20240229-v3:0'
 
-const MODEL = 'o1-preview'
-const SUMMARY_MODEL = 'gpt-4o-mini'
 type Props = {
   userId: string
 }
 
-export async function processUserFirstPartyData({ userId }: Props) {
+async function invokeModel(model: string, prompt: string): Promise<string> {
+  const params = {
+    modelId: model,
+    contentType: 'application/json',
+    accept: 'application/json',
+    body: JSON.stringify({
+      prompt: prompt,
+      max_tokens_to_sample: 2000,
+      temperature: 0.7,
+      top_p: 1,
+      stop_sequences: ['\n\nHuman:']
+    })
+  }
+
+  const command = new InvokeModelCommand(params)
+  const response = await bedrockClient.send(command)
+
+  if (!response.body) {
+    throw new Error('Empty response from Bedrock')
+  }
+
+  const responseBody = JSON.parse(new TextDecoder().decode(response.body))
+  return responseBody.completion
+}
+
+export async function processUserFirstPartyData({
+  userId
+}: Props): Promise<void> {
   const user = await prisma.user.findUniqueOrThrow({ where: { id: userId } })
   const dataCollected = userDataCollectedShema.parse(user.dataCollected)
   if (
@@ -145,71 +170,32 @@ export async function processUserFirstPartyData({ userId }: Props) {
 
   const calculatedPrompt = createPrompt(dataCollected)
 
-  const encoder = encoding_for_model(MODEL)
-  const numberOfTokens = encoder.encode(calculatedPrompt).length
+  const systemPrompt = `You are a community manager that is tasked with creating a deep understanding 
+  of your professional network in order to improve the quality of connections for your community.
+  You will be provided with a user's LinkedIn data and your task is to generate a detailed user profile that can help in matching them with potential co-founders or networking opportunities aligned with their goals and interests.`
 
-  console.log('Number of tokens:', numberOfTokens)
-
-  if (numberOfTokens > 110000) {
-    throw new Error('Number of tokens is too high')
-  }
-
-  const profileResult = await client.chat.completions.create({
-    model: MODEL,
-    messages: [
-      {
-        role: 'system',
-        content: `You are a community manager that is tasked with creating a deep understanding 
-        of your professional network in order to improve the quality of connections for your comunity.
-        You will be provided with a user's LinkedIn data and your task is to generate a detailed user profile that can help in matching them with potential co-founders or networking opportunities aligned with their goals and interests.`
-      },
-      {
-        role: 'user',
-        content: calculatedPrompt
-      }
-    ]
-  })
-
-  const userDetailedProfile = profileResult.choices[0].message.content
+  const userDetailedProfile = await invokeModel(
+    MODEL,
+    `${systemPrompt}\n\nHuman: ${calculatedPrompt}`
+  )
 
   if (!userDetailedProfile) {
     throw new Error('User detailed profile is empty')
   }
 
-  const userEmbeddableProfileResult = await client.chat.completions.create({
-    model: SUMMARY_MODEL,
-    messages: [
-      {
-        role: 'user',
-        content: `
-        Create a short version of the user profile that can be used to embedd in a database.
-        
-        ${userDetailedProfile}`
-      }
-    ]
-  })
-
-  const userEmbeddableProfile =
-    userEmbeddableProfileResult.choices[0].message.content
+  const userEmbeddableProfile = await invokeModel(
+    SUMMARY_MODEL,
+    `Create a short version of the user profile that can be used to embed in a database.\n\n${userDetailedProfile}`
+  )
 
   if (!userEmbeddableProfile) {
     throw new Error('User embeddable profile is empty')
   }
 
-  const userContentPreferencesResult = await client.chat.completions.create({
-    model: SUMMARY_MODEL,
-    messages: [
-      {
-        role: 'user',
-        content: `${userDetailedProfile}
-        \n\n
-        in 3 sentences or less, what are the user's content preferences?`
-      }
-    ]
-  })
-
-  const userContentPreferences =
-    userContentPreferencesResult.choices[0].message.content
+  const userContentPreferences = await invokeModel(
+    SUMMARY_MODEL,
+    `${userDetailedProfile}\n\nin 3 sentences or less, what are the user's content preferences?`
+  )
 
   if (!userContentPreferences) {
     throw new Error('User content preferences is empty')

@@ -21,6 +21,7 @@
     "run-script": "ts-node -r ./scripts/register.ts -P tsconfig.script.json scripts/runScript.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-bedrock-runtime": "^3.731.1",
     "@aws-sdk/client-s3": "^3.670.0",
     "@aws-sdk/client-sqs": "^3.699.0",
     "@aws-sdk/client-textract": "^3.699.0",
