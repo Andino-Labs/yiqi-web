@@ -24,7 +24,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { createOrganization } from '@/services/actions/organizationActions'
-import { OrganizationSchema } from '@/services/organizationService'
+import { OrganizationSchema } from '@/schemas/organizationSchema'
 import { useToast } from '@/hooks/use-toast'
 import { Textarea } from '../ui/textarea'
 import { makeRegularUser } from '@/services/actions/userActions'

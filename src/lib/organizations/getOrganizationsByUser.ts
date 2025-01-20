@@ -1,6 +1,5 @@
-import { OrganizationSchema } from '@/services/organizationService'
+import { SavedOrganizationSchema } from '@/schemas/organizationSchema'
 import prisma from '@/lib/prisma'
-import { z } from 'zod'
 
 export async function getOrganizationsByUser(
   userId: string,
@@ -43,8 +42,6 @@ export async function getOrganizationsByUser(
       eventCount
     }
 
-    return OrganizationSchema.extend({
-      id: z.string()
-    }).parse(organizationWithCount)
+    return SavedOrganizationSchema.parse(organizationWithCount)
   })
 }

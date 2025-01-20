@@ -13,7 +13,6 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { updateOrganization } from '@/services/actions/organizationActions'
-import { OrganizationSchema } from '@/services/organizationService'
 import { useToast } from '@/hooks/use-toast'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -22,6 +21,7 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { PublicCommunityType } from '@/schemas/communitySchema'
 import { useTranslations } from 'next-intl'
+import { OrganizationSchema } from '@/schemas/organizationSchema'
 
 function ColorPicker({
   value,
