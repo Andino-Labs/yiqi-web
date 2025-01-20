@@ -11,6 +11,8 @@ import { QRModal } from '../qrModal/QrModal'
 import { ticketEventSchemaType } from '@/schemas/ticketSchema'
 import { translations } from '@/lib/translations/translations'
 import { PaymentModal } from '../paymentModal/PaymentModal'
+import NetworkingUsersList from '../networkingUsersList/NetworkingUsersList'
+import networkingMatchesMocks from '../networkingUsersList/networkingMatchesMocks'
 
 interface TicketModalState {
   isOpen: boolean
@@ -93,6 +95,8 @@ export default function TicketsPage({
       setCurrentPage(prev => prev - 1)
     }
   }
+  const [isMatchesModalVisible, setIsMatchesModalVisible] =
+    useState<boolean>(false)
 
   const openModal = (
     eventTitle: string,
@@ -164,7 +168,11 @@ export default function TicketsPage({
                       />
                     </div>
                   </div>
-
+                  <NetworkingUsersList
+                    isModalVisible={isMatchesModalVisible}
+                    setIsModalVisible={setIsMatchesModalVisible}
+                    matches={networkingMatchesMocks}
+                  />
                   <div className="mt-6 space-y-4">
                     {data.tickets.map((ticket, index) => (
                       <div
