@@ -30,7 +30,8 @@ export const OrganizationSchema = z.object({
     .string()
     .url({ message: 'Invalid URL' })
     .optional()
-    .or(z.literal(''))
+    .or(z.literal('')),
+  eventCount: z.number().optional().nullable()
 })
 
 const UpdateOrganizationSchema = OrganizationSchema.partial()

@@ -44,8 +44,7 @@ export async function getOrganizationsByUser(
     }
 
     return OrganizationSchema.extend({
-      id: z.string(),
-      eventCount: z.number()
+      id: z.string()
     }).parse(organizationWithCount)
   })
 }
