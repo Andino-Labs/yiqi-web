@@ -1,8 +1,9 @@
 import prisma from '@/lib/prisma'
-import { OrganizationSchema } from '@/schemas/organizationSchema'
+import {
+  OrganizationSchema,
+  UpdateOrganizationSchema
+} from '@/schemas/organizationSchema'
 import { z } from 'zod'
-
-const UpdateOrganizationSchema = OrganizationSchema.partial()
 
 export const organizationService = {
   create: async (data: z.infer<typeof OrganizationSchema>) => {

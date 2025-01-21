@@ -31,8 +31,11 @@ export const OrganizationSchema = z.object({
     .optional()
     .or(z.literal(''))
 })
+export const UpdateOrganizationSchema = OrganizationSchema.partial()
 
 export const SavedOrganizationSchema = OrganizationSchema.extend({
   id: z.string(),
-  eventCount: z.number().optional().nullable()
+  eventCount: z.number().optional().nullable(),
+  createdAt: z.date(),
+  updatedAt: z.date()
 })
