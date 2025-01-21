@@ -1,8 +1,8 @@
 'use server'
 
 import {
-  AttendeeStatus,
   RegistrationInput,
+  AttendeeStatus,
   registrationInputSchema
 } from '@/schemas/eventSchema'
 import prisma from '../prisma'

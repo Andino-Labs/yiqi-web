@@ -10,8 +10,9 @@ import {
   ChevronDown,
   Building2,
   // Banknote,
-  Plus,
-  Banknote
+  // Plus,
+  Banknote,
+  Settings
 } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
@@ -86,6 +87,11 @@ export default function OrganizationLayout({
 
   const navItems = [
     {
+      name: `${t('settings')}`,
+      icon: Settings,
+      href: `/admin/organizations/${orgId}/settings`
+    },
+    {
       name: `${t('chat')}`,
       icon: MessageSquare,
       href: `/admin/organizations/${orgId}/chat`
@@ -109,12 +115,12 @@ export default function OrganizationLayout({
       name: `${t('billing')}`,
       icon: Banknote,
       href: `/admin/organizations/${orgId}/billing`
-    },
-    {
-      name: 'Formularios',
-      icon: Plus,
-      href: `/admin/organizations/${orgId}/forms`
     }
+    // {
+    //   name: 'Formularios',
+    //   icon: Plus,
+    //   href: `/admin/organizations/${orgId}/forms`
+    // }
   ]
   const currentOrg = useMemo(
     () => organizations.find(org => org.id === orgId),

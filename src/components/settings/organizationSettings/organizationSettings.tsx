@@ -116,8 +116,8 @@ export default function OrganizationSettings({
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
-      <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6">
+    <div className="flex justify-center items-center min-h-screen  p-4 dark:bg-[rgb(28, 28, 28)]">
+      <div className="w-full max-w-4xl shadow-lg rounded-lg p-6">
         <h1 className="text-2xl font-semibold mb-4 text-center">
           {t('settingOrganizationTitle')}
         </h1>

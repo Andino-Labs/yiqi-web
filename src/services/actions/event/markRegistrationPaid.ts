@@ -51,7 +51,7 @@ export async function markRegistrationPaid(registrationId: string) {
             userId: registration.userId,
             eventId: registration.eventId
           },
-          notificationType: 'RESERVATION_CONFIRMED',
+          notificationType: 'PAYMENT_CONFIRMED',
           userId: registration.userId,
           eventId: registration.eventId
         }

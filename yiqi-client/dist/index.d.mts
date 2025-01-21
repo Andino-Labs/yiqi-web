@@ -1002,43 +1002,25 @@ declare const appRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<
         _output_out: typeof _trpc_server.unsetMarker;
     }, {
         id: string;
-        status: "PENDING" | "APPROVED" | "REJECTED";
-        customFields: Record<string, any>;
-        createdAt: Date;
-        updatedAt: Date;
-        tickets: {
-            id: string;
-            category: "GENERAL" | "VIP" | "BACKSTAGE";
-            checkedInDate: Date | null;
-            user?: {
-                name: string;
-                id: string;
-                email: string;
-                picture: string | null;
-                emailVerified?: Date | null | undefined;
-                phoneNumber?: string | null | undefined;
-            } | null | undefined;
-            ticketType?: {
-                name: string;
-                id: string;
-                category: "GENERAL" | "VIP" | "BACKSTAGE";
-                price: number;
-                limit: number;
-                ticketsPerPurchase: number;
-                description?: string | undefined;
-            } | null | undefined;
-        }[];
-        userId: string;
-        user: {
+        category: "GENERAL" | "VIP" | "BACKSTAGE";
+        checkedInDate: Date | null;
+        user?: {
             name: string;
             id: string;
             email: string;
             picture: string | null;
             emailVerified?: Date | null | undefined;
             phoneNumber?: string | null | undefined;
-        };
-        paid: boolean;
-        paymentId: string | null;
+        } | null | undefined;
+        ticketType?: {
+            name: string;
+            id: string;
+            category: "GENERAL" | "VIP" | "BACKSTAGE";
+            price: number;
+            limit: number;
+            ticketsPerPurchase: number;
+            description?: string | undefined;
+        } | null | undefined;
     }>;
 }>;
 type AppRouter = typeof appRouter;

@@ -137,8 +137,7 @@ export function Registration({
         variant: 'destructive'
       })
     } finally {
-      checkRegistration()
-
+      await checkRegistration()
       setIsSubmitting(false)
     }
   }
@@ -176,6 +175,7 @@ export function Registration({
       <RegistrationConfirmation
         registration={existingRegistration}
         requiresPayment={requiresPayment}
+        isLoggedIn={!!user.role}
       />
     )
   }
