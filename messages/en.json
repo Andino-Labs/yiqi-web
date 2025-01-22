@@ -99,7 +99,8 @@
     "organizers": "Organizers",
     "billing": "Billing",
     "logOut": "Log out",
-    "events": "Events"
+    "events": "Events",
+    "settings": "Settings"
   },
   "SidebarDropdown": {
     "switchOrganization": "Switch Organization"
@@ -517,6 +518,7 @@
   },
 
   "Community": {
+    "description": "Description",
     "communities": "Communities",
     "noCommunitiesFound": "No communities found at this time.",
     "navigationAbout": "About",
