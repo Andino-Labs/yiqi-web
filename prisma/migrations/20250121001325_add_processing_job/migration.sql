@@ -1,0 +1,2 @@
+-- AlterEnum
+ALTER TYPE "JobType" ADD VALUE 'PROCESS_USER_DATA';

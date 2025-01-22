@@ -4,7 +4,7 @@ import { InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime'
 
 import { bedrockClient } from '@/lib/llm/bedrock'
 
-const EMBEDDING_MODEL = 'amazon.titan-embed-g1-text-02'
+const EMBEDDING_MODEL = 'amazon.titan-embed-text-v1'
 
 export async function generateEmbedding(raw: string): Promise<number[]> {
   // Replace newlines with spaces as recommended for best results

@@ -29,6 +29,7 @@ import type { UserDataCollected } from '@/schemas/userSchema'
 import { useRouter } from 'next/navigation'
 import { Input } from '../ui/input'
 import { useUpload } from '@/hooks/useUpload'
+import { scheduleUserDataProcessing } from '@/services/actions/networking/scheduleUserDataProcessing'
 
 type NetworkingData = Pick<
   UserDataCollected,
@@ -44,9 +45,10 @@ type NetworkingData = Pick<
 
 type Props = {
   initialData: NetworkingData
+  userId: string
 }
 
-export default function NetworkingProfileForm({ initialData }: Props) {
+export default function NetworkingProfileForm({ initialData, userId }: Props) {
   const { toast } = useToast()
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -78,6 +80,17 @@ export default function NetworkingProfileForm({ initialData }: Props) {
       resumeLastUpdated: initialData.resumeLastUpdated ?? ''
     }
   })
+
+  async function processData(userId: string) {
+    try {
+      await scheduleUserDataProcessing(userId)
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        description: `${error}`
+      })
+    }
+  }
 
   console.log(form.formState.errors)
 
@@ -157,6 +170,7 @@ export default function NetworkingProfileForm({ initialData }: Props) {
         variant: 'destructive'
       })
     } finally {
+      await processData(userId)
       setIsSubmitting(false)
     }
   }

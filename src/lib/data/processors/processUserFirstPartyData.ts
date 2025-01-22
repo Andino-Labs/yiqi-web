@@ -120,24 +120,23 @@ ${translations.es.careerAspirationsLabel}: ${collectedData.careerAspirations}
 ${translations.es.significantChallengeLabel}: ${collectedData.significantChallenge}
 `
 }
-const MODEL = 'anthropic.claude-3-sonnet-20240229-v3:0'
-const SUMMARY_MODEL = 'anthropic.claude-3-sonnet-20240229-v3:0'
 
-type Props = {
-  userId: string
-}
+const MODEL = 'us.anthropic.claude-3-5-sonnet-20241022-v2:0'
+const SUMMARY_MODEL = 'us.anthropic.claude-3-5-sonnet-20241022-v2:0'
 
-async function invokeModel(model: string, prompt: string): Promise<string> {
+async function invokeModel(
+  model: string,
+  messages: Message[]
+): Promise<string> {
   const params = {
     modelId: model,
     contentType: 'application/json',
     accept: 'application/json',
     body: JSON.stringify({
-      prompt: prompt,
+      prompt: formatPrompt(messages),
       max_tokens_to_sample: 2000,
       temperature: 0.7,
-      top_p: 1,
-      stop_sequences: ['\n\nHuman:']
+      top_p: 1
     })
   }
 
@@ -149,52 +148,65 @@ async function invokeModel(model: string, prompt: string): Promise<string> {
   }
 
   const responseBody = JSON.parse(new TextDecoder().decode(response.body))
-  return responseBody.completion
+  return responseBody.completion || ''
 }
 
-export async function processUserFirstPartyData({
-  userId
-}: Props): Promise<void> {
+interface Message {
+  role: 'Human' | 'Assistant'
+  content: string
+}
+
+function formatPrompt(messages: Message[]): string {
+  return (
+    messages.map(msg => `${msg.role}: ${msg.content}`).join('\n\n') +
+    '\n\nAssistant:'
+  )
+}
+
+export async function processUserFirstPartyData(userId: string): Promise<void> {
   const user = await prisma.user.findUniqueOrThrow({ where: { id: userId } })
   const dataCollected = userDataCollectedShema.parse(user.dataCollected)
-  if (
-    !dataCollected.resumeText &&
-    !dataCollected.careerAspirations &&
-    !dataCollected.communicationStyle &&
-    !dataCollected.professionalMotivations &&
-    !dataCollected.professionalValues &&
-    !dataCollected.significantChallenge
-  ) {
-    throw new Error('Not enough information about the user to proceed')
-  }
-
   const calculatedPrompt = createPrompt(dataCollected)
 
-  const systemPrompt = `You are a community manager that is tasked with creating a deep understanding 
-  of your professional network in order to improve the quality of connections for your community.
-  You will be provided with a user's LinkedIn data and your task is to generate a detailed user profile that can help in matching them with potential co-founders or networking opportunities aligned with their goals and interests.`
+  const messages: Message[] = [
+    {
+      role: 'Human',
+      content: `You are a community manager tasked with creating a detailed user profile to improve networking and co-founder matching. ${calculatedPrompt}`
+    }
+  ]
 
-  const userDetailedProfile = await invokeModel(
-    MODEL,
-    `${systemPrompt}\n\nHuman: ${calculatedPrompt}`
-  )
+  const userDetailedProfile = await invokeModel(MODEL, messages)
 
   if (!userDetailedProfile) {
     throw new Error('User detailed profile is empty')
   }
 
+  const summaryMessages: Message[] = [
+    {
+      role: 'Human',
+      content: `Summarize the following user profile for embedding into a database: ${userDetailedProfile}`
+    }
+  ]
+
   const userEmbeddableProfile = await invokeModel(
     SUMMARY_MODEL,
-    `Create a short version of the user profile that can be used to embed in a database.\n\n${userDetailedProfile}`
+    summaryMessages
   )
 
   if (!userEmbeddableProfile) {
     throw new Error('User embeddable profile is empty')
   }
 
+  const contentPreferencesMessages: Message[] = [
+    {
+      role: 'Human',
+      content: `In 3 sentences or less, summarize the user's content preferences based on this profile: ${userDetailedProfile}`
+    }
+  ]
+
   const userContentPreferences = await invokeModel(
     SUMMARY_MODEL,
-    `${userDetailedProfile}\n\nin 3 sentences or less, what are the user's content preferences?`
+    contentPreferencesMessages
   )
 
   if (!userContentPreferences) {
@@ -212,7 +224,5 @@ export async function processUserFirstPartyData({
 
   const rawEmbedding = await generateEmbedding(userEmbeddableProfile)
   const embedding = pgvector.toSql(rawEmbedding)
-
-  // we cannot use prisma.user.update here because the embedding is a vector and prisma does not support it
   await prisma.$executeRaw`UPDATE "public"."User" SET embedding = ${embedding}::vector WHERE id = ${userId};`
 }
