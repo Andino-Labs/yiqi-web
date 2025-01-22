@@ -1,17 +1,15 @@
 'use server'
 
 import { InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime'
-
 import { bedrockClient } from '@/lib/llm/bedrock'
-
-const EMBEDDING_MODEL = 'amazon.titan-embed-text-v1'
+import { AWS_BEDROCK_MODELS } from '@/lib/llm/models'
 
 export async function generateEmbedding(raw: string): Promise<number[]> {
   // Replace newlines with spaces as recommended for best results
   const input = raw.replace(/\n/g, ' ')
 
   const params = {
-    modelId: EMBEDDING_MODEL,
+    modelId: AWS_BEDROCK_MODELS.TITAN_EMBED_TEXT_V1,
     contentType: 'application/json',
     accept: 'application/json',
     body: JSON.stringify({

@@ -103,6 +103,7 @@ export function RegistrationForm({
             </FormItem>
           )}
         />
+
         <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? (
             <div className="flex items-center gap-2">

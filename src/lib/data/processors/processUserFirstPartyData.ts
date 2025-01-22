@@ -1,12 +1,18 @@
 'use server'
 
-import { InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime'
 import prisma from '@/lib/prisma'
 import { translations } from '@/lib/translations/translations'
-import { UserDataCollected, userDataCollectedShema } from '@/schemas/userSchema'
+import {
+  type UserDataCollected,
+  userDataCollectedShema
+} from '@/schemas/userSchema'
 import pgvector from 'pgvector'
-import { bedrockClient } from '@/lib/llm/bedrock'
 import { generateEmbedding } from './generateEmbedding'
+import {
+  createConversation,
+  sendMessage
+} from '@/lib/llm/messages-api/bedrockWrapper'
+import { AWS_BEDROCK_MODELS } from '@/lib/llm/models'
 
 function createPrompt(collectedData: UserDataCollected): string {
   return `
@@ -121,92 +127,39 @@ ${translations.es.significantChallengeLabel}: ${collectedData.significantChallen
 `
 }
 
-const MODEL = 'us.anthropic.claude-3-5-sonnet-20241022-v2:0'
-const SUMMARY_MODEL = 'us.anthropic.claude-3-5-sonnet-20241022-v2:0'
-
-async function invokeModel(
-  model: string,
-  messages: Message[]
-): Promise<string> {
-  const params = {
-    modelId: model,
-    contentType: 'application/json',
-    accept: 'application/json',
-    body: JSON.stringify({
-      prompt: formatPrompt(messages),
-      max_tokens_to_sample: 2000,
-      temperature: 0.7,
-      top_p: 1
-    })
-  }
-
-  const command = new InvokeModelCommand(params)
-  const response = await bedrockClient.send(command)
-
-  if (!response.body) {
-    throw new Error('Empty response from Bedrock')
-  }
-
-  const responseBody = JSON.parse(new TextDecoder().decode(response.body))
-  return responseBody.completion || ''
-}
-
-interface Message {
-  role: 'Human' | 'Assistant'
-  content: string
-}
-
-function formatPrompt(messages: Message[]): string {
-  return (
-    messages.map(msg => `${msg.role}: ${msg.content}`).join('\n\n') +
-    '\n\nAssistant:'
-  )
-}
-
 export async function processUserFirstPartyData(userId: string): Promise<void> {
   const user = await prisma.user.findUniqueOrThrow({ where: { id: userId } })
   const dataCollected = userDataCollectedShema.parse(user.dataCollected)
   const calculatedPrompt = createPrompt(dataCollected)
 
-  const messages: Message[] = [
-    {
-      role: 'Human',
-      content: `You are a community manager tasked with creating a detailed user profile to improve networking and co-founder matching. ${calculatedPrompt}`
-    }
-  ]
+  const conversation = createConversation({
+    model: AWS_BEDROCK_MODELS.CLAUDE_3_5_v2_SONNET,
+    maxTokens: 2000,
+    temperature: 0.7,
+    topP: 1
+  })
 
-  const userDetailedProfile = await invokeModel(MODEL, messages)
+  const userDetailedProfile = await sendMessage(
+    conversation,
+    `You are a community manager tasked with creating a detailed user profile to improve networking and co-founder matching. ${calculatedPrompt}`
+  )
 
   if (!userDetailedProfile) {
     throw new Error('User detailed profile is empty')
   }
 
-  const summaryMessages: Message[] = [
-    {
-      role: 'Human',
-      content: `Summarize the following user profile for embedding into a database: ${userDetailedProfile}`
-    }
-  ]
-
-  const userEmbeddableProfile = await invokeModel(
-    SUMMARY_MODEL,
-    summaryMessages
+  const userEmbeddableProfile = await sendMessage(
+    conversation,
+    `Summarize the following user profile for embedding into a database: ${userDetailedProfile}`
   )
 
   if (!userEmbeddableProfile) {
     throw new Error('User embeddable profile is empty')
   }
 
-  const contentPreferencesMessages: Message[] = [
-    {
-      role: 'Human',
-      content: `In 3 sentences or less, summarize the user's content preferences based on this profile: ${userDetailedProfile}`
-    }
-  ]
-
-  const userContentPreferences = await invokeModel(
-    SUMMARY_MODEL,
-    contentPreferencesMessages
+  const userContentPreferences = await sendMessage(
+    conversation,
+    `In 3 sentences or less, summarize the user's content preferences based on this profile: ${userDetailedProfile}`
   )
 
   if (!userContentPreferences) {
