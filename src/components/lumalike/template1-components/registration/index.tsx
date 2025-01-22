@@ -175,6 +175,7 @@ export function Registration({
       <RegistrationConfirmation
         registration={existingRegistration}
         requiresPayment={requiresPayment}
+        isLoggedIn={!!user.role}
       />
     )
   }

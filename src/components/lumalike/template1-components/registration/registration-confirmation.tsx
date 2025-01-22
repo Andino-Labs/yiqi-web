@@ -20,11 +20,13 @@ import { useRouter } from 'next/navigation'
 interface RegistrationConfirmationProps {
   registration: EventRegistrationSchemaType
   requiresPayment?: boolean
+  isLoggedIn: boolean
 }
 
 export function RegistrationConfirmation({
   registration,
-  requiresPayment = false
+  requiresPayment = false,
+  isLoggedIn
 }: RegistrationConfirmationProps) {
   const router = useRouter()
   const [isPaymentDialogOpen, setIsPaymentDialogOpen] = useState(false)
@@ -38,7 +40,10 @@ export function RegistrationConfirmation({
         variant: 'default'
       })
       setIsPaymentDialogOpen(false)
-      router.push('/user/tickets')
+
+      if (isLoggedIn) {
+        router.push('/user/tickets')
+      }
     } else {
       toast({
         title: `${t('eventRegistrationError')}`,
@@ -109,9 +114,20 @@ export function RegistrationConfirmation({
       {registration.status === 'APPROVED' && (
         <CardContent className="space-y-4">
           <div className="text-center">
-            <Link href="/user/tickets">
-              <Button>{t('viewMyTickets')}</Button>
-            </Link>
+            {isLoggedIn ? (
+              <Link href="/user/tickets">
+                <Button>{t('viewMyTickets')}</Button>
+              </Link>
+            ) : (
+              <div className="space-y-3">
+                <p className="text-sm text-muted-foreground">
+                  {t('loginToViewTickets')}
+                </p>
+                <Link href="/login">
+                  <Button className="w-full">{t('loginToContinue')}</Button>
+                </Link>
+              </div>
+            )}
           </div>
         </CardContent>
       )}

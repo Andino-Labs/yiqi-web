@@ -3,7 +3,8 @@ import { z } from 'zod'
 // Schema for the included user data
 const networkingMatchUserSchema = z.object({
   id: z.string(),
-  name: z.string().nullable()
+  name: z.string().nullable(),
+  picture: z.string().nullable().optional()
 })
 
 // Schema for a single networking match

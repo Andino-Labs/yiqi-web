@@ -99,7 +99,8 @@
     "organizers": "Organizers",
     "billing": "Billing",
     "logOut": "Log out",
-    "events": "Events"
+    "events": "Events",
+    "settings": "Settings"
   },
   "SidebarDropdown": {
     "switchOrganization": "Switch Organization"
@@ -517,6 +518,7 @@
   },
 
   "Community": {
+    "description": "Description",
     "communities": "Communities",
     "noCommunitiesFound": "No communities found at this time.",
     "navigationAbout": "About",
@@ -608,7 +610,10 @@
     "completeYourProfile": "Complete Your Profile",
     "profileCompletionBenefits": "Complete your profile to enhance your networking experience and get personalized recommendations for future events.",
     "completeProfile": "Complete Profile",
-    "eventSoldOut": "Sold Out"
+    "eventSoldOut": "Sold Out",
+    "eventRemainingTickets": "Only {{count}} tickets remaining",
+    "loginToViewTickets": "Great! Your registration is confirmed. Log in to access your tickets and get the most out of your event experience.",
+    "loginToContinue": "Log in to View Your Tickets"
   },
 
   "Ticket": {

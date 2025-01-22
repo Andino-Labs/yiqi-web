@@ -61,7 +61,7 @@ export function TicketSelection({
             <div className="text-right text-white">
               {ticket.price === 0
                 ? `${t('eventFree')}`
-                : `$${ticket.price.toFixed(2)}`}
+                : `S/${ticket.price.toFixed(2)}`}
             </div>
           </div>
           <div className="flex items-center justify-end space-x-2">
@@ -105,7 +105,7 @@ export function TicketSelection({
           <Separator className="bg-white/20" />
           <div className="flex justify-between text-white font-medium">
             <span>{t('eventTotal')}</span>
-            <span>${calculateTotal().toFixed(2)}</span>
+            <span>{`S/${calculateTotal().toFixed(2)}`}</span>
           </div>
         </>
       )}

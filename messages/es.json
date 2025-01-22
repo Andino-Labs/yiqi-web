@@ -99,7 +99,8 @@
     "organizers": "Organizadores",
     "billing": "Facturación",
     "logOut": "Cerrar sesión",
-    "events": "Eventos"
+    "events": "Eventos",
+    "settings": "Configuración"
   },
   "SidebarDropdown": {
     "switchOrganization": "Cambiar Organización"
@@ -513,6 +514,7 @@
   },
 
   "Community": {
+    "description": "Descripción",
     "communities": "Comunidades",
     "noCommunitiesFound": "No se encontraron comunidades en este momento.",
     "navigationAbout": "Acerca de",
@@ -604,7 +606,10 @@
     "completeYourProfile": "Completa Tu Perfil",
     "profileCompletionBenefits": "Completa tu perfil para mejorar tu experiencia de networking y recibir recomendaciones personalizadas para futuros eventos.",
     "completeProfile": "Completar Perfil",
-    "eventSoldOut": "Agotado"
+    "eventSoldOut": "Agotado",
+    "eventRemainingTickets": "Solo quedan {{count}} entradas",
+    "loginToViewTickets": "¡Excelente! Tu registro está confirmado. Inicia sesión para acceder a tus entradas y aprovechar al máximo tu experiencia en el evento.",
+    "loginToContinue": "Inicia sesión para ver tus entradas"
   },
   "Ticket": {
     "ticketStatusApproved": "Aprobado",
