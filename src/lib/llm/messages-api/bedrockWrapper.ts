@@ -93,6 +93,7 @@ export async function sendMessage(
     conversation.options,
     system
   )
+  console.warn(JSON.stringify(response, null, 2))
   conversation.messages.push({ role: 'assistant', content: response })
   return response
 }
