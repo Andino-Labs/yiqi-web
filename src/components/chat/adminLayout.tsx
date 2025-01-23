@@ -32,7 +32,7 @@ export default function AdminLayout({ children, userProps }: AdminLayoutProps) {
     {
       name: `${t('organization')}`,
       icon: Users,
-      href: `/admin/organizations`
+      href: `/admin`
     },
     {
       name: `${t('settings')}`,

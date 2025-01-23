@@ -16,7 +16,6 @@ import {
 import {
   SearchUserResultSchema,
   UserRegistrationStatusSchema,
-  OrganizationSchema,
   AuthSchemaSchema
 } from '@/schemas/apiSchemas'
 import { getEvent } from '../actions/event/getEvent'
@@ -24,7 +23,6 @@ import { getPublicEvents } from '../actions/event/getPublicEvents'
 import { createRegistration } from '@/lib/event/createRegistration'
 import { loginLinkedin } from '@/lib/auth/loginLinkedin'
 import { loginGoogle } from '@/lib/auth/loginGoogle'
-import { checkExistingRegistration } from '../actions/event/checkExistingRegistration'
 import { createCheckoutSessionMobile } from '../actions/billing/createCheckoutSessionMobile'
 import { markRegistrationPaidMobile } from '../actions/event/markRegistrationPaidMobile'
 import getCommunities from '@/services/actions/communities/getCommunities'
@@ -41,6 +39,9 @@ import { updateNetworkingProfile } from '@/lib/user/updateNetworkingProfile'
 import { getOrganizationsByUser } from '@/lib/organizations/getOrganizationsByUser'
 import { getEventsByOrganization } from '@/lib/organizations/getEventsByOrganization'
 import { checkInEventTicket } from '@/lib/organizations/checkInEventTicket'
+import { checkTicketsAvailability } from '../actions/event/checkTicketsAvailability'
+import { checkExistingRegistrationMobile } from '@/lib/event/checkExistingRegistrationMobile'
+import { SavedOrganizationSchema } from '@/schemas/organizationSchema'
 
 export const appRouter = router({
   loginLinkedin: publicProcedure
@@ -113,7 +114,7 @@ export const appRouter = router({
     .query(async ({ input }) => {
       const organization = await getOrganization(input)
       if (!organization) throw new Error('Organization not found')
-      return OrganizationSchema.parse(organization)
+      return SavedOrganizationSchema.parse(organization)
     }),
   checkExistingRegistration: publicProcedure
     .input(
@@ -126,7 +127,10 @@ export const appRouter = router({
         return null
       }
 
-      return await checkExistingRegistration(input.eventId, ctx.user.email)
+      return await checkExistingRegistrationMobile(
+        input.eventId,
+        ctx.user.email
+      )
     }),
 
   createCheckoutSession: publicProcedure
@@ -216,7 +220,7 @@ export const appRouter = router({
       throw new Error('User not signed in')
     }
 
-    return await getOrganizationsByUser(ctx.user?.id)
+    return await getOrganizationsByUser(ctx.user?.id, true)
   }),
   getEventsByOrganization: publicProcedure
     .input(
@@ -261,6 +265,15 @@ export const appRouter = router({
         input.ticketId,
         ctx.user.id
       )
+    }),
+  checkTicketsAvailability: publicProcedure
+    .input(
+      z.object({
+        ticketOfferingsIds: z.array(z.string())
+      })
+    )
+    .mutation(async ({ input }) => {
+      return await checkTicketsAvailability(input.ticketOfferingsIds)
     })
 })
 
