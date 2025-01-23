@@ -16,7 +16,6 @@ import {
 import {
   SearchUserResultSchema,
   UserRegistrationStatusSchema,
-  OrganizationSchema,
   AuthSchemaSchema
 } from '@/schemas/apiSchemas'
 import { getEvent } from '../actions/event/getEvent'
@@ -42,6 +41,7 @@ import { getEventsByOrganization } from '@/lib/organizations/getEventsByOrganiza
 import { checkInEventTicket } from '@/lib/organizations/checkInEventTicket'
 import { checkTicketsAvailability } from '../actions/event/checkTicketsAvailability'
 import { checkExistingRegistrationMobile } from '@/lib/event/checkExistingRegistrationMobile'
+import { SavedOrganizationSchema } from '@/schemas/organizationSchema'
 
 export const appRouter = router({
   loginLinkedin: publicProcedure
@@ -114,7 +114,7 @@ export const appRouter = router({
     .query(async ({ input }) => {
       const organization = await getOrganization(input)
       if (!organization) throw new Error('Organization not found')
-      return OrganizationSchema.parse(organization)
+      return SavedOrganizationSchema.parse(organization)
     }),
   checkExistingRegistration: publicProcedure
     .input(
@@ -220,7 +220,7 @@ export const appRouter = router({
       throw new Error('User not signed in')
     }
 
-    return await getOrganizationsByUser(ctx.user?.id)
+    return await getOrganizationsByUser(ctx.user?.id, true)
   }),
   getEventsByOrganization: publicProcedure
     .input(

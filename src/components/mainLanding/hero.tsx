@@ -37,7 +37,7 @@ export default function Hero() {
             <p className="text-gray-400 text-base sm:text-lg max-w-xl">
               {t('heroDescription')}
             </p>
-            <Link href={`/admin/organizations`} className="block">
+            <Link href={`/admin`} className="block">
               <Button
                 size="lg"
                 className="font-bold bg-gradient-to-r from-[#04F1FF] to-[#6de4e8] text-black hover:opacity-90 transition-opacity w-[40%] sm:w-auto"

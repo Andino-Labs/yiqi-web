@@ -23,7 +23,7 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { OrganizationSchema } from '@/services/organizationService'
+import { OrganizationSchema } from '@/schemas/organizationSchema'
 import { useToast } from '@/hooks/use-toast'
 import { Textarea } from '@/components/ui/textarea'
 
