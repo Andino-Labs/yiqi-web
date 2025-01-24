@@ -131,7 +131,27 @@ export async function processUserFirstPartyData(userId: string): Promise<void> {
   const systemPrompt: string =
     "You are a community manager that is tasked with creating a deep understanding of your professional network in order to improve the quality of connections for your comunity. You will be provided with a user's LinkedIn data and your task is to generate a detailed user profile that can help in matching them with potential co-founders or networking opportunities aligned with their goals and interests."
 
-  const userPromise = prisma.user.findUniqueOrThrow({ where: { id: userId } })
+  const user = await prisma.user.findUniqueOrThrow({ where: { id: userId } })
+
+  const dataCollected = userDataCollectedShema.parse(user.dataCollected)
+
+  const missingFields = []
+
+  if (!dataCollected.resumeText) missingFields.push('resumeText')
+  if (!dataCollected.careerAspirations) missingFields.push('careerAspirations')
+  if (!dataCollected.communicationStyle)
+    missingFields.push('communicationStyle')
+  if (!dataCollected.professionalMotivations)
+    missingFields.push('professionalMotivations')
+  if (!dataCollected.professionalValues)
+    missingFields.push('professionalValues')
+  if (!dataCollected.significantChallenge)
+    missingFields.push('significantChallenge')
+
+  if (missingFields.length > 0) {
+    console.log('Missing information:', missingFields.join(', '))
+    throw new Error('Not enough information about the user to proceed')
+  }
 
   const conversation = createConversation({
     model: AWS_BEDROCK_MODELS.CLAUDE_3_5_v2_SONNET,
@@ -140,47 +160,60 @@ export async function processUserFirstPartyData(userId: string): Promise<void> {
     topP: 1
   })
 
-  const user = await userPromise
-  const dataCollected = userDataCollectedShema.parse(user.dataCollected)
   const calculatedPrompt = createPrompt(dataCollected)
 
-  const [userDetailedProfile, userEmbeddableProfile, userContentPreferences] =
-    await Promise.all([
-      sendMessage(
-        conversation,
-        `You are a community manager tasked with creating a detailed user profile to improve networking and co-founder matching. ${calculatedPrompt}`,
-        systemPrompt
-      ),
-      sendMessage(
-        conversation,
-        `Summarize the following user profile for embedding into a database: ${calculatedPrompt}`
-      ),
-      sendMessage(
-        conversation,
-        `In 3 sentences or less, summarize the user's content preferences based on this profile: ${calculatedPrompt}`
-      )
-    ])
+  const profileResult = await sendMessage(
+    conversation,
+    calculatedPrompt,
+    systemPrompt
+  )
 
-  if (
-    !userDetailedProfile ||
-    !userEmbeddableProfile ||
-    !userContentPreferences
-  ) {
-    throw new Error('One or more profile components are empty')
+  console.log(JSON.stringify(profileResult, null, 2))
+
+  if (!profileResult) {
+    throw new Error('User detailed profile is empty')
   }
 
-  const [rawEmbedding] = await Promise.all([
-    generateEmbedding(userEmbeddableProfile),
-    prisma.user.update({
-      where: { id: userId },
-      data: {
-        userDetailedProfile,
-        userEmbeddableProfile,
-        userContentPreferences
-      }
-    })
-  ])
+  console.info('profile result call was succesfull')
 
+  await new Promise(resolve => setTimeout(resolve, 5000))
+
+  const userEmbeddableProfile = await sendMessage(
+    conversation,
+    `Summarize the following user profile for embedding into a database: ${profileResult}`
+  )
+
+  if (!userEmbeddableProfile) {
+    throw new Error('no embeddable profile was found')
+  }
+
+  console.info('user embeddable profile result call was succesfull')
+
+  await new Promise(resolve => setTimeout(resolve, 5000))
+
+  const userContentPreferencesResult = await sendMessage(
+    conversation,
+    `in 3 sentences or less, what are the user's content preferences?  \n\n ${profileResult}`
+  )
+
+  if (!userContentPreferencesResult) {
+    throw new Error('no user content preference was done')
+  }
+
+  console.info('userContentPreferencesResult result call was succesfull')
+
+  await prisma.user.update({
+    where: { id: userId },
+    data: {
+      userDetailedProfile: profileResult,
+      userEmbeddableProfile: userEmbeddableProfile,
+      userContentPreferences: userContentPreferencesResult
+    }
+  })
+  const rawEmbedding = await generateEmbedding(userEmbeddableProfile)
+  if (!rawEmbedding) {
+    throw new Error('no embbedding was generated')
+  }
   const embedding = pgvector.toSql(rawEmbedding)
   await prisma.$executeRaw`UPDATE "public"."User" SET embedding = ${embedding}::vector WHERE id = ${userId};`
 }

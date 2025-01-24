@@ -1,17 +1,35 @@
 'use server'
 
-import { getUser } from '@/lib/auth/lucia'
-import { updateNetworkingProfile } from '@/lib/user/updateNetworkingProfile'
+import { NetworkingData } from '@/components/profile/NetworkingProfileForm'
+import { deepMerge } from '@/lib/deepMerge'
+import prisma from '@/lib/prisma'
 import { userDataCollectedShema } from '@/schemas/userSchema'
 
-export async function saveNetworkingProfile(formData: FormData) {
-  const user = await getUser()
+export async function saveNetworkingProfile(
+  values: NetworkingData,
+  userId: string
+): Promise<void> {
+  const user = await prisma.user.findUnique({ where: { id: userId } })
+
   if (!user) {
-    return { error: 'Not authenticated', success: false }
+    throw new Error(`No user found`)
   }
 
-  return updateNetworkingProfile(
-    user.id,
-    userDataCollectedShema.parse(formData)
-  )
+  let updatedData
+
+  if (!user.dataCollected) {
+    updatedData = values
+  } else {
+    const profile = userDataCollectedShema.parse(user.dataCollected)
+    updatedData = deepMerge(profile, values)
+  }
+
+  try {
+    await prisma.user.update({
+      where: { id: userId },
+      data: { dataCollected: updatedData }
+    })
+  } catch (error) {
+    throw new Error(`Failed to update networking profile: ${error}`)
+  }
 }

@@ -31,7 +31,7 @@ import { Input } from '../ui/input'
 import { useUpload } from '@/hooks/useUpload'
 import { scheduleUserDataProcessing } from '@/services/actions/networking/scheduleUserDataProcessing'
 
-type NetworkingData = Pick<
+export type NetworkingData = Pick<
   UserDataCollected,
   | 'professionalMotivations'
   | 'communicationStyle'
@@ -94,9 +94,7 @@ export default function NetworkingProfileForm({ initialData, userId }: Props) {
 
   console.log(form.formState.errors)
 
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0]
     if (file) {
       if (
@@ -139,7 +137,7 @@ export default function NetworkingProfileForm({ initialData, userId }: Props) {
     }
   }
 
-  const onSubmit = async (values: NetworkingData) => {
+  async function onSubmit(values: NetworkingData) {
     setIsSubmitting(true)
     try {
       const formData = new FormData()
@@ -150,19 +148,12 @@ export default function NetworkingProfileForm({ initialData, userId }: Props) {
         }
       })
 
-      const result = await saveNetworkingProfile(formData)
+      await saveNetworkingProfile(values, userId)
 
-      if (result.success) {
-        toast({
-          title: translations.es.networkingProfileSaved
-        })
-        router.refresh()
-      } else {
-        toast({
-          title: translations.es.networkingProfileError,
-          variant: 'destructive'
-        })
-      }
+      toast({
+        title: translations.es.networkingProfileSaved
+      })
+      router.refresh()
     } catch (error) {
       console.error('Error in onSubmit:', error)
       toast({
