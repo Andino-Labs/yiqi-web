@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '../ui/button'
@@ -29,8 +29,10 @@ import type { UserDataCollected } from '@/schemas/userSchema'
 import { useRouter } from 'next/navigation'
 import { Input } from '../ui/input'
 import { useUpload } from '@/hooks/useUpload'
+import { scheduleUserDataProcessing } from '@/services/actions/networking/scheduleUserDataProcessing'
+import { useTextract } from '@/hooks/useTextract'
 
-type NetworkingData = Pick<
+export type NetworkingData = Pick<
   UserDataCollected,
   | 'professionalMotivations'
   | 'communicationStyle'
@@ -44,11 +46,18 @@ type NetworkingData = Pick<
 
 type Props = {
   initialData: NetworkingData
+  userId: string
 }
 
-export default function NetworkingProfileForm({ initialData }: Props) {
+export default function NetworkingProfileForm({ initialData, userId }: Props) {
   const { toast } = useToast()
   const router = useRouter()
+  const {
+    extractText,
+    extractedText,
+    isLoading: isExtracting,
+    error: extractionError
+  } = useTextract()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const { uploadSingle, isUploading } = useUpload()
@@ -79,45 +88,42 @@ export default function NetworkingProfileForm({ initialData }: Props) {
     }
   })
 
+  async function processData(userId: string) {
+    try {
+      await scheduleUserDataProcessing(userId)
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        description: `${error}`
+      })
+    }
+  }
+
   console.log(form.formState.errors)
 
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0]
     if (file) {
-      if (
-        file.type !== 'application/pdf' &&
-        file.type !== 'text/plain' &&
-        file.type !==
-          'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-      ) {
-        toast({
-          title: translations.es.invalidFileType,
-          description: translations.es.onlyPDFAndTXTAndDOCXAllowed,
-          variant: 'destructive'
-        })
-        return
-      }
-      if (file.size > 5 * 1024 * 1024) {
-        toast({
-          title: translations.es.fileTooLarge,
-          description: translations.es.maxFileSize,
-          variant: 'destructive'
-        })
-        return
-      }
-
       try {
         setIsProcessingFile(true)
         setSelectedFile(file)
         const url = await uploadSingle(file)
         form.setValue('resumeUrl', url)
         form.setValue('resumeLastUpdated', new Date().toISOString())
+
+        // Extract text from the file
+        await extractText(file)
+        if (extractedText) {
+          form.setValue('resumeText', extractedText)
+        }
       } catch (error) {
-        console.error('Error uploading file:', error)
+        console.error('Error processing file:', error)
         toast({
           title: translations.es.resumeUploadError,
+          description:
+            error instanceof Error
+              ? error.message
+              : 'An unknown error occurred',
           variant: 'destructive'
         })
       } finally {
@@ -126,7 +132,7 @@ export default function NetworkingProfileForm({ initialData }: Props) {
     }
   }
 
-  const onSubmit = async (values: NetworkingData) => {
+  async function onSubmit(values: NetworkingData) {
     setIsSubmitting(true)
     try {
       const formData = new FormData()
@@ -137,19 +143,12 @@ export default function NetworkingProfileForm({ initialData }: Props) {
         }
       })
 
-      const result = await saveNetworkingProfile(formData)
+      await saveNetworkingProfile(values, userId)
 
-      if (result.success) {
-        toast({
-          title: translations.es.networkingProfileSaved
-        })
-        router.refresh()
-      } else {
-        toast({
-          title: translations.es.networkingProfileError,
-          variant: 'destructive'
-        })
-      }
+      toast({
+        title: translations.es.networkingProfileSaved
+      })
+      router.refresh()
     } catch (error) {
       console.error('Error in onSubmit:', error)
       toast({
@@ -157,9 +156,36 @@ export default function NetworkingProfileForm({ initialData }: Props) {
         variant: 'destructive'
       })
     } finally {
+      await processData(userId)
       setIsSubmitting(false)
     }
   }
+
+  useEffect(() => {
+    if (extractedText) {
+      form.setValue('resumeText', extractedText)
+    }
+  }, [extractedText, form])
+
+  useEffect(() => {
+    if (extractionError) {
+      toast({
+        title: translations.es.textExtractionError,
+        description: extractionError,
+        variant: 'destructive'
+      })
+    }
+  }, [extractionError, toast])
+
+  useEffect(() => {
+    if (extractionError) {
+      toast({
+        title: translations.es.textExtractionError,
+        description: extractionError,
+        variant: 'destructive'
+      })
+    }
+  }, [extractionError, toast])
 
   return (
     <Card className="w-full max-w-4xl mx-auto">
@@ -216,6 +242,12 @@ export default function NetworkingProfileForm({ initialData }: Props) {
                   </div>
                 )}
               </div>
+              {isExtracting && (
+                <div className="mt-2 text-sm text-muted-foreground">
+                  <Loader2 className="h-4 w-4 mr-2 inline animate-spin" />
+                  {translations.es.extractingText}
+                </div>
+              )}
               {initialData.resumeUrl && !selectedFile && !isProcessingFile && (
                 <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                   <FileText className="h-4 w-4" />
