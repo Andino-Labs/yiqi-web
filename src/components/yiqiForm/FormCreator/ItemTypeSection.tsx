@@ -8,9 +8,9 @@ import {
   FormProps,
   InputTypes,
   ItemTypeProps
-} from '../../schemas/yiqiFormSchema'
+} from '../../../schemas/yiqiFormSchema'
 import { cn } from '@/lib/utils'
-import { generateUniqueId } from './utils'
+import { generateUniqueIdYiqiForm } from '../utils'
 interface ItemTypeSectionProps {
   id: string
   fields: FormProps[]
@@ -112,7 +112,7 @@ const ItemTypeSection = ({
             size="sm"
             className="text-sm"
             onClick={() => {
-              const contentId = generateUniqueId()
+              const contentId = generateUniqueIdYiqiForm()
               addSelectItem(
                 id,
                 contentId,
@@ -130,7 +130,7 @@ const ItemTypeSection = ({
               size="sm"
               className="text-sm"
               onClick={() => {
-                const contentId = generateUniqueId()
+                const contentId = generateUniqueIdYiqiForm()
                 addEtcItem(id, contentId)
               }}
             >

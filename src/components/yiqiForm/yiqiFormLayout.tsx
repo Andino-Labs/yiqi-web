@@ -11,23 +11,44 @@ function YiqiFormLayout({
   form,
   orgId,
   currentView,
-  onNavigate
+  onNavigate,
+  fields,
+  addCard,
+  isEditing
 }: {
   children: React.ReactNode
   form: FormProps[]
   orgId: string
   currentView: 'create' | 'results'
   onNavigate: (view: 'create' | 'results') => void
+  fields: FormProps[]
+  addCard: (
+    focusedCardIndex: number,
+    cardId: string,
+    cardTitle?: string
+  ) => void
+  isEditing: boolean
 }) {
   return (
-    <div className="h-screen flex flex-col">
+    <div className="dark:bg-[rgb(28, 28, 28)] relative ">
       <FormHeader
         form={form}
         orgId={orgId}
         currentView={currentView}
         onNavigate={onNavigate}
+        addCard={addCard}
+        fields={fields}
+        isEditing={isEditing}
       />
-      <ScrollArea className="flex-1 overflow-auto">{children}</ScrollArea>
+      <ScrollArea
+        style={{
+          position: 'absolute',
+          height: 'calc(100vh - 104px)',
+          width: '100%'
+        }}
+      >
+        {children}
+      </ScrollArea>
     </div>
   )
 }

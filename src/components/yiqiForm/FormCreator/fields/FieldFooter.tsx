@@ -7,13 +7,15 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui/tooltip'
-import { FormProps } from '../../../schemas/yiqiFormSchema'
+
 import { cn } from '@/lib/utils'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
-import { generateUniqueId } from '../utils'
+
 import { translations } from '@/lib/translations/translations'
+import { FormProps } from '@/schemas/yiqiFormSchema'
+import { generateUniqueIdYiqiForm } from '../../utils'
 interface FieldFooterProps {
   id: string
   fields: FormProps[]
@@ -42,7 +44,7 @@ const FieldFooter = ({
   const handleCopy = useCallback(
     (e: React.MouseEvent) => {
       e.stopPropagation()
-      copyCard(id, generateUniqueId())
+      copyCard(id, generateUniqueIdYiqiForm())
     },
     [copyCard, id]
   )

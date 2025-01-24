@@ -4,7 +4,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { motion } from 'framer-motion'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { FormProps, InputTypes } from '../../../schemas/yiqiFormSchema'
+import { FormProps, InputTypes } from '@/schemas/yiqiFormSchema'
 import { translations } from '@/lib/translations/translations'
 interface TextFieldSectionProps {
   id: string
