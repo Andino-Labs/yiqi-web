@@ -2,17 +2,12 @@
 
 import prisma from '@/lib/prisma'
 import { scheduleMissingPayment } from './scheduleMissingPayment'
+import { scheduleEventReminders } from './scheduleEventReminders'
 
 export async function notificationScheduler() {
   const paymentReminders = await scheduleMissingPayment()
-
+  const eventReminders = await scheduleEventReminders()
   await prisma.queueJob.createMany({
-    data: paymentReminders.map(reminder => ({
-      type: 'SEND_USER_MESSAGE',
-      data: {},
-      notificationType: 'RESERVATION_PAYMENT_REMINDER',
-      userId: reminder.userId,
-      eventId: reminder.eventId
-    }))
+    data: [...paymentReminders, ...eventReminders]
   })
 }
