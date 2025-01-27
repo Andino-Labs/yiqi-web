@@ -9,8 +9,8 @@ import Link from 'next/link'
 export default function Hero() {
   const t = useTranslations('HeroSection')
   return (
-    <div className="bg-black relative overflow-hidden mt-10">
-      <div className="relative max-w-7xl mx-auto pt-20 pb-12 sm:py-16 lg:py-20">
+    <div className="bg-black relative overflow-hidden">
+      <div className="relative max-w-7xl mx-auto pb-12 sm:py-16 lg:py-20">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Column - Text Content */}
           <motion.div
