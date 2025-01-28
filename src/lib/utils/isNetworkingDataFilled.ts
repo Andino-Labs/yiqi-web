@@ -1,16 +1,16 @@
 import { ProfileWithPrivacy } from '@/schemas/userSchema'
 
 /**
- * Helper function to check if any of the Networking data fields are filled.
+ * Helper function to check if `resumeUrl` is provided and at least one other networking data field is filled.
  * This includes fields like professional motivations, communication style, etc.
- * It returns `true` if at least one field contains data, and `false` otherwise.
  *
  * @param {ProfileWithPrivacy} user - The user object containing networking-related data.
- * @returns {boolean} - Returns `true` if any networking field is filled, otherwise `false`.
+ * @returns {boolean} - Returns `true` if `resumeUrl` is provided and at least one other field is filled, otherwise `false`.
  */
-export default function isNetworkingDataFilled(user: ProfileWithPrivacy) {
-  // Create an object with the relevant networking data fields
-  const networkingData = {
+export default function isNetworkingDataFilled(
+  user: ProfileWithPrivacy
+): boolean {
+  const { resumeUrl, ...otherNetworkingData } = {
     professionalMotivations: user.professionalMotivations,
     communicationStyle: user.communicationStyle,
     professionalValues: user.professionalValues,
@@ -19,8 +19,12 @@ export default function isNetworkingDataFilled(user: ProfileWithPrivacy) {
     resumeUrl: user.resumeUrl
   }
 
-  // Check if at least one field is filled (non-empty, non-null, non-undefined)
-  return Object.values(networkingData).some(
+  // Check if `resumeUrl` is filled and at least one other field is non-empty
+  const isResumeUrlProvided =
+    resumeUrl !== '' && resumeUrl !== null && resumeUrl !== undefined
+  const isOtherFieldFilled = Object.values(otherNetworkingData).some(
     value => value !== '' && value !== null && value !== undefined
   )
+
+  return isResumeUrlProvided && isOtherFieldFilled
 }
