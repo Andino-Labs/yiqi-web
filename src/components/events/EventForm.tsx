@@ -21,6 +21,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { createEvent } from '@/services/actions/event/createEvent'
 import {
+  CustomFieldType,
   EventInputSchema,
   EventInputType,
   EventTicketInputType,
@@ -49,6 +50,7 @@ import { useTranslations } from 'next-intl'
 import { UploadIcon } from '@radix-ui/react-icons'
 import { Switch } from '@/components/ui/switch'
 import Link from 'next/link'
+import { CustomFieldsDialog } from './CustomFieldsDialog'
 
 type Props = {
   organizationId: string
@@ -164,7 +166,20 @@ export function EventForm({ organizationId, event }: Props) {
     }
   })
 
-  const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const [showCustomFieldsDialog, setShowCustomFieldsDialog] = useState(false)
+  const [customFields, setCustomFields] = useState<CustomFieldType[]>(
+    event?.customFields ?? []
+  )
+
+  function handleAddCustomField(field: CustomFieldType) {
+    setCustomFields([...customFields, field])
+  }
+
+  function handleRemoveCustomField(index: number) {
+    setCustomFields(customFields.filter((_, i) => i !== index))
+  }
+
+  function handleImageSelect(event: React.ChangeEvent<HTMLInputElement>): void {
     const file = event.target.files?.[0]
     if (file) {
       setSelectedImage(file)
@@ -174,9 +189,9 @@ export function EventForm({ organizationId, event }: Props) {
     }
   }
 
-  const handleOnStartDateChange = (
+  function handleOnStartDateChange(
     event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  ): void {
     const startDate = event.target.value
     form.setValue('startDate', startDate)
 
@@ -204,9 +219,9 @@ export function EventForm({ organizationId, event }: Props) {
     setMinEndDate(startDate)
   }
 
-  const handleOnStartTimeChange = (
+  function handleOnStartTimeChange(
     event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  ): void {
     if (event.target.validity.valid) {
       const startTime = event.target.value
       form.setValue('startTime', startTime)
@@ -214,9 +229,9 @@ export function EventForm({ organizationId, event }: Props) {
     }
   }
 
-  const handleOnEndDateChange = (
+  function handleOnEndDateChange(
     event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  ): void {
     const endDate = event.target.value
     form.setValue('endDate', endDate)
 
@@ -239,9 +254,9 @@ export function EventForm({ organizationId, event }: Props) {
     }
   }
 
-  const handleOnEndTimeChange = (
+  function handleOnEndTimeChange(
     event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  ): void {
     if (event.target.validity.valid) {
       form.setValue('endTime', event.target.value)
     }
@@ -250,7 +265,9 @@ export function EventForm({ organizationId, event }: Props) {
   const [showSuccessDialog, setShowSuccessDialog] = useState(false)
   const [savedEventId, setSavedEventId] = useState<string | null>(null)
 
-  async function onSubmit(values: z.infer<typeof EventFormInputSchema>) {
+  async function onSubmit(
+    values: z.infer<typeof EventFormInputSchema>
+  ): Promise<void> {
     if (!loading) {
       setLoading(true)
       try {
@@ -296,23 +313,27 @@ export function EventForm({ organizationId, event }: Props) {
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          {/* Custom Fields Section */}
+          <div className="space-y-4"></div>
           <div className="mb-4">
             <FormField
               control={form.control}
               name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      id="event-name"
-                      placeholder={t('eventName')}
-                      className="text-xl font-medium border rounded-lg px-4 py-2 w-full focus:ring focus:ring-primary"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              render={function ({ field }) {
+                return (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        id="event-name"
+                        placeholder={t('eventName')}
+                        className="text-xl font-medium border rounded-lg px-4 py-2 w-full focus:ring focus:ring-primary"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )
+              }}
             />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-[300px,1fr] gap-6">
@@ -377,28 +398,32 @@ export function EventForm({ organizationId, event }: Props) {
                       <FormField
                         control={form.control}
                         name="startDate"
-                        render={({ field }) => (
-                          <Input
-                            type="date"
-                            className="w-full border rounded-lg px-3 py-2"
-                            {...field}
-                            min={defaultStartDateStr}
-                            onChange={handleOnStartDateChange}
-                          />
-                        )}
+                        render={function ({ field }) {
+                          return (
+                            <Input
+                              type="date"
+                              className="w-full border rounded-lg px-3 py-2"
+                              {...field}
+                              min={defaultStartDateStr}
+                              onChange={handleOnStartDateChange}
+                            />
+                          )
+                        }}
                       />
                       <FormField
                         control={form.control}
                         name="startTime"
-                        render={({ field }) => (
-                          <Input
-                            type="time"
-                            className="w-full border rounded-lg px-3 py-2"
-                            {...field}
-                            min={minStartTime}
-                            onChange={handleOnStartTimeChange}
-                          />
-                        )}
+                        render={function ({ field }) {
+                          return (
+                            <Input
+                              type="time"
+                              className="w-full border rounded-lg px-3 py-2"
+                              {...field}
+                              min={minStartTime}
+                              onChange={handleOnStartTimeChange}
+                            />
+                          )
+                        }}
                       />
                     </div>
                   </div>
@@ -412,28 +437,32 @@ export function EventForm({ organizationId, event }: Props) {
                       <FormField
                         control={form.control}
                         name="endDate"
-                        render={({ field }) => (
-                          <Input
-                            type="date"
-                            className="w-full border rounded-lg px-3 py-2"
-                            {...field}
-                            min={minEndDate}
-                            onChange={handleOnEndDateChange}
-                          />
-                        )}
+                        render={function ({ field }) {
+                          return (
+                            <Input
+                              type="date"
+                              className="w-full border rounded-lg px-3 py-2"
+                              {...field}
+                              min={minEndDate}
+                              onChange={handleOnEndDateChange}
+                            />
+                          )
+                        }}
                       />
                       <FormField
                         control={form.control}
                         name="endTime"
-                        render={({ field }) => (
-                          <Input
-                            type="time"
-                            className="w-full border rounded-lg px-3 py-2"
-                            {...field}
-                            min={minEndTime}
-                            onChange={handleOnEndTimeChange}
-                          />
-                        )}
+                        render={function ({ field }) {
+                          return (
+                            <Input
+                              type="time"
+                              className="w-full border rounded-lg px-3 py-2"
+                              {...field}
+                              min={minEndTime}
+                              onChange={handleOnEndTimeChange}
+                            />
+                          )
+                        }}
                       />
                     </div>
                   </div>
@@ -470,29 +499,31 @@ export function EventForm({ organizationId, event }: Props) {
                   <FormField
                     control={form.control}
                     name="location"
-                    render={({ field }) => (
-                      <AddressAutocomplete
-                        defaultValue={field.value ?? ''}
-                        fieldName="location"
-                        onSetAddress={field.onChange}
-                        onAfterSelection={value => {
-                          if (value?.address_components && value?.geometry) {
-                            const locationDetails = getLocationDetails(
-                              value.address_components
-                            )
-                            if (locationDetails) {
-                              setLocationDetails({
-                                ...locationDetails,
-                                latLon: {
-                                  lat: value.geometry?.location?.lat() ?? 0,
-                                  lon: value.geometry?.location?.lng() ?? 0
-                                }
-                              })
+                    render={function ({ field }) {
+                      return (
+                        <AddressAutocomplete
+                          defaultValue={field.value ?? ''}
+                          fieldName="location"
+                          onSetAddress={field.onChange}
+                          onAfterSelection={function (value) {
+                            if (value?.address_components && value?.geometry) {
+                              const locationDetails = getLocationDetails(
+                                value.address_components
+                              )
+                              if (locationDetails) {
+                                setLocationDetails({
+                                  ...locationDetails,
+                                  latLon: {
+                                    lat: value.geometry?.location?.lat() ?? 0,
+                                    lon: value.geometry?.location?.lng() ?? 0
+                                  }
+                                })
+                              }
                             }
-                          }
-                        }}
-                      />
-                    )}
+                          }}
+                        />
+                      )
+                    }}
                   />
                 </div>
               </div>
@@ -503,21 +534,61 @@ export function EventForm({ organizationId, event }: Props) {
               <FormField
                 control={form.control}
                 name="description"
-                render={() => (
-                  <FormItem>
-                    <FormControl>
-                      <div className="max-h-96 overflow-y-auto border rounded p-2">
-                        <MarkdownEditor
-                          initialValue={description}
-                          onChange={val => {
-                            setDescription(val)
-                          }}
-                        />
-                      </div>
-                    </FormControl>
-                  </FormItem>
-                )}
+                render={function () {
+                  return (
+                    <FormItem>
+                      <FormControl>
+                        <div className="max-h-96 overflow-y-auto border rounded p-2">
+                          <MarkdownEditor
+                            initialValue={description}
+                            onChange={function (val) {
+                              setDescription(val)
+                            }}
+                          />
+                        </div>
+                      </FormControl>
+                    </FormItem>
+                  )
+                }}
               />
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                  Campos personalizados
+                </span>
+                <Button
+                  type="button"
+                  onClick={() => setShowCustomFieldsDialog(true)}
+                  variant="outline"
+                  className="bg-secondary"
+                >
+                  Añadir campos personalizados
+                </Button>
+              </div>
+
+              {customFields.length > 0 && (
+                <div className="space-y-2">
+                  {customFields.map((field, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between border-b py-2"
+                    >
+                      <div>
+                        <span className="font-medium">{field.name}</span> -{' '}
+                        <span className="text-sm text-gray-500">
+                          {field.description}
+                        </span>
+                      </div>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        onClick={() => handleRemoveCustomField(index)}
+                      >
+                        Elimina el campo
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
 
               {/* Capacity */}
               <div className="flex items-center justify-between">
@@ -530,20 +601,24 @@ export function EventForm({ organizationId, event }: Props) {
                 <FormField
                   control={form.control}
                   name="maxAttendees"
-                  render={({ field }) => (
-                    <Input
-                      type="number"
-                      placeholder={t('unlimited')}
-                      min={1}
-                      className="w-32 text-right border rounded-lg px-3 py-2"
-                      value={field.value?.toString()}
-                      onChange={e => {
-                        const value =
-                          e.target.value === '' ? null : Number(e.target.value)
-                        field.onChange(value)
-                      }}
-                    />
-                  )}
+                  render={function ({ field }) {
+                    return (
+                      <Input
+                        type="number"
+                        placeholder={t('unlimited')}
+                        min={1}
+                        className="w-32 text-right border rounded-lg px-3 py-2"
+                        value={field.value?.toString()}
+                        onChange={function (e) {
+                          const value =
+                            e.target.value === ''
+                              ? null
+                              : Number(e.target.value)
+                          field.onChange(value)
+                        }}
+                      />
+                    )
+                  }}
                 />
               </div>
 
@@ -558,19 +633,23 @@ export function EventForm({ organizationId, event }: Props) {
                 <FormField
                   control={form.control}
                   name="requiresApproval"
-                  render={({ field }) => (
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  )}
+                  render={function ({ field }) {
+                    return (
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    )
+                  }}
                 />
               </div>
 
               {/* Tickets */}
               <div
                 className="flex items-center justify-between cursor-pointer"
-                onClick={() => setShowTicketManager(!showTicketManager)}
+                onClick={function () {
+                  setShowTicketManager(!showTicketManager)
+                }}
               >
                 <span>{t('tickets')}</span>
                 <span>
@@ -580,35 +659,37 @@ export function EventForm({ organizationId, event }: Props) {
 
               {tickets.length > 0 && !showTicketManager && (
                 <div className="space-y-2">
-                  {tickets.map((ticket, index) => (
-                    <div
-                      key={index}
-                      className="grid grid-cols-3 gap-4 border-b py-2"
-                    >
-                      <div>
-                        <span>{ticket.name}</span>
+                  {tickets.map(function (ticket, index) {
+                    return (
+                      <div
+                        key={index}
+                        className="grid grid-cols-3 gap-4 border-b py-2"
+                      >
+                        <div>
+                          <span>{ticket.name}</span>
+                        </div>
+                        <div className="text-center">
+                          <span className="text-sm text-gray-500">
+                            {ticket.price > 0
+                              ? `S/${ticket.price}`
+                              : `${t('free')}`}
+                          </span>
+                        </div>
+                        <div className="text-right">
+                          <span className="text-sm text-gray-500">
+                            {ticket.limit} {t('tickets')}
+                          </span>
+                        </div>
                       </div>
-                      <div className="text-center">
-                        <span className="text-sm text-gray-500">
-                          {ticket.price > 0
-                            ? `S/${ticket.price}`
-                            : `${t('free')}`}
-                        </span>
-                      </div>
-                      <div className="text-right">
-                        <span className="text-sm text-gray-500">
-                          {ticket.limit} {t('tickets')}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
+                    )
+                  })}
                 </div>
               )}
 
               {showTicketManager && (
                 <TicketTypesManager
                   tickets={tickets}
-                  onUpdate={newTickets => {
+                  onUpdate={function (newTickets) {
                     setTickets(newTickets)
                     setShowTicketManager(false)
                   }}
@@ -637,7 +718,7 @@ export function EventForm({ organizationId, event }: Props) {
 
       <Dialog
         open={showSuccessDialog}
-        onOpenChange={open => {
+        onOpenChange={function (open) {
           setShowSuccessDialog(open)
           if (!open) {
             router.push(`/admin/organizations/${organizationId}/events`)
@@ -658,7 +739,7 @@ export function EventForm({ organizationId, event }: Props) {
               <div className="flex justify-end space-x-4">
                 <Button
                   variant="outline"
-                  onClick={() => {
+                  onClick={function () {
                     setShowSuccessDialog(false)
                     router.push(`/admin/organizations/${organizationId}/events`)
                   }}
@@ -673,6 +754,11 @@ export function EventForm({ organizationId, event }: Props) {
           </DialogHeader>
         </DialogContent>
       </Dialog>
+      <CustomFieldsDialog
+        open={showCustomFieldsDialog}
+        onOpenChange={setShowCustomFieldsDialog}
+        onAddCustomField={handleAddCustomField}
+      />
     </>
   )
 }

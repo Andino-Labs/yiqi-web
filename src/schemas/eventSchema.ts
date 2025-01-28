@@ -33,6 +33,20 @@ export const EventTicketOfferingInputSchema = z.object({
     .min(1, 'Must allow at least 1 ticket per purchase')
 })
 
+export const CustomField = z.object({
+  name: z.string(),
+  description: z.string(),
+  type: z.enum(['text', 'number', 'date', 'boolean', 'url']),
+  inputType: z.enum(['shortText', 'longText']),
+  required: z.boolean().optional(),
+  defaultValue: z.union([z.string(), z.number(), z.boolean()]).optional()
+})
+
+export const CustomFieldsSchema = z.array(CustomField)
+
+export type CustomFieldType = z.infer<typeof CustomField>
+export type CustomFieldsSchemaType = z.infer<typeof CustomFieldsSchema>
+
 export const EventInputSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   startDate: z.coerce.date(),
@@ -58,7 +72,8 @@ export const EventInputSchema = z.object({
       lon: z.number().optional().nullable()
     })
     .optional()
-    .nullable()
+    .nullable(),
+  customFields: CustomFieldsSchema.optional()
 })
 
 export const EventCommunitySchema = z.object({
@@ -177,7 +192,7 @@ export const SavedEventSchema = EventInputSchema.extend({
   createdAt: z.date(),
   updatedAt: z.date(),
   customFields: z
-    .array(CustomFieldSchema)
+    .array(CustomField)
     .optional()
     .nullable()
     .transform(val => val ?? []),
