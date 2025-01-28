@@ -64,7 +64,7 @@ export default async function ContactDetailsPage({
                   data-[state=inactive]:bg-transparent data-[state=inactive]:text-primary"
                   value="messages"
                 >
-                  {t('Messages')}
+                  {t('messages')}
                 </TabsTrigger>
 
                 <TabsTrigger
@@ -102,7 +102,7 @@ export default async function ContactDetailsPage({
 
                 <TabsContent value="events" className="p-6">
                   <h2 className="text-2xl font-bold mb-4">
-                    {t('AttendedEvents')}
+                    {t('attendedEvents')}
                   </h2>
 
                   {contact.registeredEvents?.length ? (
@@ -119,14 +119,14 @@ export default async function ContactDetailsPage({
                             {attendee.event.title}
                           </Link>
                           <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                            <strong>{t('Status')}: </strong> {attendee.status}
+                            <strong>{t('status')}: </strong> {attendee.status}
                           </p>
                         </li>
                       ))}
                     </ul>
                   ) : (
                     <p className="text-gray-500 dark:text-gray-400">
-                      {t('NoEvents')}
+                      {t('noEvents')}
                     </p>
                   )}
                 </TabsContent>
@@ -139,21 +139,21 @@ export default async function ContactDetailsPage({
                   <div className="dark:bg-primary shadow rounded-lg py-6 space-y-4">
                     <p className="text-sm text-gray-700 dark:text-gray-300">
                       <strong className="font-semibold text-sm">
-                        {t('Name')}:{' '}
+                        {t('name')}:{' '}
                       </strong>{' '}
-                      {contact.name || t('N/A')}
+                      {contact.name || t('na')}
                     </p>
                     <p className="text-sm text-gray-700 dark:text-gray-300">
                       <strong className="font-semibold text-sm">
-                        {t('Email')}:{' '}
+                        {t('email')}:{' '}
                       </strong>{' '}
-                      {contact.email || t('N/A')}
+                      {contact.email || t('na')}
                     </p>
                     <p className="text-sm text-gray-700 dark:text-gray-300">
                       <strong className="font-semibold text-sm">
-                        {t('Number')}:{' '}
+                        {t('phoneNumber')}:{' '}
                       </strong>{' '}
-                      {contact.phoneNumber || t('N/A')}
+                      {contact.phoneNumber || t('na')}
                     </p>
 
                     <h3 className="text-xl font-semibold mt-6 mb-2">

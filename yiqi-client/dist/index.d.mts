@@ -365,11 +365,17 @@ declare const appRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<
     }, {
         name: string;
         id: string;
-        description: string | null;
         createdAt: Date;
         updatedAt: Date;
-        userId: string;
-        logo: string | null;
+        colour: string;
+        linkedin?: string | undefined;
+        instagram?: string | undefined;
+        website?: string | undefined;
+        description?: string | undefined;
+        logo?: string | undefined;
+        facebook?: string | undefined;
+        tiktok?: string | undefined;
+        eventCount?: number | null | undefined;
     }>;
     checkExistingRegistration: _trpc_server.BuildProcedure<"mutation", {
         _config: _trpc_server.RootConfig<{
@@ -878,6 +884,8 @@ declare const appRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<
     }, {
         name: string;
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         colour: string;
         linkedin?: string | undefined;
         instagram?: string | undefined;
@@ -886,6 +894,7 @@ declare const appRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<
         logo?: string | undefined;
         facebook?: string | undefined;
         tiktok?: string | undefined;
+        eventCount?: number | null | undefined;
     }[]>;
     getEventsByOrganization: _trpc_server.BuildProcedure<"query", {
         _config: _trpc_server.RootConfig<{

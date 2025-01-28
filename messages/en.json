@@ -494,18 +494,19 @@
     "support": "technical support"
   },
   "contactText": {
-    "contactDetails": "Contact Details:",
-    "Messages": "Messages",
+    "contactDetails": "Contact Details",
+    "messages": "Messages",
     "attendEvents": "Attended Events",
     "userDetails": "User Details",
-    "attendedEvents": "Attended Events:",
-    "Name": "Name:",
-    "Email": "Email:",
-    "number": "Phone Number:",
-    "additionalData": "Additional Data:",
-    "AttendedEvents": "Attended Events:",
-    "Status": "Status",
-    "back": "Back to Contacts"
+    "attendedEvents": "Attended Events",
+    "name": "Name",
+    "email": "Email",
+    "phoneNumber": "Phone Number",
+    "additionalData": "Additional Data",
+    "status": "Status",
+    "backToContacts": "Back to Contacts",
+    "noEvents": "No events attended yet",
+    "na": "N/A"
   },
   "user": {
     "useCase": "What is your use case?",
@@ -636,7 +637,7 @@
     "checkInQrEventNotFound": "Scan QR Code",
     "checkInQrEventDontExist": "The event does not exist",
     "checkInQrDontAccess": "You do not have access",
-    "checkInQrContactAdministrator": "To proceed, contact your organization’s administrator to validate your ticket.",
+    "checkInQrContactAdministrator": "To proceed, contact your organization's administrator to validate your ticket.",
     "checkInQrOrganizationEventDontFound": "Organization or Event not found",
     "checkInQrInformation": "Ensure the information is correct or contact support.",
     "eventCheckInTableTitle": "Event Records:",

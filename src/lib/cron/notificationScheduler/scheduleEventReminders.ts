@@ -28,7 +28,7 @@ export async function scheduleEventReminders() {
       SELECT 1 FROM "QueueJob" qj
       WHERE qj."eventId" = er."eventId"
       AND qj."userId" = er."userId"
-      AND qj."notificationType" = ${NotificationType.RESERVATION_REMINDER}
+      AND qj."notificationType"::text = ${NotificationType.RESERVATION_REMINDER}::text
       AND qj."createdAt" >= ${twelveHoursAgo}
     )
   `
@@ -45,7 +45,7 @@ export async function scheduleEventReminders() {
       SELECT 1 FROM "QueueJob" qj
       WHERE qj."eventId" = er."eventId"
       AND qj."userId" = er."userId"
-      AND qj."notificationType" = ${NotificationType.RESERVATION_REMINDER}
+      AND qj."notificationType"::text = ${NotificationType.RESERVATION_REMINDER}::text
       AND qj."createdAt" >= ${twelveHoursAgo}
     )
   `
