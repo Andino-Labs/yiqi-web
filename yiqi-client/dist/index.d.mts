@@ -1,5 +1,5 @@
-import * as node_modules_superjson_dist from 'node_modules/superjson/dist';
-import * as node_modules__trpc_server_dist from 'node_modules/@trpc/server/dist';
+import * as superjson from 'superjson';
+import * as _trpc_server from '@trpc/server';
 import { z } from 'zod';
 
 declare enum EventTypeEnum {
@@ -32,18 +32,18 @@ type Context = {
     user: LuciaUserType | null;
 };
 
-declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_modules__trpc_server_dist.RootConfig<{
+declare const appRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<{
     ctx: Context;
     meta: object;
-    errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-    transformer: typeof node_modules_superjson_dist.default;
+    errorShape: _trpc_server.DefaultErrorShape;
+    transformer: typeof superjson.default;
 }>, {
-    loginLinkedin: node_modules__trpc_server_dist.BuildProcedure<"mutation", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    loginLinkedin: _trpc_server.BuildProcedure<"mutation", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
@@ -53,8 +53,8 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         _input_out: {
             code: string;
         };
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, {
         user: {
             name: string;
@@ -65,12 +65,12 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         };
         sessionId: string;
     }>;
-    loginGoogle: node_modules__trpc_server_dist.BuildProcedure<"mutation", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    loginGoogle: _trpc_server.BuildProcedure<"mutation", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
@@ -80,8 +80,8 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         _input_out: {
             idToken: string;
         };
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, {
         user: {
             name: string;
@@ -92,12 +92,12 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         };
         sessionId: string;
     }>;
-    searchUsers: node_modules__trpc_server_dist.BuildProcedure<"query", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    searchUsers: _trpc_server.BuildProcedure<"query", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
@@ -107,8 +107,8 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         _input_out: {
             query: string;
         };
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, {
         name: string;
         id: string;
@@ -117,12 +117,12 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         emailVerified?: Date | null | undefined;
         phoneNumber?: string | null | undefined;
     }[]>;
-    getPublicEvents: node_modules__trpc_server_dist.BuildProcedure<"query", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    getPublicEvents: _trpc_server.BuildProcedure<"query", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
@@ -142,8 +142,8 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
             limit?: number | undefined;
             page?: number | undefined;
         } | undefined;
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, {
         events: {
             id: string;
@@ -231,12 +231,12 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         }[];
         totalCount: number;
     }>;
-    getEvent: node_modules__trpc_server_dist.BuildProcedure<"query", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    getEvent: _trpc_server.BuildProcedure<"query", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
@@ -248,8 +248,8 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
             eventId: string;
             includeTickets?: boolean | undefined;
         };
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, {
         id: string;
         type: EventTypeEnum;
@@ -288,12 +288,12 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
             description?: string | undefined;
         }[] | null | undefined;
     }>;
-    createRegistration: node_modules__trpc_server_dist.BuildProcedure<"mutation", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    createRegistration: _trpc_server.BuildProcedure<"mutation", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
@@ -313,8 +313,8 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
                 tickets: Record<string, number>;
             };
         };
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, {
         message: string;
         success: boolean;
@@ -329,12 +329,12 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
             paymentId: string | null;
         };
     }>;
-    getUserRegistrationStatus: node_modules__trpc_server_dist.BuildProcedure<"query", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    getUserRegistrationStatus: _trpc_server.BuildProcedure<"query", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
@@ -346,37 +346,43 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
             userId: string;
             eventId: string;
         };
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, boolean>;
-    getOrganization: node_modules__trpc_server_dist.BuildProcedure<"query", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    getOrganization: _trpc_server.BuildProcedure<"query", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
         _input_in: string;
         _input_out: string;
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, {
         name: string;
         id: string;
-        description: string | null;
         createdAt: Date;
         updatedAt: Date;
-        userId: string;
-        logo: string | null;
+        colour: string;
+        linkedin?: string | undefined;
+        instagram?: string | undefined;
+        website?: string | undefined;
+        description?: string | undefined;
+        logo?: string | undefined;
+        facebook?: string | undefined;
+        tiktok?: string | undefined;
+        eventCount?: number | null | undefined;
     }>;
-    checkExistingRegistration: node_modules__trpc_server_dist.BuildProcedure<"mutation", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    checkExistingRegistration: _trpc_server.BuildProcedure<"mutation", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
@@ -386,8 +392,8 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         _input_out: {
             eventId: string;
         };
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, {
         id: string;
         status: "PENDING" | "APPROVED" | "REJECTED";
@@ -428,12 +434,12 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         paid: boolean;
         paymentId: string | null;
     } | null>;
-    createCheckoutSession: node_modules__trpc_server_dist.BuildProcedure<"mutation", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    createCheckoutSession: _trpc_server.BuildProcedure<"mutation", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
@@ -443,17 +449,17 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         _input_out: {
             registrationId: string;
         };
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, {
         clientSecret: string;
     }>;
-    markRegistrationPaid: node_modules__trpc_server_dist.BuildProcedure<"mutation", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    markRegistrationPaid: _trpc_server.BuildProcedure<"mutation", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
@@ -463,8 +469,8 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         _input_out: {
             registrationId: string;
         };
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, {
         success: boolean;
         error: string;
@@ -472,12 +478,12 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         success: boolean;
         error?: undefined;
     }>;
-    getCommunities: node_modules__trpc_server_dist.BuildProcedure<"query", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    getCommunities: _trpc_server.BuildProcedure<"query", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
@@ -491,8 +497,8 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
             page: number;
             search?: string | undefined;
         } | undefined;
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, {
         communities: {
             name: string;
@@ -515,12 +521,12 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
             nextPage: number | null;
         };
     }>;
-    getCommunityDetails: node_modules__trpc_server_dist.BuildProcedure<"query", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    getCommunityDetails: _trpc_server.BuildProcedure<"query", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
@@ -530,8 +536,8 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         _input_out: {
             communityId: string;
         };
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, {
         organization: {
             name: string;
@@ -582,18 +588,18 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
             phoneNumber?: string | null | undefined;
         }[];
     }>;
-    getTicketsWithEvents: node_modules__trpc_server_dist.BuildProcedure<"query", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    getTicketsWithEvents: _trpc_server.BuildProcedure<"query", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _ctx_out: Context;
-        _input_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _input_out: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _input_in: typeof _trpc_server.unsetMarker;
+        _input_out: typeof _trpc_server.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
         _meta: object;
     }, {
         event: {
@@ -631,18 +637,18 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
             ticketTypeId: string;
         }[];
     }[]>;
-    getUserProfile: node_modules__trpc_server_dist.BuildProcedure<"query", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    getUserProfile: _trpc_server.BuildProcedure<"query", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _ctx_out: Context;
-        _input_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _input_out: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _input_in: typeof _trpc_server.unsetMarker;
+        _input_out: typeof _trpc_server.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
         _meta: object;
     }, {
         name: string;
@@ -677,12 +683,12 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         resumeLastUpdated?: string | null | undefined;
         linkedinAccessToken?: string | null | undefined;
     } | null>;
-    updateUserProfile: node_modules__trpc_server_dist.BuildProcedure<"mutation", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    updateUserProfile: _trpc_server.BuildProcedure<"mutation", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
@@ -752,8 +758,8 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
             resumeLastUpdated?: string | null | undefined;
             linkedinAccessToken?: string | null | undefined;
         };
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, {
         success: boolean;
         user: {
@@ -790,18 +796,18 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
             linkedinAccessToken?: string | null | undefined;
         };
     }>;
-    deleteUserAccount: node_modules__trpc_server_dist.BuildProcedure<"mutation", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    deleteUserAccount: _trpc_server.BuildProcedure<"mutation", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _ctx_out: Context;
-        _input_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _input_out: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _input_in: typeof _trpc_server.unsetMarker;
+        _input_out: typeof _trpc_server.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
         _meta: object;
     }, {
         success: boolean;
@@ -810,12 +816,12 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         success: boolean;
         error: string;
     }>;
-    saveNetworkingProfile: node_modules__trpc_server_dist.BuildProcedure<"mutation", {
-        _config: node_modules__trpc_server_dist.RootConfig<{
+    saveNetworkingProfile: _trpc_server.BuildProcedure<"mutation", {
+        _config: _trpc_server.RootConfig<{
             ctx: Context;
             meta: object;
-            errorShape: node_modules__trpc_server_dist.DefaultErrorShape;
-            transformer: typeof node_modules_superjson_dist.default;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: typeof superjson.default;
         }>;
         _meta: object;
         _ctx_out: Context;
@@ -853,8 +859,8 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
             resumeText?: string | null | undefined;
             resumeLastUpdated?: string | null | undefined;
         };
-        _output_in: typeof node_modules__trpc_server_dist.unsetMarker;
-        _output_out: typeof node_modules__trpc_server_dist.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }, {
         success: boolean;
         error?: undefined;
@@ -878,6 +884,8 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
     }, {
         name: string;
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         colour: string;
         linkedin?: string | undefined;
         instagram?: string | undefined;
@@ -886,6 +894,7 @@ declare const appRouter: node_modules__trpc_server_dist.CreateRouterInner<node_m
         logo?: string | undefined;
         facebook?: string | undefined;
         tiktok?: string | undefined;
+        eventCount?: number | null | undefined;
     }[]>;
     getEventsByOrganization: _trpc_server.BuildProcedure<"query", {
         _config: _trpc_server.RootConfig<{
