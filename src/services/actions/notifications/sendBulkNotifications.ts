@@ -1,3 +1,4 @@
+'use server'
 import prisma from '@/lib/prisma'
 import { SendBaseMessageToUserProps } from '@/services/notifications/sendBaseMessageToUser'
 import { JobType, MessageThreadType } from '@prisma/client'
