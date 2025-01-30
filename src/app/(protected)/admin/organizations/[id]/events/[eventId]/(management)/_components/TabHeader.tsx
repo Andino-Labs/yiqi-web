@@ -15,13 +15,14 @@ export const TabHeader = ({
         {options.map(option => {
           const isActiveLink = pathname.includes(option.href)
           return (
-            <Tabs.Trigger
-              key={option.href}
-              value={option.href}
-              className={`py-2 px-5 border-b ${isActiveLink && 'font-bold border-b-white'}`}
-            >
-              <Link href={`./${option.href}`}>{option.label}</Link>
-            </Tabs.Trigger>
+            <Link key={option.href} href={`./${option.href}`}>
+              <Tabs.Trigger
+                value={option.href}
+                className={`py-2 px-5 border-b ${isActiveLink && 'font-bold border-b-white'}`}
+              >
+                {option.label}
+              </Tabs.Trigger>
+            </Link>
           )
         })}
       </Tabs.List>
