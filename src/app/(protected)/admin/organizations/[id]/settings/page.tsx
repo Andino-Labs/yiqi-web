@@ -7,22 +7,25 @@ import OrganizationSettings from '@/components/settings/organizationSettings/org
 export default async function Settings({ params }: { params: { id: string } }) {
   const user = await getUser()
   const organization = await getOrganization(params.id)
-  if (!user) {
-    redirect('/auth')
-  }
-  if (user.role === Roles.ADMIN) {
-    return (
-      <>
-        {organization && (
-          <OrganizationSettings userId={user.id} organization={organization} />
-        )}
-      </>
-    )
-  } else if (user.role === Roles.NEW_USER) {
-    redirect('/newuser')
-  } else if (user.role == Roles.ANDINO_ADMIN) {
-    redirect('/andino-admin')
-  } else if (user.role === Roles.USER) {
-    redirect('/user')
+
+  if (user) {
+    if (user.role === Roles.ADMIN) {
+      return (
+        <>
+          {organization && (
+            <OrganizationSettings
+              userId={user.id}
+              organization={organization}
+            />
+          )}
+        </>
+      )
+    } else if (user.role === Roles.NEW_USER) {
+      redirect('/newuser')
+    } else if (user.role == Roles.ANDINO_ADMIN) {
+      redirect('/andino-admin')
+    } else if (user.role === Roles.USER) {
+      redirect('/user')
+    }
   }
 }

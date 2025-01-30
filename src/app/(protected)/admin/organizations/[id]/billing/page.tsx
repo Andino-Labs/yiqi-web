@@ -1,5 +1,4 @@
 import React from 'react'
-import { redirect } from 'next/navigation'
 import { getAdminOrganization } from '@/services/actions/organizationActions'
 import {
   Card,
@@ -17,12 +16,10 @@ export default async function OrganizationBillingPage({
 }) {
   const organization = await getAdminOrganization(params.id)
 
-  if (!organization) {
-    redirect('/')
-  }
-
   const billingInfo =
-    organization.billingInfo && typeof organization.billingInfo === 'object'
+    organization &&
+    organization.billingInfo &&
+    typeof organization.billingInfo === 'object'
       ? {
           accountName: String(
             (organization.billingInfo as Record<string, unknown>).accountName ||
