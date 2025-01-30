@@ -1,14 +1,19 @@
+import { TabHeader } from './_components/TabHeader'
+
 export default async function Layout({
-  params,
   children
 }: {
   children: React.ReactNode
-  params: { id: string; eventId: string }
 }) {
-  console.log('params', params)
+  const tabOptions = [
+    { href: 'summary', label: 'Event Summary' },
+    { href: 'attendes', label: 'Attendees' },
+    { href: 'registration', label: 'Registration' },
+    { href: 'broadcasts', label: 'Broadcasts' }
+  ]
   return (
     <div>
-      <div className="text-3xl">asdasd de la vida misma</div>
+      <TabHeader options={tabOptions} />
       {children}
     </div>
   )
