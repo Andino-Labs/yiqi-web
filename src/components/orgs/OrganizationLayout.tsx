@@ -39,7 +39,6 @@ import { getAllOrganizationsForCurrentUser } from '@/services/actions/organizati
 import { useEffect, useMemo, useState } from 'react'
 import { OrganizationType } from '@/schemas/organizerSchema'
 import { useTranslations } from 'next-intl'
-import { Button } from '../ui/button'
 
 interface UserProps {
   name: string
@@ -52,28 +51,17 @@ interface AdminLayoutProps {
   children: React.ReactNode
   userProps: UserProps
   orgId: string
-  showExtraButton?: boolean
-  buttonName?: string
-  dialogTriggerRef?: React.RefObject<HTMLButtonElement>
 }
 
 export default function OrganizationLayout({
   children,
   userProps,
-  orgId,
-  showExtraButton = false,
-  buttonName = '',
-  dialogTriggerRef
+  orgId
 }: AdminLayoutProps) {
   const tSidebar = useTranslations('Sidebar')
   const tContactFor = useTranslations('contactFor')
   const [organizations, setOrganizations] = useState<OrganizationType[]>([])
 
-  const handleBulkSendClick = () => {
-    if (dialogTriggerRef?.current) {
-      dialogTriggerRef.current.click()
-    }
-  }
   useEffect(() => {
     async function fetchOrganizations() {
       try {
@@ -173,16 +161,6 @@ export default function OrganizationLayout({
           <header className="flex items-center justify-between p-4 shadow-md bg-primary">
             <SidebarTrigger className="bg-primary text-primary" />
             <div className="flex items-center gap-4">
-              {/* Botón para enviar masivamente */}
-              {showExtraButton && (
-                <Button
-                  variant="outline"
-                  className="font-bold"
-                  onClick={handleBulkSendClick}
-                >
-                  {buttonName}
-                </Button>
-              )}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Avatar className="h-8 w-8">
