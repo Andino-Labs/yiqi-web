@@ -647,6 +647,22 @@
     "eventCheckInTableCheckIn": "Checked In",
     "eventCheckinBackButton": "Go to Tickets"
   },
+  "NetworkingUserList": {
+    "title": "Networking Matches",
+    "loadingMatches": "We are using advanced AI matchmaking to find the best connections for you. Keep checking back for new connections!",
+    "foundText": "You have {nbr} potential matches! Explore them to find your best connections.",
+    "buttonText": "View Recommendations",
+    "buttonLoading": "Still loading matches",
+    "modalSubTitle": "Here are the people you’ve matched with! Connect and collaborate to build meaningful relationships.",
+    "whyRecomeendation": "Why should we meet?",
+    "aboutPerson": "About"
+  },
+  "ongoingEventBanner": {
+    "ongoingEvent": "Ongoing Event",
+    "joinEvent": "Join Event",
+    "viewTicket": "View Ticket",
+    "linkUnvailable": "Virtual link is unavailable for this event."
+  },
   "RegistrationChart": {
     "title": "Registrations Last 7 Days",
     "noData": "No registration data available"

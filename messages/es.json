@@ -647,6 +647,22 @@
     "eventCheckInTableCheckIn": "Verificado",
     "eventCheckinBackButton": "Volver a entradas"
   },
+  "NetworkingUserList": {
+    "title": "Coincidencias de Networking",
+    "loadingMatches": "Estamos utilizando un avanzado sistema de emparejamiento con IA para encontrar las mejores conexiones para ti. ¡Sigue revisando para nuevas conexiones!",
+    "foundText": "¡Tienes {nbr} coincidencias potenciales! Explóralas para encontrar tus mejores conexiones.",
+    "buttonText": "Ver recomendaciones",
+    "buttonLoading": "Aún cargando las coincidencias",
+    "modalSubTitle": "¡Aquí están las personas con las que has hecho coincidir! Conéctate y colabora para construir relaciones significativas.",
+    "whyRecomeendation": "¿Por qué deberíamos encontrarnos?",
+    "aboutPerson": "Acerca de"
+  },
+  "ongoingEventBanner": {
+    "ongoingEvent": "Evento en Curso",
+    "joinEvent": "Unirse al Evento",
+    "viewTicket": "Ver Entrada",
+    "linkUnvailable": "El enlace virtual no está disponible para este evento."
+  },
   "RegistrationChart": {
     "title": "Registros de los Últimos 7 Días",
     "noData": "No hay datos de registro disponibles"
