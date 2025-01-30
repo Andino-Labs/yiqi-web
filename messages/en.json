@@ -650,5 +650,11 @@
   "RegistrationChart": {
     "title": "Registrations Last 7 Days",
     "noData": "No registration data available"
+  },
+  "ManagementEventTabs": {
+    "summary": "Event Summary",
+    "attendes": "Attendees",
+    "registration": "Registration",
+    "broadcasts": "Broadcasts"
   }
 }

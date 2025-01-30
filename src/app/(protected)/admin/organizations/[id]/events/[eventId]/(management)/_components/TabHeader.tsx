@@ -1,20 +1,29 @@
 'use client'
 import * as Tabs from '@radix-ui/react-tabs'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 export const TabHeader = ({
   options
 }: {
   options: { label: string; href: string }[]
 }) => {
+  const pathname = usePathname()
   return (
-    <Tabs.Root className="" defaultValue="tab1">
-      <Tabs.List className="space-x-6">
-        {options.map(option => (
-          <Tabs.Trigger key={option.href} value={option.href}>
-            <Link href={`./${option.href}`}>{option.label}</Link>
-          </Tabs.Trigger>
-        ))}
+    <Tabs.Root className="mb-4 border-b">
+      <Tabs.List>
+        {options.map(option => {
+          const isActiveLink = pathname.includes(option.href)
+          return (
+            <Tabs.Trigger
+              key={option.href}
+              value={option.href}
+              className={`py-2 px-5 border-b ${isActiveLink && 'font-bold border-b-white'}`}
+            >
+              <Link href={`./${option.href}`}>{option.label}</Link>
+            </Tabs.Trigger>
+          )
+        })}
       </Tabs.List>
     </Tabs.Root>
   )

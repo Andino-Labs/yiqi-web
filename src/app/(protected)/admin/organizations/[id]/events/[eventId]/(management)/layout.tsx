@@ -1,3 +1,4 @@
+import { getTranslations } from 'next-intl/server'
 import { TabHeader } from './_components/TabHeader'
 
 export default async function Layout({
@@ -5,11 +6,12 @@ export default async function Layout({
 }: {
   children: React.ReactNode
 }) {
+  const t = await getTranslations('ManagementEventTabs')
   const tabOptions = [
-    { href: 'summary', label: 'Event Summary' },
-    { href: 'attendes', label: 'Attendees' },
-    { href: 'registration', label: 'Registration' },
-    { href: 'broadcasts', label: 'Broadcasts' }
+    { href: 'summary', label: t('summary') },
+    { href: 'attendes', label: t('attendes') },
+    { href: 'registration', label: t('registration') },
+    { href: 'broadcasts', label: t('broadcasts') }
   ]
   return (
     <div>
