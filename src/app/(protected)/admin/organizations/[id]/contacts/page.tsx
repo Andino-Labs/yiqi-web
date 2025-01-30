@@ -15,17 +15,15 @@ export default async function ContactsPage({
   const organization = await getOrganization(params.id)
   const contacts = await getOrganizationContacts(params.id)
 
-  if (!organization) {
-    return <div>{t('noOrganizationFound')}</div>
-  }
-
   return (
     <section className="w-full h-screen sm:p-4 rounded-lg sm:border text-card-foreground shadow-sm bg-primary">
       <div className="flex w-full justify-between gap-2">
         <h1 className="text-xl sm:text-2xl font-bold">
-          <span>{t('contactsFor')}</span> {organization.name}
+          <span>{t('contactsFor')}</span> {organization?.name}
         </h1>
-        <ImportContactButton organizationId={organization.id} />
+        {organization && (
+          <ImportContactButton organizationId={organization.id} />
+        )}
       </div>
       <div className="mb-2 mt-2">
         <ImportContactTemplateButton />

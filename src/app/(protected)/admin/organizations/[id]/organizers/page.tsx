@@ -13,15 +13,11 @@ export default async function OrganizersPage({
 
   const t = await getTranslations('DeleteAccount')
 
-  if (!organization) {
-    return <div>{t('organizationNotFound')}</div>
-  }
-
   return (
     <section className="w-full h-screen sm:p-4 rounded-lg sm:border text-card-foreground shadow-sm bg-primary">
       <div className="flex w-full justify-between gap-2">
         <h1 className="text-xl sm:text-2xl font-bold">
-          {t('manageOrganizersFor') + ' '} {organization.name}
+          {t('manageOrganizersFor') + ' '} {organization?.name}
         </h1>
         <div>
           <AddOrganizerButton organizationId={params.id} />
