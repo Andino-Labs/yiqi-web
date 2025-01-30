@@ -39,7 +39,6 @@ import { getAllOrganizationsForCurrentUser } from '@/services/actions/organizati
 import { useEffect, useMemo, useState } from 'react'
 import { OrganizationType } from '@/schemas/organizerSchema'
 import { useTranslations } from 'next-intl'
-import { Button } from '../ui/button'
 
 interface UserProps {
   name: string
@@ -52,27 +51,17 @@ interface AdminLayoutProps {
   children: React.ReactNode
   userProps: UserProps
   orgId: string
-  showExtraButton?: boolean
-  buttonName?: string
-  dialogTriggerRef?: React.RefObject<HTMLButtonElement>
 }
 
 export default function OrganizationLayout({
   children,
   userProps,
-  orgId,
-  showExtraButton = false,
-  buttonName = '',
-  dialogTriggerRef
+  orgId
 }: AdminLayoutProps) {
-  const t = useTranslations('Sidebar')
+  const tSidebar = useTranslations('Sidebar')
+  const tContactFor = useTranslations('contactFor')
   const [organizations, setOrganizations] = useState<OrganizationType[]>([])
 
-  const handleBulkSendClick = () => {
-    if (dialogTriggerRef?.current) {
-      dialogTriggerRef.current.click()
-    }
-  }
   useEffect(() => {
     async function fetchOrganizations() {
       try {
@@ -87,32 +76,32 @@ export default function OrganizationLayout({
 
   const navItems = [
     {
-      name: `${t('settings')}`,
+      name: `${tSidebar('settings')}`,
       icon: Settings,
       href: `/admin/organizations/${orgId}/settings`
     },
     {
-      name: `${t('chat')}`,
+      name: `${tSidebar('chat')}`,
       icon: MessageSquare,
       href: `/admin/organizations/${orgId}/chat`
     },
     {
-      name: `${t('events')}`,
+      name: `${tSidebar('events')}`,
       icon: Calendar,
       href: `/admin/organizations/${orgId}/events`
     },
     {
-      name: `${t('contacts')}`,
+      name: `${tSidebar('contacts')}`,
       icon: BookUser,
       href: `/admin/organizations/${orgId}/contacts`
     },
     {
-      name: `${t('organizers')}`,
+      name: `${tSidebar('organizers')}`,
       icon: Users,
       href: `/admin/organizations/${orgId}/organizers`
     },
     {
-      name: `${t('billing')}`,
+      name: `${tSidebar('billing')}`,
       icon: Banknote,
       href: `/admin/organizations/${orgId}/billing`
     }
@@ -172,16 +161,6 @@ export default function OrganizationLayout({
           <header className="flex items-center justify-between p-4 shadow-md bg-primary">
             <SidebarTrigger className="bg-primary text-primary" />
             <div className="flex items-center gap-4">
-              {/* Botón para enviar masivamente */}
-              {showExtraButton && (
-                <Button
-                  variant="outline"
-                  className="font-bold"
-                  onClick={handleBulkSendClick}
-                >
-                  {buttonName}
-                </Button>
-              )}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Avatar className="h-8 w-8">
@@ -204,7 +183,7 @@ export default function OrganizationLayout({
                   <DropdownMenuItem>
                     <SignOutButton>
                       <div className="flex items-center gap-4">
-                        <span>{t('logOut')}</span>
+                        <span>{tSidebar('logOut')}</span>
                         <LogOut className="h-4 w-4" />
                       </div>
                     </SignOutButton>
@@ -214,7 +193,11 @@ export default function OrganizationLayout({
             </div>
           </header>
           <div className="flex-1 overflow-auto px-4 bg-primary h-screen">
-            {children}
+            {currentOrg ? (
+              children
+            ) : (
+              <div>{tContactFor('organizationNotFound')}</div>
+            )}
           </div>
         </main>
       </div>
