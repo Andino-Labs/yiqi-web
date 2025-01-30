@@ -596,5 +596,11 @@
     "eventCheckInTableTicketId": "ID du billet",
     "eventCheckInTableCheckIn": "Validé",
     "eventCheckinBackButton": "Retour aux billets"
+  },
+  "ManagementEventTabs": {
+    "summary": "Résumé de l'événement",
+    "attendes": "Participantes",
+    "registration": "Inscription",
+    "broadcasts": "Diffusions"
   }
 }

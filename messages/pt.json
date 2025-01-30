@@ -598,5 +598,11 @@
     "eventCheckInTableTicketId": "ID do Bilhete",
     "eventCheckInTableCheckIn": "Validado",
     "eventCheckinBackButton": "Voltar aos Bilhetes"
+  },
+  "ManagementEventTabs": {
+    "summary": "Resumo do Evento",
+    "attendes": "Participantes",
+    "registration": "Cadastro",
+    "broadcasts": "Transmissões"
   }
 }
