@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useState } from 'react'
 import { NotificationSchemaType } from '@/schemas/notificationsSchema'
 import { getEventNotifications } from '@/services/actions/notifications/getEventNotifications'
