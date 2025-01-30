@@ -17,7 +17,7 @@ const formatDate = (dateString: Date) => {
 const OngoingEventBanner = ({ event }: { event: SavedEventType }) => {
   const { title, openGraphImage, startDate, location, virtualLink, type } =
     event
-  const isOnlineEvent = type !== EventTypeEnum.ONLINE
+  const isOnlineEvent = type === EventTypeEnum.ONLINE
   const router = useRouter()
   const t = useTranslations('ongoingEventBanner')
   const onButtonClick = useCallback(() => {
