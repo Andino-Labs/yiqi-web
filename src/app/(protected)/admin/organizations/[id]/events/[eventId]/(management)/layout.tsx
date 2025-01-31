@@ -29,7 +29,7 @@ export default async function Layout({
     if (user.role === Roles.ADMIN) {
       return (
         <div>
-          <div className="w-full flex flex-row sm:flex-row justify-between items-center">
+          <div className="w-full md:flex md:justify-between md:items-center">
             {/* Back Button and Title */}
             <div className="flex items-center space-x">
               <Link
@@ -39,12 +39,12 @@ export default async function Layout({
               >
                 <ArrowLeft className="w-5 h-5" />
               </Link>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 text-center sm:text-left">
-                {event.title}
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 text-center md:text-left">
+                {event.title} in this life , the best one
               </h1>
             </div>
             {/* Action Buttons */}
-            <div className="flex space-x sm:mt-0">
+            <div className="flex space-x justify-end">
               <Link
                 href={`/admin/organizations/${params.id}/events/${params.eventId}/edit`}
                 className="flex items-center justify-center dark:bg-primary dark:text-primary rounded-md p-2"

@@ -17,11 +17,13 @@ export default async function Page({
       </h2>
       <hr className="my-4 border-t border-solid border-white-opacity-40 w-[100%]  mx-auto ml-0" />
 
-      <div className="flex flex-col space-y-4">
-        <Button className="inline-flex items-center bg-blue-500 hover:bg-blue-600 text-white font-medium px-4 py-2 rounded-md transition-all">
-          <Send className="w-4 h-4 mr-2" />
-          {t('sendNewCommunication')}
-        </Button>
+      <div className="space-y-4">
+        <div>
+          <Button className="mx-auto flex items-center bg-blue-500 hover:bg-blue-600 text-white font-medium px-4 py-2 rounded-md transition-all">
+            <Send className="w-4 h-4 mr-2" />
+            {t('sendNewCommunication')}
+          </Button>
+        </div>
         <EventCommunicationsTable eventId={params.eventId} />
       </div>
     </div>
