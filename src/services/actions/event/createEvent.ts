@@ -36,7 +36,6 @@ export async function createEvent(
   ) {
     throw new Error('Virtual link is required for online events')
   }
-
   const event = await prisma.event.create({
     data: {
       ...validatedData,

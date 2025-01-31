@@ -49,6 +49,7 @@ import { useTranslations } from 'next-intl'
 import { UploadIcon } from '@radix-ui/react-icons'
 import { Switch } from '@/components/ui/switch'
 import Link from 'next/link'
+import { allTimezones, useTimezoneSelect } from 'react-timezone-select'
 
 type Props = {
   organizationId: string
@@ -59,7 +60,8 @@ export const EventFormInputSchema = EventInputSchema.extend({
   startTime: z.string(),
   endTime: z.string(),
   startDate: z.string(),
-  endDate: z.string()
+  endDate: z.string(),
+  timezoneLabel: z.string()
 })
 
 type LocationDetails = {
@@ -106,7 +108,6 @@ export function EventForm({ organizationId, event }: Props) {
       }
     ]
   )
-  console.log('EventxD:', event)
   const defaultValue = `
   <h1>${tPage('defaultValueH1')}</h1>
   <p>
@@ -133,6 +134,9 @@ export function EventForm({ organizationId, event }: Props) {
   const [description, setDescription] = useState<string>(
     event?.description ?? defaultValue
   )
+  const { options } = useTimezoneSelect({
+    timezones: allTimezones
+  })
 
   const [locationDetails, setLocationDetails] =
     useState<LocationDetails | null>(null)
@@ -160,7 +164,14 @@ export function EventForm({ organizationId, event }: Props) {
       requiresApproval: event?.requiresApproval ?? false,
       openGraphImage: event?.openGraphImage ?? null,
       maxAttendees: event?.maxAttendees ?? undefined,
-      type: event?.type ?? EventTypeEnum.IN_PERSON
+      type: event?.type ?? EventTypeEnum.IN_PERSON,
+      timezoneLabel:
+        event?.timezoneLabel ??
+        options.filter(
+          option =>
+            option.offset &&
+            option.offset === -new Date().getTimezoneOffset() / 60
+        )[0].label
     }
   })
 
@@ -438,23 +449,44 @@ export function EventForm({ organizationId, event }: Props) {
                     </div>
                   </div>
                 </div>
-                <Select defaultValue="GMT-05:00">
-                  <SelectTrigger className="w-full bg-transparent text-white">
-                    <SelectValue
-                      className="bg-transparent text-white"
-                      placeholder={t('selectTimezone')}
-                    />
-                  </SelectTrigger>
-                  <SelectContent className="bg-zinc-900 border-none text-white">
-                    <SelectItem
-                      className="focus:bg-accent/35 focus:text-[#61f1f8]"
-                      value="GMT-05:00"
-                    >
-                      GMT-05:00 Lima
-                    </SelectItem>
-                    {/* Add more timezones as needed */}
-                  </SelectContent>
-                </Select>
+                <FormField
+                  control={form.control}
+                  name="timezoneLabel"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        name="timezoneLabel"
+                        // defaultValue={
+                        //   options.filter(
+                        //     option =>
+                        //       option.offset &&
+                        //       option.offset === -new Date().getTimezoneOffset() / 60
+                        //   )[0].label
+                        // }
+                      >
+                        <SelectTrigger className="w-full bg-transparent text-white">
+                          <SelectValue
+                            className="bg-transparent text-white"
+                            placeholder={t('selectTimezone')}
+                          />
+                        </SelectTrigger>
+                        <SelectContent className="bg-zinc-900 border-none text-white">
+                          {options.map((option, index) => (
+                            <SelectItem
+                              key={index}
+                              className="focus:bg-accent/35 focus:text-[#61f1f8]"
+                              value={option.label}
+                            >
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
               </div>
             </div>
 
