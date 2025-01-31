@@ -19,9 +19,12 @@ export default async function Page({
       </h2>
       <hr className="my-4 border-t border-solid border-white-opacity-40 w-[100%]  mx-auto ml-0" />
       <div className="flex flex-col gap-4 text-sm">
-        <div className="flex items-center gap-2">
-          <Calendar className="h-5 w-5 text-primary-foreground/60" />
-          <time>{new Date(event.startDate).toLocaleString()}</time>
+        <div>
+          <div className="flex items-center gap-2">
+            <Calendar className="h-5 w-5 text-primary-foreground/60" />
+            <time>{new Date(event.startDate).toLocaleString()}</time>
+          </div>
+          <div>{event.timezoneLabel}</div>
         </div>
         <div className="flex items-center gap-2">
           {event.location && event.city && (
