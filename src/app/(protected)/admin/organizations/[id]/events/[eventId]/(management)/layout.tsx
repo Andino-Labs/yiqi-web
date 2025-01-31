@@ -40,7 +40,7 @@ export default async function Layout({
                 <ArrowLeft className="w-5 h-5" />
               </Link>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 text-center md:text-left">
-                {event.title} in this life , the best one
+                {event.title}
               </h1>
             </div>
             {/* Action Buttons */}
