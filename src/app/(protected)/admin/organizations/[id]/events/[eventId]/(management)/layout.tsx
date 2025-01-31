@@ -21,7 +21,8 @@ export default async function Layout({
     { href: 'summary', label: t('summary') },
     { href: 'attendes', label: t('attendes') },
     { href: 'registration', label: t('registration') },
-    { href: 'broadcasts', label: t('broadcasts') }
+    { href: 'broadcasts', label: t('broadcasts') },
+    { href: 'checkin', label: t('checkin') }
   ]
   const user = await getUser()
 

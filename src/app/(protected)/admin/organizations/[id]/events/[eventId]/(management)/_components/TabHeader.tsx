@@ -17,7 +17,7 @@ export const TabHeader = ({
           <Link
             key={option.href}
             href={`./${option.href}`}
-            className={`block py-2 px-5 border-b whitespace-nowrap ${isActiveLink ? 'font-bold border-b-white' : 'text-white text-opacity-50'}`}
+            className={`block py-2 px-5 border-b whitespace-nowrap ${isActiveLink ? 'font-bold border-b-white' : 'text-white text-opacity-70'}`}
           >
             {option.label}
           </Link>

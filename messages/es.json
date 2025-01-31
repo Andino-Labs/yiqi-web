@@ -671,6 +671,7 @@
     "summary": "Resumen del evento",
     "attendes": "Asistentes",
     "registration": "Registro",
-    "broadcasts": "Transmisiones"
+    "broadcasts": "Transmisiones",
+    "checkin": "Check-in"
   }
 }
