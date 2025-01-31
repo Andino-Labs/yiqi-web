@@ -58,7 +58,8 @@ export const EventInputSchema = z.object({
       lon: z.number().optional().nullable()
     })
     .optional()
-    .nullable()
+    .nullable(),
+  timezoneLabel: z.string()
 })
 
 export const EventCommunitySchema = z.object({

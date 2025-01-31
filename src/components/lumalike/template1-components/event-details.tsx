@@ -11,8 +11,16 @@ function createGoogleMapsUrl(location: string) {
 }
 
 export function EventDetails({ event }: { event: PublicEventType }) {
-  const { featuredIn, title, subtitle, location, city, startDate, endDate } =
-    event
+  const {
+    featuredIn,
+    title,
+    subtitle,
+    location,
+    city,
+    startDate,
+    endDate,
+    timezoneLabel
+  } = event
   const t = useTranslations('EventDescription')
   return (
     <motion.div
@@ -43,12 +51,15 @@ export function EventDetails({ event }: { event: PublicEventType }) {
         {subtitle}
       </p>
       <div className="flex flex-col gap-4 text-sm">
-        <div className="flex items-center gap-2">
-          <Calendar className="h-5 w-5 text-primary-foreground/60" />
-          <time>
-            {startDate.toLocaleDateString()}, {startDate.toLocaleTimeString()} -{' '}
-            {endDate.toLocaleTimeString()}
-          </time>
+        <div>
+          <div className="flex items-center gap-2">
+            <Calendar className="h-5 w-5 text-primary-foreground/60" />
+            <time>
+              {startDate.toLocaleDateString()}, {startDate.toLocaleTimeString()}{' '}
+              - {endDate.toLocaleTimeString()}
+            </time>
+          </div>
+          <div>{timezoneLabel}</div>
         </div>
         <div className="flex items-center gap-2">
           {location && city && (
