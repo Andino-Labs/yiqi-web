@@ -179,8 +179,8 @@ model Event {
   title            String
   subtitle         String?
   description      String?
-  startDate        DateTime
-  endDate          DateTime
+  startDate        DateTime            @db.Timestamptz()
+  endDate          DateTime            @db.Timestamptz()
   location         String?
   city             String?
   state            String?
@@ -210,6 +210,7 @@ model Event {
   heroImage       String?
 
   NetworkingMatch NetworkingMatch[]
+  timezoneLabel   String
 }
 
 enum TicketCategory {
