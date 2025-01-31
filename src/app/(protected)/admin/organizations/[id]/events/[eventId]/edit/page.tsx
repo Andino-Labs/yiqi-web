@@ -35,7 +35,7 @@ export default async function Page({
             <div className="flex items-center justify-between mb-4 px-2">
               <div className="flex items-center space-x-2">
                 <Link
-                  href={`/admin/organizations/${params.id}/events/${params.eventId}`}
+                  href={`/admin/organizations/${params.id}/events/${params.eventId}/summary`}
                   className="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors"
                 >
                   <ArrowLeft className="w-6 h-6" />
