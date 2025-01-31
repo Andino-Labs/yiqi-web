@@ -1,4 +1,6 @@
+'use server'
 import prisma from '@/lib/prisma'
+
 import { SendBaseMessageToUserProps } from '@/services/notifications/sendBaseMessageToUser'
 import { JobType, MessageThreadType } from '@prisma/client'
 
@@ -29,7 +31,8 @@ export async function sendBulkNotifications({
     },
     include: {
       user: true
-    }
+    },
+    distinct: ['userId']
   })
 
   const dataToTake = [
@@ -44,7 +47,6 @@ export async function sendBulkNotifications({
       return {
         userId: person.user.id,
         organizationId: orgId,
-        scheduledFor: new Date(),
         type: JobType.SEND_USER_MESSAGE,
         data: data
       }
@@ -60,7 +62,6 @@ export async function sendBulkNotifications({
       return {
         userId: person.user.id,
         organizationId: orgId,
-        scheduledFor: new Date(),
         type: JobType.SEND_USER_MESSAGE,
         data: data
       }
@@ -71,6 +72,7 @@ export async function sendBulkNotifications({
     data: dataToTake
   })
 
-  console.debug(notifications)
+  console.warn('sendBulkNotifications')
+  console.warn(notifications)
   return { sucess: true }
 }

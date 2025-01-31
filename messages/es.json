@@ -152,14 +152,19 @@
     "downloadCsvTemplate": "Descargar plantilla de importación CSV"
   },
   "BulkSend": {
-    "bulkSendButton": "Envío masivo",
-    "bulkSendTitle": "Envío masivo",
+    "bulkSendButton": "Envío Masivo",
+    "bulkSendTitle": "Envío Masivo",
     "bulkSendLog": "Envío masivo iniciado con mensaje:",
     "typeYourMessage": "Escribe tu mensaje aquí.",
     "whatsapp": "WhatsApp",
-    "email": "Correo electrónico",
+    "email": "Correo",
     "send": "Enviar",
-    "messageValidation": "El mensaje debe tener al menos 1 caracter."
+    "messageValidation": "El mensaje debe tener al menos 1 carácter.",
+    "success": "Éxito",
+    "messagesSentSuccessfully": "Los mensajes han sido puestos en cola para envío",
+    "error": "Error",
+    "errorSendingMessages": "Hubo un error al enviar los mensajes",
+    "sending": "Enviando..."
   },
   "EventsList": {
     "createNewEvents": "Nuevo Evento",
@@ -490,18 +495,19 @@
     "support": "soporte técnico"
   },
   "contactText": {
-    "contactDetails": "Detalles de Contacto:",
-    "Messages": "Mensajes",
+    "contactDetails": "Detalles del Contacto",
+    "messages": "Mensajes",
     "attendEvents": "Eventos Asistidos",
     "userDetails": "Detalles del Usuario",
-    "attendedEvents": "Eventos Asistidos:",
-    "Name": "Nombre:",
-    "Email": "Correo Electrónico:",
-    "number": "Número de Teléfono:",
-    "additionalData": "Datos Adicionales:",
-    "AttendedEvents": "Eventos Asistidos:",
-    "Status": "Estado:",
-    "back": "Volver a Contactos"
+    "attendedEvents": "Eventos Asistidos",
+    "name": "Nombre",
+    "email": "Correo Electrónico",
+    "phoneNumber": "Número de Teléfono",
+    "additionalData": "Datos Adicionales",
+    "status": "Estado",
+    "backToContacts": "Volver a Contactos",
+    "noEvents": "Aún no ha asistido a ningún evento",
+    "na": "No disponible"
   },
   "user": {
     "useCase": "¿Cuál es tu caso de uso?",
@@ -641,8 +647,31 @@
     "eventCheckInTableCheckIn": "Verificado",
     "eventCheckinBackButton": "Volver a entradas"
   },
+  "NetworkingUserList": {
+    "title": "Coincidencias de Networking",
+    "loadingMatches": "Estamos utilizando un avanzado sistema de emparejamiento con IA para encontrar las mejores conexiones para ti. ¡Sigue revisando para nuevas conexiones!",
+    "foundText": "¡Tienes {nbr} coincidencias potenciales! Explóralas para encontrar tus mejores conexiones.",
+    "buttonText": "Ver recomendaciones",
+    "buttonLoading": "Aún cargando las coincidencias",
+    "modalSubTitle": "¡Aquí están las personas con las que has hecho coincidir! Conéctate y colabora para construir relaciones significativas.",
+    "whyRecomeendation": "¿Por qué deberíamos encontrarnos?",
+    "aboutPerson": "Acerca de"
+  },
+  "ongoingEventBanner": {
+    "ongoingEvent": "Evento en Curso",
+    "joinEvent": "Unirse al Evento",
+    "viewTicket": "Ver Entrada",
+    "linkUnvailable": "El enlace virtual no está disponible para este evento."
+  },
   "RegistrationChart": {
     "title": "Registros de los Últimos 7 Días",
     "noData": "No hay datos de registro disponibles"
+  },
+  "ManagementEventTabs": {
+    "summary": "Resumen del evento",
+    "attendes": "Asistentes",
+    "registration": "Registro",
+    "broadcasts": "Transmisiones",
+    "checkin": "Check-in"
   }
 }

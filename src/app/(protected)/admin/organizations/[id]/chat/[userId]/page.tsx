@@ -14,19 +14,15 @@ export default async function Page({
 }) {
   const user = await getUser()
 
-  if (!user) {
-    redirect(`/auth`)
-  }
-
   const chats = await getOrganizationMessageThreads(params.id)
   const messages = await getUserMessageList(params.userId, params.id)
   console.log('messages', messages.length)
   console.log('id ', params.id)
 
-  if (user.role === Roles.ADMIN) {
-    return (
-      <main className="flex flex-col items-center justify-center">
-        <ChatSection orgId={params.id} user={user} isActive={true}>
+  if (user) {
+    if (user.role === Roles.ADMIN) {
+      return (
+        <ChatSection orgId={params.id} isActive={true}>
           <ActiveChatComponent
             orgId={params.id}
             chats={chats}
@@ -40,9 +36,9 @@ export default async function Page({
             />
           </ActiveChatComponent>
         </ChatSection>
-      </main>
-    )
-  } else if (user.role === Roles.NEW_USER) {
-    redirect(`/newuser`)
+      )
+    } else if (user.role === Roles.NEW_USER) {
+      redirect(`/newuser`)
+    }
   }
 }

@@ -598,5 +598,28 @@
     "eventCheckInTableTicketId": "ID do Bilhete",
     "eventCheckInTableCheckIn": "Validado",
     "eventCheckinBackButton": "Voltar aos Bilhetes"
+  },
+  "NetworkingUserList": {
+    "title": "Conexões de Networking",
+    "loadingMatches": "Estamos usando um sistema avançado de correspondência com IA para encontrar as melhores conexões para você. Continue verificando para novas conexões!",
+    "foundText": "Você tem {nbr} correspondências potenciais! Explore-as para encontrar suas melhores conexões.",
+    "buttonText": "Ver Recomendações",
+    "buttonLoading": "Ainda carregando as correspondências",
+    "modalSubTitle": "Aqui estão as pessoas com quem você fez correspondência! Conecte-se e colabore para construir relações significativas.",
+    "whyRecomeendation": "Por que deveríamos nos encontrar?",
+    "aboutPerson": "Sobre"
+  },
+  "ongoingEventBanner": {
+    "ongoingEvent": "Evento em Andamento",
+    "joinEvent": "Participar do Evento",
+    "viewTicket": "Ver Ingresso",
+    "linkUnvailable": "O link virtual não está disponível para este evento."
+  },
+  "ManagementEventTabs": {
+    "summary": "Resumo do Evento",
+    "attendes": "Participantes",
+    "registration": "Cadastro",
+    "broadcasts": "Transmissões",
+    "checkin": "Check-in"
   }
 }
