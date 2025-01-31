@@ -15,5 +15,6 @@ export async function getEvent({
     where: { id: eventId },
     include: includeTickets ? { tickets: true } : undefined
   })
+
   return SavedEventSchema.parse(event)
 }

@@ -458,13 +458,6 @@ export function EventForm({ organizationId, event }: Props) {
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                         name="timezoneLabel"
-                        // defaultValue={
-                        //   options.filter(
-                        //     option =>
-                        //       option.offset &&
-                        //       option.offset === -new Date().getTimezoneOffset() / 60
-                        //   )[0].label
-                        // }
                       >
                         <SelectTrigger className="w-full bg-transparent text-white">
                           <SelectValue
