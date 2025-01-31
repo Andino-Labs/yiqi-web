@@ -1,5 +1,5 @@
 type JsonValue = JsonObject | JsonArray | string | number | boolean | null
-type JsonObject = { [key: string]: JsonValue }
+export type JsonObject = { [key: string]: JsonValue }
 type JsonArray = JsonValue[]
 
 /**

@@ -103,6 +103,7 @@ export async function updateEvent(
     where: { id: eventId },
     data: {
       ...parsedEventData,
+      customFields: JSON.stringify(parsedEventData.customFields),
       latLon: parsedEventData.latLon ?? undefined
     }
   })

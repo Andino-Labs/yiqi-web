@@ -51,6 +51,7 @@ import { UploadIcon } from '@radix-ui/react-icons'
 import { Switch } from '@/components/ui/switch'
 import Link from 'next/link'
 import { CustomFieldsDialog } from './CustomFieldsDialog'
+import { updateCustomFields } from '@/services/actions/event/updateCustomFields'
 
 type Props = {
   organizationId: string
@@ -167,8 +168,9 @@ export function EventForm({ organizationId, event }: Props) {
   })
 
   const [showCustomFieldsDialog, setShowCustomFieldsDialog] = useState(false)
+
   const [customFields, setCustomFields] = useState<CustomFieldType[]>(
-    event?.customFields ?? []
+    event?.customFields?.fields ?? []
   )
 
   function handleAddCustomField(field: CustomFieldType) {
@@ -294,9 +296,11 @@ export function EventForm({ organizationId, event }: Props) {
           // Update existing event
           await updateEvent(event.id, eventData, tickets)
           setSavedEventId(event.id)
+          await updateCustomFields(event.id, customFields)
         } else {
           // Create new event
           const result = await createEvent(organizationId, eventData, tickets)
+          await updateCustomFields(result.id, customFields)
           setSavedEventId(result.id)
         }
 

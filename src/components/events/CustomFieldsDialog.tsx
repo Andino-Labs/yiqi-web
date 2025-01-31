@@ -25,11 +25,7 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
-import {
-  CustomField,
-  CustomFieldsSchema,
-  CustomFieldType
-} from '@/schemas/eventSchema'
+import { CustomField, CustomFieldType } from '@/schemas/eventSchema'
 import { useState } from 'react'
 
 type CustomFieldsDialogProps = {

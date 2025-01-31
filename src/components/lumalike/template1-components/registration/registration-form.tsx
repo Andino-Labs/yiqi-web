@@ -10,9 +10,10 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { Textarea } from '@/components/ui/textarea'
 import { translations } from '@/lib/translations/translations'
 import { UseFormReturn } from 'react-hook-form'
-import { RegistrationInput } from '@/schemas/eventSchema'
+import { CustomFieldType, RegistrationInput } from '@/schemas/eventSchema'
 import StripeCheckout from '@/components/billing/StripeCheckout'
 
 interface RegistrationFormProps {
@@ -23,6 +24,7 @@ interface RegistrationFormProps {
   registrationId?: string
   onPaymentComplete?: () => void
   isSubmitting?: boolean
+  customFields: CustomFieldType[]
 }
 
 export function RegistrationForm({
@@ -32,12 +34,22 @@ export function RegistrationForm({
   isFreeEvent,
   registrationId,
   onPaymentComplete,
-  isSubmitting = false
+  isSubmitting = false,
+  customFields
 }: RegistrationFormProps) {
   const [showStripeCheckout, setShowStripeCheckout] = useState(false)
 
   const handleSubmit = async (values: RegistrationInput) => {
-    await onSubmit(values)
+    // Structure the data for deepMerge
+    const submissionData = {
+      name: values.name,
+      email: values.email,
+      ...values.customFieldsData
+    }
+    console.log(submissionData)
+    await onSubmit({
+      ...values
+    })
   }
 
   useEffect(() => {
@@ -84,6 +96,7 @@ export function RegistrationForm({
             </FormItem>
           )}
         />
+
         <FormField
           control={formProps.control}
           name="email"
@@ -103,6 +116,50 @@ export function RegistrationForm({
             </FormItem>
           )}
         />
+
+        {customFields.map(field => (
+          <FormField
+            key={field.name}
+            control={formProps.control}
+            name={`customFieldsData.${field.name}`}
+            render={({ field: formField }) => (
+              <FormItem>
+                <FormLabel>{field.name}</FormLabel>
+                {field.description && (
+                  <p className="text-sm text-muted-foreground mb-2">
+                    {field.description}
+                  </p>
+                )}
+                <FormControl>
+                  {field.inputType === 'longText' ? (
+                    <Textarea
+                      {...formField}
+                      placeholder={field.defaultValue?.toString()}
+                      required={field.required}
+                    />
+                  ) : (
+                    <Input
+                      {...formField}
+                      type={
+                        field.type === 'date'
+                          ? 'date'
+                          : field.type === 'number'
+                            ? 'number'
+                            : 'text'
+                      }
+                      placeholder={field.defaultValue?.toString()}
+                      required={field.required}
+                      min={field.type === 'number' ? 0 : undefined}
+                      step={field.type === 'number' ? 'any' : undefined}
+                    />
+                  )}
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        ))}
+
         <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? (
             <div className="flex items-center gap-2">
