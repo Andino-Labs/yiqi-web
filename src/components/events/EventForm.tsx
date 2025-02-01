@@ -30,7 +30,7 @@ import {
   SavedTicketOfferingType
 } from '@/schemas/eventSchema'
 import { useRouter } from 'next/navigation'
-import { MapPin, Clock, Users } from 'lucide-react'
+import { MapPin, Clock, Users, Link as LinkIcon } from 'lucide-react'
 import { useState } from 'react'
 import { TicketTypesManager } from './TicketTypesManager'
 import {
@@ -53,16 +53,34 @@ import Link from 'next/link'
 import { CustomFieldsDialog } from './CustomFieldsDialog'
 import { updateCustomFields } from '@/services/actions/event/updateCustomFields'
 
-type Props = {
-  organizationId: string
-  event?: SavedEventType
-}
-
-export const EventFormInputSchema = EventInputSchema.extend({
+const EventFormInputSchema = EventInputSchema.extend({
   startTime: z.string(),
   endTime: z.string(),
   startDate: z.string(),
   endDate: z.string()
+}).superRefine((data, ctx) => {
+  if (data.type === EventTypeEnum.IN_PERSON && !data.location) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Location is required for in-person events',
+      path: ['location']
+    })
+  }
+  if (data.type === EventTypeEnum.ONLINE) {
+    if (!data.virtualLink) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Virtual link is required for online events',
+        path: ['virtualLink']
+      })
+    } else if (!z.string().url().safeParse(data.virtualLink).success) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Invalid URL format',
+        path: ['virtualLink']
+      })
+    }
+  }
 })
 
 type LocationDetails = {
@@ -73,6 +91,11 @@ type LocationDetails = {
     lat: number
     lon: number
   }
+}
+
+type Props = {
+  organizationId: string
+  event?: SavedEventType
 }
 
 export function EventForm({ organizationId, event }: Props) {
@@ -109,7 +132,7 @@ export function EventForm({ organizationId, event }: Props) {
       }
     ]
   )
-  console.log('EventxD:', event)
+
   const defaultValue = `
   <h1>${tPage('defaultValueH1')}</h1>
   <p>
@@ -139,6 +162,11 @@ export function EventForm({ organizationId, event }: Props) {
 
   const [locationDetails, setLocationDetails] =
     useState<LocationDetails | null>(null)
+  const [showCustomFieldsDialog, setShowCustomFieldsDialog] = useState(false)
+  const [customFields, setCustomFields] = useState<CustomFieldType[]>(
+    event?.customFields?.fields ?? []
+  )
+
   const form = useForm<z.infer<typeof EventFormInputSchema>>({
     resolver: zodResolver(EventFormInputSchema),
     defaultValues: {
@@ -167,11 +195,8 @@ export function EventForm({ organizationId, event }: Props) {
     }
   })
 
-  const [showCustomFieldsDialog, setShowCustomFieldsDialog] = useState(false)
-
-  const [customFields, setCustomFields] = useState<CustomFieldType[]>(
-    event?.customFields?.fields ?? []
-  )
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false)
+  const [savedEventId, setSavedEventId] = useState<string | null>(null)
 
   function handleAddCustomField(field: CustomFieldType) {
     setCustomFields([...customFields, field])
@@ -185,7 +210,6 @@ export function EventForm({ organizationId, event }: Props) {
     const file = event.target.files?.[0]
     if (file) {
       setSelectedImage(file)
-      // Create preview URL
       const previewUrl = URL.createObjectURL(file)
       setImagePreview(previewUrl)
     }
@@ -211,7 +235,6 @@ export function EventForm({ organizationId, event }: Props) {
         .padStart(2, '0')
       setMinStartTime(`${currentHours}:${currentMinutes}`)
 
-      // If the start date is today and the start time is less than the current time, set start time to ''
       const startTime = form.getValues('startTime')
       if (startTime && `${currentHours}:${currentMinutes}` > startTime) {
         form.setValue('startTime', '')
@@ -264,9 +287,6 @@ export function EventForm({ organizationId, event }: Props) {
     }
   }
 
-  const [showSuccessDialog, setShowSuccessDialog] = useState(false)
-  const [savedEventId, setSavedEventId] = useState<string | null>(null)
-
   async function onSubmit(
     values: z.infer<typeof EventFormInputSchema>
   ): Promise<void> {
@@ -285,20 +305,20 @@ export function EventForm({ organizationId, event }: Props) {
 
         const eventData: EventInputType = {
           ...values,
-          ...locationDetails,
+          ...(values.type === EventTypeEnum.IN_PERSON ? locationDetails : {}),
           startDate: startDateTime,
           endDate: endDateTime,
           openGraphImage: imageUrl || event?.openGraphImage,
-          description
+          description,
+          virtualLink:
+            values.type === EventTypeEnum.ONLINE ? values.virtualLink : null
         }
 
         if (event) {
-          // Update existing event
           await updateEvent(event.id, eventData, tickets)
           setSavedEventId(event.id)
           await updateCustomFields(event.id, customFields)
         } else {
-          // Create new event
           const result = await createEvent(organizationId, eventData, tickets)
           await updateCustomFields(result.id, customFields)
           setSavedEventId(result.id)
@@ -317,31 +337,26 @@ export function EventForm({ organizationId, event }: Props) {
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          {/* Custom Fields Section */}
-          <div className="space-y-4"></div>
           <div className="mb-4">
             <FormField
               control={form.control}
               name="title"
-              render={function ({ field }) {
-                return (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        id="event-name"
-                        placeholder={t('eventName')}
-                        className="text-xl font-medium border rounded-lg px-4 py-2 w-full focus:ring focus:ring-primary"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )
-              }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      placeholder={t('eventName')}
+                      className="text-xl font-medium border rounded-lg px-4 py-2 w-full focus:ring focus:ring-primary"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-[300px,1fr] gap-6">
-            {/* Columna izquierda */}
             <div className="space-y-4">
               <div className="border rounded-lg p-4">
                 <label
@@ -381,18 +396,10 @@ export function EventForm({ organizationId, event }: Props) {
                     />
                   </div>
                 </label>
-                <input
-                  id="image-upload"
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={handleImageSelect}
-                />
               </div>
-              {/* Fecha y Hora */}
+
               <div className="space-y-4">
                 <div className="grid grid-cols-1 gap-4">
-                  {/* Fecha de inicio */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
                       {t('start')}
@@ -402,36 +409,32 @@ export function EventForm({ organizationId, event }: Props) {
                       <FormField
                         control={form.control}
                         name="startDate"
-                        render={function ({ field }) {
-                          return (
-                            <Input
-                              type="date"
-                              className="w-full border rounded-lg px-3 py-2"
-                              {...field}
-                              min={defaultStartDateStr}
-                              onChange={handleOnStartDateChange}
-                            />
-                          )
-                        }}
+                        render={({ field }) => (
+                          <Input
+                            type="date"
+                            className="w-full border rounded-lg px-3 py-2"
+                            {...field}
+                            min={defaultStartDateStr}
+                            onChange={handleOnStartDateChange}
+                          />
+                        )}
                       />
                       <FormField
                         control={form.control}
                         name="startTime"
-                        render={function ({ field }) {
-                          return (
-                            <Input
-                              type="time"
-                              className="w-full border rounded-lg px-3 py-2"
-                              {...field}
-                              min={minStartTime}
-                              onChange={handleOnStartTimeChange}
-                            />
-                          )
-                        }}
+                        render={({ field }) => (
+                          <Input
+                            type="time"
+                            className="w-full border rounded-lg px-3 py-2"
+                            {...field}
+                            min={minStartTime}
+                            onChange={handleOnStartTimeChange}
+                          />
+                        )}
                       />
                     </div>
                   </div>
-                  {/* Fecha de fin */}
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
                       {t('end')}
@@ -441,32 +444,28 @@ export function EventForm({ organizationId, event }: Props) {
                       <FormField
                         control={form.control}
                         name="endDate"
-                        render={function ({ field }) {
-                          return (
-                            <Input
-                              type="date"
-                              className="w-full border rounded-lg px-3 py-2"
-                              {...field}
-                              min={minEndDate}
-                              onChange={handleOnEndDateChange}
-                            />
-                          )
-                        }}
+                        render={({ field }) => (
+                          <Input
+                            type="date"
+                            className="w-full border rounded-lg px-3 py-2"
+                            {...field}
+                            min={minEndDate}
+                            onChange={handleOnEndDateChange}
+                          />
+                        )}
                       />
                       <FormField
                         control={form.control}
                         name="endTime"
-                        render={function ({ field }) {
-                          return (
-                            <Input
-                              type="time"
-                              className="w-full border rounded-lg px-3 py-2"
-                              {...field}
-                              min={minEndTime}
-                              onChange={handleOnEndTimeChange}
-                            />
-                          )
-                        }}
+                        render={({ field }) => (
+                          <Input
+                            type="time"
+                            className="w-full border rounded-lg px-3 py-2"
+                            {...field}
+                            min={minEndTime}
+                            onChange={handleOnEndTimeChange}
+                          />
+                        )}
                       />
                     </div>
                   </div>
@@ -485,31 +484,59 @@ export function EventForm({ organizationId, event }: Props) {
                     >
                       GMT-05:00 Lima
                     </SelectItem>
-                    {/* Add more timezones as needed */}
                   </SelectContent>
                 </Select>
               </div>
             </div>
 
-            {/* Columna derecha */}
             <div className="space-y-6 max-w-3xl">
-              {/* Ubicación */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-                  {t('location')}
-                </label>
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-5 w-5" />
-                  <FormField
-                    control={form.control}
-                    name="location"
-                    render={function ({ field }) {
-                      return (
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">
+                  Elije el tipo de evento:
+                </span>
+                <FormField
+                  control={form.control}
+                  name="type"
+                  render={({ field }) => (
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm">
+                        {field.value === EventTypeEnum.IN_PERSON
+                          ? 'Presencial'
+                          : 'Online'}
+                      </span>
+                      <Switch
+                        checked={field.value === EventTypeEnum.ONLINE}
+                        onCheckedChange={checked => {
+                          field.onChange(
+                            checked
+                              ? EventTypeEnum.ONLINE
+                              : EventTypeEnum.IN_PERSON
+                          )
+                          form.resetField('location')
+                          form.resetField('virtualLink')
+                        }}
+                      />
+                    </div>
+                  )}
+                />
+              </div>
+
+              {form.watch('type') === EventTypeEnum.IN_PERSON ? (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+                    {t('location')}
+                  </label>
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-5 w-5" />
+                    <FormField
+                      control={form.control}
+                      name="location"
+                      render={({ field }) => (
                         <AddressAutocomplete
                           defaultValue={field.value ?? ''}
                           fieldName="location"
                           onSetAddress={field.onChange}
-                          onAfterSelection={function (value) {
+                          onAfterSelection={value => {
                             if (value?.address_components && value?.geometry) {
                               const locationDetails = getLocationDetails(
                                 value.address_components
@@ -526,38 +553,56 @@ export function EventForm({ organizationId, event }: Props) {
                             }
                           }}
                         />
-                      )
-                    }}
-                  />
+                      )}
+                    />
+                  </div>
                 </div>
-              </div>
-              {/* Description */}
+              ) : (
+                <FormField
+                  control={form.control}
+                  name="virtualLink"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex items-center gap-2">
+                        <LinkIcon className="h-5 w-5" />
+                        <FormControl>
+                          <Input
+                            placeholder="https://meet.example.com/your-event"
+                            className="w-full"
+                            {...field}
+                            value={field.value ?? ''}
+                          />
+                        </FormControl>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-                {'Descripción'}
+                Descripción de tu evento:
               </label>
               <FormField
                 control={form.control}
                 name="description"
-                render={function () {
-                  return (
-                    <FormItem>
-                      <FormControl>
-                        <div className="max-h-96 overflow-y-auto border rounded p-2">
-                          <MarkdownEditor
-                            initialValue={description}
-                            onChange={function (val) {
-                              setDescription(val)
-                            }}
-                          />
-                        </div>
-                      </FormControl>
-                    </FormItem>
-                  )
-                }}
+                render={() => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="max-h-96 overflow-y-auto border rounded p-2">
+                        <MarkdownEditor
+                          initialValue={description}
+                          onChange={val => setDescription(val)}
+                        />
+                      </div>
+                    </FormControl>
+                  </FormItem>
+                )}
               />
+
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
-                  Campos personalizados
+                  Campos personalizados:
                 </span>
                 <Button
                   type="button"
@@ -565,7 +610,7 @@ export function EventForm({ organizationId, event }: Props) {
                   variant="outline"
                   className="bg-secondary"
                 >
-                  Añadir campos personalizados
+                  Añade campos personalizados
                 </Button>
               </div>
 
@@ -587,14 +632,13 @@ export function EventForm({ organizationId, event }: Props) {
                         variant="ghost"
                         onClick={() => handleRemoveCustomField(index)}
                       >
-                        Elimina el campo
+                        {tPage('removeField')}
                       </Button>
                     </div>
                   ))}
                 </div>
               )}
 
-              {/* Capacity */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Users className="h-5 w-5" />
@@ -605,28 +649,23 @@ export function EventForm({ organizationId, event }: Props) {
                 <FormField
                   control={form.control}
                   name="maxAttendees"
-                  render={function ({ field }) {
-                    return (
-                      <Input
-                        type="number"
-                        placeholder={t('unlimited')}
-                        min={1}
-                        className="w-32 text-right border rounded-lg px-3 py-2"
-                        value={field.value?.toString()}
-                        onChange={function (e) {
-                          const value =
-                            e.target.value === ''
-                              ? null
-                              : Number(e.target.value)
-                          field.onChange(value)
-                        }}
-                      />
-                    )
-                  }}
+                  render={({ field }) => (
+                    <Input
+                      type="number"
+                      placeholder={t('unlimited')}
+                      min={1}
+                      className="w-32 text-right border rounded-lg px-3 py-2"
+                      value={field.value?.toString()}
+                      onChange={e => {
+                        const value =
+                          e.target.value === '' ? null : Number(e.target.value)
+                        field.onChange(value)
+                      }}
+                    />
+                  )}
                 />
               </div>
 
-              {/* Requires Approval */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Users className="h-5 w-5" />
@@ -637,70 +676,58 @@ export function EventForm({ organizationId, event }: Props) {
                 <FormField
                   control={form.control}
                   name="requiresApproval"
-                  render={function ({ field }) {
-                    return (
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    )
-                  }}
+                  render={({ field }) => (
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  )}
                 />
               </div>
 
-              {/* Tickets */}
               <div
                 className="flex items-center justify-between cursor-pointer"
-                onClick={function () {
-                  setShowTicketManager(!showTicketManager)
-                }}
+                onClick={() => setShowTicketManager(!showTicketManager)}
               >
                 <span>{t('tickets')}</span>
-                <span>
-                  {showTicketManager ? `${t('hide')}` : `${t('edit')}`}
-                </span>
+                <span>{showTicketManager ? t('hide') : t('edit')}</span>
               </div>
 
               {tickets.length > 0 && !showTicketManager && (
                 <div className="space-y-2">
-                  {tickets.map(function (ticket, index) {
-                    return (
-                      <div
-                        key={index}
-                        className="grid grid-cols-3 gap-4 border-b py-2"
-                      >
-                        <div>
-                          <span>{ticket.name}</span>
-                        </div>
-                        <div className="text-center">
-                          <span className="text-sm text-gray-500">
-                            {ticket.price > 0
-                              ? `S/${ticket.price}`
-                              : `${t('free')}`}
-                          </span>
-                        </div>
-                        <div className="text-right">
-                          <span className="text-sm text-gray-500">
-                            {ticket.limit} {t('tickets')}
-                          </span>
-                        </div>
+                  {tickets.map((ticket, index) => (
+                    <div
+                      key={index}
+                      className="grid grid-cols-3 gap-4 border-b py-2"
+                    >
+                      <div>
+                        <span>{ticket.name}</span>
                       </div>
-                    )
-                  })}
+                      <div className="text-center">
+                        <span className="text-sm text-gray-500">
+                          {ticket.price > 0 ? `S/${ticket.price}` : t('free')}
+                        </span>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-sm text-gray-500">
+                          {ticket.limit} {t('tickets')}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
 
               {showTicketManager && (
                 <TicketTypesManager
                   tickets={tickets}
-                  onUpdate={function (newTickets) {
+                  onUpdate={newTickets => {
                     setTickets(newTickets)
                     setShowTicketManager(false)
                   }}
                 />
               )}
 
-              {/* Submit */}
               <div className="pt-4">
                 <Button
                   type="submit"
@@ -708,11 +735,11 @@ export function EventForm({ organizationId, event }: Props) {
                 >
                   {loading
                     ? event
-                      ? `${t('updatingEvent')}`
-                      : `${t('creatingEvent')}`
+                      ? t('updatingEvent')
+                      : t('creatingEvent')
                     : event
-                      ? `${t('updateEvent')}`
-                      : `${t('createEvent')}`}
+                      ? t('updateEvent')
+                      : t('createEvent')}
                 </Button>
               </div>
             </div>
@@ -722,7 +749,7 @@ export function EventForm({ organizationId, event }: Props) {
 
       <Dialog
         open={showSuccessDialog}
-        onOpenChange={function (open) {
+        onOpenChange={open => {
           setShowSuccessDialog(open)
           if (!open) {
             router.push(`/admin/organizations/${organizationId}/events`)
@@ -743,7 +770,7 @@ export function EventForm({ organizationId, event }: Props) {
               <div className="flex justify-end space-x-4">
                 <Button
                   variant="outline"
-                  onClick={function () {
+                  onClick={() => {
                     setShowSuccessDialog(false)
                     router.push(`/admin/organizations/${organizationId}/events`)
                   }}
