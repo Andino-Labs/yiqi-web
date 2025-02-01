@@ -11,7 +11,7 @@
     "build": "prisma generate && next build && npm run build:client-types",
     "vercel-build": "prisma generate && prisma migrate deploy && next build",
     "start": "next start",
-    "lint": "tsc --noEmit && next lint && npm run format",
+    "lint": "tsc --noEmit && next lint --fix && npm run format",
     "migrate": "npm run generate && prisma migrate dev",
     "generate": "prisma format && prisma generate",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
