@@ -1,7 +1,6 @@
 'use client'
 import { BulkSendModal } from '@/components/chat/BulkSendModal'
-import OrganizationLayout from '@/components/orgs/OrganizationLayout'
-import { LuciaUserType } from '@/schemas/userSchema'
+import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
@@ -9,12 +8,10 @@ import { useRef } from 'react'
 
 export function ChatSection({
   orgId,
-  user,
   isActive,
   children
 }: {
   orgId: string
-  user: LuciaUserType
   isActive: boolean
   children: React.ReactNode
 }) {
@@ -22,19 +19,24 @@ export function ChatSection({
   const tChat = useTranslations('Chat')
   const tBulk = useTranslations('BulkSend')
 
+  const handleBulkSendClick = () => {
+    if (dialogTriggerRef?.current) {
+      dialogTriggerRef.current.click()
+    }
+  }
+
   return (
-    <OrganizationLayout
-      orgId={orgId}
-      userProps={{
-        picture: user.picture!,
-        email: user.email,
-        name: user.name,
-        id: user.id
-      }}
-      showExtraButton={true}
-      buttonName={tBulk('bulkSendButton')}
-      dialogTriggerRef={dialogTriggerRef}
-    >
+    <div>
+      <div className="mb-4 text-right">
+        <Button
+          variant="outline"
+          className="font-bold"
+          onClick={handleBulkSendClick}
+        >
+          {tBulk('bulkSendButton')}
+        </Button>
+      </div>
+
       {!isActive ? (
         <div>
           <div className="flex items-center justify-between sm:justify-end hidden">
@@ -72,6 +74,6 @@ export function ChatSection({
           {children}
         </div>
       )}
-    </OrganizationLayout>
+    </div>
   )
 }

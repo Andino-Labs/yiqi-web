@@ -1,37 +1,25 @@
-import { useEffect, useState } from 'react'
-import { NotificationSchemaType } from '@/schemas/notificationsSchema'
 import { getEventNotifications } from '@/services/actions/notifications/getEventNotifications'
-import { Table } from 'lucide-react'
 import {
+  Table,
   TableHeader,
   TableRow,
   TableHead,
   TableBody,
   TableCell
 } from '../ui/table'
-import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 
 type Props = {
   eventId: string
 }
 
-export default function EventCommunicationsTable({ eventId }: Props) {
-  const t = useTranslations('Event')
-  const [communications, setCommunications] = useState<
-    NotificationSchemaType[]
-  >([])
-
-  useEffect(() => {
-    async function getList() {
-      const results = await getEventNotifications(eventId)
-      setCommunications(results)
-    }
-    getList()
-  }, [eventId])
+export default async function EventCommunicationsTable({ eventId }: Props) {
+  const t = await getTranslations('Event')
+  const communications = await getEventNotifications(eventId)
 
   return (
     <Table>
-      <TableHeader className="bg-secondary">
+      <TableHeader>
         <TableRow>
           <TableHead>{t('Subject')}</TableHead>
           <TableHead>{t('date')}</TableHead>

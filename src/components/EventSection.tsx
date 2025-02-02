@@ -101,7 +101,7 @@ export default function EventSection({
                   }`}
                 >
                   <Link
-                    href={`/admin/organizations/${orgId}/events/${event.id}`}
+                    href={`/admin/organizations/${orgId}/events/${event.id}/summary`}
                     className="text-gray-300 hover:text-primary mt-4"
                   >
                     <Eye className="w-5 h-5" />

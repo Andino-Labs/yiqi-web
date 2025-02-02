@@ -35,11 +35,7 @@ import {
   SidebarProvider,
   SidebarTrigger
 } from '../ui/sidebar'
-import { getAllOrganizationsForCurrentUser } from '@/services/actions/organizationActions'
-import { useEffect, useMemo, useState } from 'react'
-import { OrganizationType } from '@/schemas/organizerSchema'
 import { useTranslations } from 'next-intl'
-import { Button } from '../ui/button'
 
 interface UserProps {
   name: string
@@ -51,70 +47,50 @@ interface UserProps {
 interface AdminLayoutProps {
   children: React.ReactNode
   userProps: UserProps
-  orgId: string
-  showExtraButton?: boolean
-  buttonName?: string
-  dialogTriggerRef?: React.RefObject<HTMLButtonElement>
+  currentOrgId: string
+  organizations: { name: string; id: string }[]
+  currentOrg?: string
 }
 
 export default function OrganizationLayout({
   children,
   userProps,
-  orgId,
-  showExtraButton = false,
-  buttonName = '',
-  dialogTriggerRef
+  currentOrgId,
+  organizations,
+  currentOrg
 }: AdminLayoutProps) {
-  const t = useTranslations('Sidebar')
-  const [organizations, setOrganizations] = useState<OrganizationType[]>([])
-
-  const handleBulkSendClick = () => {
-    if (dialogTriggerRef?.current) {
-      dialogTriggerRef.current.click()
-    }
-  }
-  useEffect(() => {
-    async function fetchOrganizations() {
-      try {
-        const orgs = await getAllOrganizationsForCurrentUser()
-        setOrganizations(orgs)
-      } catch (error) {
-        console.error('Failed to fetch organizations:', error)
-      }
-    }
-    fetchOrganizations()
-  }, [])
+  const tSidebar = useTranslations('Sidebar')
 
   const navItems = [
     {
-      name: `${t('settings')}`,
+      name: `${tSidebar('settings')}`,
       icon: Settings,
-      href: `/admin/organizations/${orgId}/settings`
+      href: `/admin/organizations/${currentOrgId}/settings`
     },
     {
-      name: `${t('chat')}`,
+      name: `${tSidebar('chat')}`,
       icon: MessageSquare,
-      href: `/admin/organizations/${orgId}/chat`
+      href: `/admin/organizations/${currentOrgId}/chat`
     },
     {
-      name: `${t('events')}`,
+      name: `${tSidebar('events')}`,
       icon: Calendar,
-      href: `/admin/organizations/${orgId}/events`
+      href: `/admin/organizations/${currentOrgId}/events`
     },
     {
-      name: `${t('contacts')}`,
+      name: `${tSidebar('contacts')}`,
       icon: BookUser,
-      href: `/admin/organizations/${orgId}/contacts`
+      href: `/admin/organizations/${currentOrgId}/contacts`
     },
     {
-      name: `${t('organizers')}`,
+      name: `${tSidebar('organizers')}`,
       icon: Users,
-      href: `/admin/organizations/${orgId}/organizers`
+      href: `/admin/organizations/${currentOrgId}/organizers`
     },
     {
-      name: `${t('billing')}`,
+      name: `${tSidebar('billing')}`,
       icon: Banknote,
-      href: `/admin/organizations/${orgId}/billing`
+      href: `/admin/organizations/${currentOrgId}/billing`
     }
     // {
     //   name: 'Formularios',
@@ -122,10 +98,6 @@ export default function OrganizationLayout({
     //   href: `/admin/organizations/${orgId}/forms`
     // }
   ]
-  const currentOrg = useMemo(
-    () => organizations.find(org => org.id === orgId),
-    [organizations, orgId]
-  )
 
   return (
     <SidebarProvider className="bg-primary">
@@ -136,7 +108,7 @@ export default function OrganizationLayout({
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
                   <Building2 />
-                  {currentOrg?.name}
+                  {currentOrg}
                   <ChevronDown className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
@@ -172,16 +144,6 @@ export default function OrganizationLayout({
           <header className="flex items-center justify-between p-4 shadow-md bg-primary">
             <SidebarTrigger className="bg-primary text-primary" />
             <div className="flex items-center gap-4">
-              {/* Botón para enviar masivamente */}
-              {showExtraButton && (
-                <Button
-                  variant="outline"
-                  className="font-bold"
-                  onClick={handleBulkSendClick}
-                >
-                  {buttonName}
-                </Button>
-              )}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Avatar className="h-8 w-8">
@@ -204,7 +166,7 @@ export default function OrganizationLayout({
                   <DropdownMenuItem>
                     <SignOutButton>
                       <div className="flex items-center gap-4">
-                        <span>{t('logOut')}</span>
+                        <span>{tSidebar('logOut')}</span>
                         <LogOut className="h-4 w-4" />
                       </div>
                     </SignOutButton>

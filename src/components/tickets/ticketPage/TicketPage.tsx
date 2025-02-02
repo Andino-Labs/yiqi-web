@@ -6,11 +6,14 @@ import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ChevronLeft, ChevronRight, Ticket } from 'lucide-react'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { QRModal } from '../qrModal/QrModal'
 import { ticketEventSchemaType } from '@/schemas/ticketSchema'
 import { translations } from '@/lib/translations/translations'
 import { PaymentModal } from '../paymentModal/PaymentModal'
+import NetworkingUsersList from '../networkingUsersList/NetworkingUsersList'
+import { checkTicketCheckedIn } from '@/services/actions/tickets/checkTicketCheckedIn'
+import { isOngoingEvent } from '@/lib/utils/isOngoingEvent'
 
 interface TicketModalState {
   isOpen: boolean
@@ -56,9 +59,11 @@ const TicketStatusBadge = ({ status }: { status: string }) => {
 }
 
 export default function TicketsPage({
-  tickets
+  tickets,
+  userHasNetworkingData
 }: {
   tickets: ticketEventSchemaType
+  userHasNetworkingData: boolean
 }) {
   const [paymentModalOpen, setPaymentModalOpen] = useState(false)
   const [modalState, setModalState] = useState<TicketModalState>({
@@ -93,6 +98,38 @@ export default function TicketsPage({
       setCurrentPage(prev => prev - 1)
     }
   }
+  const [isMatchesModalVisible, setIsMatchesModalVisible] =
+    useState<boolean>(false)
+
+  useEffect(() => {
+    if (
+      !userHasNetworkingData ||
+      !modalState.isOpen ||
+      !modalState.ticketId ||
+      modalState.checkedInDate !== null
+    ) {
+      return
+    }
+
+    const intervalId = setInterval(async () => {
+      try {
+        // Fetch ticket check-in status
+        const response = await checkTicketCheckedIn(modalState.ticketId)
+        const updatedCheckedInDate = response.checkedInDate || null
+
+        if (updatedCheckedInDate) {
+          // Close QR modal and open Networking modal
+          setModalState(prev => ({ ...prev, isOpen: false }))
+          setIsMatchesModalVisible(true)
+          clearInterval(intervalId)
+        }
+      } catch (error) {
+        console.error('Error checking ticket status:', error)
+      }
+    }, 5000)
+
+    return () => clearInterval(intervalId)
+  }, [modalState, userHasNetworkingData])
 
   const openModal = (
     eventTitle: string,
@@ -164,7 +201,14 @@ export default function TicketsPage({
                       />
                     </div>
                   </div>
-
+                  {isOngoingEvent(data.event.startDate, data.event.endDate) &&
+                  userHasNetworkingData ? (
+                    <NetworkingUsersList
+                      registrationId={data.tickets[0].registrationId}
+                      isModalVisible={isMatchesModalVisible}
+                      setIsModalVisible={setIsMatchesModalVisible}
+                    />
+                  ) : null}
                   <div className="mt-6 space-y-4">
                     {data.tickets.map((ticket, index) => (
                       <div

@@ -1,12 +1,12 @@
 import prisma from '@/lib/prisma'
-import { NotificationType } from '@prisma/client'
+import { JobType, NotificationType } from '@prisma/client'
 
 interface PaymentReminder {
   eventId: string
   userId: string
 }
 
-export async function scheduleMissingPayment(): Promise<PaymentReminder[]> {
+export async function scheduleMissingPayment() {
   const now = new Date()
 
   // Time ranges for scenarios
@@ -94,5 +94,11 @@ export async function scheduleMissingPayment(): Promise<PaymentReminder[]> {
     }
   }
 
-  return reminders
+  return reminders.map(reminder => ({
+    type: JobType.SEND_USER_MESSAGE,
+    data: {},
+    notificationType: NotificationType.RESERVATION_PAYMENT_REMINDER,
+    userId: reminder.userId,
+    eventId: reminder.eventId
+  }))
 }

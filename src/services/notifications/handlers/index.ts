@@ -2,6 +2,7 @@ import { QueueJob } from '@prisma/client'
 import { sendUserEventConfirmed } from './sendUserEventConfirmed'
 import { sendUserPaymentReminder } from './sendUserPaymentReminder'
 import { sendUserPaymentConfirmed } from './sendUserPaymentConfirmed'
+import { sendUserEventReminder } from './sendUserEventReminder'
 
 export async function handleNotificationJob(job: QueueJob) {
   switch (job.notificationType) {
@@ -13,6 +14,9 @@ export async function handleNotificationJob(job: QueueJob) {
       break
     case 'PAYMENT_CONFIRMED':
       await sendUserPaymentConfirmed(job)
+      break
+    case 'RESERVATION_REMINDER':
+      await sendUserEventReminder(job)
       break
     default:
       console.warn(`Unhandled notification type: ${job.notificationType}`)
