@@ -81,7 +81,8 @@ export const EventCommunitySchema = z.object({
   maxAttendees: z.number().int().positive().optional().nullable(),
   requiresApproval: z.boolean().default(false),
   openGraphImage: z.string().optional().nullable(),
-  type: z.nativeEnum(EventTypeEnum)
+  type: z.nativeEnum(EventTypeEnum),
+  timezoneLabel: z.string()
 })
 
 export const EventSchema = EventInputSchema.extend({

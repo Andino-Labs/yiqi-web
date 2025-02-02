@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server'
 import { Calendar, MapPin } from 'lucide-react'
 import { MdPreview } from '@/components/events/editor/MdPreview'
 import { Card, CardContent } from '@/components/ui/card'
+import { formatDateByTimezoneLabel } from '@/components/utils'
 
 export default async function Page({
   params
@@ -22,9 +23,10 @@ export default async function Page({
         <div>
           <div className="flex items-center gap-2">
             <Calendar className="h-5 w-5 text-primary-foreground/60" />
-            <time>{new Date(event.startDate).toLocaleString()}</time>
+            <time>
+              {formatDateByTimezoneLabel(event.startDate, event.timezoneLabel)}
+            </time>
           </div>
-          <div>{event.timezoneLabel}</div>
         </div>
         <div className="flex items-center gap-2">
           {event.location && event.city && (
