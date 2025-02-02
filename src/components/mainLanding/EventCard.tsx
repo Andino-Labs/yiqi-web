@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { PublicEventType } from '@/schemas/eventSchema'
 import { MdPreview } from '@/components/events/editor/MdPreview'
 import { useTranslations } from 'next-intl'
-import { formatDateByTimezoneLabel } from '../utils'
+import { formatRangeDatesByTimezoneLabel } from '../utils'
 
 const EventCard = ({ event }: { event: PublicEventType }) => {
   const t = useTranslations('Event')
@@ -44,7 +44,7 @@ const EventCard = ({ event }: { event: PublicEventType }) => {
             <div className="flex items-center gap-2 text-gray-300">
               <Calendar className="w-4 h-4 flex-shrink-0" />
               <span className="text-sm">
-                {formatDateByTimezoneLabel(
+                {formatRangeDatesByTimezoneLabel(
                   event.startDate,
                   event.timezoneLabel
                 )}

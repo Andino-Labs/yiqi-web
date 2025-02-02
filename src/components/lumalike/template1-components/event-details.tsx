@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge'
 import { motion } from 'framer-motion'
 import { PublicEventType } from '@/schemas/eventSchema'
 import { useTranslations } from 'next-intl'
-import { formatDurationByTimezoneLabel } from '@/components/utils'
+import { formatRangeDatesByTimezoneLabel } from '@/components/utils'
 
 function createGoogleMapsUrl(location: string) {
   const searchQuery = encodeURIComponent(location)
@@ -56,7 +56,11 @@ export function EventDetails({ event }: { event: PublicEventType }) {
           <div className="flex items-center gap-2">
             <Calendar className="h-5 w-5 text-primary-foreground/60" />
             <time>
-              {formatDurationByTimezoneLabel(startDate, endDate, timezoneLabel)}
+              {formatRangeDatesByTimezoneLabel(
+                startDate,
+                timezoneLabel,
+                endDate
+              )}
             </time>
           </div>
         </div>

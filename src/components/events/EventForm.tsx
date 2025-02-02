@@ -50,6 +50,7 @@ import { UploadIcon } from '@radix-ui/react-icons'
 import { Switch } from '@/components/ui/switch'
 import Link from 'next/link'
 import { allTimezones, useTimezoneSelect } from 'react-timezone-select'
+import { extractGMTTime, getDateOrTimeByTimezoneLabel } from '../utils'
 
 type Props = {
   organizationId: string
@@ -145,18 +146,32 @@ export function EventForm({ organizationId, event }: Props) {
     defaultValues: {
       title: event?.title ?? '',
       startDate: event
-        ? new Date(event.startDate).toLocaleDateString('en-CA')
+        ? getDateOrTimeByTimezoneLabel(
+            event.startDate,
+            event.timezoneLabel,
+            'date'
+          )
         : '',
       startTime: event
-        ? new Date(event.startDate)
-            .toLocaleTimeString('en-US', { hour12: false })
-            .slice(0, 5)
+        ? getDateOrTimeByTimezoneLabel(
+            event.startDate,
+            event.timezoneLabel,
+            'time'
+          )
         : '',
-      endDate: event ? new Date(event.endDate).toLocaleDateString('en-CA') : '',
+      endDate: event
+        ? getDateOrTimeByTimezoneLabel(
+            event.endDate,
+            event.timezoneLabel,
+            'date'
+          )
+        : '',
       endTime: event
-        ? new Date(event.endDate)
-            .toLocaleTimeString('en-US', { hour12: false })
-            .slice(0, 5)
+        ? getDateOrTimeByTimezoneLabel(
+            event.endDate,
+            event.timezoneLabel,
+            'time'
+          )
         : '',
       location: event?.location ?? '',
       virtualLink: event?.virtualLink ?? '',
@@ -271,9 +286,11 @@ export function EventForm({ organizationId, event }: Props) {
         }
 
         const startDateTime = new Date(
-          `${values.startDate}T${values.startTime}`
+          `${values.startDate}T${values.startTime}${extractGMTTime(values.timezoneLabel)}`
         )
-        const endDateTime = new Date(`${values.endDate}T${values.endTime}`)
+        const endDateTime = new Date(
+          `${values.endDate}T${values.endTime}${extractGMTTime(values.timezoneLabel)}`
+        )
 
         const eventData: EventInputType = {
           ...values,
