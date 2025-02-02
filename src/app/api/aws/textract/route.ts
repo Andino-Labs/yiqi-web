@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 import {
   TextractClient,
   DetectDocumentTextCommand,
-  DetectDocumentTextCommandInput
+  type DetectDocumentTextCommandInput
 } from '@aws-sdk/client-textract'
 
 const textractClient = new TextractClient({
@@ -13,17 +13,32 @@ const textractClient = new TextractClient({
   }
 })
 
+export const config = {
+  api: { bodyParser: false }
+}
+
+const SUPPORTED_MIME_TYPES = ['application/pdf', 'image/tiff', 'image/png']
+
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
-    const formData = await request.formData()
-    const file = formData.get('file') as File | null
+    const body = await request.json()
+    const { file, fileType } = body
 
     if (!file) {
       return NextResponse.json({ error: 'No file uploaded' }, { status: 400 })
     }
 
-    const arrayBuffer = await file.arrayBuffer()
-    const buffer = Buffer.from(arrayBuffer)
+    if (!SUPPORTED_MIME_TYPES.includes(fileType)) {
+      return NextResponse.json(
+        {
+          error:
+            'Unsupported file type. Please upload a PDF, TIFF, or PNG file.'
+        },
+        { status: 400 }
+      )
+    }
+
+    const buffer = Buffer.from(file, 'base64')
 
     const params: DetectDocumentTextCommandInput = {
       Document: {
@@ -43,8 +58,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ text: extractedText })
   } catch (error) {
     console.error('Error processing file:', error)
+    if (error instanceof Error) {
+      return NextResponse.json(
+        { error: `Error processing file: ${error.message}` },
+        { status: 500 }
+      )
+    }
     return NextResponse.json(
-      { error: 'Error processing file' },
+      { error: 'An unknown error occurred while processing the file' },
       { status: 500 }
     )
   }
