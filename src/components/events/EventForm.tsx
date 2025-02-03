@@ -135,10 +135,10 @@ export function EventForm({ organizationId, event }: Props) {
   const [description, setDescription] = useState<string>(
     event?.description ?? defaultValue
   )
+
   const { options } = useTimezoneSelect({
     timezones: allTimezones
   })
-
   const [locationDetails, setLocationDetails] =
     useState<LocationDetails | null>(null)
   const form = useForm<z.infer<typeof EventFormInputSchema>>({
@@ -171,7 +171,7 @@ export function EventForm({ organizationId, event }: Props) {
             event.endDate,
             event.timezoneLabel,
             'time'
-          )
+          ).slice(0, 5)
         : '',
       location: event?.location ?? '',
       virtualLink: event?.virtualLink ?? '',

@@ -113,7 +113,7 @@ export const EventRegistrationSchema = z.object({
   id: z.string(),
   userId: z.string(),
   status: z.enum(['PENDING', 'APPROVED', 'REJECTED']),
-  customFields: z.record(z.any()),
+  customFields: z.record(z.any()).optional().nullable(),
   createdAt: z.date(),
   updatedAt: z.date(),
   paid: z.boolean(),
