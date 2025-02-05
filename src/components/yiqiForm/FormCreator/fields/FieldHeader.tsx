@@ -10,10 +10,11 @@ import {
   SelectValue
 } from '@/components/ui/select'
 
-import { FormProps, InputTypes } from '../../../schemas/yiqiFormSchema'
-import { ExtendedCardProps } from '../FormBuild'
+import { FormProps, InputTypes } from '@/schemas/yiqiFormSchema'
+
 import { cn } from '@/lib/utils'
 import { translations } from '@/lib/translations/translations'
+import { ExtendedCardProps } from '../FormBuild'
 
 const FieldHeader = ({
   id,
