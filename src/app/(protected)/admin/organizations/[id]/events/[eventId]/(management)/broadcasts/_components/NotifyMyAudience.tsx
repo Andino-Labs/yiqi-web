@@ -20,12 +20,10 @@ export const NotifyMyAudience = async ({ eventId }: { eventId: string }) => {
   const attendees = await getEventRegistrations(eventId)
 
   return (
-    <div>
-      <SendMassiveMessagesForm
-        groupEmailsByStatus={groupEmailsByStatus(
-          attendees.map(_ => ({ email: _.user.email, status: _.status }))
-        )}
-      />
-    </div>
+    <SendMassiveMessagesForm
+      groupEmailsByStatus={groupEmailsByStatus(
+        attendees.map(_ => ({ email: _.user.email, status: _.status }))
+      )}
+    />
   )
 }

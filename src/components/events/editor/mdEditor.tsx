@@ -117,7 +117,7 @@ export function MarkdownEditor({
         }}
       />
       <Card className="mx-auto max-w-full">
-        <CardContent className="p-6">
+        <CardContent className="p-3">
           <Dialog>
             <DialogTrigger asChild>
               <div className="prose prose-sm max-w-none mb-4 cursor-pointer dark:prose-invert">
