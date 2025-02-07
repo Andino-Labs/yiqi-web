@@ -21,6 +21,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { createEvent } from '@/services/actions/event/createEvent'
 import {
+  CustomFieldType,
   EventInputSchema,
   EventInputType,
   EventTicketInputType,
@@ -29,7 +30,7 @@ import {
   SavedTicketOfferingType
 } from '@/schemas/eventSchema'
 import { useRouter } from 'next/navigation'
-import { MapPin, Clock, Users } from 'lucide-react'
+import { MapPin, Clock, Users, Link as LinkIcon } from 'lucide-react'
 import { useState } from 'react'
 import { TicketTypesManager } from './TicketTypesManager'
 import {
@@ -51,6 +52,7 @@ import { Switch } from '@/components/ui/switch'
 import Link from 'next/link'
 import { allTimezones, useTimezoneSelect } from 'react-timezone-select'
 import { extractGMTTime, getDateOrTimeByTimezoneLabel } from '../utils'
+import { CustomFieldsDialog } from './CustomFieldsDialog'
 
 type Props = {
   organizationId: string
@@ -63,6 +65,29 @@ export const EventFormInputSchema = EventInputSchema.extend({
   startDate: z.string(),
   endDate: z.string(),
   timezoneLabel: z.string()
+}).superRefine((data, ctx) => {
+  if (data.type === EventTypeEnum.IN_PERSON && !data.location) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Location is required for in-person events',
+      path: ['location']
+    })
+  }
+  if (data.type === EventTypeEnum.ONLINE) {
+    if (!data.virtualLink) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Virtual link is required for online events',
+        path: ['virtualLink']
+      })
+    } else if (!z.string().url().safeParse(data.virtualLink).success) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Invalid URL format',
+        path: ['virtualLink']
+      })
+    }
+  }
 })
 
 type LocationDetails = {
@@ -141,6 +166,11 @@ export function EventForm({ organizationId, event }: Props) {
   })
   const [locationDetails, setLocationDetails] =
     useState<LocationDetails | null>(null)
+
+  const [showCustomFieldsDialog, setShowCustomFieldsDialog] = useState(false)
+  const [customFields, setCustomFields] = useState<CustomFieldType[]>(
+    event?.customFields?.fields ?? []
+  )
   const form = useForm<z.infer<typeof EventFormInputSchema>>({
     resolver: zodResolver(EventFormInputSchema),
     defaultValues: {
@@ -189,6 +219,17 @@ export function EventForm({ organizationId, event }: Props) {
         )[0].label
     }
   })
+
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false)
+  const [savedEventId, setSavedEventId] = useState<string | null>(null)
+
+  function handleAddCustomField(field: CustomFieldType) {
+    setCustomFields([...customFields, field])
+  }
+
+  function handleRemoveCustomField(index: number) {
+    setCustomFields(customFields.filter((_, i) => i !== index))
+  }
 
   const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -273,9 +314,6 @@ export function EventForm({ organizationId, event }: Props) {
     }
   }
 
-  const [showSuccessDialog, setShowSuccessDialog] = useState(false)
-  const [savedEventId, setSavedEventId] = useState<string | null>(null)
-
   async function onSubmit(values: z.infer<typeof EventFormInputSchema>) {
     if (!loading) {
       setLoading(true)
@@ -295,10 +333,13 @@ export function EventForm({ organizationId, event }: Props) {
         const eventData: EventInputType = {
           ...values,
           ...locationDetails,
+          ...(values.type === EventTypeEnum.IN_PERSON ? locationDetails : {}),
           startDate: startDateTime,
           endDate: endDateTime,
           openGraphImage: imageUrl || event?.openGraphImage,
-          description
+          description,
+          virtualLink:
+            values.type === EventTypeEnum.ONLINE ? values.virtualLink : null
         }
 
         if (event) {
@@ -430,6 +471,7 @@ export function EventForm({ organizationId, event }: Props) {
                       />
                     </div>
                   </div>
+
                   {/* Fecha de fin */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
@@ -500,47 +542,99 @@ export function EventForm({ organizationId, event }: Props) {
               </div>
             </div>
 
-            {/* Columna derecha */}
             <div className="space-y-6 max-w-3xl">
-              {/* Ubicación */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-                  {t('location')}
-                </label>
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-5 w-5" />
-                  <FormField
-                    control={form.control}
-                    name="location"
-                    render={({ field }) => (
-                      <AddressAutocomplete
-                        defaultValue={field.value ?? ''}
-                        fieldName="location"
-                        onSetAddress={field.onChange}
-                        onAfterSelection={value => {
-                          if (value?.address_components && value?.geometry) {
-                            const locationDetails = getLocationDetails(
-                              value.address_components
-                            )
-                            if (locationDetails) {
-                              setLocationDetails({
-                                ...locationDetails,
-                                latLon: {
-                                  lat: value.geometry?.location?.lat() ?? 0,
-                                  lon: value.geometry?.location?.lng() ?? 0
-                                }
-                              })
-                            }
-                          }
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">
+                  Elije el tipo de evento:
+                </span>
+                <FormField
+                  control={form.control}
+                  name="type"
+                  render={({ field }) => (
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm">
+                        {field.value === EventTypeEnum.IN_PERSON
+                          ? 'Presencial'
+                          : 'Online'}
+                      </span>
+                      <Switch
+                        checked={field.value === EventTypeEnum.ONLINE}
+                        onCheckedChange={checked => {
+                          field.onChange(
+                            checked
+                              ? EventTypeEnum.ONLINE
+                              : EventTypeEnum.IN_PERSON
+                          )
+                          form.resetField('location')
+                          form.resetField('virtualLink')
                         }}
                       />
-                    )}
-                  />
-                </div>
+                    </div>
+                  )}
+                />
               </div>
-              {/* Description */}
+
+              {form.watch('type') === EventTypeEnum.IN_PERSON ? (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+                    {t('location')}
+                  </label>
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-5 w-5" />
+                    <FormField
+                      control={form.control}
+                      name="location"
+                      render={({ field }) => (
+                        <AddressAutocomplete
+                          defaultValue={field.value ?? ''}
+                          fieldName="location"
+                          onSetAddress={field.onChange}
+                          onAfterSelection={value => {
+                            if (value?.address_components && value?.geometry) {
+                              const locationDetails = getLocationDetails(
+                                value.address_components
+                              )
+                              if (locationDetails) {
+                                setLocationDetails({
+                                  ...locationDetails,
+                                  latLon: {
+                                    lat: value.geometry?.location?.lat() ?? 0,
+                                    lon: value.geometry?.location?.lng() ?? 0
+                                  }
+                                })
+                              }
+                            }
+                          }}
+                        />
+                      )}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <FormField
+                  control={form.control}
+                  name="virtualLink"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex items-center gap-2">
+                        <LinkIcon className="h-5 w-5" />
+                        <FormControl>
+                          <Input
+                            placeholder="https://meet.example.com/your-event"
+                            className="w-full"
+                            {...field}
+                            value={field.value ?? ''}
+                          />
+                        </FormControl>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-                {'Descripción'}
+                Descripción de tu evento:
               </label>
               <FormField
                 control={form.control}
@@ -551,9 +645,7 @@ export function EventForm({ organizationId, event }: Props) {
                       <div className="max-h-96 overflow-y-auto border rounded p-2">
                         <MarkdownEditor
                           initialValue={description}
-                          onChange={val => {
-                            setDescription(val)
-                          }}
+                          onChange={val => setDescription(val)}
                         />
                       </div>
                     </FormControl>
@@ -561,7 +653,45 @@ export function EventForm({ organizationId, event }: Props) {
                 )}
               />
 
-              {/* Capacity */}
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                  Campos personalizados:
+                </span>
+                <Button
+                  type="button"
+                  onClick={() => setShowCustomFieldsDialog(true)}
+                  variant="outline"
+                  className="bg-secondary"
+                >
+                  Añade campos personalizados
+                </Button>
+              </div>
+
+              {customFields.length > 0 && (
+                <div className="space-y-2">
+                  {customFields.map((field, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between border-b py-2"
+                    >
+                      <div>
+                        <span className="font-medium">{field.name}</span> -{' '}
+                        <span className="text-sm text-gray-500">
+                          {field.description}
+                        </span>
+                      </div>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        onClick={() => handleRemoveCustomField(index)}
+                      >
+                        {tPage('removeField')}
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Users className="h-5 w-5" />
@@ -609,15 +739,12 @@ export function EventForm({ organizationId, event }: Props) {
                 />
               </div>
 
-              {/* Tickets */}
               <div
                 className="flex items-center justify-between cursor-pointer"
                 onClick={() => setShowTicketManager(!showTicketManager)}
               >
                 <span>{t('tickets')}</span>
-                <span>
-                  {showTicketManager ? `${t('hide')}` : `${t('edit')}`}
-                </span>
+                <span>{showTicketManager ? t('hide') : t('edit')}</span>
               </div>
 
               {tickets.length > 0 && !showTicketManager && (
@@ -632,9 +759,7 @@ export function EventForm({ organizationId, event }: Props) {
                       </div>
                       <div className="text-center">
                         <span className="text-sm text-gray-500">
-                          {ticket.price > 0
-                            ? `S/${ticket.price}`
-                            : `${t('free')}`}
+                          {ticket.price > 0 ? `S/${ticket.price}` : t('free')}
                         </span>
                       </div>
                       <div className="text-right">
@@ -715,6 +840,11 @@ export function EventForm({ organizationId, event }: Props) {
           </DialogHeader>
         </DialogContent>
       </Dialog>
+      <CustomFieldsDialog
+        open={showCustomFieldsDialog}
+        onOpenChange={setShowCustomFieldsDialog}
+        onAddCustomField={handleAddCustomField}
+      />
     </>
   )
 }
