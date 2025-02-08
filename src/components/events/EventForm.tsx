@@ -53,6 +53,7 @@ import Link from 'next/link'
 import { allTimezones, useTimezoneSelect } from 'react-timezone-select'
 import { extractGMTTime, getDateOrTimeByTimezoneLabel } from '../utils'
 import { CustomFieldsDialog } from './CustomFieldsDialog'
+import { updateCustomFields } from '@/services/actions/event/updateCustomFields'
 
 type Props = {
   organizationId: string
@@ -343,12 +344,12 @@ export function EventForm({ organizationId, event }: Props) {
         }
 
         if (event) {
-          // Update existing event
           await updateEvent(event.id, eventData, tickets)
           setSavedEventId(event.id)
+          await updateCustomFields(event.id, customFields)
         } else {
-          // Create new event
           const result = await createEvent(organizationId, eventData, tickets)
+          await updateCustomFields(result.id, customFields)
           setSavedEventId(result.id)
         }
 
@@ -682,10 +683,10 @@ export function EventForm({ organizationId, event }: Props) {
                       </div>
                       <Button
                         type="button"
-                        variant="ghost"
+                        variant="destructive"
                         onClick={() => handleRemoveCustomField(index)}
                       >
-                        {tPage('removeField')}
+                        Elimina el campo
                       </Button>
                     </div>
                   ))}

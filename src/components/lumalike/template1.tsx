@@ -12,7 +12,7 @@ import { EventLocation } from './template1-components/event-location'
 import MainLandingNav from '../mainLanding/mainNav'
 import { useTranslations } from 'next-intl'
 
-export function EventPage({ event, user }: RegistrationProps) {
+export function EventPage({ event, customFields, user }: RegistrationProps) {
   const [isMobile, setIsMobile] = useState(false)
   const [isSticky, setIsSticky] = useState(false)
   const registrationRef = useRef<HTMLDivElement>(null)
@@ -96,6 +96,7 @@ export function EventPage({ event, user }: RegistrationProps) {
                   transition={{ duration: 0.5, delay: 0.2 }}
                 >
                   <Registration
+                    customFields={customFields}
                     event={event}
                     user={user}
                     dialogTriggerRef={dialogTriggerRef}
@@ -125,6 +126,7 @@ export function EventPage({ event, user }: RegistrationProps) {
                   <>
                     <hr className="my-6 border-t border-solid border-white-opacity-40 w-[100%] ml-0 mx-auto" />
                     <Registration
+                      customFields={customFields}
                       event={event}
                       user={user}
                       dialogTriggerRef={dialogTriggerRef}
