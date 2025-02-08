@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '../ui/button'
@@ -28,9 +28,7 @@ import { userDataCollectedShema } from '@/schemas/userSchema'
 import type { UserDataCollected } from '@/schemas/userSchema'
 import { useRouter } from 'next/navigation'
 import { Input } from '../ui/input'
-import { useUpload } from '@/hooks/useUpload'
 import { scheduleUserDataProcessing } from '@/services/actions/networking/scheduleUserDataProcessing'
-import { useTextract } from '@/hooks/useTextract'
 
 export type NetworkingData = Pick<
   UserDataCollected,
@@ -52,15 +50,9 @@ type Props = {
 export default function NetworkingProfileForm({ initialData, userId }: Props) {
   const { toast } = useToast()
   const router = useRouter()
-  const {
-    extractText,
-    extractedText,
-    isLoading: isExtracting,
-    error: extractionError
-  } = useTextract()
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  const { uploadSingle, isUploading } = useUpload()
   const [isProcessingFile, setIsProcessingFile] = useState(false)
 
   const form = useForm<NetworkingData>({
@@ -103,32 +95,55 @@ export default function NetworkingProfileForm({ initialData, userId }: Props) {
 
   async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0]
-    if (file) {
-      try {
-        setIsProcessingFile(true)
-        setSelectedFile(file)
-        const url = await uploadSingle(file)
-        form.setValue('resumeUrl', url)
-        form.setValue('resumeLastUpdated', new Date().toISOString())
+    if (!file) return
 
-        // Extract text from the file
-        await extractText(file)
-        if (extractedText) {
-          form.setValue('resumeText', extractedText)
-        }
-      } catch (error) {
-        console.error('Error processing file:', error)
-        toast({
-          title: translations.es.resumeUploadError,
-          description:
-            error instanceof Error
-              ? error.message
-              : 'An unknown error occurred',
-          variant: 'destructive'
-        })
-      } finally {
-        setIsProcessingFile(false)
-      }
+    try {
+      setIsProcessingFile(true)
+      setSelectedFile(file)
+
+      // 1. Get presigned URL
+      const presignedResponse = await fetch('/api/aws/presigned-url', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fileName: file.name })
+      })
+
+      if (!presignedResponse.ok) throw new Error('Failed to get upload URL')
+      const { presignedUrl, s3Key } = await presignedResponse.json()
+
+      // 2. Upload file directly to S3
+      const uploadResponse = await fetch(presignedUrl, {
+        method: 'PUT',
+        body: file,
+        headers: { 'Content-Type': 'application/pdf' }
+      })
+
+      if (!uploadResponse.ok) throw new Error('Upload failed')
+
+      // 3. Process file with Textract
+      const textractResponse = await fetch('/api/aws/textract', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ s3Key })
+      })
+
+      if (!textractResponse.ok) throw new Error('Text extraction failed')
+      const { text } = await textractResponse.json()
+
+      // 4. Update form values
+      const publicUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${s3Key}`
+      form.setValue('resumeUrl', publicUrl)
+      form.setValue('resumeText', text)
+      form.setValue('resumeLastUpdated', new Date().toISOString())
+    } catch (error) {
+      console.error('File processing error:', error)
+      toast({
+        title: translations.es.resumeUploadError,
+        description: error instanceof Error ? error.message : 'Unknown error',
+        variant: 'destructive'
+      })
+    } finally {
+      setIsProcessingFile(false)
     }
   }
 
@@ -160,32 +175,6 @@ export default function NetworkingProfileForm({ initialData, userId }: Props) {
       setIsSubmitting(false)
     }
   }
-
-  useEffect(() => {
-    if (extractedText) {
-      form.setValue('resumeText', extractedText)
-    }
-  }, [extractedText, form])
-
-  useEffect(() => {
-    if (extractionError) {
-      toast({
-        title: translations.es.textExtractionError,
-        description: extractionError,
-        variant: 'destructive'
-      })
-    }
-  }, [extractionError, toast])
-
-  useEffect(() => {
-    if (extractionError) {
-      toast({
-        title: translations.es.textExtractionError,
-        description: extractionError,
-        variant: 'destructive'
-      })
-    }
-  }, [extractionError, toast])
 
   return (
     <Card className="w-full max-w-4xl mx-auto">
@@ -242,7 +231,7 @@ export default function NetworkingProfileForm({ initialData, userId }: Props) {
                   </div>
                 )}
               </div>
-              {isExtracting && (
+              {isProcessingFile && (
                 <div className="mt-2 text-sm text-muted-foreground">
                   <Loader2 className="h-4 w-4 mr-2 inline animate-spin" />
                   {translations.es.extractingText}
@@ -380,7 +369,7 @@ export default function NetworkingProfileForm({ initialData, userId }: Props) {
             <Button
               type="submit"
               className="w-full"
-              disabled={isSubmitting || isUploading}
+              disabled={isSubmitting || isProcessingFile}
             >
               {isSubmitting ? (
                 <>

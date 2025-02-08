@@ -655,7 +655,7 @@ export function EventForm({ organizationId, event }: Props) {
               />
 
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                <span className="hidden sm:inline text-sm font-medium text-gray-700 dark:text-gray-200">
                   Campos personalizados:
                 </span>
                 <Button

@@ -12,7 +12,16 @@ import {
   createConversation,
   sendMessage
 } from '@/lib/llm/messages-api/bedrockWrapper'
+import { z } from 'zod'
+
 import { AWS_BEDROCK_MODELS } from '@/lib/llm/models'
+
+const parseSchema = z.array(
+  z.object({
+    type: z.any(),
+    text: z.string().min(1)
+  })
+)
 
 function createPrompt(collectedData: UserDataCollected): string {
   return `
@@ -127,6 +136,11 @@ ${translations.es.significantChallengeLabel}: ${collectedData.significantChallen
 `
 }
 
+function parseSendMessageResult(result: unknown): string {
+  const parsed = parseSchema.parse(result)
+  return parsed[0].text
+}
+
 export async function processUserFirstPartyData(userId: string): Promise<void> {
   const systemPrompt: string =
     "You are a community manager that is tasked with creating a deep understanding of your professional network in order to improve the quality of connections for your comunity. You will be provided with a user's LinkedIn data and your task is to generate a detailed user profile that can help in matching them with potential co-founders or networking opportunities aligned with their goals and interests."
@@ -162,45 +176,49 @@ export async function processUserFirstPartyData(userId: string): Promise<void> {
 
   const calculatedPrompt = createPrompt(dataCollected)
 
-  const profileResult = await sendMessage(
-    conversation,
-    calculatedPrompt,
-    systemPrompt
+  const profileResult = parseSendMessageResult(
+    await sendMessage(conversation, calculatedPrompt, systemPrompt)
   )
-
-  console.log(JSON.stringify(profileResult, null, 2))
 
   if (!profileResult) {
     throw new Error('User detailed profile is empty')
   }
 
-  console.info('profile result call was succesfull')
+  console.info('Profile result call was successful')
 
-  await new Promise(resolve => setTimeout(resolve, 5000))
+  await new Promise(resolve => {
+    setTimeout(resolve, 5000)
+  })
 
-  const userEmbeddableProfile = await sendMessage(
-    conversation,
-    `Summarize the following user profile for embedding into a database: ${profileResult}`
+  const userEmbeddableProfile = parseSendMessageResult(
+    await sendMessage(
+      conversation,
+      `Summarize the following user profile for embedding into a database: ${profileResult}`
+    )
   )
 
   if (!userEmbeddableProfile) {
-    throw new Error('no embeddable profile was found')
+    throw new Error('No embeddable profile was found')
   }
 
-  console.info('user embeddable profile result call was succesfull')
+  console.info('User embeddable profile result call was successful')
 
-  await new Promise(resolve => setTimeout(resolve, 5000))
+  await new Promise(resolve => {
+    setTimeout(resolve, 5000)
+  })
 
-  const userContentPreferencesResult = await sendMessage(
-    conversation,
-    `in 3 sentences or less, what are the user's content preferences?  \n\n ${profileResult}`
+  const userContentPreferencesResult = parseSendMessageResult(
+    await sendMessage(
+      conversation,
+      `In 3 sentences or less, what are the user's content preferences?  \n\n ${profileResult}`
+    )
   )
 
   if (!userContentPreferencesResult) {
-    throw new Error('no user content preference was done')
+    throw new Error('No user content preference was done')
   }
 
-  console.info('userContentPreferencesResult result call was succesfull')
+  console.info('userContentPreferencesResult call was successful')
 
   await prisma.user.update({
     where: { id: userId },
@@ -210,9 +228,10 @@ export async function processUserFirstPartyData(userId: string): Promise<void> {
       userContentPreferences: userContentPreferencesResult
     }
   })
+
   const rawEmbedding = await generateEmbedding(userEmbeddableProfile)
   if (!rawEmbedding) {
-    throw new Error('no embbedding was generated')
+    throw new Error('No embedding was generated')
   }
   const embedding = pgvector.toSql(rawEmbedding)
   await prisma.$executeRaw`UPDATE "public"."User" SET embedding = ${embedding}::vector WHERE id = ${userId};`

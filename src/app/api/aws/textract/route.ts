@@ -1,71 +1,77 @@
-import { type NextRequest, NextResponse } from 'next/server'
+// app/api/aws/textract/route.ts
+import { NextResponse } from 'next/server'
 import {
   TextractClient,
-  DetectDocumentTextCommand,
-  type DetectDocumentTextCommandInput
+  StartDocumentTextDetectionCommand,
+  GetDocumentTextDetectionCommand,
+  type Block,
+  type GetDocumentTextDetectionCommandOutput
 } from '@aws-sdk/client-textract'
 
 const textractClient = new TextractClient({
-  region: process.env.AWS_REGION,
+  region: process.env.AWS_REGION!,
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID as string,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!
   }
 })
 
-export const config = {
-  api: { bodyParser: false }
+async function getTextDetectionResult(jobId: string): Promise<string> {
+  let text = ''
+  let nextToken: string | undefined = undefined
+  let status = 'IN_PROGRESS'
+
+  while (status === 'IN_PROGRESS') {
+    const response: GetDocumentTextDetectionCommandOutput =
+      await textractClient.send(
+        new GetDocumentTextDetectionCommand({
+          JobId: jobId,
+          NextToken: nextToken
+        })
+      )
+
+    status = response.JobStatus || 'FAILED'
+    nextToken = response.NextToken
+
+    if (status === 'SUCCEEDED') {
+      text +=
+        response.Blocks?.filter((block: Block) => block.BlockType === 'LINE')
+          .map(block => block.Text)
+          .join('\n') || ''
+    }
+
+    if (status === 'IN_PROGRESS') {
+      await new Promise(resolve => setTimeout(resolve, 2000))
+    }
+  }
+
+  if (status !== 'SUCCEEDED') throw new Error('Textract job failed')
+  return text
 }
 
-const SUPPORTED_MIME_TYPES = ['application/pdf', 'image/tiff', 'image/png']
+export async function POST(req: Request) {
+  const { s3Key } = await req.json()
 
-export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
-    const body = await request.json()
-    const { file, fileType } = body
-
-    if (!file) {
-      return NextResponse.json({ error: 'No file uploaded' }, { status: 400 })
-    }
-
-    if (!SUPPORTED_MIME_TYPES.includes(fileType)) {
-      return NextResponse.json(
-        {
-          error:
-            'Unsupported file type. Please upload a PDF, TIFF, or PNG file.'
-        },
-        { status: 400 }
-      )
-    }
-
-    const buffer = Buffer.from(file, 'base64')
-
-    const params: DetectDocumentTextCommandInput = {
-      Document: {
-        Bytes: buffer
-      }
-    }
-
-    const textractResponse = await textractClient.send(
-      new DetectDocumentTextCommand(params)
+    const { JobId } = await textractClient.send(
+      new StartDocumentTextDetectionCommand({
+        DocumentLocation: {
+          S3Object: {
+            Bucket: process.env.AWS_S3_BUCKET_NAME!,
+            Name: s3Key
+          }
+        }
+      })
     )
 
-    const extractedText =
-      textractResponse.Blocks?.filter(block => block.BlockType === 'LINE')
-        .map(block => block.Text)
-        .join('\n') ?? ''
+    if (!JobId) throw new Error('Failed to start Textract job')
 
+    const extractedText = await getTextDetectionResult(JobId)
     return NextResponse.json({ text: extractedText })
   } catch (error) {
-    console.error('Error processing file:', error)
-    if (error instanceof Error) {
-      return NextResponse.json(
-        { error: `Error processing file: ${error.message}` },
-        { status: 500 }
-      )
-    }
+    console.error('Textract error:', error)
     return NextResponse.json(
-      { error: 'An unknown error occurred while processing the file' },
+      { error: 'Failed to process document' },
       { status: 500 }
     )
   }

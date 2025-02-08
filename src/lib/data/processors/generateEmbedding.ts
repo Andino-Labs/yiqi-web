@@ -4,7 +4,7 @@ import { InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime'
 import { bedrockClient } from '@/lib/llm/bedrock'
 import { AWS_BEDROCK_MODELS } from '@/lib/llm/models'
 
-export async function generateEmbedding(raw: string): Promise<number[]> {
+export async function generateEmbedding(raw: string) {
   // Replace newlines with spaces as recommended for best results
   const input = raw.replace(/\n/g, ' ')
 

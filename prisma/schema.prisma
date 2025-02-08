@@ -61,7 +61,7 @@ model User {
 
   linkedinAccessToken String?
 
-  embedding              Unsupported("vector(3072)")?
+  embedding              Unsupported("vector(1536)")?
   userDetailedProfile    String?
   userEmbeddableProfile  String?
   userContentPreferences String?
