@@ -29,7 +29,7 @@ export default async function Page({
   if (user) {
     if (user.role === Roles.ADMIN) {
       return (
-        <div className="py-4 border p-2 sm:p-6 h-full h-fit mx-auto dark:bg-primary ">
+        <div className="py-4 border p-2 sm:p-6 h-full mx-auto dark:bg-primary ">
           <div className="max-w-5xl mx-auto mb-4 dark:bg-primary rounded-lg shadow-lg">
             {/* Encabezado con flecha para retroceder */}
             <div className="flex items-center justify-between mb-4 px-2">

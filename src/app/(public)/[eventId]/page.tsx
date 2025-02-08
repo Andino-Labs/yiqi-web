@@ -62,6 +62,7 @@ export default async function Page({
     <>
       <div className="fixed inset-0 h-screen w-screen -z-10 bg-black"></div>
       <EventPage
+        customFields={event.customFields?.fields}
         event={event}
         user={{
           email: user?.email,

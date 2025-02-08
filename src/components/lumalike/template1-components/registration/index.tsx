@@ -3,8 +3,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Calendar } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import {
@@ -18,9 +16,9 @@ import {
 import { Separator } from '@/components/ui/separator'
 import {
   PublicEventType,
-  registrationInputSchema,
   type RegistrationInput,
-  type EventRegistrationSchemaType
+  type EventRegistrationSchemaType,
+  CustomFieldType
 } from '@/schemas/eventSchema'
 import { TicketSelection } from './ticket-selection'
 import { RegistrationSummary } from './registration-summary'
@@ -37,12 +35,14 @@ export type RegistrationProps = {
   event: PublicEventType
   user: { name?: string; picture?: string; email?: string; role?: string }
   dialogTriggerRef?: React.RefObject<HTMLButtonElement> | null
+  customFields?: CustomFieldType[]
 }
 
 export function Registration({
   event,
   user,
-  dialogTriggerRef
+  dialogTriggerRef,
+  customFields
 }: RegistrationProps) {
   const [ticketSelections, setTicketSelections] = useState<
     Record<string, number>
@@ -57,15 +57,6 @@ export function Registration({
     string | undefined
   >()
   const [paymentCompleted, setPaymentCompleted] = useState(false)
-
-  const form = useForm<RegistrationInput>({
-    resolver: zodResolver(registrationInputSchema),
-    defaultValues: {
-      name: user?.name || '',
-      email: user?.email || '',
-      tickets: {}
-    }
-  })
 
   const checkRegistration = useCallback(async () => {
     setIsLoading(true)
@@ -255,7 +246,7 @@ export function Registration({
                 calculateTotal={calculateTotal}
               />
               <RegistrationForm
-                form={form}
+                customFields={customFields}
                 onSubmit={onSubmit}
                 user={user}
                 isFreeEvent={isFreeEvent}
