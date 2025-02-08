@@ -15,9 +15,9 @@ function createRequestBody(
 ): AnthropicRequestBody {
   return {
     anthropic_version: 'bedrock-2023-05-31',
-    max_tokens: options.maxTokens || 2048,
-    messages: messages,
-    system: system,
+    max_tokens: options.maxTokens || 4048,
+    messages,
+    system,
     temperature: options.temperature,
     top_k: options.topK,
     top_p: options.topP,
@@ -25,24 +25,26 @@ function createRequestBody(
   }
 }
 
+function createMessage(role: Message['role'], content: string): Message {
+  return { role, content }
+}
+
 export async function invokeModel(
   messages: Message[],
   options: BedrockWrapperOptions,
   system?: string
 ): Promise<string> {
-  const requestBody = createRequestBody(messages, options, system)
-
   const command = new InvokeModelCommand({
     modelId: options.model,
     contentType: 'application/json',
     accept: 'application/json',
-    body: JSON.stringify(requestBody)
+    body: JSON.stringify(createRequestBody(messages, options, system))
   })
 
   const response = await bedrockClient.send(command)
-  const responseBody: AnthropicResponseBody = JSON.parse(
+  const responseBody = JSON.parse(
     Buffer.from(response.body).toString('utf-8')
-  )
+  ) as AnthropicResponseBody
 
   return responseBody.content
 }
@@ -52,21 +54,19 @@ export async function streamModel(
   options: BedrockWrapperOptions,
   system?: string
 ): Promise<AsyncGenerator<string, void, unknown>> {
-  const requestBody = createRequestBody(messages, options, system)
-
   const command = new InvokeModelCommand({
     modelId: options.model,
     contentType: 'application/json',
     accept: 'application/json',
-    body: JSON.stringify(requestBody)
+    body: JSON.stringify(createRequestBody(messages, options, system))
   })
 
   const response = await bedrockClient.send(command)
 
-  async function* streamGenerator(): AsyncGenerator<string, void, unknown> {
-    const responseBody: AnthropicResponseBody = JSON.parse(
+  async function* streamGenerator() {
+    const responseBody = JSON.parse(
       Buffer.from(response.body).toString('utf-8')
-    )
+    ) as AnthropicResponseBody
     yield responseBody.content
   }
 
@@ -76,10 +76,7 @@ export async function streamModel(
 export function createConversation(
   options: BedrockWrapperOptions
 ): Conversation {
-  return {
-    messages: [],
-    options: options
-  }
+  return { messages: [], options }
 }
 
 export async function sendMessage(
@@ -87,14 +84,22 @@ export async function sendMessage(
   content: string,
   system?: string
 ): Promise<string> {
-  conversation.messages.push({ role: 'user', content: content })
+  const updatedMessages = [
+    ...conversation.messages,
+    createMessage('user', content)
+  ]
+
   const response = await invokeModel(
-    conversation.messages,
+    updatedMessages,
     conversation.options,
     system
   )
-  console.warn(JSON.stringify(response, null, 2))
-  conversation.messages.push({ role: 'assistant', content: response })
+
+  conversation.messages = [
+    ...updatedMessages,
+    createMessage('assistant', response)
+  ]
+
   return response
 }
 
@@ -103,26 +108,32 @@ export async function streamMessage(
   content: string,
   system?: string
 ): Promise<AsyncGenerator<string, void, unknown>> {
-  conversation.messages.push({ role: 'user', content: content })
+  const updatedMessages = [
+    ...conversation.messages,
+    createMessage('user', content)
+  ]
+
   const stream = await streamModel(
-    conversation.messages,
+    updatedMessages,
     conversation.options,
     system
   )
   let fullResponse = ''
 
-  async function* streamWrapper(): AsyncGenerator<string, void, unknown> {
+  async function* streamWrapper() {
     for await (const chunk of stream) {
       fullResponse += chunk
       yield chunk
     }
-    // Update messages after streaming is complete
-    conversation.messages.push({ role: 'assistant', content: fullResponse })
+    conversation.messages = [
+      ...updatedMessages,
+      createMessage('assistant', fullResponse)
+    ]
   }
 
   return streamWrapper()
 }
 
 export function getMessages(conversation: Conversation): Message[] {
-  return conversation.messages
+  return [...conversation.messages]
 }

@@ -160,6 +160,8 @@ export default function NetworkingProfileForm({ initialData, userId }: Props) {
 
       await saveNetworkingProfile(values, userId)
 
+      await processData(userId)
+
       toast({
         title: translations.es.networkingProfileSaved
       })
@@ -171,7 +173,6 @@ export default function NetworkingProfileForm({ initialData, userId }: Props) {
         variant: 'destructive'
       })
     } finally {
-      await processData(userId)
       setIsSubmitting(false)
     }
   }
