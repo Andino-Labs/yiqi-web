@@ -93,7 +93,7 @@ export async function createRegistration(
       })
     }
 
-    // Create registration for person
+    // Create registration for personss
     const registration = await prisma.eventRegistration.create({
       data: {
         userId: user.id,
