@@ -1,7 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
-
 import { useEffect, useState, useMemo } from 'react'
-import type { UseFormReturn } from 'react-hook-form'
 import {
   Form,
   FormControl,
@@ -27,20 +26,109 @@ import {
   PopoverTrigger
 } from '@/components/ui/popover'
 import { CalendarIcon } from 'lucide-react'
+import { z } from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+
+function createCustomFieldsSchema(
+  customFields: CustomFieldType[]
+): z.ZodObject<Record<string, z.ZodTypeAny>> {
+  const schemaFields = customFields.reduce<Record<string, z.ZodTypeAny>>(
+    (acc, field) => {
+      let fieldSchema: z.ZodTypeAny
+
+      switch (field.type) {
+        case 'text':
+          fieldSchema = z.string({
+            required_error: 'Este campo es obligatorio',
+            invalid_type_error: 'Debe ser un texto'
+          })
+          break
+        case 'url':
+          fieldSchema = z.string({
+            required_error: 'Este campo es obligatorio',
+            invalid_type_error: 'Debe ser un texto'
+          })
+          break
+        case 'number':
+          if (field.required) {
+            fieldSchema = z
+              .string({
+                required_error: 'Este campo es obligatorio',
+                invalid_type_error: 'Debe ser un número'
+              })
+              .min(1, 'Este campo es obligatorio')
+              .pipe(
+                z.coerce
+                  .number({
+                    invalid_type_error: 'Debe ser un número'
+                  })
+                  .refine(val => !isNaN(val), 'Debe ser un número')
+              )
+          } else {
+            fieldSchema = z.union([
+              z
+                .string()
+                .transform(val => (val === '' ? undefined : Number(val)))
+                .pipe(z.number().optional()),
+              z.number().optional()
+            ])
+          }
+          break
+        case 'date':
+          fieldSchema = z.date({
+            required_error: 'Este campo es obligatorio',
+            invalid_type_error: 'Debe ser una fecha válida'
+          })
+          break
+        case 'boolean':
+          fieldSchema = z.boolean({
+            required_error: 'Este campo es obligatorio',
+            invalid_type_error: 'Debe ser un valor booleano'
+          })
+          break
+        default:
+          fieldSchema = z.string({
+            required_error: 'Este campo es obligatorio',
+            invalid_type_error: 'Tipo de campo inválido'
+          })
+      }
+
+      if (field.required) {
+        if (field.type !== 'number') {
+          fieldSchema = fieldSchema.refine(
+            value => value !== undefined && value !== '',
+            'Este campo es obligatorio'
+          )
+        }
+      } else {
+        fieldSchema = fieldSchema.optional().or(z.literal(''))
+      }
+
+      if (field.type === 'url' && fieldSchema instanceof z.ZodString) {
+        fieldSchema = fieldSchema.url('Debe ser una URL válida')
+      }
+
+      acc[field.name] = fieldSchema
+      return acc
+    },
+    {}
+  )
+
+  return z.object(schemaFields)
+}
 
 interface RegistrationFormProps {
-  form: UseFormReturn<RegistrationInput>
   onSubmit: (values: RegistrationInput) => Promise<void>
   user: { name?: string; picture?: string; email?: string; role?: string }
   isFreeEvent: boolean
   registrationId?: string
   onPaymentComplete?: () => void
   isSubmitting?: boolean
-  customFields: CustomFieldType[]
+  customFields: CustomFieldType[] | null | undefined
 }
 
 export function RegistrationForm({
-  form: formProps,
   onSubmit,
   user,
   isFreeEvent,
@@ -51,7 +139,34 @@ export function RegistrationForm({
 }: RegistrationFormProps): JSX.Element {
   const [showStripeCheckout, setShowStripeCheckout] = useState<boolean>(false)
 
-  function handleSubmit(values: RegistrationInput): Promise<void> {
+  const customFieldsSchema = useMemo(
+    () =>
+      customFields
+        ? createCustomFieldsSchema(customFields)
+        : z.record(z.unknown()),
+    [customFields]
+  )
+
+  const schema = z.object({
+    name: z.string().min(1, { message: 'Nombre es obligatorio' }),
+    email: z.string().email({ message: 'Correo electrónico inválido' }),
+    tickets: z.record(z.string(), z.number()),
+    customFieldsData: customFieldsSchema
+  })
+
+  type FormValues = z.infer<typeof schema>
+
+  const form = useForm<FormValues>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      name: user.name || '',
+      email: user.email || '',
+      tickets: {},
+      customFieldsData: {}
+    }
+  })
+
+  function handleSubmit(values: FormValues): Promise<void> {
     return onSubmit(values)
   }
 
@@ -63,10 +178,10 @@ export function RegistrationForm({
 
   const memoizedCustomFields = useMemo(
     () =>
-      customFields.map(field => ({
+      customFields?.map(field => ({
         ...field,
-        defaultValue: field.defaultValue?.toString()
-      })),
+        defaultValue: ''
+      })) ?? [],
     [customFields]
   )
 
@@ -95,13 +210,13 @@ export function RegistrationForm({
         <CardTitle>{translations.es.eventRegistration}</CardTitle>
       </CardHeader>
       <CardContent>
-        <Form {...formProps}>
+        <Form {...form}>
           <form
-            onSubmit={formProps.handleSubmit(handleSubmit)}
+            onSubmit={form.handleSubmit(handleSubmit)}
             className="space-y-6"
           >
             <FormField
-              control={formProps.control}
+              control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
@@ -120,7 +235,7 @@ export function RegistrationForm({
             />
 
             <FormField
-              control={formProps.control}
+              control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
@@ -138,15 +253,15 @@ export function RegistrationForm({
                 </FormItem>
               )}
             />
-
-            {memoizedCustomFields.map(field => (
-              <CustomField
-                key={field.name}
-                field={field}
-                control={formProps.control}
-                isSubmitting={isSubmitting}
-              />
-            ))}
+            {customFields &&
+              memoizedCustomFields.map(field => (
+                <CustomField
+                  key={field.name}
+                  field={field}
+                  control={form.control}
+                  isSubmitting={isSubmitting}
+                />
+              ))}
 
             <Button type="submit" className="w-full" disabled={isSubmitting}>
               {isSubmitting ? (
@@ -171,7 +286,7 @@ export function RegistrationForm({
 
 interface CustomFieldProps {
   field: CustomFieldType
-  control: Control<RegistrationInput>
+  control: Control<any>
   isSubmitting: boolean
 }
 
@@ -186,28 +301,27 @@ export function CustomField({
       name={`customFieldsData.${field.name}`}
       render={({ field: formField }) => {
         const commonProps = {
-          required: field.required,
-          disabled: isSubmitting
+          disabled: isSubmitting,
+          'aria-required': field.required ? true : undefined
         }
 
         return (
           <FormItem>
-            <FormLabel>{field.name}</FormLabel>
-            {field.description && (
-              <p className="text-sm text-muted-foreground mb-2">
-                {field.description}
-              </p>
-            )}
+            <FormLabel>
+              {field.name}
+              {field.required && <span className="text-red-500"> *</span>}
+            </FormLabel>
+
             <FormControl>
               {field.type === 'boolean' ? (
                 <Switch
-                  checked={!!formField.value}
+                  checked={formField.value as boolean}
                   onCheckedChange={formField.onChange}
                   {...commonProps}
                 />
               ) : field.type === 'date' ? (
                 <DatePickerField
-                  value={formField.value}
+                  value={formField.value as Date}
                   onChange={formField.onChange}
                   placeholder={field.defaultValue?.toString()}
                 />
@@ -216,6 +330,7 @@ export function CustomField({
                   {...formField}
                   placeholder={field.defaultValue?.toString()}
                   {...commonProps}
+                  value={formField.value ?? ''}
                 />
               ) : (
                 <Input
@@ -231,9 +346,24 @@ export function CustomField({
                   min={field.type === 'number' ? 0 : undefined}
                   step={field.type === 'number' ? 'any' : undefined}
                   {...commonProps}
+                  value={formField.value ?? ''}
+                  onChange={e => {
+                    if (field.type === 'number') {
+                      formField.onChange(
+                        e.target.value === '' ? undefined : e.target.value
+                      )
+                    } else {
+                      formField.onChange(e.target.value)
+                    }
+                  }}
                 />
               )}
             </FormControl>
+            {field.description && (
+              <p className="text-sm text-muted-foreground mb-2">
+                {field.description}
+              </p>
+            )}
             <FormMessage />
           </FormItem>
         )
@@ -264,7 +394,7 @@ export function DatePickerField({
           {value ? (
             format(value, 'PPP')
           ) : (
-            <span>{placeholder || 'Select date'}</span>
+            <span>{placeholder || 'Seleccione una fecha'}</span>
           )}
         </Button>
       </PopoverTrigger>

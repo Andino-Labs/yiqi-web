@@ -12,7 +12,7 @@ import { EventLocation } from './template1-components/event-location'
 import MainLandingNav from '../mainLanding/mainNav'
 import { useTranslations } from 'next-intl'
 
-export function EventPage({ event, user, customFields }: RegistrationProps) {
+export function EventPage({ event, customFields, user }: RegistrationProps) {
   const [isMobile, setIsMobile] = useState(false)
   const [isSticky, setIsSticky] = useState(false)
   const registrationRef = useRef<HTMLDivElement>(null)

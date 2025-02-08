@@ -8,7 +8,7 @@ export async function getUserOngoingEvent(email?: string) {
   if (!email) return null
 
   const now = new Date()
-  const tenMinutesBefore = subMinutes(now, 10)
+  const minutesBefore = subMinutes(now, 20)
 
   try {
     const eventRegistration = await prisma.eventRegistration.findFirst({
@@ -19,8 +19,8 @@ export async function getUserOngoingEvent(email?: string) {
         event: {
           OR: [
             {
-              // Match events starting in the next 10 minutes
-              startDate: { gte: tenMinutesBefore, lte: now }
+              // Match events starting in the next 20 minutes
+              startDate: { gte: minutesBefore, lte: now }
             },
             {
               // Match ongoing events

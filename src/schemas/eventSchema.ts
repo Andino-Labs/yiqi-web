@@ -76,6 +76,7 @@ export const EventInputSchema = z.object({
     })
     .optional()
     .nullable(),
+  timezoneLabel: z.string(),
   customFields: CustomFieldsSchema.optional().nullable()
 })
 
@@ -98,7 +99,8 @@ export const EventCommunitySchema = z.object({
   maxAttendees: z.number().int().positive().optional().nullable(),
   requiresApproval: z.boolean().default(false),
   openGraphImage: z.string().optional().nullable(),
-  type: z.nativeEnum(EventTypeEnum)
+  type: z.nativeEnum(EventTypeEnum),
+  timezoneLabel: z.string()
 })
 
 export const EventSchema = EventInputSchema.extend({
@@ -240,7 +242,8 @@ export const eventRegistrationsSchema = z.object({
   createdAt: z.date(),
   updatedAt: z.date(),
   paid: z.boolean(),
-  paymentId: z.string().optional().nullable()
+  paymentId: z.string().optional().nullable(),
+  customFields: z.any().optional().nullable()
 })
 
 export type EventRegistrationsSchemaType = z.infer<

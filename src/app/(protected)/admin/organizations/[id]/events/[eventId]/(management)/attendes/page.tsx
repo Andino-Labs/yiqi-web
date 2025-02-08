@@ -1,7 +1,5 @@
 import EventRegistrationTable from '@/components/events/EventRegistrationTable'
-import { ExportUserDataButton } from '@/components/events/ExportUserDataButton'
 import { getEventRegistrations } from '@/services/actions/event/getEventAttendees'
-import { getEventCustomFields } from '@/services/actions/event/getEventCustomFields'
 import { getTranslations } from 'next-intl/server'
 
 export default async function Page({
@@ -10,11 +8,8 @@ export default async function Page({
   params: { eventId: string }
 }) {
   const t = await getTranslations('DeleteAccount')
-
-  const [attendees, eventData] = await Promise.all([
-    getEventRegistrations(params.eventId),
-    getEventCustomFields(params.eventId)
-  ])
+  const attendees = await getEventRegistrations(params.eventId)
+  console.log(attendees)
 
   return (
     <div>
@@ -22,7 +17,6 @@ export default async function Page({
         {t('eventRegistrations')}
       </h2>
       <hr className="my-4 border-t border-solid border-white-opacity-40 w-[100%]  mx-auto ml-0" />
-      <ExportUserDataButton data={eventData} />
       <EventRegistrationTable registrations={attendees} />
     </div>
   )

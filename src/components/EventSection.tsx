@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, Eye } from 'lucide-react'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { EventCommunityType } from '@/schemas/eventSchema'
+import { formatRangeDatesByTimezoneLabel } from './utils'
 
 export default function EventSection({
   events,
@@ -90,7 +91,10 @@ export default function EventSection({
                     {event.title}
                   </div>
                   <div className="text-sm text-gray-400 mt-1">
-                    {new Date(event.startDate).toLocaleString()}
+                    {formatRangeDatesByTimezoneLabel(
+                      event.startDate,
+                      event.timezoneLabel
+                    )}
                   </div>
                 </div>
 

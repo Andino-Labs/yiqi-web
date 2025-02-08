@@ -1,9 +1,9 @@
 import { Calendar, MapPin, Users } from 'lucide-react'
 import Image from 'next/image'
-import { format } from 'date-fns'
 import { PublicEventType } from '@/schemas/eventSchema'
 import { MdPreview } from '@/components/events/editor/MdPreview'
 import { useTranslations } from 'next-intl'
+import { formatRangeDatesByTimezoneLabel } from '../utils'
 
 const EventCard = ({ event }: { event: PublicEventType }) => {
   const t = useTranslations('Event')
@@ -40,11 +40,16 @@ const EventCard = ({ event }: { event: PublicEventType }) => {
         </div>
 
         <div className="space-y-3">
-          <div className="flex items-center gap-2 text-gray-300">
-            <Calendar className="w-4 h-4" />
-            <span className="text-sm">
-              {format(new Date(event.startDate), 'EEE, MMM d · h:mm a')}
-            </span>
+          <div>
+            <div className="flex items-center gap-2 text-gray-300">
+              <Calendar className="w-4 h-4 flex-shrink-0" />
+              <span className="text-sm">
+                {formatRangeDatesByTimezoneLabel(
+                  event.startDate,
+                  event.timezoneLabel
+                )}
+              </span>
+            </div>
           </div>
 
           <div className="flex items-center gap-2 text-gray-300">
