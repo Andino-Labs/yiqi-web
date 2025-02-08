@@ -24,7 +24,7 @@ export function BaseEmailTemplate({
 
       <Body className="bg-gray-100">
         <Container className="mx-auto my-8 p-6 bg-white rounded-lg shadow-lg">
-          <Text className="text-lg text-gray-600 mb-4">{content}</Text>
+          <div dangerouslySetInnerHTML={{ __html: content }} />
 
           <Text className="text-md text-gray-500 mt-6">
             Si tienes alguna duda, no dudes en contactarnos. ¡Te esperamos!
