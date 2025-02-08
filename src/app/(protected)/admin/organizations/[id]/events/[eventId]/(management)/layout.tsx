@@ -36,7 +36,6 @@ export default async function Layout({
               <Link
                 href={`/admin/organizations/${params.id}/events`}
                 className="flex items-center justify-center dark:bg-primary dark:text-primary dark:text-gray-100 hover:bg-gray-300 rounded-md p-2"
-                aria-label={t('backToEvents')}
               >
                 <ArrowLeft className="w-5 h-5" />
               </Link>
@@ -49,21 +48,16 @@ export default async function Layout({
               <Link
                 href={`/admin/organizations/${params.id}/events/${params.eventId}/edit`}
                 className="flex items-center justify-center dark:bg-primary dark:text-primary rounded-md p-2"
-                aria-label={t('editEvent')}
               >
                 <Pencil className="w-5 h-5" />
               </Link>
               <Link
                 href={`/${params.eventId}`}
                 className="flex items-center justify-center dark:bg-primary dark:text-primary rounded-md p-2"
-                aria-label={t('viewEvent')}
               >
                 <Link2 className="w-5 h-5" />
               </Link>
-              <button
-                className="flex items-center justify-center dark:bg-primary dark:text-primary rounded-md p-2"
-                aria-label={t('deleteEvent')}
-              >
+              <button className="flex items-center justify-center dark:bg-primary dark:text-primary rounded-md p-2">
                 <Trash className="w-5 h-5" />
               </button>
             </div>

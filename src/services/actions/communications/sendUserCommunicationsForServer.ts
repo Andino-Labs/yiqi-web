@@ -13,6 +13,7 @@ export async function sendUserCommunicationsForServer(
     content: props.content,
     messageType: props.messageType,
     orgId: props.orgId,
-    senderUserId: props.senderUserId
+    senderUserId: props.senderUserId,
+    subject: props.subject
   })
 }

@@ -3,9 +3,10 @@ import prisma from '@/lib/prisma'
 import { JobType, MessageThreadType } from '@prisma/client'
 
 export const notifyAudience = async (
+  organizationId: string,
   userIds: string[],
   bodyMessage: string,
-  organizationId: string
+  subject?: string
 ) => {
   const dataToTake = userIds.map(id => ({
     userId: id,
@@ -15,7 +16,8 @@ export const notifyAudience = async (
       orgId: organizationId,
       messageType: MessageThreadType.email,
       destinationUserId: id,
-      content: bodyMessage
+      content: bodyMessage,
+      subject
     }
   }))
 
