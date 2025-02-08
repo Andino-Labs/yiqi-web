@@ -650,5 +650,35 @@
   "RegistrationChart": {
     "title": "Registros de los Últimos 7 Días",
     "noData": "No hay datos de registro disponibles"
-  }
+  },
+   "yiqiForm": {
+  "formNotFound": "Formulario no encontrado",
+  "brokenLinkOrDeleted": "El enlace que has seguido puede estar roto o el formulario ha sido eliminado.",
+  "createNewForm": "Crear un nuevo formulario",
+  "responsesSent": "Tus respuestas se han enviado correctamente",
+  "errorOccurred": "Ocurrió un error",
+  "loginToContinue": "Inicia sesión para continuar",
+  "loginToFillForm": "Para rellenar este formulario, debes iniciar sesión",
+  "or": "o",
+  "submit": "Enviar",
+  "clear": "Limpiar",
+  "fieldRequired": "Este campo es requerido",
+  "writeYourAnswer": "Escribe tu respuesta...",
+  "other": "Otro",
+  "writeHere": "Escribe aquí...",
+   "questions": "Preguntas",
+    "responses": "Respuestas",
+    "formUpdated": "Formulario actualizado",
+    "update": "Actualizar",
+    "delete": "Eliminar",
+    "formDeleted": "Formulario eliminado",
+    "formDeleteError": "Error al eliminar el formulario",
+    "waitingForResponses": "Esperando respuestas",
+    "noResponses": "No hay respuestas. Publica tu formulario para comenzar a aceptar respuestas",
+    "newForm": "Nuevo Formulario",
+    "noFormsCreated": "No hay formularios creados. ¡Comienza creando uno nuevo!",
+    "createForm": "Crear formulario",
+     "linkCopied": "Link Copiado",
+    "copyLink": "Copiar Link"
+}
 }
