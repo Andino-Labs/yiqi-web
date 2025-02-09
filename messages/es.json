@@ -673,5 +673,18 @@
     "registration": "Registro",
     "broadcasts": "Difusiones",
     "checkin": "Check-in"
+  },
+  "SendMassiveMessagesForm": {
+    "sendStatement": "Enviar nuevo comunicado",
+    "recipients": "Destinatarios",
+    "chooseAudience": "Elije tu audiencia",
+    "registered": "registrados",
+    "subject": "Asunto (opcional)",
+    "description": "Descripción",
+    "defaultMessage": "Mensaje predeterminado",
+    "send": "Enviar",
+    "close": "Cerrar",
+    "emailsSent": "Los correos fueron enviados",
+    "success": "Éxito!"
   }
 }

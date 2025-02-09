@@ -673,5 +673,18 @@
     "registration": "Registration",
     "broadcasts": "Broadcasts",
     "checkin": "Check-in"
+  },
+  "SendMassiveMessagesForm": {
+    "sendStatement": "Send new statement",
+    "recipients": "Recipients",
+    "chooseAudience": "Choose your audience",
+    "registered": "registered",
+    "subject": "Subject (optional)",
+    "description": "Description",
+    "defaultMessage": "Default message",
+    "send": "Send",
+    "close": "Close",
+    "emailsSent": "The emails were sent",
+    "success": "Success!"
   }
 }
