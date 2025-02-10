@@ -1,6 +1,7 @@
 import { createEvent } from 'ics'
 import type { EventAttributes } from 'ics'
 
+// we should do something different here
 export async function generateCalendarEvent({
   start,
   end,

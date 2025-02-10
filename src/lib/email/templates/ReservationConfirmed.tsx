@@ -130,7 +130,9 @@ export function EventAttendanceConfirmed({
                     rel="noopener noreferrer"
                   >
                     <Text style={detailValue} className="email-text">
-                      {virtualLink ? 'Unirse al evento virtual' : location}
+                      {virtualLink
+                        ? `Unirse al evento virtual: ${virtualLink}`
+                        : location}
                     </Text>
                   </a>
                 ) : (

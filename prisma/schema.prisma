@@ -61,7 +61,7 @@ model User {
 
   linkedinAccessToken String?
 
-  embedding              Unsupported("vector(3072)")?
+  embedding              Unsupported("vector(1536)")?
   userDetailedProfile    String?
   userEmbeddableProfile  String?
   userContentPreferences String?
@@ -410,6 +410,7 @@ enum JobType {
   GENERATE_EVENT_OPEN_GRAPH
   COLLECT_USER_DATA
   SEND_USER_MESSAGE
+  PROCESS_USER_DATA
   // Add more job types as needed
 }
 

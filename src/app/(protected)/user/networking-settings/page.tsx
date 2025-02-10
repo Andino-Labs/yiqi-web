@@ -32,7 +32,10 @@ export default async function page() {
   return (
     <main className="flex flex-col items-center justify-center">
       <UserLayout userProps={profileDataSchema.parse(user)}>
-        <NetworkingProfileForm initialData={networkingData} />
+        <NetworkingProfileForm
+          userId={userCurrent.id}
+          initialData={networkingData}
+        />
       </UserLayout>
     </main>
   )

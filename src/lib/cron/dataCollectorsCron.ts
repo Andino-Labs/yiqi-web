@@ -30,7 +30,7 @@ export async function dataCollectorsCron() {
         // Process the job
         const { userId } = CollectUserDataJobSchema.parse(job.data)
 
-        await processUserFirstPartyData({ userId })
+        await processUserFirstPartyData(userId)
 
         // Update job status to COMPLETED
         await prisma.queueJob.update({

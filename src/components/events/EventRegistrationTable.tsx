@@ -27,27 +27,48 @@ interface ExtendedEventRegistrationsSchemaType
 
 function parseCustomFields(data: any): CustomFieldsData {
   try {
-    if (typeof data === 'string') {
-      data = JSON.parse(data)
+    let parsedData: any = data
+
+    if (typeof parsedData === 'string') {
+      parsedData = JSON.parse(parsedData)
     }
+
+    // Extract customFieldsData if present
+    if (
+      parsedData &&
+      typeof parsedData === 'object' &&
+      'customFieldsData' in parsedData
+    ) {
+      parsedData = parsedData.customFieldsData
+    }
+
     const result: CustomFieldsData = {}
 
-    const extractNonRedundantData = (
-      obj: Record<string, any>,
-      prefix = ''
-    ): void => {
+    const extractFields = (obj: Record<string, any>, prefix = ''): void => {
       for (const [key, value] of Object.entries(obj)) {
-        if (key !== 'name' && key !== 'email' && key !== 'tickets') {
-          if (typeof value === 'object' && value !== null) {
-            extractNonRedundantData(value, `${prefix}${key}_`)
-          } else {
-            result[`${prefix}${key}`] = value
-          }
+        // Skip technical fields at any level
+        if (['name', 'email', 'tickets'].includes(key)) continue
+
+        if (
+          typeof value === 'object' &&
+          value !== null &&
+          !Array.isArray(value)
+        ) {
+          extractFields(value, `${prefix}${key}_`)
+        } else {
+          result[`${prefix}${key}`] = value
         }
       }
     }
 
-    extractNonRedundantData(data)
+    if (
+      parsedData &&
+      typeof parsedData === 'object' &&
+      !Array.isArray(parsedData)
+    ) {
+      extractFields(parsedData)
+    }
+
     return result
   } catch (error) {
     console.error('Error parsing custom fields:', error)
@@ -161,7 +182,7 @@ export default function EventRegistrationTable({
                 <TableCell>
                   {status !== AttendeeStatus.APPROVED && (
                     <Button
-                      onClick={() => {
+                      onClick={function () {
                         handleApproval(id, 'APPROVED')
                       }}
                       size="sm"
@@ -172,7 +193,7 @@ export default function EventRegistrationTable({
                   )}
                   {status !== AttendeeStatus.REJECTED && (
                     <Button
-                      onClick={() => {
+                      onClick={function () {
                         handleApproval(id, 'REJECTED')
                       }}
                       size="sm"

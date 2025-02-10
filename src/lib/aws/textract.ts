@@ -1,3 +1,4 @@
+'use server'
 import {
   TextractClient,
   DetectDocumentTextCommand
@@ -11,9 +12,9 @@ const textractClient = new TextractClient({
   }
 })
 
-export async function extractTextFromPDF(file: File): Promise<string> {
+export async function extractTextFromPDF(base64Data: string): Promise<string> {
   try {
-    const buffer = await file.arrayBuffer()
+    const buffer = Buffer.from(base64Data, 'base64')
     const bytes = new Uint8Array(buffer)
 
     const command = new DetectDocumentTextCommand({

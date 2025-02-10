@@ -1,23 +1,52 @@
 'use server'
+
 import prisma from '../prisma'
 import { sendUserCommunicationsForServer } from '@/services/actions/communications/sendUserCommunicationsForServer'
 import { handleNotificationJob } from '@/services/notifications/handlers'
 import { SendBaseMessageToUserPropsSchema } from '@/services/notifications/sendBaseMessageToUser'
+import { JobType, type QueueJob } from '@prisma/client'
+import { processUserFirstPartyData } from '../data/processors/processUserFirstPartyData'
+
+type JobHandler = (job: QueueJob) => Promise<void>
+
+const jobHandlers: Record<JobType, JobHandler> = {
+  [JobType.SEND_USER_MESSAGE]: async job => {
+    if (job.notificationType) {
+      await handleNotificationJob(job)
+    } else {
+      const data = SendBaseMessageToUserPropsSchema.parse(job.data)
+      await sendUserCommunicationsForServer(data)
+    }
+  },
+  [JobType.PROCESS_USER_DATA]: async job => {
+    if (!job.userId) {
+      throw new Error(`No userId found, user id related ${job.userId}`)
+    }
+    await processUserFirstPartyData(job.userId)
+  },
+  [JobType.GENERATE_EVENT_OPEN_GRAPH]: async job => {
+    console.log('GENERATE EVENT OPEN GRAPH was run, left to implement', job)
+  },
+  [JobType.COLLECT_USER_DATA]: async job => {
+    console.log('COLLECT USER DATA was run, left to implement', job)
+  }
+}
 
 export async function processQueueJobs() {
-  // Find jobs that need to be processed
   const jobs = await prisma.queueJob.findMany({
     where: {
       status: 'PENDING',
       attempts: { lt: 3 }
     },
     orderBy: [{ priority: 'desc' }, { createdAt: 'asc' }],
-    take: 10 // Process 10 jobs at a time
+    take: 10, // Process 10 jobs at a time
+    include: { user: true } // Include related user data if needed
   })
+
   const results = await Promise.all(
     jobs.map(async job => {
       try {
-        // Update job status to PROCESSING
+        // Update job to PROCESSING
         await prisma.queueJob.update({
           where: { id: job.id },
           data: {
@@ -27,52 +56,47 @@ export async function processQueueJobs() {
           }
         })
 
-        // Process the job based on its type
-        switch (job.type) {
-          case 'SEND_USER_MESSAGE': {
-            // notifications are messages that are sent to users that are automated
-            if (job.notificationType) {
-              await handleNotificationJob(job)
-              break
-            }
-
-            // regular messages are messages that are sent to users that are not automated
-            const data = SendBaseMessageToUserPropsSchema.parse(job.data)
-            await sendUserCommunicationsForServer(data)
-            break
-          }
-          // Add other job types here
-          default:
-            throw new Error(`Unsupported job type: ${job.type}`)
+        const handler = jobHandlers[job.type]
+        if (!handler) {
+          throw new Error(`Unsupported job type: ${job.type}`)
         }
 
-        // Update job status to COMPLETED
+        await handler(job)
+
+        // Update job to COMPLETED
         await prisma.queueJob.update({
           where: { id: job.id },
-          data: { status: 'COMPLETED', completedAt: new Date() }
+          data: {
+            status: 'COMPLETED',
+            completedAt: new Date()
+          }
         })
 
-        return { jobId: job.id, status: 'COMPLETED' }
+        return { jobId: job.id, status: 'COMPLETED' as const }
       } catch (error) {
         console.error(`Error processing job ${job.id}:`, error)
 
-        // Update job status to FAILED or back to PENDING if attempts < maxAttempts
-        const updatedJob = await prisma.queueJob.update({
+        const newStatus =
+          job.attempts + 1 >= job.maxAttempts ? 'FAILED' : 'PENDING'
+
+        // Update job to FAILED or back to PENDING
+        await prisma.queueJob.update({
           where: { id: job.id },
           data: {
-            status: job.attempts + 1 >= job.maxAttempts ? 'FAILED' : 'PENDING',
-            failedAt: job.attempts + 1 >= job.maxAttempts ? new Date() : null,
+            status: newStatus,
+            failedAt: newStatus === 'FAILED' ? new Date() : null,
             error: (error as Error).message
           }
         })
 
         return {
           jobId: job.id,
-          status: updatedJob.status,
+          status: newStatus as 'FAILED' | 'PENDING',
           error: (error as Error).message
         }
       }
     })
   )
+
   return results
 }
