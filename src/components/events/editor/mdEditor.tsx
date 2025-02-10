@@ -129,8 +129,12 @@ export function MarkdownEditor({
               closeIcon={
                 <Button
                   onClick={() => {
-                    onChange(stagingContent)
-                    setContent(stagingContent)
+                    const editorContent =
+                      stagingContent === '<p></p>'
+                        ? `<p>${t('defaultContent')}</p>`
+                        : stagingContent
+                    onChange(editorContent)
+                    setContent(editorContent)
                   }}
                 >
                   <Check className="h-12 w-12 text-primary" />
@@ -138,7 +142,7 @@ export function MarkdownEditor({
               }
             >
               <DialogHeader>
-                <DialogTitle>Edit Content</DialogTitle>
+                <DialogTitle>{t(`editorTitle`)}</DialogTitle>
               </DialogHeader>
               <div className="mt-4">
                 <RichTextEditor

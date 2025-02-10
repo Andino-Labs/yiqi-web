@@ -131,7 +131,9 @@
     "eventCreatedDescription": "Your event has been created and is now ready to be shared.",
     "eventUpdatedDescription": "Your event has been updated with the new changes.",
     "goToEvents": "Go to Events",
-    "viewEvent": "View Event"
+    "viewEvent": "View Event",
+    "editorTitle": "Edit content",
+    "defaultContent": "My content"
   },
   "contactFor": {
     "contact": "Contact",

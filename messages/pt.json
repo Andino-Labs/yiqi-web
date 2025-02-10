@@ -118,7 +118,9 @@
     "defaultValueP": "Este editor suporta",
     "defaultValueStrong": "negrito",
     "defaultValueItalic": "itálico",
-    "defaultValueP2": "e muitas outras opções de formatação. Você também pode inserir imagens e vídeos do YouTube!"
+    "defaultValueP2": "e muitas outras opções de formatação. Você também pode inserir imagens e vídeos do YouTube!",
+    "editorTitle": "Editar conteúdo",
+    "defaultContent": "Meu conteúdo"
   },
   "contactFor": {
     "contact": "Contacto",

@@ -118,7 +118,9 @@
     "defaultValueP": "Cet éditeur prend en charge",
     "defaultValueStrong": "gras",
     "defaultValueItalic": "italique",
-    "defaultValueP2": "et de nombreuses autres options de formatage. Vous pouvez également insérer des images et des vidéos YouTube !"
+    "defaultValueP2": "et de nombreuses autres options de formatage. Vous pouvez également insérer des images et des vidéos YouTube !",
+    "editorTitle": "Modifier le contenu",
+    "defaultContent": "Mon contenu"
   },
   "contactFor": {
     "contact": "Contact",
