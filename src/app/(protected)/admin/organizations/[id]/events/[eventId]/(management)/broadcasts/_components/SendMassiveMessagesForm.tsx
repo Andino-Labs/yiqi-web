@@ -19,6 +19,7 @@ import { useParams } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
+import { useTranslationByGroup } from '@/hooks/commons'
 
 enum ClientAttendeeStatus {
   APPROVED = 'APPROVED',
@@ -69,6 +70,8 @@ export const SendMassiveMessagesForm = ({
     setIsFormVisible(false)
   }
 
+  const { getTranslation } = useTranslationByGroup('attendeeStatus')
+
   return (
     <div>
       <div>
@@ -106,8 +109,8 @@ export const SendMassiveMessagesForm = ({
                       {groupAudienceByStatus.map((audienceType, index) => {
                         return (
                           <SelectItem key={index} value={audienceType.status}>
-                            {audienceType.status} - {audienceType.users.length}{' '}
-                            {t('registered')}
+                            {getTranslation(audienceType.status.toString())} -{' '}
+                            {audienceType.users.length} {t('registered')}
                           </SelectItem>
                         )
                       })}
