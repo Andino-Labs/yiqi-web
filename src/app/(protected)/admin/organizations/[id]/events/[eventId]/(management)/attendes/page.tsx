@@ -16,10 +16,7 @@ export default async function Page({
         {t('eventRegistrations')}
       </h2>
       <hr className="my-4 border-t border-solid border-white-opacity-40 w-[100%]  mx-auto ml-0" />
-      <EventRegistrationTable
-        registrations={attendees}
-        eventId={params.eventId}
-      />
+      <EventRegistrationTable registrations={attendees} />
     </div>
   )
 }

@@ -252,7 +252,8 @@ export const eventRegistrationsSchema = z.object({
   updatedAt: z.date(),
   paid: z.boolean(),
   paymentId: z.string().optional().nullable(),
-  customFields: z.any().optional().nullable()
+  customFields: z.any().optional().nullable(),
+  eventId: z.string()
 })
 
 export type EventRegistrationsSchemaType = z.infer<

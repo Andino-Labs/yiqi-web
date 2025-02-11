@@ -126,11 +126,9 @@ function exportToCSV(
 }
 
 export default function EventRegistrationTable({
-  registrations,
-  eventId
+  registrations
 }: {
   registrations: ExtendedEventRegistrationsSchemaType[]
-  eventId?: string
 }) {
   const t = useTranslations('DeleteAccount')
 
@@ -142,6 +140,7 @@ export default function EventRegistrationTable({
   const customFields = getUniqueCustomFields(registrations)
 
   const handleApproval = async (
+    eventId: string,
     registrationId: string,
     userId: string,
     status: 'APPROVED' | 'REJECTED'
@@ -175,7 +174,7 @@ export default function EventRegistrationTable({
         </TableHeader>
         <TableBody>
           {registrations.map(
-            ({ user: attendee, status, id, customFieldsData }) => (
+            ({ user: attendee, status, id, customFieldsData, eventId }) => (
               <TableRow key={id}>
                 <TableCell>{attendee.name}</TableCell>
                 <TableCell>{attendee.email}</TableCell>
@@ -191,8 +190,12 @@ export default function EventRegistrationTable({
                   {status !== AttendeeStatus.APPROVED && (
                     <Button
                       onClick={async () => {
-                        console.log(`attendee`, attendee)
-                        await handleApproval(id, attendee.id, 'APPROVED')
+                        await handleApproval(
+                          eventId,
+                          id,
+                          attendee.id,
+                          'APPROVED'
+                        )
                       }}
                       size="sm"
                       className="bg-green-500 hover:bg-green-600"
@@ -203,7 +206,12 @@ export default function EventRegistrationTable({
                   {status !== AttendeeStatus.REJECTED && (
                     <Button
                       onClick={async () => {
-                        await handleApproval(id, attendee.id, 'REJECTED')
+                        await handleApproval(
+                          eventId,
+                          id,
+                          attendee.id,
+                          'REJECTED'
+                        )
                       }}
                       size="sm"
                       className="bg-red-500 hover:bg-red-600"
