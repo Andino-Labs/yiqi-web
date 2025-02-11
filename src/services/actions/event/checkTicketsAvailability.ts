@@ -12,7 +12,7 @@ export async function checkTicketsAvailability(
   const countPromises = ticketsData.map(async v => {
     const numberOfExistingTickets = await prisma.ticket.count({
       where: {
-        ticketTypeId: v.id
+        AND: [{ ticketTypeId: v.id }, { deletedAt: null }]
       }
     })
 
