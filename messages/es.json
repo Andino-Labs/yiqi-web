@@ -688,5 +688,10 @@
     "close": "Cerrar",
     "emailsSent": "Los correos fueron enviados",
     "success": "Éxito!"
+  },
+  "attendeeStatus": {
+    "pending": "Pendiente",
+    "approved": "Aprobado",
+    "rejected": "Rechazado"
   }
 }

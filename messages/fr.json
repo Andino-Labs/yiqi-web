@@ -634,5 +634,10 @@
     "close": "Fermer",
     "emailsSent": "Les emails ont été envoyés",
     "success": "Succès!"
+  },
+  "attendeeStatus": {
+    "pending": "En attente",
+    "approved": "Approuvée",
+    "rejected": "Rejetée"
   }
 }

@@ -688,5 +688,10 @@
     "close": "Close",
     "emailsSent": "The emails were sent",
     "success": "Success!"
+  },
+  "attendeeStatus": {
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected"
   }
 }
