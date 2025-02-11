@@ -17,6 +17,7 @@ import {
   type EventRegistrationsSchemaType
 } from '@/schemas/eventSchema'
 import { useTranslations } from 'next-intl'
+import { useTranslationByGroup } from '@/hooks/commons'
 
 type CustomFieldsData = Record<string, string | number | boolean>
 
@@ -148,6 +149,8 @@ export default function EventRegistrationTable({
     exportToCSV(registrations, customFields)
   }
 
+  const { getTranslation } = useTranslationByGroup('attendeeStatus')
+
   return (
     <div>
       <Button onClick={handleExport} className="mb-4" variant={'secondary'}>
@@ -171,7 +174,7 @@ export default function EventRegistrationTable({
               <TableRow key={id}>
                 <TableCell>{attendee.name}</TableCell>
                 <TableCell>{attendee.email}</TableCell>
-                <TableCell>{status}</TableCell>
+                <TableCell>{getTranslation(status.toString())}</TableCell>
                 {customFields.map(field => (
                   <TableCell key={field}>
                     {customFieldsData && customFieldsData[field] != null
