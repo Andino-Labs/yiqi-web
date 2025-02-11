@@ -284,6 +284,7 @@ model Ticket {
   checkedInByUserId String?
   ticketType        TicketOfferings   @relation(fields: [ticketTypeId], references: [id])
   ticketTypeId      String
+  deletedAt         DateTime?
 }
 
 enum AttendeeStatus {
