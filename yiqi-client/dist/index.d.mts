@@ -315,6 +315,7 @@ declare const appRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<
                 name: string;
                 email: string;
                 tickets: Record<string, number>;
+                customFieldsData?: Record<string, any> | undefined;
             };
         };
         _input_out: {
@@ -323,6 +324,7 @@ declare const appRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<
                 name: string;
                 email: string;
                 tickets: Record<string, number>;
+                customFieldsData?: Record<string, any> | undefined;
             };
         };
         _output_in: typeof _trpc_server.unsetMarker;

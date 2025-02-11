@@ -18,7 +18,6 @@ import {
 } from '@/schemas/eventSchema'
 import { useTranslations } from 'next-intl'
 import { useTranslationByGroup } from '@/hooks/commons'
-import { updateAttendeeTicketsByStatus } from '@/services/actions/event/updateTicketByAttendeeStatus'
 
 type CustomFieldsData = Record<string, string | number | boolean>
 
@@ -140,13 +139,10 @@ export default function EventRegistrationTable({
   const customFields = getUniqueCustomFields(registrations)
 
   const handleApproval = async (
-    eventId: string,
     registrationId: string,
-    userId: string,
     status: 'APPROVED' | 'REJECTED'
   ) => {
     updateRegistrationStatus(registrationId, status)
-    if (eventId) await updateAttendeeTicketsByStatus(eventId, userId, status)
   }
 
   function handleExport(): void {
@@ -174,7 +170,7 @@ export default function EventRegistrationTable({
         </TableHeader>
         <TableBody>
           {registrations.map(
-            ({ user: attendee, status, id, customFieldsData, eventId }) => (
+            ({ user: attendee, status, id, customFieldsData }) => (
               <TableRow key={id}>
                 <TableCell>{attendee.name}</TableCell>
                 <TableCell>{attendee.email}</TableCell>
@@ -190,12 +186,7 @@ export default function EventRegistrationTable({
                   {status !== AttendeeStatus.APPROVED && (
                     <Button
                       onClick={async () => {
-                        await handleApproval(
-                          eventId,
-                          id,
-                          attendee.id,
-                          'APPROVED'
-                        )
+                        await handleApproval(id, 'APPROVED')
                       }}
                       size="sm"
                       className="bg-green-500 hover:bg-green-600"
@@ -206,12 +197,7 @@ export default function EventRegistrationTable({
                   {status !== AttendeeStatus.REJECTED && (
                     <Button
                       onClick={async () => {
-                        await handleApproval(
-                          eventId,
-                          id,
-                          attendee.id,
-                          'REJECTED'
-                        )
+                        await handleApproval(id, 'REJECTED')
                       }}
                       size="sm"
                       className="bg-red-500 hover:bg-red-600"
