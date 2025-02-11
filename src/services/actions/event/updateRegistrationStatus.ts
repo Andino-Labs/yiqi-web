@@ -2,29 +2,7 @@
 
 import { getUser, isOrganizerAdmin } from '@/lib/auth/lucia'
 import prisma from '@/lib/prisma'
-import { AttendeeStatus } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
-
-export const updateAttendeeTicketsByStatus = async (
-  eventId: string,
-  userId: string,
-  attendeeStatus: AttendeeStatus
-) => {
-  const ticketOfferings = await prisma.ticketOfferings.findMany({
-    where: { eventId },
-    select: { id: true }
-  })
-
-  await prisma.ticket.updateMany({
-    where: {
-      AND: [
-        { userId },
-        { ticketTypeId: { in: ticketOfferings.map(_ => _.id) } }
-      ]
-    },
-    data: { deletedAt: attendeeStatus === 'APPROVED' ? null : new Date() }
-  })
-}
 
 export async function updateRegistrationStatus(
   registrationId: string,
@@ -54,11 +32,20 @@ export async function updateRegistrationStatus(
       data: { status }
     })
 
-    await updateAttendeeTicketsByStatus(
-      registration.eventId,
-      registration.userId,
-      status
-    )
+    const ticketOfferings = await prisma.ticketOfferings.findMany({
+      where: { eventId: registration.eventId },
+      select: { id: true }
+    })
+
+    await prisma.ticket.updateMany({
+      where: {
+        AND: [
+          { userId: registration.userId },
+          { ticketTypeId: { in: ticketOfferings.map(_ => _.id) } }
+        ]
+      },
+      data: { deletedAt: status === 'APPROVED' ? null : new Date() }
+    })
 
     if (status === 'APPROVED') {
       await prisma.queueJob.create({
