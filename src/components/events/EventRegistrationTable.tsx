@@ -18,6 +18,7 @@ import {
 } from '@/schemas/eventSchema'
 import { useTranslations } from 'next-intl'
 import { useTranslationByGroup } from '@/hooks/commons'
+import { updateAttendeeTicketsByStatus } from '@/services/actions/event/updateTicketByAttendeeStatus'
 
 type CustomFieldsData = Record<string, string | number | boolean>
 
@@ -125,9 +126,11 @@ function exportToCSV(
 }
 
 export default function EventRegistrationTable({
-  registrations
+  registrations,
+  eventId
 }: {
   registrations: ExtendedEventRegistrationsSchemaType[]
+  eventId?: string
 }) {
   const t = useTranslations('DeleteAccount')
 
@@ -138,11 +141,13 @@ export default function EventRegistrationTable({
 
   const customFields = getUniqueCustomFields(registrations)
 
-  function handleApproval(
+  const handleApproval = async (
     registrationId: string,
+    userId: string,
     status: 'APPROVED' | 'REJECTED'
-  ): void {
+  ) => {
     updateRegistrationStatus(registrationId, status)
+    if (eventId) await updateAttendeeTicketsByStatus(eventId, userId, status)
   }
 
   function handleExport(): void {
@@ -185,8 +190,9 @@ export default function EventRegistrationTable({
                 <TableCell>
                   {status !== AttendeeStatus.APPROVED && (
                     <Button
-                      onClick={function () {
-                        handleApproval(id, 'APPROVED')
+                      onClick={async () => {
+                        console.log(`attendee`, attendee)
+                        await handleApproval(id, attendee.id, 'APPROVED')
                       }}
                       size="sm"
                       className="bg-green-500 hover:bg-green-600"
@@ -196,8 +202,8 @@ export default function EventRegistrationTable({
                   )}
                   {status !== AttendeeStatus.REJECTED && (
                     <Button
-                      onClick={function () {
-                        handleApproval(id, 'REJECTED')
+                      onClick={async () => {
+                        await handleApproval(id, attendee.id, 'REJECTED')
                       }}
                       size="sm"
                       className="bg-red-500 hover:bg-red-600"
