@@ -138,10 +138,10 @@ export default function EventRegistrationTable({
 
   const customFields = getUniqueCustomFields(registrations)
 
-  const handleApproval = async (
+  function handleApproval(
     registrationId: string,
     status: 'APPROVED' | 'REJECTED'
-  ) => {
+  ): void {
     updateRegistrationStatus(registrationId, status)
   }
 
@@ -185,8 +185,8 @@ export default function EventRegistrationTable({
                 <TableCell>
                   {status !== AttendeeStatus.APPROVED && (
                     <Button
-                      onClick={async () => {
-                        await handleApproval(id, 'APPROVED')
+                      onClick={function () {
+                        handleApproval(id, 'APPROVED')
                       }}
                       size="sm"
                       className="bg-green-500 hover:bg-green-600"
@@ -196,8 +196,8 @@ export default function EventRegistrationTable({
                   )}
                   {status !== AttendeeStatus.REJECTED && (
                     <Button
-                      onClick={async () => {
-                        await handleApproval(id, 'REJECTED')
+                      onClick={function () {
+                        handleApproval(id, 'REJECTED')
                       }}
                       size="sm"
                       className="bg-red-500 hover:bg-red-600"
