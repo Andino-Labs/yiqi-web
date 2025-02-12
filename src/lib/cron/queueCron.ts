@@ -6,6 +6,7 @@ import { handleNotificationJob } from '@/services/notifications/handlers'
 import { SendBaseMessageToUserPropsSchema } from '@/services/notifications/sendBaseMessageToUser'
 import { JobType, type QueueJob } from '@prisma/client'
 import { processUserFirstPartyData } from '../data/processors/processUserFirstPartyData'
+import { processUserMatches } from '../data/processors/processUserMatches'
 
 type JobHandler = (job: QueueJob) => Promise<void>
 
@@ -29,6 +30,13 @@ const jobHandlers: Record<JobType, JobHandler> = {
   },
   [JobType.COLLECT_USER_DATA]: async job => {
     console.log('COLLECT USER DATA was run, left to implement', job)
+  },
+  [JobType.MATCH_MAKING_GENERATION]: async job => {
+    if (!job.userId || !job.eventId) {
+      throw new Error('MATCH MAKING GENERATION job requires userId and eventId')
+    }
+
+    await processUserMatches(job.userId, job.eventId)
   }
 }
 

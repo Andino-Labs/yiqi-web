@@ -412,6 +412,7 @@ enum JobType {
   COLLECT_USER_DATA
   SEND_USER_MESSAGE
   PROCESS_USER_DATA
+  MATCH_MAKING_GENERATION
   // Add more job types as needed
 }
 
