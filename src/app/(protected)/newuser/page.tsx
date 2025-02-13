@@ -43,7 +43,7 @@ export default async function Page() {
   } else if (user.role === Roles.ADMIN) {
     redirect(`/admin`)
   } else if (user.role === Roles.USER) {
-    redirect('/events')
+    redirect('/user/networking-settings')
   } else if (user.role === Roles.ANDINO_ADMIN) {
     redirect(`/andino-admin`)
   }
