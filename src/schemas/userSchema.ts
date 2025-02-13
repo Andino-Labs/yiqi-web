@@ -93,7 +93,11 @@ export const luciaUserSchema = z.object({
   id: z.string(),
   name: z.string(),
   email: z.string(),
-  picture: z.string().nullable()
+  picture: z.string().nullable(),
+  dataCollected: userDataCollectedShema,
+  userContentPreferences: z.string().nullable(),
+  userDetailedProfile: z.string().nullable(),
+  userEmbeddableProfile: z.string().nullable()
 })
 
 export type LuciaUserType = z.infer<typeof luciaUserSchema>

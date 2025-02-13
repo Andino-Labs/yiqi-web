@@ -25,13 +25,7 @@ export default async function Page() {
     case Roles.ADMIN:
       return (
         <>
-          <MainLandingNav
-            user={{
-              name: user?.name ?? '',
-              picture: user?.picture ?? '',
-              role: user.role || ''
-            }}
-          />
+          <MainLandingNav user={user} />
           <UserProfilePage user={userInformation} />
         </>
       )

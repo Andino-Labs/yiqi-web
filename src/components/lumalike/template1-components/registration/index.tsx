@@ -30,10 +30,11 @@ import { RegistrationForm } from './registration-form'
 import { markRegistrationPaid } from '@/services/actions/event/markRegistrationPaid'
 import { useTranslations } from 'next-intl'
 import { PaymentConfirmed } from './payment-confirmed'
+import { LuciaUserType } from '@/schemas/userSchema'
 
 export type RegistrationProps = {
   event: PublicEventType
-  user: { name?: string; picture?: string; email?: string; role?: string }
+  user?: LuciaUserType
   dialogTriggerRef?: React.RefObject<HTMLButtonElement> | null
   customFields?: CustomFieldType[]
 }
@@ -164,9 +165,10 @@ export function Registration({
     const requiresPayment = !event.tickets.every(ticket => ticket.price === 0)
     return (
       <RegistrationConfirmation
+        user={user}
         registration={existingRegistration}
         requiresPayment={requiresPayment}
-        isLoggedIn={!!user.role}
+        isLoggedIn={!!user?.role}
       />
     )
   }

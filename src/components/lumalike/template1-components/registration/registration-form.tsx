@@ -29,6 +29,7 @@ import { CalendarIcon } from 'lucide-react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { LuciaUserType } from '@/schemas/userSchema'
 
 function createCustomFieldsSchema(
   customFields: CustomFieldType[]
@@ -120,7 +121,7 @@ function createCustomFieldsSchema(
 
 interface RegistrationFormProps {
   onSubmit: (values: RegistrationInput) => Promise<void>
-  user: { name?: string; picture?: string; email?: string; role?: string }
+  user?: LuciaUserType
   isFreeEvent: boolean
   registrationId?: string
   onPaymentComplete?: () => void
@@ -159,8 +160,8 @@ export function RegistrationForm({
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: user.name || '',
-      email: user.email || '',
+      name: user?.name || '',
+      email: user?.email || '',
       tickets: {},
       customFieldsData: {}
     }
@@ -225,8 +226,8 @@ export function RegistrationForm({
                     <Input
                       placeholder={translations.es.eventFormNamePlaceholder}
                       {...field}
-                      disabled={!!user.name || isSubmitting}
-                      className={user.name ? 'bg-muted' : ''}
+                      disabled={!!user?.name || isSubmitting}
+                      className={user?.name ? 'bg-muted' : ''}
                     />
                   </FormControl>
                   <FormMessage />
@@ -245,8 +246,8 @@ export function RegistrationForm({
                       type="email"
                       placeholder={translations.es.eventFormEmailPlaceholder}
                       {...field}
-                      disabled={!!user.email || isSubmitting}
-                      className={user.email ? 'bg-muted' : ''}
+                      disabled={!!user?.email || isSubmitting}
+                      className={user?.email ? 'bg-muted' : ''}
                     />
                   </FormControl>
                   <FormMessage />

@@ -17,16 +17,10 @@ import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import LangSelector from '../languageSelector'
 import SignOutButton from '../auth/sign-out'
-
-export interface User {
-  name?: string
-  picture?: string
-  email?: string
-  role?: string
-}
+import { LuciaUserType } from '@/schemas/userSchema'
 
 interface HeaderProps {
-  user: User | null
+  user?: LuciaUserType
   showExtraButton?: boolean
   buttonName?: string
   dialogTriggerRef?: React.RefObject<HTMLButtonElement>

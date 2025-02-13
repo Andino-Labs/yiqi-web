@@ -64,12 +64,7 @@ export default async function Page({
       <EventPage
         customFields={event.customFields?.fields}
         event={event}
-        user={{
-          email: user?.email,
-          name: user?.name,
-          role: user?.role,
-          picture: user?.picture || undefined
-        }}
+        user={user!}
       />
     </>
   )

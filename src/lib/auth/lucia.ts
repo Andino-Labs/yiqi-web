@@ -48,7 +48,11 @@ export const getUser = async () => {
       name: true,
       email: true,
       picture: true,
-      role: true
+      role: true,
+      dataCollected: true,
+      userContentPreferences: true,
+      userDetailedProfile: true,
+      userEmbeddableProfile: true
     }
   })
 

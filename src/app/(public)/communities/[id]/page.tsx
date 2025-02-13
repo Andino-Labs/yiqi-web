@@ -29,13 +29,7 @@ export default async function CommunityDetail({
 
   return (
     <div className="flex flex-col min-h-screen bg-black pt-10">
-      <MainLandingNav
-        user={{
-          name: user?.name,
-          picture: user?.picture as string,
-          role: user?.role
-        }}
-      />
+      <MainLandingNav user={user!} />
       <div className="max-w-5xl mx-auto w-full px-4 py-8 bg-[#111827] m-10 rounded-lg">
         <CommunityBanner
           organization={organization!}

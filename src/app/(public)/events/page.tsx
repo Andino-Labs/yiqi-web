@@ -9,13 +9,7 @@ export default async function Page() {
   return (
     <>
       <div className="fixed inset-0 h-screen w-screen -z-10 bg-black"></div>
-      <MainLandingNav
-        user={{
-          name: user?.name,
-          picture: user?.picture as string,
-          role: user?.role
-        }}
-      />
+      <MainLandingNav user={user!} />
       <EventsContainer />
       <Footer />
     </>
