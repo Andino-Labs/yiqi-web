@@ -45,7 +45,7 @@ function BeRegularUserButton({ userId }: { userId: { value: string } }) {
           description: `${t('welcome')}`,
           variant: 'default'
         })
-        router.push('/events')
+        router.push('/user/networking-settings')
       }}
     >
       {t('attended')}
