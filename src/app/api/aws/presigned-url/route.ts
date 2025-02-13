@@ -25,9 +25,12 @@ export async function POST(req: Request) {
       expiresIn: 3600
     })
 
+    const publicUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`
+
     return NextResponse.json({
       presignedUrl,
-      s3Key
+      s3Key,
+      publicUrl
     })
   } catch (error) {
     console.error('Presigned URL error:', error)

@@ -18,6 +18,7 @@ import {
   Img
 } from '@react-email/components'
 import { BASE_URL } from '@/lib/env'
+import { formatRangeDatesByTimezoneLabel } from '@/components/utils'
 
 export interface EventAttendanceConfirmedProps {
   user: User
@@ -115,8 +116,11 @@ export function EventAttendanceConfirmed({
                   Fecha
                 </Text>
                 <Text style={detailValue} className="email-text">
-                  {new Date(startDate).toLocaleDateString()} -{' '}
-                  {new Date(endDate).toLocaleDateString()}
+                  {formatRangeDatesByTimezoneLabel(
+                    startDate,
+                    event.timezoneLabel,
+                    endDate
+                  )}
                 </Text>
               </div>
               <div style={detailItem}>

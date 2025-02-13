@@ -69,7 +69,7 @@ export function MarkdownEditor({
       Highlight,
       Image.configure({
         HTMLAttributes: {
-          style: 'max-width: 500px;'
+          style: 'width: 100%; max-width: 500px;'
         }
       }),
       Youtube.configure({

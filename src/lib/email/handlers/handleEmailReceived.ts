@@ -17,7 +17,7 @@ export async function handleEmailReceived({
   // Find the sender user
   const fromUser = await prisma.user.findFirst({
     where: {
-      email: fromEmail
+      email: { equals: fromEmail, mode: 'insensitive' }
     }
   })
 
