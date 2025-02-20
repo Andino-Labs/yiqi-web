@@ -1,8 +1,8 @@
 'use server'
 
 import prisma from '@/lib/prisma'
-import { networkingMatchesSchema } from '@/schemas/networkingMatchSchema'
 import { JobType } from '@prisma/client'
+import { parseNetworkingMatches } from './commons'
 
 export async function getNetworkingMatchesByEventUser(
   _userId: string,
@@ -48,5 +48,5 @@ export async function getNetworkingMatchesByEventUser(
 
   console.warn('errors', errors)
 
-  return { matches: networkingMatchesSchema.parse(matches), errors }
+  return { matches: parseNetworkingMatches(matches), errors }
 }
