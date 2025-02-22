@@ -25,7 +25,9 @@ export default async function page() {
     communicationStyle: user.communicationStyle,
     professionalValues: user.professionalValues,
     careerAspirations: user.careerAspirations,
-    significantChallenge: user.significantChallenge
+    significantChallenge: user.significantChallenge,
+    resumeUrl: user.resumeUrl,
+    resumeFileName: user.resumeFileName
   }
 
   return (

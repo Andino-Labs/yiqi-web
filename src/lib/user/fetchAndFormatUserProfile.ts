@@ -74,7 +74,8 @@ export async function fetchAndFormatUserProfile(
       significantChallenge: dataCollected?.significantChallenge ?? '',
       role: user.role,
       resumeUrl: dataCollected?.resumeUrl ?? '',
-      resumeLastUpdated: dataCollected?.resumeLastUpdated ?? ''
+      resumeLastUpdated: dataCollected?.resumeLastUpdated ?? '',
+      resumeFileName: dataCollected?.resumeFileName
     }
 
     if (isCurrentUser) {

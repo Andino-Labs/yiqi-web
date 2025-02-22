@@ -40,6 +40,7 @@ export type NetworkingData = Pick<
   | 'resumeUrl'
   | 'resumeText'
   | 'resumeLastUpdated'
+  | 'resumeFileName'
 >
 
 type Props = {
@@ -65,7 +66,8 @@ export default function NetworkingProfileForm({ initialData, userId }: Props) {
         significantChallenge: true,
         resumeUrl: true,
         resumeText: true,
-        resumeLastUpdated: true
+        resumeLastUpdated: true,
+        resumeFileName: true
       })
     ),
     defaultValues: {
@@ -76,9 +78,23 @@ export default function NetworkingProfileForm({ initialData, userId }: Props) {
       significantChallenge: initialData.significantChallenge ?? '',
       resumeUrl: initialData.resumeUrl ?? '',
       resumeText: initialData.resumeText ?? '',
-      resumeLastUpdated: initialData.resumeLastUpdated ?? ''
+      resumeLastUpdated: initialData.resumeLastUpdated ?? '',
+      resumeFileName: initialData.resumeFileName ?? ''
     }
   })
+
+  function extractFilenameFromUrl(url: string) {
+    const filenamePart = url.substring(url.lastIndexOf('/') + 1)
+    try {
+      return decodeURIComponent(filenamePart)
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        description: `${error}`
+      })
+      return filenamePart
+    }
+  }
 
   async function processData(userId: string) {
     try {
@@ -144,6 +160,7 @@ export default function NetworkingProfileForm({ initialData, userId }: Props) {
 
       // 4. Update form values
       form.setValue('resumeUrl', publicUrl)
+      form.setValue('resumeFileName', file.name)
       form.setValue('resumeText', extractedText)
       form.setValue('resumeLastUpdated', new Date().toISOString())
     } catch (error) {
@@ -305,7 +322,9 @@ export default function NetworkingProfileForm({ initialData, userId }: Props) {
                       <>
                         <Upload className="h-4 w-4 mr-2" />
                         <p className="text-black">
-                          {translations.es.selectResumeTypes}
+                          {initialData.resumeUrl
+                            ? 'Editar tu Hoja de Vida (PDF, TXT o DOCX)'
+                            : translations.es.selectResumeTypes}
                         </p>
                       </>
                     )}
@@ -321,21 +340,17 @@ export default function NetworkingProfileForm({ initialData, userId }: Props) {
               {isProcessingFile && (
                 <div className="mt-2 text-sm text-muted-foreground">
                   <Loader2 className="h-4 w-4 mr-2 inline animate-spin" />
-                  {translations.es.extractingText}
+                  Extrayendo texto
                 </div>
               )}
               {initialData.resumeUrl && !selectedFile && !isProcessingFile && (
                 <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                   <FileText className="h-4 w-4" />
                   <span>{translations.es.currentResume}</span>
-                  <a
-                    href={initialData.resumeUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary hover:underline"
-                  >
-                    {translations.es.viewResume}
-                  </a>
+                  <p className="text-primary hover:underline">
+                    {initialData.resumeFileName ||
+                      extractFilenameFromUrl(initialData.resumeUrl)}
+                  </p>
                 </div>
               )}
             </div>
