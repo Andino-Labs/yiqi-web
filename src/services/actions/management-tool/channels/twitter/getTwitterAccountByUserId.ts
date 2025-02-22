@@ -11,10 +11,6 @@ export const getTwitterAccountByUserId = async (userId: string) => {
       }
     })
 
-    if (!twitterAccount) {
-      return dataTwitterSchema.parse({ success: false })
-    }
-
     return dataTwitterSchema.parse(twitterAccount)
   } catch (error) {
     console.error('Error fetching Twitter account:', error)
