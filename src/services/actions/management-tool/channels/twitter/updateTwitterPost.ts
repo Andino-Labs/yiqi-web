@@ -1,11 +1,10 @@
 'use server'
 
-import prisma from "@/lib/prisma";
-import { UpdatePostTwitterSchema } from "@/schemas/twitterSchema";
-
+import prisma from '@/lib/prisma'
+import { UpdatePostTwitterSchema } from '@/schemas/twitterSchema'
 
 export const updateTwitterPost = async (input: UpdatePostTwitterSchema) => {
-  const { postId, content, scheduledDate, status } = input;
+  const { postId, content, scheduledDate, status } = input
 
   try {
     return await prisma.post.update({
@@ -13,11 +12,11 @@ export const updateTwitterPost = async (input: UpdatePostTwitterSchema) => {
       data: {
         ...(content && { content }),
         ...(scheduledDate && { scheduledDate }),
-        ...(status && { status }),
-      },
-    });
+        ...(status && { status })
+      }
+    })
   } catch (error) {
-    console.error("Error updating post:", error);
-    throw new Error("Failed to update post");
+    console.error('Error updating post:', error)
+    throw new Error('Failed to update post')
   }
-};
+}

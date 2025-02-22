@@ -14,7 +14,7 @@ export const updatePostTwitterSchema = z.object({
   postId: z.number(),
   content: z.string(),
   scheduledDate: z.date(),
-  status: z.enum(['SCHEDULED', 'PUBLISHED']).optional(),
+  status: z.enum(['SCHEDULED', 'PUBLISHED']).optional()
 })
 
 export const addTwitterAccount = z.object({
@@ -24,15 +24,17 @@ export const addTwitterAccount = z.object({
   accountId: z.string(),
   accessToken: z.string(),
   accessTokenSecret: z.string(),
-  organizationId: z.string(),
+  organizationId: z.string()
 })
 
-export const dataTwitterSchema = z.object({
-  userId: z.string(),
-  accountUsername: z.string(),
-  accountId: z.string(),
-  organizationId: z.string(),
-}).nullable()
+export const dataTwitterSchema = z
+  .object({
+    userId: z.string(),
+    accountUsername: z.string(),
+    accountId: z.string(),
+    organizationId: z.string()
+  })
+  .nullable()
 
 export const postTwitterSchema = z.object({
   userId: z.string(),
@@ -42,7 +44,7 @@ export const postTwitterSchema = z.object({
   scheduledDate: z.date(),
   status: z.enum(['SCHEDULED', 'PUBLISHED']),
   postTwitterId: z.string(),
-  id: z.number(),
+  id: z.number()
 })
 
 export type CreatePostTwitterSchema = z.infer<typeof createPostTwitterSchema>

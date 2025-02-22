@@ -18,11 +18,11 @@ export default async function ManagementToolPage() {
 
   const dataTwitter = await getTwitterAccountByUserId(user.id)
 
-  let analytics;
+  let analytics
   if (dataTwitter && 'accountId' in dataTwitter) {
-    analytics = await getTwitterAnalytics(dataTwitter.accountId);
+    analytics = await getTwitterAnalytics(dataTwitter.accountId)
   } else {
-    analytics = null;
+    analytics = null
   }
 
   if (user.role === Roles.ADMIN) {
@@ -32,7 +32,11 @@ export default async function ManagementToolPage() {
           <SidebarChannel data={dataTwitter} />
           <div className="flex-1 mt-4 lg:mt-0 flex items-center justify-center">
             {dataTwitter && dataTwitter.accountId !== '' ? (
-              <CalendarPage data={dataTwitter} user={user} analytics={analytics} />
+              <CalendarPage
+                data={dataTwitter}
+                user={user}
+                analytics={analytics}
+              />
             ) : (
               <p className="text-3xl font-bold text-center">
                 {t('connectAccount')}
@@ -41,7 +45,6 @@ export default async function ManagementToolPage() {
           </div>
         </div>
       </main>
-    );
+    )
   }
-
 }

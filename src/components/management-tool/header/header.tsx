@@ -10,7 +10,12 @@ interface HeaderProps {
   data: DataTwitterSchema
 }
 
-export function Header({ onNewPost, openAnalytics, openCalendar, data }: HeaderProps) {
+export function Header({
+  onNewPost,
+  openAnalytics,
+  openCalendar,
+  data
+}: HeaderProps) {
   const t = useTranslations('ManagementTool')
 
   return (
@@ -26,14 +31,17 @@ export function Header({ onNewPost, openAnalytics, openCalendar, data }: HeaderP
           </div>
           <div className="flex items-center gap-2">
             <div className="flex items-center rounded-lg border">
-              <Button variant="ghost" size="sm" onClick={openAnalytics} >
+              <Button variant="ghost" size="sm" onClick={openAnalytics}>
                 <BarChart className="h-4 w-4" />
               </Button>
               <Button variant="ghost" size="sm" onClick={openCalendar}>
                 <CalendarIcon className="h-4 w-4" />
               </Button>
             </div>
-            <Button onClick={onNewPost} className="bg-blue-600 text-white hover:bg-blue-700">
+            <Button
+              onClick={onNewPost}
+              className="bg-blue-600 text-white hover:bg-blue-700"
+            >
               {t('newPost')}
             </Button>
           </div>

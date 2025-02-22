@@ -1,8 +1,8 @@
 interface Analytics {
-  comments: number;
-  likes: number;
-  shares: number;
-  impressions: number;
+  comments: number
+  likes: number
+  shares: number
+  impressions: number
 }
 
 export function Analytics({ analytics }: { analytics: Analytics | null }) {
@@ -11,14 +11,14 @@ export function Analytics({ analytics }: { analytics: Analytics | null }) {
       <div className="flex items-center justify-center h-full">
         <h2 className="text-xl font-semibold text-center">No data available</h2>
       </div>
-    );
+    )
   }
 
   const stats = [
     { label: 'Comments', value: analytics.comments || 0 },
     { label: 'Likes', value: analytics.likes || 0 },
     { label: 'Shares', value: analytics.shares || 0 },
-    { label: 'Impressions', value: analytics.impressions || 0 },
+    { label: 'Impressions', value: analytics.impressions || 0 }
   ]
 
   return (

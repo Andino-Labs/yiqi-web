@@ -1,11 +1,11 @@
 'use server'
 
-import prisma from "@/lib/prisma";
-import { CreatePostTwitterSchema } from "@/schemas/twitterSchema";
+import prisma from '@/lib/prisma'
+import { CreatePostTwitterSchema } from '@/schemas/twitterSchema'
 
 export const createTwitterPost = async (input: CreatePostTwitterSchema) => {
-  const { userId, accountId, organizationId, content, scheduledDate } = input;
-  
+  const { userId, accountId, organizationId, content, scheduledDate } = input
+
   try {
     return await prisma.post.create({
       data: {
@@ -16,11 +16,11 @@ export const createTwitterPost = async (input: CreatePostTwitterSchema) => {
         scheduledDate,
         status: 'SCHEDULED',
         createdAt: new Date(),
-        postTwitterId: input.postTwitterId || '',
-      },
-    });
+        postTwitterId: input.postTwitterId || ''
+      }
+    })
   } catch (error) {
-    console.error("Error creating post:", error);
-    throw new Error("Failed to create post");
+    console.error('Error creating post:', error)
+    throw new Error('Failed to create post')
   }
-};
+}

@@ -14,13 +14,21 @@ interface User {
 }
 
 interface AnalyticsProps {
-  comments: number;
-  likes: number;
-  shares: number;
-  impressions: number;
+  comments: number
+  likes: number
+  shares: number
+  impressions: number
 }
 
-export default function CalendarPage({ data, user, analytics }: { data: DataTwitterSchema, user: User, analytics: AnalyticsProps | null }) {
+export default function CalendarPage({
+  data,
+  user,
+  analytics
+}: {
+  data: DataTwitterSchema
+  user: User
+  analytics: AnalyticsProps | null
+}) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [scheduledPosts, setScheduledPosts] = useState<PostTwitterSchema[]>([])
@@ -31,7 +39,7 @@ export default function CalendarPage({ data, user, analytics }: { data: DataTwit
     const posts = await getTwitterPostsByUserId(user.id)
     setScheduledPosts(posts)
   }, [user.id])
-  
+
   useEffect(() => {
     fetchPosts()
   }, [fetchPosts])
@@ -84,14 +92,12 @@ export default function CalendarPage({ data, user, analytics }: { data: DataTwit
             posts={scheduledPosts}
           />
         ) : (
-          <Analytics
-            analytics={analytics}
-          />
+          <Analytics analytics={analytics} />
         )}
       </main>
-      <CreatePostModal 
+      <CreatePostModal
         data={data}
-        isOpen={isModalOpen} 
+        isOpen={isModalOpen}
         onClose={handleCloseModal}
         selectedDate={selectedDate}
         onSchedulePost={handleSchedulePost}

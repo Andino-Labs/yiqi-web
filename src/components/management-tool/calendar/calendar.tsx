@@ -12,7 +12,7 @@ import {
   isToday,
   parse,
   startOfMonth,
-  startOfToday,
+  startOfToday
 } from 'date-fns'
 import { useState } from 'react'
 import { useMediaQuery } from '@mantine/hooks'
@@ -29,16 +29,22 @@ interface CalendarProps {
   posts: PostTwitterSchema[]
 }
 
-export function Calendar({ selectedDate, onSelectDate, onOpenModal, onEditPost, posts }: CalendarProps) {
+export function Calendar({
+  selectedDate,
+  onSelectDate,
+  onOpenModal,
+  onEditPost,
+  posts
+}: CalendarProps) {
   const today = startOfToday()
   const [currentMonth, setCurrentMonth] = useState(format(today, 'MMM-yyyy'))
   const firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date())
-  const isMobile = useMediaQuery("(max-width: 768px)")
+  const isMobile = useMediaQuery('(max-width: 768px)')
   const t = useTranslations('ManagementTool')
 
   const days = eachDayOfInterval({
     start: startOfMonth(firstDayCurrentMonth),
-    end: endOfMonth(firstDayCurrentMonth),
+    end: endOfMonth(firstDayCurrentMonth)
   })
 
   function previousMonth() {
@@ -62,15 +68,21 @@ export function Calendar({ selectedDate, onSelectDate, onOpenModal, onEditPost, 
         posts={posts}
         onEditPost={onEditPost}
       />
-    );
+    )
   }
 
   return (
     <div className="pt-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <h2 className="text-xl font-semibold">{format(firstDayCurrentMonth, 'MMMM yyyy')}</h2>
-          <Button variant="outline" size="sm" onClick={() => setCurrentMonth(format(today, 'MMM-yyyy'))}>
+          <h2 className="text-xl font-semibold">
+            {format(firstDayCurrentMonth, 'MMMM yyyy')}
+          </h2>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setCurrentMonth(format(today, 'MMM-yyyy'))}
+          >
             {t('today')}
           </Button>
         </div>
@@ -96,16 +108,26 @@ export function Calendar({ selectedDate, onSelectDate, onOpenModal, onEditPost, 
 
       <div className="mt-2 md:grid md:grid-cols-7 grid-flow-row sm:block">
         {days.map((day, dayIdx) => {
-          const isSelectable = isDateSelectable(day);
-          const dayPosts = posts.filter(post => isSameDay(new Date(post.scheduledDate), day)) || [];
-          const sortedPosts = dayPosts.length > 0 ? dayPosts.sort((a, b) => new Date(a.scheduledDate).getTime() - new Date(b.scheduledDate).getTime()) : [];
+          const isSelectable = isDateSelectable(day)
+          const dayPosts =
+            posts.filter(post =>
+              isSameDay(new Date(post.scheduledDate), day)
+            ) || []
+          const sortedPosts =
+            dayPosts.length > 0
+              ? dayPosts.sort(
+                  (a, b) =>
+                    new Date(a.scheduledDate).getTime() -
+                    new Date(b.scheduledDate).getTime()
+                )
+              : []
 
           return (
             <div
               key={day.toString()}
               className={cn(
                 'relative bg-background py-2 px-1 min-h-[120px] sm:mb-2 md:mb-0',
-                dayIdx === 0 && colStartClasses[getDay(day)],
+                dayIdx === 0 && colStartClasses[getDay(day)]
               )}
             >
               <Button
@@ -113,19 +135,24 @@ export function Calendar({ selectedDate, onSelectDate, onOpenModal, onEditPost, 
                 className={cn(
                   'absolute top-1 right-1 h-8 w-8 rounded-full p-0',
                   !isSelectable && 'cursor-not-allowed opacity-50',
-                  isEqual(day, selectedDate as Date) && 'bg-primary text-primary-foreground',
+                  isEqual(day, selectedDate as Date) &&
+                    'bg-primary text-primary-foreground',
                   isToday(day) && 'bg-blue-600 text-white',
-                  !isEqual(day, selectedDate as Date) && !isToday(day) && 'hover:bg-muted',
+                  !isEqual(day, selectedDate as Date) &&
+                    !isToday(day) &&
+                    'hover:bg-muted'
                 )}
                 disabled={!isSelectable}
                 onClick={() => {
                   if (isSelectable) {
-                    onSelectDate(day);
-                    onOpenModal(day);
+                    onSelectDate(day)
+                    onOpenModal(day)
                   }
                 }}
               >
-                <time dateTime={format(day, 'yyyy-MM-dd')}>{format(day, 'd')}</time>
+                <time dateTime={format(day, 'yyyy-MM-dd')}>
+                  {format(day, 'd')}
+                </time>
               </Button>
 
               <div className="mt-8 space-y-2">
@@ -135,27 +162,33 @@ export function Calendar({ selectedDate, onSelectDate, onOpenModal, onEditPost, 
                     className={cn(
                       'text-xs p-1 rounded flex justify-between items-center',
                       post.status === 'SCHEDULED' && 'bg-blue-500',
-                      post.status === 'PUBLISHED' && 'bg-green-500',
+                      post.status === 'PUBLISHED' && 'bg-green-500'
                     )}
                   >
                     <button
-                      onClick={() => post.status !== 'PUBLISHED' && onEditPost(post)}
+                      onClick={() =>
+                        post.status !== 'PUBLISHED' && onEditPost(post)
+                      }
                       disabled={post.status === 'PUBLISHED'}
-                      className={cn('text-left flex-grow overflow-hidden', post.status === 'PUBLISHED' && 'cursor-not-allowed')}
+                      className={cn(
+                        'text-left flex-grow overflow-hidden',
+                        post.status === 'PUBLISHED' && 'cursor-not-allowed'
+                      )}
                     >
                       <span className="inline-block truncate">
-                        {format(new Date(post.scheduledDate), 'HH:mm')} - {post.content.substring(0, 20)}...
+                        {format(new Date(post.scheduledDate), 'HH:mm')} -{' '}
+                        {post.content.substring(0, 20)}...
                       </span>
                     </button>
                   </div>
                 ))}
               </div>
             </div>
-          );
+          )
         })}
       </div>
     </div>
-  );
+  )
 }
 
 const colStartClasses = [
@@ -165,5 +198,5 @@ const colStartClasses = [
   'col-start-4',
   'col-start-5',
   'col-start-6',
-  'col-start-7',
-];
+  'col-start-7'
+]
