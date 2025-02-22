@@ -782,13 +782,10 @@ declare const appRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<
             category: "GENERAL" | "VIP" | "BACKSTAGE";
             checkedInDate: Date | null;
             registration: {
-                customFields: {
-                    name: string;
-                    email: string;
-                    tickets: Record<string, number>;
-                };
+                id: string;
                 paid: boolean;
                 paymentId: string | null;
+                customFields?: Record<string, any> | undefined;
             };
             registrationId: string;
             checkedInByUserId: string | null;

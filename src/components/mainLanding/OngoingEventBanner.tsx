@@ -9,6 +9,8 @@ import { Badge } from '@/components/ui/badge'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { formatRangeDatesByTimezoneLabel } from '../utils'
 import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { useTranslations } from 'next-intl'
 
 interface OngoingEventBannerProps {
   event: SavedEventType
@@ -17,6 +19,7 @@ interface OngoingEventBannerProps {
 export function OngoingEventBanner({
   event
 }: OngoingEventBannerProps): JSX.Element {
+  const t = useTranslations('ongoingEventBanner')
   const { title, openGraphImage, startDate, location, timezoneLabel, id } =
     event
 
@@ -55,12 +58,14 @@ export function OngoingEventBanner({
               {/* Content Section */}
               <div className="space-y-2 lg:flex-grow">
                 {/* Event Status */}
-                <Badge className="bg-[#6de4e8]/20 text-[#6de4e8] hover:bg-[#6de4e8]/30 px-3 py-1 rounded-md">
-                  <Dot className="w-6 h-6 -ml-1.5 text-[#6de4e8] animate-pulse" />
-                  {isEventOnGoing(startDate)
-                    ? 'Evento en curso'
-                    : 'Proximo a empezar'}
-                </Badge>
+                <div className="text-right">
+                  <Badge className="bg-[#6de4e8]/20 text-[#6de4e8] hover:bg-[#6de4e8]/30 px-3 py-1 rounded-md">
+                    <Dot className="w-6 h-6 -ml-1.5 text-[#6de4e8] animate-pulse" />
+                    {isEventOnGoing(startDate)
+                      ? t('ongoingEvent')
+                      : t('nextToStart')}
+                  </Badge>
+                </div>
 
                 {/* Event Title */}
                 <h3 className="text-2xl sm:text-3xl font-bold text-white tracking-tight line-clamp-2">
@@ -76,7 +81,16 @@ export function OngoingEventBanner({
                 )}
 
                 <div className="space-y-3 xl:space-y-0 xl:flex xl:items-center xl:gap-x-4">
-                  <Link href={`/${id}`}>Ir al evento</Link>
+                  <Link href={`/${id}`} className="block">
+                    <Button
+                      size="lg"
+                      className="font-bold bg-gradient-to-r from-[#04F1FF] to-[#6de4e8] text-black hover:opacity-90 transition-opacity w-[40%] sm:w-auto"
+                    >
+                      <span className="text-[12px] md:text-base text-gray-800">
+                        {t('joinEvent')}
+                      </span>
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>

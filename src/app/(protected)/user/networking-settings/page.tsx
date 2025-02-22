@@ -1,32 +1,19 @@
 import NetworkingProfileForm from '@/components/profile/NetworkingProfileForm'
 import UserLayout from '@/components/user/UserLayout'
-import { getUser } from '@/lib/auth/lucia'
 import { profileDataSchema } from '@/schemas/userSchema'
-import { getUserProfile } from '@/services/actions/userActions'
-import { redirect } from 'next/navigation'
+import { getUserOrRedirect } from '@/lib/auth/getUserOrRedirect'
+
 export default async function page() {
-  const userCurrent = await getUser()
-
-  if (!userCurrent) {
-    redirect('/auth')
-  }
-
-  if (!userCurrent?.id) {
-    return redirect('/user/networking-settings/passthru')
-  }
-
-  const user = await getUserProfile(userCurrent.id)
-
-  if (!user) {
-    return redirect('/user/networking-settings/passthru')
-  }
+  const { userCurrent, user } = await getUserOrRedirect()
 
   const networkingData = {
-    professionalMotivations: user?.professionalMotivations,
-    communicationStyle: user?.communicationStyle,
-    professionalValues: user?.professionalValues,
-    careerAspirations: user?.careerAspirations,
-    significantChallenge: user?.significantChallenge
+    professionalMotivations: user.professionalMotivations,
+    communicationStyle: user.communicationStyle,
+    professionalValues: user.professionalValues,
+    careerAspirations: user.careerAspirations,
+    significantChallenge: user.significantChallenge,
+    resumeUrl: user.resumeUrl,
+    resumeFileName: user.resumeFileName
   }
 
   return (

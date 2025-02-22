@@ -77,6 +77,11 @@ export async function GET(req: NextRequest) {
       sessionCookie.attributes
     )
 
+    const redirectCookie = cookies().get('redirect')
+    if (redirectCookie) {
+      return NextResponse.redirect(new URL(redirectCookie.value, req.url))
+    }
+
     return NextResponse.redirect(new URL('/newuser', req.url))
   } catch (error) {
     console.error('Error during LinkedIn authentication:', error)

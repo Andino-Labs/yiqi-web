@@ -1,8 +1,8 @@
 'use server'
 
 import prisma from '@/lib/prisma'
-import { networkingMatchesSchema } from '@/schemas/networkingMatchSchema'
 import { JobType } from '@prisma/client'
+import { parseNetworkingMatches } from './parsers'
 
 export async function getNetworkingMatchesByEventUser(
   _userId: string,
@@ -22,7 +22,11 @@ export async function getNetworkingMatchesByEventUser(
   const matches = r?.id
     ? await prisma.networkingMatch.findMany({
         where: { registrationId: r.id },
-        include: { user: { select: { id: true, name: true, picture: true } } }
+        include: {
+          user: {
+            select: { id: true, name: true, picture: true, dataCollected: true }
+          }
+        }
       })
     : []
 
@@ -44,5 +48,5 @@ export async function getNetworkingMatchesByEventUser(
 
   console.warn('errors', errors)
 
-  return { matches: networkingMatchesSchema.parse(matches), errors }
+  return { matches: parseNetworkingMatches(matches), errors }
 }

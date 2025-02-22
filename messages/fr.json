@@ -295,7 +295,9 @@
     "importing": "Importation...",
     "importContacts": "Importer des contacts",
     "noOrganizationFound": "Aucune organisation trouvée",
-    "networkingSettings": "Paramètres de mise en réseau"
+    "networkingSettings": "Paramètres de mise en réseau",
+    "errorInDate": "Date invalide",
+    "errorInHours": "heures invalides"
   },
   "AdminLayout": {
     "organization": "Organisation",
@@ -613,7 +615,8 @@
     "ongoingEvent": "Événement en Cours",
     "joinEvent": "Rejoindre l'Événement",
     "viewTicket": "Voir le Billet",
-    "linkUnvailable": "Le lien virtuel n'est pas disponible pour cet événement."
+    "linkUnvailable": "Le lien virtuel n'est pas disponible pour cet événement.",
+    "nextToStart": "Bientôt pour commencer"
   },
   "ManagementEventTabs": {
     "summary": "Résumé de l'événement",
@@ -639,5 +642,13 @@
     "pending": "En attente",
     "approved": "Approuvée",
     "rejected": "Rejetée"
+  },
+  "EventManageMatchmaking": {
+    "missingProfile": "Complétez votre profil pour un jumelage alimenté par l'IA",
+    "missingCheckIn": "Enregistrez-vous pour voir vos correspondances de réseautage",
+    "readyForAIMatching": "Vos correspondances de réseautage organisées par l’IA sont prêtes !",
+    "completeProfile": "Profil complet",
+    "viewTickets": "Voir les billets",
+    "viewMatches": "Voir les matchs"
   }
 }

@@ -35,6 +35,7 @@ export const getGoogleOauthConsentUrl = async () => {
         scopes: ['email', 'profile']
       }
     )
+    console.log('authUrl', authUrl.toString())
     return { success: true, url: authUrl.toString() }
   } catch (error) {
     console.error(error)

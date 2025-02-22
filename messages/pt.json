@@ -295,7 +295,9 @@
     "importing": "A importar...",
     "importContacts": "Importar Contactos",
     "noOrganizationFound": "Nenhuma organização encontrada",
-    "networkingSettings": "Definições de Networking"
+    "networkingSettings": "Definições de Networking",
+    "errorInDate": "Data inválidae",
+    "errorInHours": "Horas inválidas"
   },
 
   "AdminLayout": {
@@ -615,7 +617,8 @@
     "ongoingEvent": "Evento em Andamento",
     "joinEvent": "Participar do Evento",
     "viewTicket": "Ver Ingresso",
-    "linkUnvailable": "O link virtual não está disponível para este evento."
+    "linkUnvailable": "O link virtual não está disponível para este evento.",
+    "nextToStart": "Em breve para começar"
   },
   "ManagementEventTabs": {
     "summary": "Resumo do Evento",
@@ -641,5 +644,13 @@
     "pending": "Pendente",
     "approved": "Aprovada",
     "rejected": "Rejeitada"
+  },
+  "EventManageMatchmaking": {
+    "missingProfile": "Complete seu perfil para matchmaking com tecnologia de IA",
+    "missingCheckIn": "Faça check-in para ver suas correspondências de rede",
+    "readyForAIMatching": "Suas partidas de rede com curadoria de IA estão prontas!",
+    "completeProfile": "Perfil completo",
+    "viewTickets": "Ver ingressos",
+    "viewMatches": "Ver partidas"
   }
 }

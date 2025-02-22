@@ -327,7 +327,9 @@
     "importing": "Importing...",
     "importContacts": "Import Contacts",
     "noOrganizationFound": "No organization found",
-    "networkingSettings": "Networking Settings"
+    "networkingSettings": "Networking Settings",
+    "errorInDate": "Invalid date",
+    "errorInHours": "Invalid hours"
   },
 
   "AdminLayout": {
@@ -663,7 +665,8 @@
     "ongoingEvent": "Ongoing Event",
     "joinEvent": "Join Event",
     "viewTicket": "View Ticket",
-    "linkUnvailable": "Virtual link is unavailable for this event."
+    "linkUnvailable": "Virtual link is unavailable for this event.",
+    "nextToStart": "Next to start"
   },
   "RegistrationChart": {
     "title": "Registrations Last 7 Days",
@@ -711,6 +714,15 @@
     "matchProcessNotFound": "We couldn't find the matching process",
     "contactOrganizerCheck": "Please contact the event organizer to check what happened",
     "noMatches": "No matches for you at this time"
+  },
+  "EventManageMatchmaking": {
+    "missingProfile": "Complete Your Profile for AI-Powered Matchmaking",
+    "missingCheckIn": "Make checkIn to view your Networking Matches",
+    "readyForAIMatching": "Your AI-Curated Networking Matches Are Ready!",
+    "matchMakingInProgress": "Your matches are being generated, please check back in a few minutes!",
+    "completeProfile": "Complete Profile",
+    "viewTickets": "View Tickets",
+    "viewMatches": "View Matches"
   },
   "ManagementTool": {
     "connectYourAccount": "Connect your account",

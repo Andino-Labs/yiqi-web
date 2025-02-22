@@ -1,12 +1,11 @@
 import MainLandingNav from '@/components/mainLanding/mainNav'
-import { getUser } from '@/lib/auth/lucia'
-import { redirect } from 'next/navigation'
 import { MatchesList } from './_temp/tempcomp'
 import { getNetworkingMatchesByEventUser } from '@/services/actions/networking/getNetworkingMatchesByEventUser'
 import { Button } from '@/components/ui/button'
 import { Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
+import { getUserOrRedirect } from '@/lib/auth/getUserOrRedirect'
 
 export const dynamic = 'force-dynamic'
 
@@ -16,11 +15,7 @@ export default async function Page({
   params: { eventId: string }
 }) {
   const t = await getTranslations('Networking')
-  const user = await getUser()
-
-  if (!user) {
-    redirect('/auth')
-  }
+  const { user } = await getUserOrRedirect()
 
   const { matches, errors } = await getNetworkingMatchesByEventUser(
     user.id,

@@ -14,7 +14,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   if (user) {
     if (user.role === Roles.ADMIN) {
       return (
-        <div className="border p-2 sm:p-6 h-full h-fit mx-auto dark:bg-primary">
+        <div className="border p-2 sm:p-6 h-full mx-auto dark:bg-primary">
           {/* Contenedor principal */}
           <div className="max-w-5xl mx-auto mb-4 dark:bg-primary rounded-lg shadow-lg">
             {/* Encabezado con flecha para retroceder */}
