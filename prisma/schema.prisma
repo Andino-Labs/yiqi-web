@@ -68,7 +68,7 @@ model User {
 
   NetworkingMatch NetworkingMatch[]
 
-  twitterAccounts TwitterAccount[] // Relación con TwitterAccount
+  twitterAccounts TwitterAccount[]
 }
 
 enum Roles {
