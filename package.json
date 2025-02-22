@@ -20,7 +20,7 @@
     "run-crons": "chmod +x run-crons.sh && ./run-crons.sh",
     "prepare": "husky",
     "run-script": "ts-node -r ./scripts/register.ts -P tsconfig.script.json scripts/runScript.ts",
-    "start-cron": "ts-node -r ./scripts/register.ts -P tsconfig.json ./src/lib/twitter/twitterCron.ts"
+    "start-cron": "node --loader ts-node/esm ./src/lib/twitter/twitterCron.ts"
   },
   "dependencies": {
     "@aws-sdk/client-bedrock-runtime": "^3.731.1",
