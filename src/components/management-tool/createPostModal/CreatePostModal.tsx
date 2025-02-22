@@ -108,7 +108,7 @@ export function CreatePostModal({
           <Textarea
             value={content}
             onChange={e => setContent(e.target.value)}
-            placeholder="What do you feel?"
+            placeholder={t('whatDoYouFeel')}
             className="min-h-[100px] resize-none border p-2 !outline-none !ring-0 !ring-offset-0 !focus:outline-none !focus:ring-0 !focus:ring-offset-0"
           />
           <div className="flex flex-col md:flex-row md:items-center md:justify-between border-t pt-4 gap-2">

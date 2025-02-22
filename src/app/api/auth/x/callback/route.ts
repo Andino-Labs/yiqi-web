@@ -40,7 +40,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
     if (!oauthToken || !oauthTokenSecret) {
       return NextResponse.json(
-        { error: 'No se pudo obtener los tokens OAuth.' },
+        { error: 'Failed to obtain OAuth tokens.' },
         { status: 500 }
       )
     }
@@ -49,12 +49,12 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.redirect(authorizationUrl)
   } catch (error) {
     if (error instanceof Error) {
-      console.error('Error en el proceso de autenticación:', error.message)
+      console.error('Error in authentication process:', error.message)
     } else {
-      console.error('Error en el proceso de autenticación:', error)
+      console.error('Error in authentication process:', error)
     }
     return NextResponse.json(
-      { error: 'Error en el proceso de autenticación.' },
+      { error: 'Error in the authentication process.' },
       { status: 500 }
     )
   }

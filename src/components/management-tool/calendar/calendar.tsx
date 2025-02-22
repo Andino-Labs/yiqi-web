@@ -97,13 +97,13 @@ export function Calendar({
       </div>
 
       <div className="mt-8 grid grid-cols-7 gap-px rounded-lg bg-muted text-center text-sm md:grid-cols-7">
-        <div className="py-2 font-semibold">Sunday</div>
-        <div className="py-2 font-semibold">Monday</div>
-        <div className="py-2 font-semibold">Tuesday</div>
-        <div className="py-2 font-semibold">Wednesday</div>
-        <div className="py-2 font-semibold">Thursday</div>
-        <div className="py-2 font-semibold">Friday</div>
-        <div className="py-2 font-semibold">Saturday</div>
+        <div className="py-2 font-semibold">{t('sunday')}</div>
+        <div className="py-2 font-semibold">{t('monday')}</div>
+        <div className="py-2 font-semibold">{t('tuesday')}</div>
+        <div className="py-2 font-semibold">{t('wednesday')}</div>
+        <div className="py-2 font-semibold">{t('thursday')}</div>
+        <div className="py-2 font-semibold">{t('friday')}</div>
+        <div className="py-2 font-semibold">{t('saturday')}</div>
       </div>
 
       <div className="mt-2 md:grid md:grid-cols-7 grid-flow-row sm:block">

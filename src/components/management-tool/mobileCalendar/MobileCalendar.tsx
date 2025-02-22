@@ -14,6 +14,7 @@ import { es } from 'date-fns/locale'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState } from 'react'
 import { PostTwitterSchema } from '@/schemas/twitterSchema'
+import { useTranslations } from 'next-intl'
 
 interface MobileCalendarViewProps {
   onOpenModal: (date: Date) => void
@@ -29,6 +30,7 @@ export function MobileCalendarView({
   const today = startOfToday()
   const [startDate, setStartDate] = useState(today)
   const days = Array.from({ length: 5 }, (_, i) => addDays(startDate, i))
+  const t = useTranslations('ManagementTool')
 
   const goToPreviousDays = () => {
     setStartDate(prevDate => subDays(prevDate, 5))
@@ -50,7 +52,7 @@ export function MobileCalendarView({
     <div className="space-y-6">
       <div className="flex items-center justify-between sticky top-0 bg-background pt-4 pb-2">
         <Button variant="outline" size="sm" onClick={goToToday}>
-          Today
+          {t('today')}
         </Button>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="icon" onClick={goToPreviousDays}>
@@ -77,7 +79,7 @@ export function MobileCalendarView({
         return (
           <div key={day.toISOString()} className="space-y-2">
             <h3 className="text-lg font-semibold sticky top-16 bg-background py-2">
-              {format(day, "d 'de' MMMM", { locale: es })}
+              {format(day, `d '${t("of")}' MMMM`, { locale: es })}
             </h3>
             <div className="space-y-2">
               {sortedPosts.length > 0 ? (
@@ -107,7 +109,7 @@ export function MobileCalendarView({
                 ))
               ) : isPastDay ? (
                 <div className="text-center italic text-gray-500">
-                  No posts scheduled
+                  {t('noPostScheduled')}
                 </div>
               ) : (
                 <Card
@@ -118,7 +120,7 @@ export function MobileCalendarView({
                     }
                   }}
                 >
-                  <time className="text-lg">+ New</time>
+                  <time className="text-lg">+ {t('newPost')}</time>
                 </Card>
               )}
             </div>

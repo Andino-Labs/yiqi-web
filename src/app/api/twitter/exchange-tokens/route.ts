@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     if (!oauth_token || !oauth_verifier) {
       return NextResponse.json(
         {
-          error: 'Los parámetros oauth_token y oauth_verifier son obligatorios.'
+          error: 'The oauth_token and oauth_verifier parameters are required.'
         },
         { status: 400 }
       )
@@ -38,7 +38,7 @@ export async function POST(request: Request) {
 
     if (!accessToken || !accessTokenSecret || !userId) {
       return NextResponse.json(
-        { error: 'No se pudieron obtener los tokens de acceso.' },
+        { error: 'Failed to obtain access tokens.' },
         { status: 500 }
       )
     }
@@ -52,12 +52,12 @@ export async function POST(request: Request) {
     })
   } catch (error: unknown) {
     if (error instanceof Error) {
-      console.error('Error al intercambiar tokens:', error.message)
+      console.error('Error exchanging tokens:', error.message)
     } else {
-      console.error('Error al intercambiar tokens:', error)
+      console.error('Error exchanging tokens:', error)
     }
     return NextResponse.json(
-      { error: 'Error al conectar con Twitter.' },
+      { error: 'Error connecting to Twitter.' },
       { status: 500 }
     )
   }

@@ -713,13 +713,34 @@
     "noMatches": "No hay matches para ti en este momento"
   },
   "ManagementTool": {
-    "connectAccount": "Conecta tu cuenta",
+    "connectYourAccount": "Conecta tu cuenta",
     "newPost": "Nuevo post",
     "scheduleFor": "Programar para",
     "cancel": "Cancelar",
     "updatePost": "Actualizar post",
     "schedulePost": "Programar post",
     "delete": "Eliminar",
-    "today": "Hoy"
+    "today": "Hoy",
+    "connectAccount": "Cuenta conectada",
+    "connectXTwitter": "Conecta X/Twitter",
+    "sunday": "Domingo",
+    "monday": "Lunes",
+    "tuesday": "Martes",
+    "wednesday": "Miércoles",
+    "thursday": "Jueves",
+    "friday": "Viernes",
+    "saturday": "Sábado",
+    "noPostScheduled": "No hay posts",
+    "of": "de",
+    "successfullRedirect": "Cuenta de Twitter conectada con éxito.",
+    "inProcessRedirect": "Conectando con Twitter......",
+    "errorRedirect": "Error al conectar con Twitter. Por favor, inténtalo de nuevo.",
+    "noDataAvailable": "No hay datos disponibles",
+    "analytics": "Analíticas",
+    "comments": "Comentarios",
+    "likes": "Me gusta",
+    "shares": "Compartidos",
+    "impressions": "Impresiones",
+    "whatDoYouFeel": "¿Qué sientes?"
   }
 }

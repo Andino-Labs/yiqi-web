@@ -28,7 +28,7 @@ export async function publishScheduledPosts() {
     for (const post of twitterAccount.posts) {
       try {
         if (post.status === 'PUBLISHED') {
-          console.log(`El post ${post.id} ya ha sido publicado.`)
+          console.log(`The post ${post.id} has already been published.`)
           continue
         }
 
@@ -41,7 +41,7 @@ export async function publishScheduledPosts() {
 
         const tweetResponse = await twitterClient.v2.tweet(post.content)
         console.log(
-          `Publicado el post ${post.id} de la cuenta ${twitterAccount.accountUsername}`
+          `Post ${post.id} of ${twitterAccount.accountUsername} account published successfully.`
         )
 
         await prisma.post.update({
@@ -53,7 +53,7 @@ export async function publishScheduledPosts() {
         })
       } catch (error) {
         console.error(
-          `Error al publicar el post ${post.id} de la cuenta ${twitterAccount.accountUsername}:`,
+          `Error publishing the post ${post.id} from the account ${twitterAccount.accountUsername}:`,
           error
         )
       }

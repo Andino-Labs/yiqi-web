@@ -2,12 +2,14 @@
 
 import { BiXIcon } from '@/assets/icons'
 import { DataTwitterSchema } from '@/schemas/twitterSchema'
+import { useTranslations } from 'next-intl'
 import { useEffect } from 'react'
 
 export function SidebarChannel({ data }: { data: DataTwitterSchema }) {
   const handleConnectTwitter = async () => {
     window.location.href = `${process.env.NEXT_PUBLIC_URL}${process.env.NEXT_PUBLIC_X_REDIRECT_AUTH_URI}`
   }
+  const t = useTranslations('ManagementTool')
 
   useEffect(() => {
     const url = window.location.href
@@ -36,8 +38,8 @@ export function SidebarChannel({ data }: { data: DataTwitterSchema }) {
             </div>
             <span className="text-sm">
               {data && data.accountUsername !== null
-                ? 'Cuenta conectada'
-                : 'Conecta X/Twitter'}
+                ? t('connectAccount')
+                : t('connectXTwitter')}
             </span>
           </button>
         ))}

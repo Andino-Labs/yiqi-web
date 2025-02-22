@@ -26,6 +26,8 @@ export default async function getTwitterAnalytics(accountId: string) {
       { comments: 0, likes: 0, shares: 0, impressions: 0 }
     )
 
+    console.log('User tweets:', analytics)
+
     return analytics
   } catch (error) {
     console.log('Error fetching user tweets:', error)
