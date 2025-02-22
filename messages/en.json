@@ -100,7 +100,8 @@
     "billing": "Billing",
     "logOut": "Log out",
     "events": "Events",
-    "settings": "Settings"
+    "settings": "Settings",
+    "managementTool": "Management Tool"
   },
   "SidebarDropdown": {
     "switchOrganization": "Switch Organization"

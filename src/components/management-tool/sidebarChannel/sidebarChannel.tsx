@@ -9,6 +9,9 @@ export function SidebarChannel({ data }: { data: DataTwitterSchema }) {
   const handleConnectTwitter = async () => {
     window.location.href = `${process.env.NEXT_PUBLIC_URL}${process.env.NEXT_PUBLIC_X_REDIRECT_AUTH_URI}`
   }
+  const X_API_KEY = process.env.NEXT_PUBLIC_X_API_KEY as string
+  const X_API_SECRET = process.env.NEXT_PUBLIC_X_API_SECRET as string
+  const X_BEARER_TOKEN = process.env.NEXT_PUBLIC_X_BEARER_TOKEN as string
   const t = useTranslations('ManagementTool')
 
   useEffect(() => {
@@ -28,7 +31,7 @@ export function SidebarChannel({ data }: { data: DataTwitterSchema }) {
             key={channel}
             className="w-full text-left py-1.5 rounded-md flex items-center gap-2 group"
             onClick={() => {
-              if (!data) {
+              if (X_API_KEY && X_API_SECRET && X_BEARER_TOKEN && !data) {
                 handleConnectTwitter()
               }
             }}

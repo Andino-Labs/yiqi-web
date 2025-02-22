@@ -12,7 +12,8 @@ import {
   // Banknote,
   // Plus,
   Banknote,
-  Settings
+  Settings,
+  Workflow
 } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
@@ -98,8 +99,8 @@ export default function OrganizationLayout({
     //   href: `/admin/organizations/${orgId}/forms`
     // }
     {
-      name: 'Management Tool',
-      icon: Banknote,
+      name: `${tSidebar('managementTool')}`,
+      icon: Workflow,
       href: `/admin/organizations/${currentOrgId}/management-tool`
     }
   ]

@@ -23,11 +23,15 @@ export function Header({
       <div className="container mx-auto px-4 py-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div>
-              <h1 className="text-lg font-semibold">
-                {data ? data.accountUsername.slice(0, 9) : ''}
-              </h1>
-            </div>
+          <div>
+          <h1 className="text-lg font-semibold md:hidden">
+            {data ? data.accountUsername.slice(0, 9) : ''}
+          </h1>
+          <h1 className="text-lg font-semibold hidden md:block">
+            {data ? data.accountUsername : ''}
+          </h1>
+        </div>
+
           </div>
           <div className="flex items-center gap-2">
             <div className="flex items-center rounded-lg border">

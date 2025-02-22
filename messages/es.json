@@ -100,7 +100,8 @@
     "billing": "Facturación",
     "logOut": "Cerrar sesión",
     "events": "Eventos",
-    "settings": "Configuración"
+    "settings": "Configuración",
+    "managementTool": "Herramienta de Gestión"
   },
   "SidebarDropdown": {
     "switchOrganization": "Cambiar Organización"

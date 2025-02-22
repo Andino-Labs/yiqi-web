@@ -92,7 +92,7 @@ export function MobileCalendarView({
                         : 'bg-blue-500 hover:bg-blue-600'
                     }`}
                     onClick={() => {
-                      if (isSelectable) {
+                      if (isSelectable && post.status === 'SCHEDULED') {
                         onEditPost(post)
                       }
                     }}

@@ -1,7 +1,7 @@
 import { getTwitterPostsByUserId } from '@/services/actions/management-tool/channels/twitter/getTwitterPostsByUserId'
 import { TwitterApi } from 'twitter-api-v2'
 
-const X_BEARER_TOKEN = process.env.X_BEARER_TOKEN
+const X_BEARER_TOKEN = process.env.NEXT_PUBLIC_X_BEARER_TOKEN
 
 export default async function getTwitterAnalytics(accountId: string) {
   try {

@@ -95,7 +95,8 @@
     "organizers": "Organizadores",
     "billing": "Faturação",
     "logOut": "Terminar Sessão",
-    "events": "Eventos"
+    "events": "Eventos",
+    "managementTool": "Ferramenta de Gestão"
   },
   "SidebarDropdown": {
     "switchOrganization": "Trocar de Organização"
