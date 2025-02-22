@@ -328,7 +328,9 @@
     "importing": "Importando...",
     "importContacts": "Importar Contactos",
     "noOrganizationFound": "No se encontró la organización",
-    "networkingSettings": "Networking"
+    "networkingSettings": "Networking",
+    "errorInDate": "Fecha invalida",
+    "errorInHours": "Horas invalidas"
   },
 
   "AdminLayout": {
@@ -663,7 +665,8 @@
     "ongoingEvent": "Evento en Curso",
     "joinEvent": "Unirse al Evento",
     "viewTicket": "Ver Entrada",
-    "linkUnvailable": "El enlace virtual no está disponible para este evento."
+    "linkUnvailable": "El enlace virtual no está disponible para este evento.",
+    "nextToStart": "Próximo a comenzar"
   },
   "RegistrationChart": {
     "title": "Registros de los Últimos 7 Días",
@@ -693,5 +696,32 @@
     "pending": "Pendiente",
     "approved": "Aprobado",
     "rejected": "Rechazado"
+  },
+  "Networking": {
+    "profileImage": "Imagen de perfil",
+    "whyConnect": "Por Qué Deberían Conectar",
+    "aboutMatch": "Sobre Este Match",
+    "notRegistered": "No estás registrado para este evento",
+    "registerFirst": "Necesitas registrarte primero para ver tus matches",
+    "registerEvent": "Registrarme al evento",
+    "needMoreInfo": "Necesitamos más información sobre ti",
+    "completeProfile": "Para poder encontrar matches, necesitamos que completes tu perfil",
+    "completeProfileButton": "Completar mi perfil",
+    "generatingMatches": "Estamos generando tus matches",
+    "processingTime": "Este proceso puede tomar unos minutos...",
+    "matchGenerationFailed": "Hubo un problema al generar tus matches",
+    "contactOrganizer": "Por favor contacta al organizador del evento",
+    "matchProcessNotFound": "No encontramos el proceso de matches",
+    "contactOrganizerCheck": "Por favor contacta al organizador del evento para que revisen qué sucedió",
+    "noMatches": "No hay matches para ti en este momento"
+  },
+  "EventManageMatchmaking": {
+    "missingProfile": "Complete su perfil para el emparejamiento impulsado por IA",
+    "missingCheckIn": "Haga check-in para ver su red de networking",
+    "readyForAIMatching": "¡Tu red de networking seleccionada por IA están listas!",
+    "matchMakingInProgress": "Sus matches están siendo generadas, por favor vuelva a revisar en unos minutos!",
+    "completeProfile": "Completar Perfil",
+    "viewTickets": "Ver Boletos",
+    "viewMatches": "Ver coincidencias"
   }
 }

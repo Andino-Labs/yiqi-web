@@ -29,11 +29,8 @@ interface User {
   email?: string
   role?: string
 }
-interface AccountDropdownProps {
-  readonly user: User | null
-}
 
-export function AccountDropdown({ user }: AccountDropdownProps) {
+export function AccountDropdown({ user }: { user: User }) {
   const t = useTranslations('AccountDropdown')
   return (
     <DropdownMenu modal={false}>

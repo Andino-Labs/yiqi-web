@@ -1,9 +1,8 @@
 import OrganizationLayout from '@/components/orgs/OrganizationLayout'
-import { getUser } from '@/lib/auth/lucia'
 import { getAllOrganizationsForCurrentUser } from '@/services/actions/organizationActions'
-import { redirect } from 'next/navigation'
 import { OrganizationType } from '@/schemas/organizerSchema'
 import { getTranslations } from 'next-intl/server'
+import { getUserOrRedirect } from '@/lib/auth/getUserOrRedirect'
 
 export default async function Layout({
   params,
@@ -12,8 +11,7 @@ export default async function Layout({
   params: { id: string }
   children: React.ReactNode
 }) {
-  const user = await getUser()
-  if (!user) redirect('/auth')
+  const { user } = await getUserOrRedirect()
 
   const organizations: OrganizationType[] =
     await getAllOrganizationsForCurrentUser()

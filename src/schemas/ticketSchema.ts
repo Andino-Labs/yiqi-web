@@ -6,14 +6,9 @@ export const organizationSchema = z.object({
   name: z.string()
 })
 
-export const customFieldsSchema = z.object({
-  name: z.string(),
-  email: z.string().email(),
-  tickets: z.record(z.string(), z.number())
-})
-
 const registrationSchema = z.object({
-  customFields: customFieldsSchema,
+  id: z.string(),
+  customFields: z.record(z.any()).optional(),
   paid: z.boolean(),
   paymentId: z.string().nullable()
 })

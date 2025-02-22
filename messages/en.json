@@ -327,7 +327,9 @@
     "importing": "Importing...",
     "importContacts": "Import Contacts",
     "noOrganizationFound": "No organization found",
-    "networkingSettings": "Networking Settings"
+    "networkingSettings": "Networking Settings",
+    "errorInDate": "Invalid date",
+    "errorInHours": "Invalid hours"
   },
 
   "AdminLayout": {
@@ -655,7 +657,7 @@
     "foundText": "You have {nbr} potential matches! Explore them to find your best connections.",
     "buttonText": "View Recommendations",
     "buttonLoading": "Still loading matches",
-    "modalSubTitle": "Here are the people you’ve matched with! Connect and collaborate to build meaningful relationships.",
+    "modalSubTitle": "Here are the people you've matched with! Connect and collaborate to build meaningful relationships.",
     "whyRecomeendation": "Why should we meet?",
     "aboutPerson": "About"
   },
@@ -663,7 +665,8 @@
     "ongoingEvent": "Ongoing Event",
     "joinEvent": "Join Event",
     "viewTicket": "View Ticket",
-    "linkUnvailable": "Virtual link is unavailable for this event."
+    "linkUnvailable": "Virtual link is unavailable for this event.",
+    "nextToStart": "Next to start"
   },
   "RegistrationChart": {
     "title": "Registrations Last 7 Days",
@@ -693,5 +696,32 @@
     "pending": "Pending",
     "approved": "Approved",
     "rejected": "Rejected"
+  },
+  "Networking": {
+    "profileImage": "Profile image",
+    "whyConnect": "Why You Should Connect",
+    "aboutMatch": "About This Match",
+    "notRegistered": "You are not registered for this event",
+    "registerFirst": "You need to register first to see your matches",
+    "registerEvent": "Register for event",
+    "needMoreInfo": "We need more information about you",
+    "completeProfile": "To find matches, we need you to complete your profile",
+    "completeProfileButton": "Complete my profile",
+    "generatingMatches": "We are generating your matches",
+    "processingTime": "This process may take a few minutes...",
+    "matchGenerationFailed": "There was a problem generating your matches",
+    "contactOrganizer": "Please contact the event organizer",
+    "matchProcessNotFound": "We couldn't find the matching process",
+    "contactOrganizerCheck": "Please contact the event organizer to check what happened",
+    "noMatches": "No matches for you at this time"
+  },
+  "EventManageMatchmaking": {
+    "missingProfile": "Complete Your Profile for AI-Powered Matchmaking",
+    "missingCheckIn": "Make checkIn to view your Networking Matches",
+    "readyForAIMatching": "Your AI-Curated Networking Matches Are Ready!",
+    "matchMakingInProgress": "Your matches are being generated, please check back in a few minutes!",
+    "completeProfile": "Complete Profile",
+    "viewTickets": "View Tickets",
+    "viewMatches": "View Matches"
   }
 }

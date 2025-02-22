@@ -16,11 +16,13 @@ import { useState } from 'react'
 import { markRegistrationPaid } from '@/services/actions/event/markRegistrationPaid'
 import { toast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
+import { LuciaUserType } from '@/schemas/userSchema'
 
 interface RegistrationConfirmationProps {
   registration: EventRegistrationSchemaType
   requiresPayment?: boolean
   isLoggedIn: boolean
+  user?: LuciaUserType
 }
 
 export function RegistrationConfirmation({

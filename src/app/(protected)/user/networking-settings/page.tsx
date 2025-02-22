@@ -1,25 +1,11 @@
 import NetworkingProfileForm from '@/components/profile/NetworkingProfileForm'
 import UserLayout from '@/components/user/UserLayout'
-import { getUser } from '@/lib/auth/lucia'
 import { profileDataSchema } from '@/schemas/userSchema'
-import { getUserProfile } from '@/services/actions/userActions'
-import { redirect } from 'next/navigation'
-import React from 'react'
+import { getUserOrRedirect } from '@/lib/auth/getUserOrRedirect'
 
 export default async function page() {
-  const userCurrent = await getUser()
+  const { userCurrent, user } = await getUserOrRedirect()
 
-  if (!userCurrent?.id) {
-    return redirect('/user/networking-settings/passthru')
-  }
-
-  const user = await getUserProfile(userCurrent.id)
-
-  if (!user) {
-    return redirect('/user/networking-settings/passthru')
-  }
-
-  // Extract networking specific data
   const networkingData = {
     professionalMotivations: user.professionalMotivations,
     communicationStyle: user.communicationStyle,

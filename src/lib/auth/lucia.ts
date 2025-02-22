@@ -4,7 +4,7 @@ import { cookies } from 'next/headers'
 import { lucia } from './lib'
 import prisma from '../prisma'
 import { OrganizerRole } from '@prisma/client'
-import { luciaUserSchema } from '@/schemas/userSchema'
+import { luciaUserSchema, LuciaUserType } from '@/schemas/userSchema'
 
 export const getUser = async () => {
   const sessionId = cookies().get(lucia.sessionCookieName)?.value || null
@@ -48,15 +48,19 @@ export const getUser = async () => {
       name: true,
       email: true,
       picture: true,
-      role: true
+      role: true,
+      dataCollected: true,
+      userContentPreferences: true,
+      userDetailedProfile: true,
+      userEmbeddableProfile: true
     }
   })
 
   if (!dbUser) {
     return null
   }
-
-  return luciaUserSchema.parse(dbUser)
+  const test = luciaUserSchema.omit({ dataCollected: true }).parse(dbUser)
+  return test as LuciaUserType
 }
 export async function isEventAdmin(
   eventId: string,

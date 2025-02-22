@@ -239,8 +239,9 @@ export default function TicketsPage({
                             } else {
                               openModal(
                                 data.event.title,
-                                ticket.registration.customFields.name,
-                                ticket.registration.customFields.email,
+                                ticket.registration.customFields?.name || 'N/A',
+                                ticket.registration.customFields?.email ||
+                                  'N/A',
                                 (index + 1).toString(),
                                 data.event.id,
                                 data.event.organizationId,

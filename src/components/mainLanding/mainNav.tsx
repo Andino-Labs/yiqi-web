@@ -26,7 +26,7 @@ export interface User {
 }
 
 interface HeaderProps {
-  user: User | null
+  user?: User
   showExtraButton?: boolean
   buttonName?: string
   dialogTriggerRef?: React.RefObject<HTMLButtonElement>

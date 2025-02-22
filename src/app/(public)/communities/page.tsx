@@ -10,13 +10,7 @@ export default async function communities() {
 
   return (
     <>
-      <MainLandingNav
-        user={{
-          name: user?.name,
-          picture: user?.picture as string,
-          role: user?.role
-        }}
-      />
+      <MainLandingNav user={user!} />
       <CommunitiesList communities={communities} />
       <Footer />
     </>

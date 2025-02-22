@@ -27,7 +27,7 @@ export function EventRegistrationRejected({
   const { title: eventName, startDate, endDate, location } = event
 
   // Placeholder for the event link, replace with the actual event link if needed
-  const eventLink = `https://mi-plataforma.com/eventos`
+  const eventLink = `https://yiqi.lat/events`
 
   return (
     <Html>

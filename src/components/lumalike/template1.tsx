@@ -7,12 +7,36 @@ import { EventDetails } from './template1-components/event-details'
 import { Registration } from './template1-components/registration'
 import { Hosts } from './template1-components/hosts'
 import { EventDescription } from './template1-components/event-description'
-import { RegistrationProps } from './template1-components/registration'
 import { EventLocation } from './template1-components/event-location'
 import MainLandingNav from '../mainLanding/mainNav'
 import { useTranslations } from 'next-intl'
+import { ManageMatchmaking } from '../events/ManageMatchmaking'
+import { PublicEventType, CustomFieldType } from '@/schemas/eventSchema'
+import { LuciaUserType } from '@/schemas/userSchema'
 
-export function EventPage({ event, customFields, user }: RegistrationProps) {
+export interface INetworkingData {
+  professionalMotivations: string
+  communicationStyle: string
+  professionalValues: string
+  careerAspirations: string
+  significantChallenge: string
+  resumeText: string
+}
+export function EventPage({
+  event,
+  isUserCheckedInOngoingEvent,
+  isUserRegistered,
+  user,
+  customFields,
+  networkingData
+}: {
+  event: PublicEventType
+  isUserCheckedInOngoingEvent: boolean
+  isUserRegistered: boolean
+  user?: LuciaUserType
+  customFields?: CustomFieldType[]
+  networkingData: INetworkingData | null
+}) {
   const [isMobile, setIsMobile] = useState(false)
   const [isSticky, setIsSticky] = useState(false)
   const registrationRef = useRef<HTMLDivElement>(null)
@@ -102,6 +126,14 @@ export function EventPage({ event, customFields, user }: RegistrationProps) {
                     dialogTriggerRef={dialogTriggerRef}
                   />
                 </motion.div>
+              )}
+              {!!isUserRegistered && user && (
+                <ManageMatchmaking
+                  userDetailedProfile={user.userDetailedProfile}
+                  event={event}
+                  isUserCheckedInOngoingEvent={!!isUserCheckedInOngoingEvent}
+                  networkingData={networkingData}
+                />
               )}
             </div>
             <div className="flex flex-col gap-8 w-full">

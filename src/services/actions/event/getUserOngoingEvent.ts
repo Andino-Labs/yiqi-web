@@ -2,13 +2,13 @@
 
 import prisma from '@/lib/prisma'
 import { SavedEventSchema } from '@/schemas/eventSchema'
-import { subMinutes } from 'date-fns'
+import { addMinutes } from 'date-fns'
 
 export async function getUserOngoingEvent(email?: string) {
   if (!email) return null
 
   const now = new Date()
-  const minutesBefore = subMinutes(now, 20)
+  const minutesAfter = addMinutes(now, 20)
 
   try {
     const eventRegistration = await prisma.eventRegistration.findFirst({
@@ -20,7 +20,7 @@ export async function getUserOngoingEvent(email?: string) {
           OR: [
             {
               // Match events starting in the next 20 minutes
-              startDate: { gte: minutesBefore, lte: now }
+              startDate: { gte: now, lte: minutesAfter }
             },
             {
               // Match ongoing events

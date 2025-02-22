@@ -28,7 +28,6 @@ import { userDataCollectedShema } from '@/schemas/userSchema'
 import type { UserDataCollected } from '@/schemas/userSchema'
 import { useRouter } from 'next/navigation'
 import { Input } from '../ui/input'
-import { scheduleUserDataProcessing } from '@/services/actions/networking/scheduleUserDataProcessing'
 
 export type NetworkingData = Pick<
   UserDataCollected,
@@ -93,17 +92,6 @@ export default function NetworkingProfileForm({ initialData, userId }: Props) {
         description: `${error}`
       })
       return filenamePart
-    }
-  }
-
-  async function processData(userId: string) {
-    try {
-      await scheduleUserDataProcessing(userId)
-    } catch (error) {
-      toast({
-        variant: 'destructive',
-        description: `${error}`
-      })
     }
   }
 
@@ -262,8 +250,6 @@ export default function NetworkingProfileForm({ initialData, userId }: Props) {
       })
 
       await saveNetworkingProfile(values, userId)
-
-      await processData(userId)
 
       toast({
         title: translations.es.networkingProfileSaved

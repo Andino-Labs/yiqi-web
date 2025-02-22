@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma'
 import { userDataCollectedShema, UserDataCollected } from '@/schemas/userSchema'
+import { scheduleUserDataProcessing } from '@/services/actions/networking/scheduleUserDataProcessing'
 
 export async function updateNetworkingProfile(
   userId: string,
@@ -75,13 +76,7 @@ export async function updateNetworkingProfile(
       }
     })
 
-    await prisma.queueJob.create({
-      data: {
-        type: 'COLLECT_USER_DATA',
-        data: { userId },
-        priority: 1
-      }
-    })
+    await scheduleUserDataProcessing(userId)
 
     return { success: true }
   } catch (error) {

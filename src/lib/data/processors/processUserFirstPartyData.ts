@@ -148,21 +148,8 @@ export async function processUserFirstPartyData(userId: string): Promise<void> {
 
   const dataCollected = userDataCollectedShema.parse(user.dataCollected)
 
-  const missingFields = []
-
-  if (!dataCollected.resumeText) missingFields.push('resumeText')
-  if (!dataCollected.careerAspirations) missingFields.push('careerAspirations')
-  if (!dataCollected.communicationStyle)
-    missingFields.push('communicationStyle')
-  if (!dataCollected.professionalMotivations)
-    missingFields.push('professionalMotivations')
-  if (!dataCollected.professionalValues)
-    missingFields.push('professionalValues')
-  if (!dataCollected.significantChallenge)
-    missingFields.push('significantChallenge')
-
-  if (missingFields.length > 4) {
-    console.log('Missing information:', missingFields.join(', '))
+  if (!dataCollected.resumeText) {
+    console.log('missing resume so we cannot process this user')
     return
   }
 

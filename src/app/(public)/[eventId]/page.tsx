@@ -4,6 +4,9 @@ import { getEventById } from '@/services/actions/event/getEventById'
 import { redirect } from 'next/navigation'
 import { Metadata } from 'next'
 import { JSDOM } from 'jsdom'
+import { validateCheckIn } from '@/services/actions/event/validateCheckIn'
+import prisma from '@/lib/prisma'
+import { getUserProfile } from '@/services/actions/userActions'
 type Props = {
   params: { eventId: string }
 }
@@ -51,12 +54,51 @@ export default async function Page({
 }: {
   params: { eventId: string }
 }) {
-  const user = await getUser()
+  const currentUser = await getUser()
   const event = await getEventById(params.eventId)
 
   if (!event) {
     redirect('/')
   }
+
+  let isUserCheckedInOngoingEvent = false
+  let eventRegistration: {
+    id: string
+  } | null = null
+
+  let networkingData: {
+    professionalMotivations: string
+    communicationStyle: string
+    professionalValues: string
+    careerAspirations: string
+    significantChallenge: string
+    resumeText: string
+  } | null = null
+
+  if (currentUser) {
+    isUserCheckedInOngoingEvent = await validateCheckIn(
+      params.eventId,
+      currentUser.id
+    )
+    eventRegistration = await prisma.eventRegistration.findFirst({
+      where: { AND: [{ eventId: params.eventId }, { userId: currentUser.id }] },
+      select: { id: true }
+    })
+
+    const userProfile = await getUserProfile(currentUser.id)
+    networkingData = userProfile
+      ? {
+          professionalMotivations: userProfile.professionalMotivations ?? '',
+          communicationStyle: userProfile.communicationStyle ?? '',
+          professionalValues: userProfile.professionalValues ?? '',
+          careerAspirations: userProfile.careerAspirations ?? '',
+          significantChallenge: userProfile.significantChallenge ?? '',
+          resumeText: userProfile.resumeText ?? ''
+        }
+      : null
+  }
+
+  const isUserRegistered = eventRegistration ? !!eventRegistration.id : false
 
   return (
     <>
@@ -64,12 +106,10 @@ export default async function Page({
       <EventPage
         customFields={event.customFields?.fields}
         event={event}
-        user={{
-          email: user?.email,
-          name: user?.name,
-          role: user?.role,
-          picture: user?.picture || undefined
-        }}
+        user={currentUser!}
+        isUserCheckedInOngoingEvent={isUserCheckedInOngoingEvent}
+        isUserRegistered={isUserRegistered}
+        networkingData={networkingData}
       />
     </>
   )

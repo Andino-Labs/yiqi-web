@@ -54,6 +54,7 @@ import { allTimezones, useTimezoneSelect } from 'react-timezone-select'
 import { extractGMTTime, getDateOrTimeByTimezoneLabel } from '../utils'
 import { CustomFieldsDialog } from './CustomFieldsDialog'
 import { updateCustomFields } from '@/services/actions/event/updateCustomFields'
+import { useToast } from '@/hooks/use-toast'
 
 type Props = {
   organizationId: string
@@ -102,6 +103,7 @@ type LocationDetails = {
 }
 
 export function EventForm({ organizationId, event }: Props) {
+  const { toast } = useToast()
   const currentDate = new Date()
   const localCurrentDate = new Date(
     currentDate.getTime() - currentDate.getTimezoneOffset() * 60000
@@ -250,6 +252,14 @@ export function EventForm({ organizationId, event }: Props) {
 
     const selectedDate = new Date(startDate)
     const today = new Date(defaultStartDateStr)
+    const rawEndDate = form.getValues('endDate')
+    const endDate = new Date(rawEndDate)
+    if (selectedDate > endDate) {
+      toast({
+        title: t('errorInDate'),
+        duration: 2500
+      })
+    }
 
     if (selectedDate > today) {
       setMinStartTime('00:00')
@@ -279,6 +289,11 @@ export function EventForm({ organizationId, event }: Props) {
       const startTime = event.target.value
       form.setValue('startTime', startTime)
       setMinEndTime(startTime)
+    } else {
+      toast({
+        title: t('errorInHours'),
+        duration: 2500
+      })
     }
   }
 
@@ -289,6 +304,13 @@ export function EventForm({ organizationId, event }: Props) {
     form.setValue('endDate', endDate)
 
     const startDate = form.getValues('startDate')
+
+    if (new Date(endDate) < new Date(startDate)) {
+      toast({
+        title: t('errorInDate'),
+        duration: 2500
+      })
+    }
 
     if (new Date(endDate) > new Date(startDate)) {
       setMinEndTime('00:00')
@@ -303,7 +325,8 @@ export function EventForm({ organizationId, event }: Props) {
       endTime.setMinutes(minutes + 10)
       const endHours = endTime.getHours().toString().padStart(2, '0')
       const endMinutes = endTime.getMinutes().toString().padStart(2, '0')
-      setMinEndTime(`${endHours}:${endMinutes}`)
+      if (new Date(endDate) <= new Date(startDate))
+        setMinEndTime(`${endHours}:${endMinutes}`)
     }
   }
 
@@ -312,6 +335,11 @@ export function EventForm({ organizationId, event }: Props) {
   ) => {
     if (event.target.validity.valid) {
       form.setValue('endTime', event.target.value)
+    } else {
+      toast({
+        title: t('errorInHours'),
+        duration: 2500
+      })
     }
   }
 
