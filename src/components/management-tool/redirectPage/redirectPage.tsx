@@ -70,7 +70,9 @@ export default function RedirectPage({ user }: { user: User }) {
           {t('successfullRedirect')}
         </h2>
       ) : error ? (
-        <h2 className="text-red-500 font-bold text-2xl">{t('errorRedirect')}</h2>
+        <h2 className="text-red-500 font-bold text-2xl">
+          {t('errorRedirect')}
+        </h2>
       ) : (
         <h2 className="text-blue-500 font-bold text-2xl">
           {t('inProcessRedirect')}

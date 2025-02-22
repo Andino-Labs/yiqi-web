@@ -39,7 +39,7 @@ export default async function ManagementToolPage() {
               />
             ) : (
               <p className="text-3xl font-bold text-center">
-                {t('connectAccount')}
+                {t('connectYourAccount')}
               </p>
             )}
           </div>

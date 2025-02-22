@@ -79,7 +79,7 @@ export function MobileCalendarView({
         return (
           <div key={day.toISOString()} className="space-y-2">
             <h3 className="text-lg font-semibold sticky top-16 bg-background py-2">
-              {format(day, `d '${t("of")}' MMMM`, { locale: es })}
+              {format(day, `d '${t('of')}' MMMM`, { locale: es })}
             </h3>
             <div className="space-y-2">
               {sortedPosts.length > 0 ? (

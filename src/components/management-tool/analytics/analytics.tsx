@@ -1,4 +1,4 @@
-import { useTranslations } from "next-intl"
+import { useTranslations } from 'next-intl'
 
 interface Analytics {
   comments: number
@@ -13,7 +13,9 @@ export function Analytics({ analytics }: { analytics: Analytics | null }) {
   if (!analytics) {
     return (
       <div className="flex items-center justify-center h-full">
-        <h2 className="text-xl font-semibold text-center">{t('noDataAvailable')}</h2>
+        <h2 className="text-xl font-semibold text-center">
+          {t('noDataAvailable')}
+        </h2>
       </div>
     )
   }
