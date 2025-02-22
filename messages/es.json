@@ -711,5 +711,15 @@
     "matchProcessNotFound": "No encontramos el proceso de matches",
     "contactOrganizerCheck": "Por favor contacta al organizador del evento para que revisen qué sucedió",
     "noMatches": "No hay matches para ti en este momento"
+  },
+  "ManagementTool": {
+    "connectAccount": "Conecta tu cuenta",
+    "newPost": "Nuevo post",
+    "scheduleFor": "Programar para",
+    "cancel": "Cancelar",
+    "updatePost": "Actualizar post",
+    "schedulePost": "Programar post",
+    "delete": "Eliminar",
+    "today": "Hoy"
   }
 }

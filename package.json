@@ -1,6 +1,7 @@
 {
   "name": "andino-web",
   "version": "0.2.0",
+  "type": "module",
   "private": true,
   "engines": {
     "node": "20.17.0"
@@ -18,7 +19,8 @@
     "build:client-types": "tsup --config yiqi-client/tsup.config.ts",
     "run-crons": "chmod +x run-crons.sh && ./run-crons.sh",
     "prepare": "husky",
-    "run-script": "ts-node -r ./scripts/register.ts -P tsconfig.script.json scripts/runScript.ts"
+    "run-script": "ts-node -r ./scripts/register.ts -P tsconfig.script.json scripts/runScript.ts",
+    "start-cron": "ts-node -r ./scripts/register.ts -P tsconfig.json ./src/lib/twitter/twitterCron.ts"
   },
   "dependencies": {
     "@aws-sdk/client-bedrock-runtime": "^3.731.1",
@@ -96,6 +98,8 @@
     "mammoth": "^1.9.0",
     "next": "^14.2.23",
     "next-intl": "^3.25.1",
+    "node-cron": "^3.0.3",
+    "oauth-1.0a": "^2.2.6",
     "openai": "^4.73.0",
     "pgvector": "^0.2.0",
     "prettier": "^3.3.3",
@@ -115,12 +119,14 @@
     "tailwindcss-animate": "^1.0.7",
     "tiktoken": "^1.0.17",
     "tsup": "^8.3.5",
+    "twitter-api-v2": "^1.20.1",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/jsdom": "^21.1.7",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^20",
+    "@types/node-cron": "^3.0.11",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "dts-bundle-generator": "^8.1.2",

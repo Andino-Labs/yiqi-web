@@ -711,5 +711,15 @@
     "matchProcessNotFound": "We couldn't find the matching process",
     "contactOrganizerCheck": "Please contact the event organizer to check what happened",
     "noMatches": "No matches for you at this time"
+  },
+  "ManagementTool": {
+    "connectAccount": "Connect your account",
+    "newPost": "New post",
+    "scheduleFor": "Schedule for",
+    "cancel": "Cancel",
+    "updatePost": "Update post",
+    "schedulePost": "Schedule post",
+    "delete": "Delete",
+    "Today": "Today"
   }
 }

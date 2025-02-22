@@ -67,6 +67,8 @@ model User {
   userContentPreferences String?
 
   NetworkingMatch NetworkingMatch[]
+
+  twitterAccounts TwitterAccount[] // Relación con TwitterAccount
 }
 
 enum Roles {
@@ -469,4 +471,41 @@ model NetworkingMatch {
   matchReason       String
 
   @@unique([userId, registrationId])
+}
+
+model TwitterAccount {
+  id                Int      @id @default(autoincrement())
+  userId            String
+  accountUsername   String?
+  accountId         String   @unique
+  accessToken       String
+  accessTokenSecret String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @default(now()) @updatedAt
+  organizationId    String
+
+  posts Post[]
+  user  User   @relation(fields: [userId], references: [id])
+
+  @@index([accountId])
+}
+
+model Post {
+  id             Int         @id @default(autoincrement())
+  postTwitterId  String
+  userId         String
+  accountId      String
+  organizationId String
+  content        String
+  scheduledDate  DateTime
+  status         post_status @default(SCHEDULED)
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  account TwitterAccount @relation(fields: [accountId], references: [accountId])
+}
+
+enum post_status {
+  SCHEDULED
+  PUBLISHED
 }

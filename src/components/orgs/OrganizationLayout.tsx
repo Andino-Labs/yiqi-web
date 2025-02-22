@@ -91,12 +91,17 @@ export default function OrganizationLayout({
       name: `${tSidebar('billing')}`,
       icon: Banknote,
       href: `/admin/organizations/${currentOrgId}/billing`
-    }
+    },
     // {
     //   name: 'Formularios',
     //   icon: Plus,
     //   href: `/admin/organizations/${orgId}/forms`
     // }
+    {
+      name: 'Management Tool',
+      icon: Banknote,
+      href: `/admin/organizations/${currentOrgId}/management-tool`
+    }
   ]
 
   return (
