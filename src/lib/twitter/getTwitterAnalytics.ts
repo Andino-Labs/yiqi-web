@@ -1,3 +1,5 @@
+"use server"
+
 import { getTwitterPostsByUserId } from '@/services/actions/management-tool/channels/twitter/getTwitterPostsByUserId'
 import { TwitterApi } from 'twitter-api-v2'
 

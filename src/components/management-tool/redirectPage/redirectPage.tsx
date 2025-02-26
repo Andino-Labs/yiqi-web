@@ -12,13 +12,19 @@ interface User {
 export default function RedirectPage({ user }: { user: User }) {
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<boolean>(false)
+  const [storedOrgId, setStoredOrgId] = useState<string | null>(null)
   const router = useRouter()
   const t = useTranslations('ManagementTool')
 
-  const storedOrgId = localStorage.getItem('orgId')
+  useEffect(() => {
+    const orgId = localStorage.getItem('orgId')
+    setStoredOrgId(orgId)
+  }, [])
 
   useEffect(() => {
     const processTwitterAccount = async () => {
+      if (!storedOrgId) return
+
       const params = new URLSearchParams(window.location.search)
       const oauthToken = params.get('oauth_token')
       const oauthVerifier = params.get('oauth_verifier')
@@ -27,13 +33,8 @@ export default function RedirectPage({ user }: { user: User }) {
         try {
           const response = await fetch('/api/twitter/exchange-tokens', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              oauth_token: oauthToken,
-              oauth_verifier: oauthVerifier
-            })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ oauth_token: oauthToken, oauth_verifier: oauthVerifier })
           })
 
           const data = await response.json()
