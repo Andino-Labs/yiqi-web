@@ -34,7 +34,10 @@ export default function RedirectPage({ user }: { user: User }) {
           const response = await fetch('/api/twitter/exchange-tokens', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ oauth_token: oauthToken, oauth_verifier: oauthVerifier })
+            body: JSON.stringify({
+              oauth_token: oauthToken,
+              oauth_verifier: oauthVerifier
+            })
           })
 
           const data = await response.json()
