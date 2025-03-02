@@ -243,16 +243,26 @@ export type EventRegistrationSchemaType = z.infer<
   typeof EventRegistrationSchema
 >
 export type SavedEventType = z.infer<typeof SavedEventSchema>
+export const eventRegistrationStatusSchema = z.nativeEnum(AttendeeStatus)
+export const eventTicketTypeSchema = z.enum(['GENERAL', 'VIP', 'BACKSTAGE'])
 
 export const eventRegistrationsSchema = z.object({
   id: z.string(),
   user: userSchema,
-  status: z.nativeEnum(AttendeeStatus),
+  status: eventRegistrationStatusSchema,
   createdAt: z.date(),
   updatedAt: z.date(),
   paid: z.boolean(),
   paymentId: z.string().optional().nullable(),
-  customFields: z.any().optional().nullable()
+  customFields: z.any().optional().nullable(),
+  tickets: z.array(
+    z.object({
+      id: z.string(),
+      price: z.coerce.number(),
+      name: z.string(),
+      type: eventTicketTypeSchema
+    })
+  )
 })
 
 export type EventRegistrationsSchemaType = z.infer<

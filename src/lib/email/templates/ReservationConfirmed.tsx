@@ -171,12 +171,6 @@ export function EventAttendanceConfirmed({
             </Row>
           </Section>
 
-          <Text style={text} className="email-text">
-            ¡Nos alegra que formes parte de esta experiencia! Prepárate para una
-            jornada emocionante {virtualLink ? 'en línea' : ''} llena de
-            innovación y tecnología.
-          </Text>
-
           <Text style={text} className="email-subtext">
             Si tienes alguna pregunta o necesitas más información antes del
             evento, no dudes en contactarnos.

@@ -22,6 +22,7 @@ import { Trash2 } from 'lucide-react'
 import { EventTicketOfferingInputSchema } from '@/schemas/eventSchema'
 import { z } from 'zod'
 import { useTranslations } from 'next-intl'
+import { useToast } from '@/hooks/use-toast'
 
 const MAX_TICKETS = 5
 
@@ -45,6 +46,7 @@ export function TicketTypesManager({
   tickets = [],
   onUpdate
 }: TicketTypesManagerProps) {
+  const { toast } = useToast()
   const t = useTranslations('TicketType')
 
   const [ticketList, setTicketList] = useState(tickets)
@@ -73,11 +75,27 @@ export function TicketTypesManager({
 
   const handleSubmit = () => {
     // Validation (optional): Validate against schema before submitting
-    const result = z.array(EventTicketOfferingInputSchema).safeParse(ticketList)
+    const result = z
+      .array(EventTicketOfferingInputSchema)
+      .min(1)
+      .safeParse(ticketList)
     if (result.success) {
       onUpdate(ticketList)
     } else {
-      console.error('Validation error:', result.error.issues)
+      if (ticketList.length === 0) {
+        toast({
+          title: 'Error',
+          description: t('minOneTicket'),
+          variant: 'destructive'
+        })
+      } else {
+        toast({
+          title: 'Error',
+          description: result.error.message,
+          variant: 'destructive'
+        })
+        console.error('Validation error:', result.error.issues)
+      }
     }
   }
 

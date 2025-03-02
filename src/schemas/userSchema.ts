@@ -66,7 +66,7 @@ export type UserType = z.infer<typeof userSchema>
 export const baseProfileSchema = userDataCollectedShema.extend({
   name: z.string().min(4, 'Name must be at least 4 characters'),
   email: z.string().email('Invalid email address'),
-  phoneNumber: z.string().optional() /* !TODO: VALIDATION PHONENUMBER*/,
+  phoneNumber: z.string().optional(),
   stopCommunication: z.boolean().default(false)
 })
 export const profileFormSchema = baseProfileSchema.extend({
@@ -83,7 +83,9 @@ export const profileWithPrivacySchema = baseProfileSchema.extend({
   privacySettings: privacySettingsSchema,
   linkedinAccessToken: z.string().optional().nullable(),
   isLinkedinLinked: z.boolean().default(false),
-  role: z.string()
+  role: z.string(),
+  userDetailedProfile: z.string().optional().nullable(),
+  userContentPreferences: z.string().optional().nullable()
 })
 export const createOrgContactSchema = profileWithPrivacySchema.extend({
   id: z.string().optional().nullish()

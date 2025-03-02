@@ -141,15 +141,16 @@ function parseSendMessageResult(result: unknown): string {
 }
 
 export async function processUserFirstPartyData(userId: string): Promise<void> {
+  console.log('processing user first party data')
   const systemPrompt: string =
-    "You are a community manager that is tasked with creating a deep understanding of your professional network in order to improve the quality of connections for your comunity. You will be provided with a user's LinkedIn data and your task is to generate a detailed user profile that can help in matching them with potential co-founders or networking opportunities aligned with their goals and interests."
+    'Eres un gestor de comunidad encargado de crear un entendimiento profundo de tu red profesional para mejorar la calidad de las conexiones para tu comunidad. Se te proporcionarán datos de LinkedIn de un usuario y tu tarea es generar un perfil detallado que pueda ayudar a emparejarlo con potenciales cofundadores u oportunidades de networking alineadas con sus objetivos e intereses.'
 
   const user = await prisma.user.findUniqueOrThrow({ where: { id: userId } })
 
   const dataCollected = userDataCollectedShema.parse(user.dataCollected)
 
   if (!dataCollected.resumeText) {
-    console.log('missing resume so we cannot process this user')
+    console.error('missing resume so we cannot process this user')
     return
   }
 
@@ -179,7 +180,7 @@ export async function processUserFirstPartyData(userId: string): Promise<void> {
   const userEmbeddableProfile = parseSendMessageResult(
     await sendMessage(
       conversation,
-      `Summarize the following user profile for embedding into a database: ${profileResult}`
+      `Resume el siguiente perfil de usuario para incorporarlo a una base de datos: ${profileResult}`
     )
   )
 
@@ -189,14 +190,10 @@ export async function processUserFirstPartyData(userId: string): Promise<void> {
 
   console.info('User embeddable profile result call was successful')
 
-  await new Promise(resolve => {
-    setTimeout(resolve, 1000)
-  })
-
   const userContentPreferencesResult = parseSendMessageResult(
     await sendMessage(
       conversation,
-      `In 3 sentences or less, what are the user's content preferences?  \n\n ${profileResult}`
+      `En 3 oraciones o menos, ¿cuáles son las preferencias de contenido del usuario? \n\n ${profileResult}`
     )
   )
 
@@ -213,10 +210,6 @@ export async function processUserFirstPartyData(userId: string): Promise<void> {
       userEmbeddableProfile: userEmbeddableProfile,
       userContentPreferences: userContentPreferencesResult
     }
-  })
-
-  await new Promise(resolve => {
-    setTimeout(resolve, 1000)
   })
 
   const rawEmbedding = await generateEmbedding(userEmbeddableProfile)

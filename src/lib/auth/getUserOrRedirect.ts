@@ -6,7 +6,7 @@ import { headers } from 'next/headers'
 import { getUserProfile } from '@/services/actions/userActions'
 
 export async function getUserOrRedirect() {
-  const userCurrent = await getUser()
+  const userSession = await getUser()
   const headersList = headers()
 
   const fullUrl = headersList.get('x-full-url')
@@ -19,15 +19,15 @@ export async function getUserOrRedirect() {
 
   const queryParams = new URLSearchParams({ redirect: currentPath }).toString()
 
-  if (!userCurrent?.id) {
+  if (!userSession?.id) {
     redirect(`/auth-passthru?${queryParams}`)
   }
 
-  const user = await getUserProfile(userCurrent.id)
+  const user = await getUserProfile(userSession.id)
 
   if (!user) {
     redirect(`/auth-passthru?${queryParams}`)
   }
 
-  return { userCurrent, user }
+  return { user }
 }

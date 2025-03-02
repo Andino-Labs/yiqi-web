@@ -31,15 +31,23 @@ export async function updateEvent(
     ...event,
     ...(eventData as object)
   })
+  console.log(validatedData)
 
   // Parse tickets with either SavedTicketSchema or EventTicketOfferingInputSchema
   const parsedTickets: (SavedTicketOfferingType | EventTicketInputType)[] =
     rawTickets.map(ticket => {
       // If ticket has an id, it's an existing ticket so use SavedTicketSchema
       if (typeof ticket === 'object' && ticket !== null && 'id' in ticket) {
+        console.log('saved ticket')
+        console.log(ticket)
+        console.log('saved ticket')
         return SavedTicketOfferingSchema.parse(ticket)
       }
       // Otherwise it's a new ticket so use EventTicketOfferingInputSchema
+      console.log('new ticket')
+      console.log(ticket)
+      console.log('new ticket')
+
       return EventTicketOfferingInputSchema.parse(ticket)
     })
 
@@ -99,7 +107,7 @@ export async function updateEvent(
   const { tickets, ...parsedEventData } = validatedData
 
   // Update the event
-  const updatedEvent = await prisma.event.update({
+  await prisma.event.update({
     where: { id: eventId },
     data: {
       ...parsedEventData,
@@ -108,5 +116,5 @@ export async function updateEvent(
     }
   })
 
-  return SavedEventSchema.parse({ ...updatedEvent, tickets: parsedTickets })
+  return getEvent({ eventId, includeTickets: true })
 }

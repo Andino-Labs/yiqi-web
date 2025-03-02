@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Search } from 'lucide-react'
 import { useDebounce } from '@/hooks/useDebounce'
 import { useTranslations } from 'next-intl'
+import { GroupedTicketsDisplay } from './GroupedTicketsDisplay'
 
 export default function EventCheckinTable({
   eventId,
@@ -60,6 +61,9 @@ export default function EventCheckinTable({
               <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-b border-gray-200">
                 {t('eventCheckInTableCheckIn')}
               </th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-b border-gray-200">
+                tickets
+              </th>
               <th className="px-6 py-3 border-b border-gray-200"></th>
             </tr>
           </thead>
@@ -86,6 +90,15 @@ export default function EventCheckinTable({
                       eventId={eventId}
                       ticket={ticket}
                       selected={ticket.id === ticketId}
+                    />
+                  </td>
+                  <td className="px-6 py-4 text-sm">
+                    <GroupedTicketsDisplay
+                      tickets={registration.tickets.map(v => ({
+                        id: v.id,
+                        name: v.ticketType?.name ?? '',
+                        price: v.ticketType?.price ?? 0
+                      }))}
                     />
                   </td>
                 </tr>

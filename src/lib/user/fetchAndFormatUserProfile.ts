@@ -1,6 +1,8 @@
 import { z } from 'zod'
 import prisma from '@/lib/prisma'
 import {
+  privacySettingsSchema,
+  ProfileWithPrivacy,
   profileWithPrivacySchema,
   UserDataCollected
 } from '@/schemas/userSchema'
@@ -33,25 +35,13 @@ export async function fetchAndFormatUserProfile(
 ) {
   try {
     const user = await prisma.user.findUnique({
-      where: { id: currentUserId },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        picture: true,
-        phoneNumber: true,
-        stopCommunication: true,
-        dataCollected: true,
-        privacySettings: true,
-        linkedinAccessToken: true,
-        role: true
-      }
+      where: { id: currentUserId }
     })
 
     if (!user) return null
-
+    const { userDetailedProfile, userContentPreferences } = user
     const dataCollected = user.dataCollected as UserDataCollected
-    const cleanUserData = {
+    const cleanUserData: ProfileWithPrivacy = {
       id: user.id,
       name: user.name ?? '',
       picture: user.picture ?? '',
@@ -60,7 +50,7 @@ export async function fetchAndFormatUserProfile(
       position: dataCollected?.position ?? '',
       shortDescription: dataCollected?.shortDescription ?? '',
       isLinkedinLinked: !!user.linkedinAccessToken,
-      privacySettings: user.privacySettings,
+      privacySettings: privacySettingsSchema.parse(user.privacySettings),
       phoneNumber: user.phoneNumber ?? '',
       linkedin: dataCollected?.linkedin ?? '',
       email: user.email ?? '',
@@ -76,7 +66,9 @@ export async function fetchAndFormatUserProfile(
       resumeUrl: dataCollected?.resumeUrl ?? '',
       resumeLastUpdated: dataCollected?.resumeLastUpdated ?? '',
       resumeFileName: dataCollected?.resumeFileName ?? '',
-      resumeText: dataCollected?.resumeText ?? ''
+      resumeText: dataCollected?.resumeText ?? '',
+      userDetailedProfile,
+      userContentPreferences
     }
 
     if (isCurrentUser) {

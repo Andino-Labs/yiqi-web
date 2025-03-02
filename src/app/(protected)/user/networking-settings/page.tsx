@@ -1,10 +1,10 @@
-import NetworkingProfileForm from '@/components/profile/NetworkingProfileForm'
-import UserLayout from '@/components/user/UserLayout'
+import NetworkingSettingsManager from '@/components/profile/NetworkingSettingsManager'
 import { profileDataSchema } from '@/schemas/userSchema'
 import { getUserOrRedirect } from '@/lib/auth/getUserOrRedirect'
+import UserLayout from '@/components/user/UserLayout'
 
 export default async function page() {
-  const { userCurrent, user } = await getUserOrRedirect()
+  const { user } = await getUserOrRedirect()
 
   const networkingData = {
     professionalMotivations: user.professionalMotivations,
@@ -13,16 +13,14 @@ export default async function page() {
     careerAspirations: user.careerAspirations,
     significantChallenge: user.significantChallenge,
     resumeUrl: user.resumeUrl,
-    resumeFileName: user.resumeFileName
+    resumeFileName: user.resumeFileName,
+    resumeText: user.resumeText
   }
 
   return (
     <main className="flex flex-col items-center justify-center">
       <UserLayout userProps={profileDataSchema.parse(user)}>
-        <NetworkingProfileForm
-          userId={userCurrent.id}
-          initialData={networkingData}
-        />
+        <NetworkingSettingsManager user={user} initialData={networkingData} />
       </UserLayout>
     </main>
   )
