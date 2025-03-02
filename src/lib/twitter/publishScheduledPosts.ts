@@ -33,8 +33,8 @@ export async function publishScheduledPosts() {
         }
 
         const twitterClient = new TwitterApi({
-          appKey: process.env.NEXT_PUBLIC_X_API_KEY!,
-          appSecret: process.env.NEXT_PUBLIC_X_API_SECRET!,
+          appKey: process.env.X_API_KEY!,
+          appSecret: process.env.X_API_SECRET!,
           accessToken: twitterAccount.accessToken,
           accessSecret: twitterAccount.accessTokenSecret
         })

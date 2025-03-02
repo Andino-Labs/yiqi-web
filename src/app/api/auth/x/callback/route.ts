@@ -3,8 +3,8 @@ import oauth from 'oauth-1.0a'
 import crypto from 'crypto'
 import { NextRequest, NextResponse } from 'next/server'
 
-const X_API_KEY = process.env.NEXT_PUBLIC_X_API_KEY as string
-const X_API_SECRET = process.env.NEXT_PUBLIC_X_API_SECRET as string
+const X_API_KEY = process.env.X_API_KEY as string
+const X_API_SECRET = process.env.X_API_SECRET as string
 const oauth1 = new oauth({
   consumer: {
     key: X_API_KEY,

@@ -1,8 +1,8 @@
 import axios from 'axios'
 import { NextResponse } from 'next/server'
 
-const X_API_KEY = process.env.NEXT_PUBLIC_X_API_KEY as string
-const X_API_SECRET = process.env.NEXT_PUBLIC_X_API_SECRET as string
+const X_API_KEY = process.env.X_API_KEY as string
+const X_API_SECRET = process.env.X_API_SECRET as string
 
 export async function POST(request: Request) {
   try {
