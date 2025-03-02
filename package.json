@@ -19,8 +19,7 @@
     "build:client-types": "tsup --config yiqi-client/tsup.config.ts",
     "run-crons": "chmod +x run-crons.sh && ./run-crons.sh",
     "prepare": "husky",
-    "run-script": "ts-node -r ./scripts/register.ts -P tsconfig.script.json scripts/runScript.ts",
-    "start-cron": "node --loader ts-node/esm ./src/lib/twitter/twitterCron.ts"
+    "run-script": "ts-node -r ./scripts/register.ts -P tsconfig.script.json scripts/runScript.ts"
   },
   "dependencies": {
     "@aws-sdk/client-bedrock-runtime": "^3.731.1",
