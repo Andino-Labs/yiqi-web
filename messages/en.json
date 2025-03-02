@@ -100,7 +100,8 @@
     "billing": "Billing",
     "logOut": "Log out",
     "events": "Events",
-    "settings": "Settings"
+    "settings": "Settings",
+    "managementTool": "Management Tool"
   },
   "SidebarDropdown": {
     "switchOrganization": "Switch Organization"
@@ -763,5 +764,36 @@
     "completeProfile": "Complete Profile",
     "viewTickets": "View Tickets",
     "viewMatches": "View Matches"
+  },
+  "ManagementTool": {
+    "connectYourAccount": "Connect your account",
+    "newPost": "New post",
+    "scheduleFor": "Schedule for",
+    "cancel": "Cancel",
+    "updatePost": "Update post",
+    "schedulePost": "Schedule post",
+    "delete": "Delete",
+    "today": "Today",
+    "connectAccount": "Cuenta conectada",
+    "connectXTwitter": "Connect X/Twitter",
+    "sunday": "Sunday",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "noPostScheduled": "No post scheduled",
+    "of": "of",
+    "successfullRedirect": "Twitter account successfully connected.",
+    "inProcessRedirect": "Connecting with Twitter......",
+    "errorRedirect": "Error connecting to Twitter. Please try again.",
+    "noDataAvailable": "There is no data available",
+    "analytics": "Analytics",
+    "comments": "Commnets",
+    "likes": "Likes",
+    "shares": "Shares",
+    "impressions": "Impressions",
+    "whatDoYouFeel": "What do you feel?"
   }
 }
