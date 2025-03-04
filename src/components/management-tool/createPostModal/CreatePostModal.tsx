@@ -96,15 +96,17 @@ export function CreatePostModal({
 
   const handleDeletePost = async () => {
     if (!editingPost) return
-  
+
     try {
       await deleteTwitterPost(
         Number(editingPost.id),
         userId,
         organizationId,
-        editingPost.status === 'PUBLISHED' ? editingPost.postTwitterId : undefined
+        editingPost.status === 'PUBLISHED'
+          ? editingPost.postTwitterId
+          : undefined
       )
-  
+
       onSchedulePost(editingPost)
       onClose()
     } catch (error) {
