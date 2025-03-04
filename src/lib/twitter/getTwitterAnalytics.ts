@@ -1,13 +1,13 @@
 'use server'
 
-import { getTwitterPostsByUserId } from '@/services/actions/management-tool/channels/twitter/getTwitterPostsByUserId'
+import { getTwitterPostsByOrganizationId } from '@/services/actions/management-tool/channels/twitter/getTwitterPostsByUserId'
 import { TwitterApi } from 'twitter-api-v2'
 
 const X_BEARER_TOKEN = process.env.X_BEARER_TOKEN
 
 export default async function getTwitterAnalytics(accountId: string) {
   try {
-    const posts = await getTwitterPostsByUserId(accountId)
+    const posts = await getTwitterPostsByOrganizationId(accountId)
     const twitterClient = new TwitterApi(X_BEARER_TOKEN!)
     const userTweets = await twitterClient.v2.userTimeline(accountId, {
       'tweet.fields': 'public_metrics'

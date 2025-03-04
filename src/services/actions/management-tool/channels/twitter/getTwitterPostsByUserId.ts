@@ -3,15 +3,10 @@
 import prisma from '@/lib/prisma'
 import { postTwitterSchema } from '@/schemas/twitterSchema'
 
-export const getTwitterPostsByUserId = async (
-  userId?: string,
-  accountId?: string
-) => {
+export const getTwitterPostsByOrganizationId = async (organizationId: string) => {
   try {
-    const filter = userId ? { userId } : accountId ? { accountId } : {}
-
     const posts = await prisma.post.findMany({
-      where: filter,
+      where: { organizationId },
       orderBy: {
         scheduledDate: 'asc'
       }

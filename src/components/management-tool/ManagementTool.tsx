@@ -7,11 +7,7 @@ import { Analytics } from './analytics/analytics'
 import { Card } from '../ui/card'
 
 import { DataTwitterSchema, PostTwitterSchema } from '@/schemas/twitterSchema'
-import { getTwitterPostsByUserId } from '@/services/actions/management-tool/channels/twitter/getTwitterPostsByUserId'
-
-interface User {
-  id: string
-}
+import { getTwitterPostsByOrganizationId } from '@/services/actions/management-tool/channels/twitter/getTwitterPostsByUserId'
 
 interface AnalyticsProps {
   comments: number
@@ -22,11 +18,11 @@ interface AnalyticsProps {
 
 export default function CalendarPage({
   data,
-  user,
+  organizationId,
   analytics
 }: {
   data: DataTwitterSchema
-  user: User
+  organizationId: string
   analytics: AnalyticsProps | null
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -36,9 +32,9 @@ export default function CalendarPage({
   const [view, setView] = useState<'calendar' | 'analytics'>('calendar')
 
   const fetchPosts = useCallback(async () => {
-    const posts = await getTwitterPostsByUserId(user.id)
+    const posts = await getTwitterPostsByOrganizationId(organizationId)
     setScheduledPosts(posts)
-  }, [user.id])
+  }, [organizationId])
 
   useEffect(() => {
     fetchPosts()

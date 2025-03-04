@@ -8,7 +8,11 @@ import { getTwitterAccountByUserId } from '@/services/actions/management-tool/ch
 import getTwitterAnalytics from '@/lib/twitter/getTwitterAnalytics'
 import { getTranslations } from 'next-intl/server'
 
-export default async function ManagementToolPage() {
+export default async function ManagementTool({
+  params
+}: {
+  params: { id: string }
+}) {
   const user = await getUser()
   const t = await getTranslations('ManagementTool')
 
@@ -34,7 +38,7 @@ export default async function ManagementToolPage() {
             {dataTwitter && dataTwitter.accountId !== '' ? (
               <CalendarPage
                 data={dataTwitter}
-                user={user}
+                organizationId={params.id}
                 analytics={analytics}
               />
             ) : (
