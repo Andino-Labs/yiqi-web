@@ -1,10 +1,11 @@
 import axios from 'axios'
 import oauth from 'oauth-1.0a'
 import crypto from 'crypto'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 
 const X_API_KEY = process.env.X_API_KEY as string
 const X_API_SECRET = process.env.X_API_SECRET as string
+const NEXT_PUBLIC_URL = process.env.NEXT_PUBLIC_URL as string
 const oauth1 = new oauth({
   consumer: {
     key: X_API_KEY,
@@ -16,9 +17,9 @@ const oauth1 = new oauth({
   }
 })
 
-export async function GET(req: NextRequest): Promise<NextResponse> {
+export async function GET(): Promise<NextResponse> {
   try {
-    const refererUrl = req.headers.get('referer') || '/'
+    const url = NEXT_PUBLIC_URL + '/admin'
 
     const requestTokenUrl = 'https://api.twitter.com/oauth/request_token'
     const requestTokenResponse = await axios.post(requestTokenUrl, null, {
@@ -45,7 +46,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       )
     }
 
-    const authorizationUrl = `https://api.twitter.com/oauth/authorize?oauth_token=${oauthToken}&redirect_uri=${encodeURIComponent(refererUrl)}`
+    const authorizationUrl = `https://api.twitter.com/oauth/authorize?oauth_token=${oauthToken}&redirect_uri=${encodeURIComponent(url)}`
     return NextResponse.redirect(authorizationUrl)
   } catch (error) {
     if (error instanceof Error) {
