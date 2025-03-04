@@ -3,7 +3,9 @@
 import prisma from '@/lib/prisma'
 import { postTwitterSchema } from '@/schemas/twitterSchema'
 
-export const getTwitterPostsByOrganizationId = async (organizationId: string) => {
+export const getTwitterPostsByOrganizationId = async (
+  organizationId: string
+) => {
   try {
     const posts = await prisma.post.findMany({
       where: { organizationId },

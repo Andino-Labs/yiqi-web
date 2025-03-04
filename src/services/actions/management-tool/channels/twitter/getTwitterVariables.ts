@@ -1,6 +1,6 @@
 'use server'
 
-export const getTwitterVariables = async () => {
+export const verifyTwitterVariables = async () => {
   return Boolean(
     process.env.X_API_KEY &&
       process.env.X_API_SECRET &&

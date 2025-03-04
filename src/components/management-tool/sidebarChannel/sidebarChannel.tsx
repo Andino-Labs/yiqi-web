@@ -2,7 +2,7 @@
 
 import { BiXIcon } from '@/assets/icons'
 import { DataTwitterSchema } from '@/schemas/twitterSchema'
-import { getTwitterVariables } from '@/services/actions/management-tool/channels/twitter/getTwitterVariables'
+import { verifyTwitterVariables } from '@/services/actions/management-tool/channels/twitter/getTwitterVariables'
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
@@ -12,7 +12,7 @@ export function SidebarChannel({ data }: { data: DataTwitterSchema }) {
 
   useEffect(() => {
     const checkTwitterVariables = async () => {
-      const result = await getTwitterVariables()
+      const result = await verifyTwitterVariables()
       setIsTwitterConfigured(result)
     }
 
