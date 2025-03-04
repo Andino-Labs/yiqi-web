@@ -6,7 +6,11 @@ import { isOrganizerAdmin } from '../auth/lucia'
 
 const X_BEARER_TOKEN = process.env.X_BEARER_TOKEN
 
-export default async function getTwitterAnalytics(accountId: string, organizationId: string, userId: string) {
+export default async function getTwitterAnalytics(
+  accountId: string,
+  organizationId: string,
+  userId: string
+) {
   const isAllowed = await isOrganizerAdmin(organizationId, userId)
   if (!isAllowed) {
     throw new Error('Unauthorized: You don´t have permission.')

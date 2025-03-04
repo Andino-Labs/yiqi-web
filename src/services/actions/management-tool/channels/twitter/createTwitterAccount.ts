@@ -12,7 +12,6 @@ export const createTwitterAccount = async ({
   accessTokenSecret,
   organizationId
 }: AddTwitterAccountSchema) => {
-
   const isAllowed = await isOrganizerAdmin(organizationId, userId)
   if (!isAllowed) {
     throw new Error('Unauthorized: You don´t have permission.')

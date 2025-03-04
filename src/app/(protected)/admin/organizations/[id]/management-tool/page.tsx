@@ -25,7 +25,11 @@ export default async function ManagementTool({
 
   let analytics
   if (dataTwitter && 'accountId' in dataTwitter) {
-    analytics = await getTwitterAnalytics(dataTwitter.accountId, organizationId, user.id)
+    analytics = await getTwitterAnalytics(
+      dataTwitter.accountId,
+      organizationId,
+      user.id
+    )
   } else {
     analytics = null
   }

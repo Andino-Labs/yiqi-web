@@ -5,9 +5,9 @@ import prisma from '@/lib/prisma'
 import { postTwitterSchema } from '@/schemas/twitterSchema'
 
 export const getTwitterPostsByOrganizationId = async (
-  organizationId: string, userId: string
+  organizationId: string,
+  userId: string
 ) => {
-
   const isAllowed = await isOrganizerAdmin(organizationId, userId)
   if (!isAllowed) {
     throw new Error('Unauthorized: You don´t have permission.')
