@@ -16,7 +16,7 @@ export async function processQueueJobsHeavy() {
       }
     },
     orderBy: [{ priority: 'desc' }, { createdAt: 'asc' }],
-    take: 1, // Process 10 jobs at a time
+    take: 3, // Process 10 jobs at a time
     include: { user: true } // Include related user data if needed
   })
 

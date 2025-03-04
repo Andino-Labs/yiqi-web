@@ -1,23 +1,24 @@
-import MainForm from '@/components/yiqiForm/MainForm'
-import { getUserOrRedirect } from '@/lib/auth/getUserOrRedirect'
-import { getOrganization } from '@/services/actions/organizationActions'
 import React from 'react'
+import FormsList from '@/components/yiqiForm/FormResults/FormsList'
+import { getForms } from '@/services/actions/typeForm/typeFormActions'
 
 export default async function FormsPage({
   params
 }: {
   params: { id: string }
 }) {
-  await getUserOrRedirect()
-
-  const organization = await getOrganization(params.id)
-  if (!organization) {
-    return <div>Organization not found</div>
+  const formsResponse = await getForms(params.id)
+  if (!formsResponse.success) {
+    return (
+      <div className="text-center text-gray-700 dark:text-gray-300">
+        {formsResponse.error?.message ?? 'Formularios no encontrados'}
+      </div>
+    )
   }
 
   return (
-    <div className="h-screen  dark:bg-[rgb(28, 28, 28)]">
-      <MainForm orgId={params.id} />
-    </div>
+    <main className="flex flex-col items-center justify-center">
+      <FormsList organizationId={params.id} forms={formsResponse.forms || []} />
+    </main>
   )
 }

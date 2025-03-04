@@ -44,7 +44,6 @@ import {
   profileWithPrivacySchema,
   ProfileWithPrivacy
 } from '@/schemas/userSchema'
-import { translations } from '@/lib/translations/translations'
 import { useTranslations } from 'next-intl'
 import { z } from 'zod'
 
@@ -100,21 +99,21 @@ function UpdateProfileForm({ user }: { user: ProfileWithPrivacy }) {
       if (result.success) {
         router.refresh()
         toast({
-          description: `${t('profileUpdated')}`,
+          description: t('profileUpdated'),
           variant: 'default'
         })
       } else {
         toast({
-          title: `${t('error')}`,
-          description: `${t('updateFailed')}`,
+          title: t('error'),
+          description: t('updateFailed'),
           variant: 'destructive'
         })
       }
     } catch (error) {
       console.log(error)
       toast({
-        title: `${t('error')}`,
-        description: `${t('somethingWentWrong')}`,
+        title: t('error'),
+        description: t('somethingWentWrong'),
         variant: 'destructive'
       })
     } finally {
@@ -158,6 +157,7 @@ function UpdateProfileForm({ user }: { user: ProfileWithPrivacy }) {
     },
     [form]
   )
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -190,7 +190,6 @@ function UpdateProfileForm({ user }: { user: ProfileWithPrivacy }) {
                 animate="visible"
                 className="grid gap-6 md:grid-cols-2"
               >
-                {/* {FORM_SECTIONS.basic.map(renderFormField)} */}
                 <div>
                   <FormField
                     control={form.control}
@@ -220,7 +219,7 @@ function UpdateProfileForm({ user }: { user: ProfileWithPrivacy }) {
                     name={'email'}
                     render={({ field }) => (
                       <FormItem>
-                        {renderPrivacySwitch('email', translations.es.email)}
+                        {renderPrivacySwitch('email', t('email'))}
                         <FormControl>
                           <div className="relative">
                             <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -244,10 +243,7 @@ function UpdateProfileForm({ user }: { user: ProfileWithPrivacy }) {
                     name={'phoneNumber'}
                     render={({ field }) => (
                       <FormItem>
-                        {renderPrivacySwitch(
-                          'phoneNumber',
-                          `${t('phoneNumber')}`
-                        )}
+                        {renderPrivacySwitch('phoneNumber', t('phoneNumber'))}
                         <FormControl>
                           <div className="relative">
                             <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -425,7 +421,7 @@ function UpdateProfileForm({ user }: { user: ProfileWithPrivacy }) {
                     name={'website'}
                     render={({ field }) => (
                       <FormItem>
-                        {renderPrivacySwitch('website', `${t('website')}`)}
+                        {renderPrivacySwitch('website', t('website'))}
                         <FormControl>
                           <div className="relative">
                             <Globe className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />

@@ -10,7 +10,10 @@ import { EventDescription } from './template1-components/event-description'
 import { EventLocation } from './template1-components/event-location'
 import MainLandingNav from '../mainLanding/mainNav'
 import { useTranslations } from 'next-intl'
-import { ManageMatchmaking } from '../events/ManageMatchmaking'
+import {
+  MatchmakingStatus,
+  RenderMatchmakingInfo
+} from '../events/ManageMatchmaking'
 import { PublicEventType, CustomFieldType } from '@/schemas/eventSchema'
 import { LuciaUserType } from '@/schemas/userSchema'
 
@@ -23,19 +26,17 @@ export interface INetworkingData {
   resumeText: string
 }
 export function EventPage({
+  initialStatus,
   event,
-  isUserCheckedInOngoingEvent,
   isUserRegistered,
   user,
-  customFields,
-  networkingData
+  customFields
 }: {
+  initialStatus?: MatchmakingStatus | null
   event: PublicEventType
-  isUserCheckedInOngoingEvent: boolean
   isUserRegistered: boolean
   user?: LuciaUserType
   customFields?: CustomFieldType[]
-  networkingData: INetworkingData | null
 }) {
   const [isMobile, setIsMobile] = useState(false)
   const [isSticky, setIsSticky] = useState(false)
@@ -127,14 +128,14 @@ export function EventPage({
                   />
                 </motion.div>
               )}
-              {!!isUserRegistered && user && (
-                <ManageMatchmaking
-                  userDetailedProfile={user.userDetailedProfile}
-                  event={event}
-                  isUserCheckedInOngoingEvent={!!isUserCheckedInOngoingEvent}
-                  networkingData={networkingData}
-                />
-              )}
+              {isUserRegistered && user ? (
+                <div className="w-full max-w-4xl mx-auto px-4">
+                  <RenderMatchmakingInfo
+                    eventId={event.id}
+                    initialStatus={initialStatus}
+                  />
+                </div>
+              ) : null}
             </div>
             <div className="flex flex-col gap-8 w-full">
               <EventDetails event={event} />

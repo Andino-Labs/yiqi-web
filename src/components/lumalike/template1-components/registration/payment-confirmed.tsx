@@ -28,12 +28,7 @@ export function PaymentConfirmed({ eventId }: PaymentConfirmedProps) {
         setRegistration(reg)
         const profile = await getUserProfile(reg.userId)
         if (profile) {
-          const incomplete =
-            !profile.professionalMotivations ||
-            !profile.communicationStyle ||
-            !profile.professionalValues ||
-            !profile.careerAspirations ||
-            !profile.significantChallenge
+          const incomplete = !profile.userDetailedProfile
           setIsProfileIncomplete(incomplete)
         }
       }

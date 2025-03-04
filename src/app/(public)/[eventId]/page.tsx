@@ -61,55 +61,60 @@ export default async function Page({
     redirect('/')
   }
 
+  // Initialize state variables
   let isUserCheckedInOngoingEvent = false
-  let eventRegistration: {
-    id: string
-  } | null = null
-
-  let networkingData: {
-    professionalMotivations: string
-    communicationStyle: string
-    professionalValues: string
-    careerAspirations: string
-    significantChallenge: string
-    resumeText: string
-  } | null = null
+  let isUserRegistered = false
+  let networkingData = null
+  let userDetailedProfile = null
 
   if (currentUser) {
-    isUserCheckedInOngoingEvent = await validateCheckIn(
-      params.eventId,
-      currentUser.id
-    )
-    eventRegistration = await prisma.eventRegistration.findFirst({
-      where: { AND: [{ eventId: params.eventId }, { userId: currentUser.id }] },
-      select: { id: true }
-    })
+    // Parallelize async calls
+    const [checkInStatus, registration, userProfile] = await Promise.all([
+      validateCheckIn(params.eventId, currentUser.id),
+      prisma.eventRegistration.findFirst({
+        where: {
+          AND: [{ eventId: params.eventId }, { userId: currentUser.id }]
+        },
+        select: { id: true }
+      }),
+      getUserProfile(currentUser.id)
+    ])
 
-    const userProfile = await getUserProfile(currentUser.id)
-    networkingData = userProfile
-      ? {
-          professionalMotivations: userProfile.professionalMotivations ?? '',
-          communicationStyle: userProfile.communicationStyle ?? '',
-          professionalValues: userProfile.professionalValues ?? '',
-          careerAspirations: userProfile.careerAspirations ?? '',
-          significantChallenge: userProfile.significantChallenge ?? '',
-          resumeText: userProfile.resumeText ?? ''
-        }
-      : null
+    // Set derived state
+    isUserCheckedInOngoingEvent = checkInStatus
+    isUserRegistered = Boolean(registration?.id)
+
+    if (userProfile) {
+      networkingData = {
+        professionalMotivations: userProfile.professionalMotivations ?? '',
+        communicationStyle: userProfile.communicationStyle ?? '',
+        professionalValues: userProfile.professionalValues ?? '',
+        careerAspirations: userProfile.careerAspirations ?? '',
+        significantChallenge: userProfile.significantChallenge ?? '',
+        resumeText: userProfile.resumeText ?? ''
+      }
+      userDetailedProfile = userProfile.userDetailedProfile || null
+    }
   }
-
-  const isUserRegistered = eventRegistration ? !!eventRegistration.id : false
 
   return (
     <>
-      <div className="fixed inset-0 h-screen w-screen -z-10 bg-black"></div>
+      <div className="fixed inset-0 h-screen w-screen -z-10 bg-black" />
       <EventPage
         customFields={event.customFields?.fields}
         event={event}
-        user={currentUser!}
-        isUserCheckedInOngoingEvent={isUserCheckedInOngoingEvent}
+        user={currentUser ?? undefined}
         isUserRegistered={isUserRegistered}
-        networkingData={networkingData}
+        initialStatus={
+          currentUser
+            ? {
+                isUserCheckedInOngoingEvent,
+                isUserRegistered,
+                networkingData,
+                userDetailedProfile
+              }
+            : null
+        }
       />
     </>
   )

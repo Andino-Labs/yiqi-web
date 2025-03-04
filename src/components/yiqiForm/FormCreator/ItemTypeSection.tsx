@@ -1,5 +1,5 @@
 import React from 'react'
-import { motion } from 'framer-motion'
+
 import { useForm, Controller } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -8,9 +8,9 @@ import {
   FormProps,
   InputTypes,
   ItemTypeProps
-} from '../../schemas/yiqiFormSchema'
+} from '../../../schemas/yiqiFormSchema'
 import { cn } from '@/lib/utils'
-import { generateUniqueId } from './utils'
+import { generateUniqueIdYiqiForm } from '../utils'
 interface ItemTypeSectionProps {
   id: string
   fields: FormProps[]
@@ -51,12 +51,9 @@ const ItemTypeSection = ({
     <div className="w-full">
       <div className="space-y-3">
         {contents.map((content, index) => (
-          <motion.div
+          <div
             key={content.id + String(index)}
             className="group relative flex items-center gap-3"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.2, delay: index * 0.05 }}
           >
             <div className="flex items-center justify-center w-8 h-8">
               {inputType === InputTypes.RADIO && (
@@ -78,9 +75,8 @@ const ItemTypeSection = ({
               render={() => (
                 <Input
                   className={cn(
-                    'flex-1 h-10 bg-background/50 border-0 border-b focus-visible:ring-0 rounded-md',
+                    'flex-1 h-10 bg-background/50  rounded-md  border-0  border-gray-500 focus:bg-background/80  focus-visible:ring-offset-0 focus-visible:ring-0',
                     'placeholder:text-muted-foreground/60',
-                    'transition-all duration-200',
                     isFocused && 'hover:bg-background/80',
                     content.isEtc && 'text-muted-foreground italic'
                   )}
@@ -101,7 +97,7 @@ const ItemTypeSection = ({
                 <Trash2 className="w-4 h-4 text-muted-foreground" />
               </Button>
             )}
-          </motion.div>
+          </div>
         ))}
       </div>
 
@@ -112,7 +108,7 @@ const ItemTypeSection = ({
             size="sm"
             className="text-sm"
             onClick={() => {
-              const contentId = generateUniqueId()
+              const contentId = generateUniqueIdYiqiForm()
               addSelectItem(
                 id,
                 contentId,
@@ -130,7 +126,7 @@ const ItemTypeSection = ({
               size="sm"
               className="text-sm"
               onClick={() => {
-                const contentId = generateUniqueId()
+                const contentId = generateUniqueIdYiqiForm()
                 addEtcItem(id, contentId)
               }}
             >

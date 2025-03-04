@@ -23,18 +23,17 @@ import {
   MessageThreadType,
   MessageThreadTypeEnum
 } from '@/schemas/messagesSchema'
-import { translations } from '@/lib/translations/translations'
 import { useTranslations } from 'next-intl'
 import { useToast } from '@/hooks/use-toast'
 
-const formSchema = z.object({
+const MessageFormSchema = z.object({
   message: z.string().min(1, {
-    message: translations.es.messageMinLength
+    message: 'Message must be at least 1 character'
   })
 })
 
 interface MessageFormProps {
-  onSubmit: (values: z.infer<typeof formSchema>) => Promise<void>
+  onSubmit: (values: z.infer<typeof MessageFormSchema>) => Promise<void>
   messageType: MessageThreadType
   setMessageType: (type: MessageThreadType) => void
   allowedMessageTypes: MessageThreadType[]
@@ -48,16 +47,17 @@ export function MessageForm({
   allowedMessageTypes,
   isLoading = false
 }: MessageFormProps) {
-  const t = useTranslations('BulkSend')
+  const t = useTranslations('MessageForm')
   const { toast } = useToast()
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+
+  const form = useForm<z.infer<typeof MessageFormSchema>>({
+    resolver: zodResolver(MessageFormSchema),
     defaultValues: {
       message: ''
     }
   })
 
-  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+  const handleSubmit = async (values: z.infer<typeof MessageFormSchema>) => {
     try {
       await onSubmit(values)
       form.reset()
@@ -65,7 +65,6 @@ export function MessageForm({
       console.error('Error sending message:', error)
       toast({
         variant: 'destructive',
-        // TODO: Add error handling
         title: t('error'),
         description: t('errorSendingMessage')
       })
@@ -99,8 +98,8 @@ export function MessageForm({
             <DropdownMenuTrigger asChild>
               <Button variant="outline" disabled={isLoading}>
                 {messageType === MessageThreadTypeEnum.Enum.whatsapp
-                  ? `${t('whatsapp')}`
-                  : `${t('email')}`}
+                  ? t('whatsapp')
+                  : t('email')}
                 <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>

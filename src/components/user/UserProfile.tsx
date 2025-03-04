@@ -11,16 +11,18 @@ import {
   User
 } from 'lucide-react'
 import { ProfileWithPrivacy } from '@/schemas/userSchema'
-import { translations } from '@/lib/translations/translations'
 import { BiInstagramIcon, BiLinkedinIcon } from '@/assets/icons'
 import { Card } from '../ui/card'
 import { Separator } from '../ui/separator'
+import { useTranslations } from 'next-intl'
 
 interface UserProfilePageProps {
   user: ProfileWithPrivacy
 }
 
 export default function UserProfilePage({ user }: UserProfilePageProps) {
+  const t = useTranslations('UserProfile')
+
   const hasLinks =
     (user.website || user.linkedin || user.x || user.instagram) &&
     (user.privacySettings.website ||
@@ -84,24 +86,24 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
         <div className="mt-8 bg-[#0A0A0A] rounded-lg shadow-lg p-6 border border-[#1A1A1A]">
           <h2 className="text-2xl font-semibold mb-4 text-white flex items-center">
             <User className="w-6 h-6 mr-2 text-muted-foreground" />
-            {translations.es.aboutMe}
+            {t('aboutMe')}
           </h2>
           <Separator />
           <div className="pt-5">
             <p className="text-gray-400 leading-relaxed">
-              {user.shortDescription || translations.es.notDescriptionAvailable}
+              {user.shortDescription || t('notDescriptionAvailable')}
             </p>
           </div>
         </div>
 
         <div className="mt-8 bg-[#0A0A0A] rounded-lg shadow-lg p-6 border border-[#1A1A1A]">
           <h2 className="text-2xl font-semibold mb-4 text-white">
-            {translations.es.links}
+            {t('links')}
           </h2>
           <Separator />
           <div className="pt-5">
             {!hasLinks ? (
-              <p className="text-gray-400">{translations.es.availableLinks}</p>
+              <p className="text-gray-400">{t('availableLinks')}</p>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {user.privacySettings.website && user.website ? (
@@ -112,7 +114,7 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                     className="flex items-center text-muted-foreground hover:underline"
                   >
                     <Globe className="w-5 h-5 mr-2 text-muted-foreground" />
-                    {translations.es.website}
+                    {t('website')}
                   </a>
                 ) : null}
                 {user.privacySettings.linkedin && user.linkedin ? (
@@ -123,7 +125,7 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                     className="flex items-center text-muted-foreground hover:underline"
                   >
                     <BiLinkedinIcon className="w-5 h-5 mr-2 text-muted-foreground" />
-                    {translations.es.linkedin}
+                    {t('linkedin')}
                   </a>
                 ) : null}
                 {user.privacySettings.x && user.x ? (
@@ -134,7 +136,7 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                     className="flex items-center text-muted-foreground hover:underline"
                   >
                     <Twitter className="w-5 h-5 mr-2 text-muted-foreground" />
-                    {translations.es.x}
+                    {t('x')}
                   </a>
                 ) : null}
                 {user.instagram ? (
@@ -145,7 +147,7 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                     className="flex items-center text-muted-foreground hover:underline"
                   >
                     <BiInstagramIcon className="w-5 h-5 mr-2 text-muted-foreground" />
-                    {translations.es.instagram}
+                    {t('instagram')}
                   </a>
                 ) : null}
               </div>

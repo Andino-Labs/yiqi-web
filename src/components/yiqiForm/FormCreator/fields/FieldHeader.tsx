@@ -10,10 +10,10 @@ import {
   SelectValue
 } from '@/components/ui/select'
 
-import { FormProps, InputTypes } from '../../../schemas/yiqiFormSchema'
-import { ExtendedCardProps } from '../FormBuild'
+import { FormProps, InputTypes } from '@/schemas/yiqiFormSchema'
+import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
-import { translations } from '@/lib/translations/translations'
+import { ExtendedCardProps } from '../FormBuild'
 
 const FieldHeader = ({
   id,
@@ -26,6 +26,8 @@ const FieldHeader = ({
   'id' | 'isTitle' | 'fields' | 'typeChange' | 'setTitle'
 >) => {
   const { control, register } = useForm()
+  const t = useTranslations('YiqiForm')
+
   const currentField = useMemo(
     () => fields.find(field => field.id === id) as FormProps,
     [fields, id]
@@ -96,9 +98,7 @@ const FieldHeader = ({
               className={inputClasses}
               value={fieldTitle}
               onChange={handleCardTitleChange}
-              placeholder={
-                isTitle ? translations.es.formTitle : translations.es.pregunta
-              }
+              placeholder={isTitle ? t('formTitle') : t('pregunta')}
             />
           </motion.div>
         )}
@@ -124,23 +124,23 @@ const FieldHeader = ({
                     'transition-colors duration-200'
                   )}
                 >
-                  <SelectValue placeholder={translations.es.selectType} />
+                  <SelectValue placeholder={t('selectType')} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value={InputTypes.TEXT}>
-                    {translations.es.shortText}
+                    {t('shortText')}
                   </SelectItem>
                   <SelectItem value={InputTypes.TEXTAREA}>
-                    {translations.es.longText}
+                    {t('longText')}
                   </SelectItem>
                   <SelectItem value={InputTypes.RADIO}>
-                    {translations.es.multipleChoice}
+                    {t('multipleChoice')}
                   </SelectItem>
                   <SelectItem value={InputTypes.CHECKBOX}>
-                    {translations.es.checkbox}
+                    {t('checkbox')}
                   </SelectItem>
                   <SelectItem value={InputTypes.SELECT}>
-                    {translations.es.dropdownMenu}
+                    {t('dropdownMenu')}
                   </SelectItem>
                 </SelectContent>
               </Select>

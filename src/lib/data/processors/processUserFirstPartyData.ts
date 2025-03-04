@@ -173,31 +173,31 @@ export async function processUserFirstPartyData(userId: string): Promise<void> {
 
   console.info('Profile result call was successful')
 
-  await new Promise(resolve => {
-    setTimeout(resolve, 1000)
-  })
+  const [userEmbeddableProfileResult, userContentPreferencesResult] =
+    await Promise.all([
+      sendMessage(
+        conversation,
+        `Resume el siguiente perfil de usuario para incorporarlo a una base de datos: ${profileResult}`
+      ),
+      sendMessage(
+        conversation,
+        `En 3 oraciones o menos, ¿cuáles son las preferencias de contenido del usuario? \n\n ${profileResult}`
+      )
+    ])
 
   const userEmbeddableProfile = parseSendMessageResult(
-    await sendMessage(
-      conversation,
-      `Resume el siguiente perfil de usuario para incorporarlo a una base de datos: ${profileResult}`
-    )
+    userEmbeddableProfileResult
   )
 
   if (!userEmbeddableProfile) {
     throw new Error('No embeddable profile was found')
   }
 
-  console.info('User embeddable profile result call was successful')
-
-  const userContentPreferencesResult = parseSendMessageResult(
-    await sendMessage(
-      conversation,
-      `En 3 oraciones o menos, ¿cuáles son las preferencias de contenido del usuario? \n\n ${profileResult}`
-    )
+  const userContentPreferences = parseSendMessageResult(
+    userContentPreferencesResult
   )
 
-  if (!userContentPreferencesResult) {
+  if (!userContentPreferences) {
     throw new Error('No user content preference was done')
   }
 
@@ -208,7 +208,7 @@ export async function processUserFirstPartyData(userId: string): Promise<void> {
     data: {
       userDetailedProfile: profileResult,
       userEmbeddableProfile: userEmbeddableProfile,
-      userContentPreferences: userContentPreferencesResult
+      userContentPreferences: userContentPreferences
     }
   })
 

@@ -22,10 +22,8 @@ import {
 import { Textarea } from '../ui/textarea'
 import { useToast } from '@/hooks/use-toast'
 import { saveNetworkingProfile } from '@/services/actions/user/saveNetworkingProfile'
-import { translations } from '@/lib/translations/translations'
 import { FileText, Loader2, Save, Upload, ArrowLeft } from 'lucide-react'
 import { userDataCollectedShema } from '@/schemas/userSchema'
-
 import { useRouter } from 'next/navigation'
 import { Input } from '../ui/input'
 import {
@@ -154,7 +152,7 @@ export default function NetworkingProfileForm({
     } catch (error) {
       console.error('File processing error:', error)
       toast({
-        title: translations.es.resumeUploadError,
+        title: t('resumeUploadError'),
         description: error instanceof Error ? error.message : 'Unknown error',
         variant: 'destructive'
       })

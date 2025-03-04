@@ -4,8 +4,8 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog'
-import { translations } from '@/lib/translations/translations'
 import { QRCodeSVG } from 'qrcode.react'
+import { useTranslations } from 'next-intl'
 
 interface QRModalProps {
   isOpen: boolean
@@ -37,17 +37,16 @@ export function QRModal({
   ticketId,
   checkedInDate
 }: QRModalProps) {
+  const t = useTranslations('QRModal')
   const qrData = `${process.env.NEXT_PUBLIC_URL}/admin/orgnanizations/${organizationId}/events/${eventId}/checkin/${ticketId}`
 
   const ticketInfo: TicketInfo[] = [
-    { label: translations.es.qrModalTicketLabel, value: ticketNumber },
-    { label: translations.es.qrModalTicketName, value: attendeeName },
-    { label: translations.es.qrModalTicketEmail, value: attendeeEmail },
+    { label: t('ticketLabel'), value: ticketNumber },
+    { label: t('ticketName'), value: attendeeName },
+    { label: t('ticketEmail'), value: attendeeEmail },
     {
-      label: translations.es.qrModalTicketStatus,
-      value: checkedInDate
-        ? translations.es.qrModalTicketChecked
-        : translations.es.qrModalTicketNotChecked
+      label: t('ticketStatus'),
+      value: checkedInDate ? t('ticketChecked') : t('ticketNotChecked')
     }
   ]
 
@@ -74,7 +73,7 @@ export function QRModal({
                 <span className="text-zinc-400">{info.label}</span>
                 <span
                   className={`text-white ${
-                    info.label === translations.es.qrModalTicketEmail
+                    info.label === t('ticketEmail')
                       ? 'truncate max-w-[150px]'
                       : ''
                   }`}

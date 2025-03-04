@@ -9,11 +9,11 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { QRModal } from '../qrModal/QrModal'
 import { ticketEventSchemaType } from '@/schemas/ticketSchema'
-import { translations } from '@/lib/translations/translations'
 import { PaymentModal } from '../paymentModal/PaymentModal'
 import NetworkingUsersList from '../networkingUsersList/NetworkingUsersList'
 import { checkTicketCheckedIn } from '@/services/actions/tickets/checkTicketCheckedIn'
 import { isOngoingEvent } from '@/lib/utils/isOngoingEvent'
+import { useTranslations } from 'next-intl'
 
 interface TicketModalState {
   isOpen: boolean
@@ -28,6 +28,7 @@ interface TicketModalState {
 }
 
 const TicketStatusBadge = ({ status }: { status: string }) => {
+  const t = useTranslations('Ticket')
   const badgeClass =
     status === 'APPROVED'
       ? 'bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/20'
@@ -37,10 +38,10 @@ const TicketStatusBadge = ({ status }: { status: string }) => {
 
   const badgeText =
     status === 'APPROVED'
-      ? translations.es.ticketStatusApproved
+      ? t('ticketStatusApproved')
       : status === 'PENDING'
-        ? translations.es.ticketStatusPending
-        : translations.es.ticketStatusRejected
+        ? t('ticketStatusPending')
+        : t('ticketStatusRejected')
 
   return (
     <Badge
@@ -65,6 +66,7 @@ export default function TicketsPage({
   tickets: ticketEventSchemaType
   userHasNetworkingData: boolean
 }) {
+  const t = useTranslations('Ticket')
   const [paymentModalOpen, setPaymentModalOpen] = useState(false)
   const [modalState, setModalState] = useState<TicketModalState>({
     isOpen: false,
@@ -159,9 +161,7 @@ export default function TicketsPage({
       <Card className="w-full max-w-4xl mx-auto">
         <main className="max-w-5xl mx-auto sm:px-6 lg:px-8 py-8">
           <h1 className="text-3xl font-bold mb-6 text-center">
-            {tickets.length === 0
-              ? translations.es.ticketNo
-              : translations.es.ticketTitlePage}
+            {tickets.length === 0 ? t('ticketNo') : t('ticketTitlePage')}
           </h1>
           <div className="space-y-8">
             {currentTickets.map(data => (
@@ -194,7 +194,7 @@ export default function TicketsPage({
                     <div className="w-full lg:w-auto">
                       <Image
                         src={data.event.openGraphImage}
-                        alt={translations.es.ticketEventImageAlt}
+                        alt={t('ticketEventImageAlt')}
                         width={600}
                         height={100}
                         className="relative rounded-xl border border-zinc-800/50 w-full h-60 lg:w-72 lg:h-40 object-cover"
@@ -217,7 +217,7 @@ export default function TicketsPage({
                       >
                         <div className="flex gap-5">
                           <Badge className="bg-zinc-800/50 border border-zinc-700">
-                            {translations.es.ticketNumber}
+                            {t('ticketNumber')}
                             {index + 1} {ticket.category}
                           </Badge>
                           <TicketStatusBadge status={ticket.status} />
@@ -257,7 +257,7 @@ export default function TicketsPage({
                           )}
                         >
                           <Ticket className="w-4 h-4" />
-                          {translations.es.ticketLabelView}
+                          {t('ticketLabelView')}
                         </Button>
                       </div>
                     ))}

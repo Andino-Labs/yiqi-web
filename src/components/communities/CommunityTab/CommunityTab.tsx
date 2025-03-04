@@ -6,7 +6,6 @@ import CommunityMembers from '../CommunityMembers/CommunityMembers'
 import { OrganizationUserType } from '@/schemas/organizerSchema'
 import { UserType } from '@/schemas/userSchema'
 import { EventCommunityType } from '@/schemas/eventSchema'
-import { translations } from '@/lib/translations/translations'
 import {
   getPastEvents,
   getValidEvents
@@ -73,10 +72,10 @@ export default function CommunityTab({
       <div className="mt-2 h-[3px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
 
       <div
-        className={`bg-[#111827] rounded-lg shadow-sm ${activeTab === translations.es.navigationMembers ? 'w-full' : 'w-full sm:w-1/2'}`}
+        className={`bg-[#111827] rounded-lg shadow-sm ${activeTab === t('navigationMembers') ? 'w-full' : 'w-full sm:w-1/2'}`}
       >
         <div className="p-4 sm:p-6">
-          {activeTab === `${t('navigationAbout')}` && (
+          {activeTab === t('navigationAbout') && (
             <>
               <h2 className="text-xl sm:text-2xl font-bold mb-4 text-white">
                 {t('navigationAbout')}
@@ -93,9 +92,7 @@ export default function CommunityTab({
                   onClick={() => setShowAllContent(prev => !prev)}
                   className="mt-4 text-[#00C9A7] hover:text-[#00b396] font-medium"
                 >
-                  {showAllContent
-                    ? `${t('aboutShowLess')}`
-                    : `${t('aboutLoadMore')}`}
+                  {showAllContent ? t('aboutShowLess') : t('aboutLoadMore')}
                 </button>
               )}
 
@@ -123,7 +120,7 @@ export default function CommunityTab({
             </>
           )}
 
-          {activeTab === `${t('navigationMembers')}` && (
+          {activeTab === t('navigationMembers') && (
             <CommunityMembers members={members} organizers={organizers} />
           )}
         </div>
