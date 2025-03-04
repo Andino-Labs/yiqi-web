@@ -14,7 +14,9 @@ export const updatePostTwitterSchema = z.object({
   postId: z.number(),
   content: z.string(),
   scheduledDate: z.date(),
-  status: z.enum(['SCHEDULED', 'PUBLISHED']).optional()
+  status: z.enum(['SCHEDULED', 'PUBLISHED']).optional(),
+  userId: z.string(),
+  organizationId: z.string(),
 })
 
 export const addTwitterAccount = z.object({

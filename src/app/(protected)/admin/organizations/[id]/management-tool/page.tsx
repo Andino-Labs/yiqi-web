@@ -15,16 +15,17 @@ export default async function ManagementTool({
 }) {
   const user = await getUser()
   const t = await getTranslations('ManagementTool')
+  const organizationId = params.id
 
   if (!user) {
     redirect('/auth')
   }
 
-  const dataTwitter = await getTwitterAccountByUserId(user.id)
+  const dataTwitter = await getTwitterAccountByUserId(user.id, organizationId)
 
   let analytics
   if (dataTwitter && 'accountId' in dataTwitter) {
-    analytics = await getTwitterAnalytics(dataTwitter.accountId)
+    analytics = await getTwitterAnalytics(dataTwitter.accountId, organizationId, user.id)
   } else {
     analytics = null
   }
@@ -38,8 +39,9 @@ export default async function ManagementTool({
             {dataTwitter && dataTwitter.accountId !== '' ? (
               <CalendarPage
                 data={dataTwitter}
-                organizationId={params.id}
+                organizationId={organizationId}
                 analytics={analytics}
+                userId={user.id}
               />
             ) : (
               <p className="text-3xl font-bold text-center">

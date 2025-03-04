@@ -19,6 +19,8 @@ interface CreatePostModalProps {
   selectedDate: Date | null
   onSchedulePost: (post: PostTwitterSchema) => void
   editingPost: PostTwitterSchema | null
+  userId: string
+  organizationId: string
 }
 
 export function CreatePostModal({
@@ -27,7 +29,9 @@ export function CreatePostModal({
   onClose,
   selectedDate,
   onSchedulePost,
-  editingPost
+  editingPost,
+  userId,
+  organizationId
 }: CreatePostModalProps) {
   const [content, setContent] = React.useState('')
   const [scheduleDate, setScheduleDate] = React.useState<Date | null>(
@@ -63,7 +67,9 @@ export function CreatePostModal({
         const updatedPost = await updateTwitterPost({
           postId: Number(editingPost.id),
           content,
-          scheduledDate: scheduledDateTime
+          scheduledDate: scheduledDateTime,
+          userId,
+          organizationId
         })
         onSchedulePost(updatedPost)
       } else {
@@ -92,7 +98,7 @@ export function CreatePostModal({
     if (!editingPost) return
 
     try {
-      await deleteTwitterPost(Number(editingPost.id))
+      await deleteTwitterPost(Number(editingPost.id), userId, organizationId)
       onSchedulePost(editingPost)
       onClose()
     } catch (error) {

@@ -1,13 +1,19 @@
 'use server'
 
-import { getTwitterPostsByOrganizationId } from '@/services/actions/management-tool/channels/twitter/getTwitterPostsByUserId'
+import { getTwitterPostsByOrganizationId } from '@/services/actions/management-tool/channels/twitter/getTwitterPostsByOrganizationId'
 import { TwitterApi } from 'twitter-api-v2'
+import { isOrganizerAdmin } from '../auth/lucia'
 
 const X_BEARER_TOKEN = process.env.X_BEARER_TOKEN
 
-export default async function getTwitterAnalytics(accountId: string) {
+export default async function getTwitterAnalytics(accountId: string, organizationId: string, userId: string) {
+  const isAllowed = await isOrganizerAdmin(organizationId, userId)
+  if (!isAllowed) {
+    throw new Error('Unauthorized: You don´t have permission.')
+  }
+
   try {
-    const posts = await getTwitterPostsByOrganizationId(accountId)
+    const posts = await getTwitterPostsByOrganizationId(organizationId, userId)
     const twitterClient = new TwitterApi(X_BEARER_TOKEN!)
     const userTweets = await twitterClient.v2.userTimeline(accountId, {
       'tweet.fields': 'public_metrics'

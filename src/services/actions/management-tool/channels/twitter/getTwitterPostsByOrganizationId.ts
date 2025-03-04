@@ -1,11 +1,18 @@
 'use server'
 
+import { isOrganizerAdmin } from '@/lib/auth/lucia'
 import prisma from '@/lib/prisma'
 import { postTwitterSchema } from '@/schemas/twitterSchema'
 
 export const getTwitterPostsByOrganizationId = async (
-  organizationId: string
+  organizationId: string, userId: string
 ) => {
+
+  const isAllowed = await isOrganizerAdmin(organizationId, userId)
+  if (!isAllowed) {
+    throw new Error('Unauthorized: You don´t have permission.')
+  }
+
   try {
     const posts = await prisma.post.findMany({
       where: { organizationId },
