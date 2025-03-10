@@ -4,24 +4,21 @@ import { NextResponse } from 'next/server'
 const X_API_KEY = process.env.X_API_KEY as string
 const X_API_SECRET = process.env.X_API_SECRET as string
 
-export async function POST(request: Request) {
+export async function GET(request: Request) {
   try {
-    const { oauth_token, oauth_verifier } = await request.json()
+    const { searchParams } = new URL(request.url)
+    const oauth_token = searchParams.get('oauth_token')
+    const oauth_verifier = searchParams.get('oauth_verifier')
 
     if (!oauth_token || !oauth_verifier) {
       return NextResponse.json(
-        {
-          error: 'The oauth_token and oauth_verifier parameters are required.'
-        },
+        { error: 'The oauth_token and oauth_verifier parameters are required.' },
         { status: 400 }
       )
     }
 
     const accessTokenUrl = 'https://api.twitter.com/oauth/access_token'
-    const params = new URLSearchParams({
-      oauth_token,
-      oauth_verifier
-    })
+    const params = new URLSearchParams({ oauth_token, oauth_verifier })
 
     const response = await axios.post(accessTokenUrl, params.toString(), {
       headers: {
@@ -43,19 +40,17 @@ export async function POST(request: Request) {
       )
     }
 
-    return NextResponse.json({
-      success: true,
-      accessToken,
-      accessTokenSecret,
-      userId,
-      screenName
-    })
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.error('Error exchanging tokens:', error.message)
-    } else {
-      console.error('Error exchanging tokens:', error)
+    const redirectUrl = new URL('/admin/organizations/channels/twitter', request.url)
+    redirectUrl.searchParams.append('accessToken', accessToken)
+    redirectUrl.searchParams.append('accessTokenSecret', accessTokenSecret)
+    redirectUrl.searchParams.append('userId', userId)
+    if (screenName) {
+      redirectUrl.searchParams.append('screenName', screenName)
     }
+
+    return NextResponse.redirect(redirectUrl)
+  } catch (error: unknown) {
+    console.error('Error exchanging tokens:', error instanceof Error ? error.message : error)
     return NextResponse.json(
       { error: 'Error connecting to Twitter.' },
       { status: 500 }

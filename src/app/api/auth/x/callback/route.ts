@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server'
 
 const X_API_KEY = process.env.X_API_KEY as string
 const X_API_SECRET = process.env.X_API_SECRET as string
-const NEXT_PUBLIC_URL = process.env.NEXT_PUBLIC_URL as string
+
 const oauth1 = new oauth({
   consumer: {
     key: X_API_KEY,
@@ -19,8 +19,6 @@ const oauth1 = new oauth({
 
 export async function GET(): Promise<NextResponse> {
   try {
-    const url = NEXT_PUBLIC_URL + '/admin'
-
     const requestTokenUrl = 'https://api.twitter.com/oauth/request_token'
     const requestTokenResponse = await axios.post(requestTokenUrl, null, {
       headers: Object.fromEntries(
@@ -46,13 +44,13 @@ export async function GET(): Promise<NextResponse> {
       )
     }
 
-    const authorizationUrl = `https://api.twitter.com/oauth/authorize?oauth_token=${oauthToken}&redirect_uri=${encodeURIComponent(url)}`
+    const authorizationUrl = `https://api.twitter.com/oauth/authorize?oauth_token=${oauthToken}`
     return NextResponse.redirect(authorizationUrl)
   } catch (error) {
     if (error instanceof Error) {
       console.error('Error in authentication process:', error.message)
     } else {
-      console.error('Error in authentication process:', error)
+    console.error('Error in authentication process:', error)
     }
     return NextResponse.json(
       { error: 'Error in the authentication process.' },

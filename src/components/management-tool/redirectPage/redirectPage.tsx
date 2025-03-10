@@ -26,37 +26,28 @@ export default function RedirectPage({ user }: { user: User }) {
       if (!storedOrgId) return
 
       const params = new URLSearchParams(window.location.search)
-      const oauthToken = params.get('oauth_token')
-      const oauthVerifier = params.get('oauth_verifier')
+      const accessToken = params.get('accessToken')
+      const accessTokenSecret = params.get('accessTokenSecret')
+      const twitterUserId = params.get('userId')
+      const screenName = params.get('screenName')
 
-      if (oauthToken && oauthVerifier) {
+      if (accessToken && accessTokenSecret && twitterUserId) {
         try {
-          const response = await fetch('/api/twitter/exchange-tokens', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              oauth_token: oauthToken,
-              oauth_verifier: oauthVerifier
-            })
+          setSuccess(true)
+
+          await createTwitterAccount({
+            userIdApp: user.id,
+            organizationId: storedOrgId,
+            accountId: twitterUserId,
+            accessToken,
+            accessTokenSecret,
+            userId: twitterUserId,
+            screenName: screenName || ''
           })
 
-          const data = await response.json()
-
-          if (data.success) {
-            setSuccess(true)
-
-            await createTwitterAccount({
-              userIdApp: user.id,
-              organizationId: storedOrgId,
-              ...data
-            })
-
-            router.push(`/admin/organizations/${storedOrgId}/management-tool`)
-          } else {
-            setError(data.error || 'Unknown error.')
-          }
+          router.push(`/admin/organizations/${storedOrgId}/management-tool`)
         } catch (err) {
-          console.error('Error exchanging tokens:', err)
+          console.error('Error creating Twitter account:', err)
           setError('Error connecting to API.')
         }
       } else {
