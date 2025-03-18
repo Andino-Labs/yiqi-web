@@ -41,8 +41,12 @@ export default async function getTwitterAnalytics(
     console.log('User tweets:', analytics)
 
     return analytics
-  } catch (error) {
-    console.log('Error fetching user tweets:', error)
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.log('Error fetching user tweets:', error.message)
+    } else {
+      console.log('Error fetching user tweets:', error)
+    }
     return null
   }
 }
