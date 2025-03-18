@@ -29,10 +29,15 @@ export default async function getTwitterAnalytics(
 
   let accessToken = twitterAccount.accessToken
 
-  if (twitterAccount.expiresAt && twitterAccount.expiresAt.getTime() <= Date.now()) {
+  if (
+    twitterAccount.expiresAt &&
+    twitterAccount.expiresAt.getTime() <= Date.now()
+  ) {
     const newAccessToken = await refreshAccessToken(twitterAccount)
     if (!newAccessToken) {
-      console.error(`The access token could not be refreshed for ${twitterAccount.accountUsername}`)
+      console.error(
+        `The access token could not be refreshed for ${twitterAccount.accountUsername}`
+      )
       return null
     }
     accessToken = newAccessToken

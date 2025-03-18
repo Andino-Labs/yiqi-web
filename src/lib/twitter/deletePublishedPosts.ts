@@ -27,10 +27,15 @@ export async function deletePublishedPost(postTwitterId: string) {
 
   let accessToken = post.account.accessToken
 
-  if (post.account.expiresAt && post.account.expiresAt.getTime() <= Date.now()) {
+  if (
+    post.account.expiresAt &&
+    post.account.expiresAt.getTime() <= Date.now()
+  ) {
     const newAccessToken = await refreshAccessToken(post.account)
     if (!newAccessToken) {
-      console.error(`The access token could not be refreshed for ${post.account.accountUsername}`)
+      console.error(
+        `The access token could not be refreshed for ${post.account.accountUsername}`
+      )
       return
     }
     accessToken = newAccessToken
