@@ -1,6 +1,7 @@
 'use server'
 
 import { PrismaClient } from '@prisma/client'
+import { Buffer } from 'buffer'
 
 const prisma = new PrismaClient()
 
@@ -9,16 +10,19 @@ export async function refreshAccessToken(twitterAccount: {
   refreshToken: string
 }) {
   try {
+    const authHeader = Buffer.from(
+      `${process.env.X_CLIENT_ID}:${process.env.X_CLIENT_SECRET}`
+    ).toString('base64')
+
     const response = await fetch('https://api.twitter.com/2/oauth2/token', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Basic ${authHeader}`
       },
       body: new URLSearchParams({
         grant_type: 'refresh_token',
-        refresh_token: twitterAccount.refreshToken,
-        client_id: process.env.X_CLIENT_ID!,
-        client_secret: process.env.X_CLIENT_SECRET!
+        refresh_token: twitterAccount.refreshToken
       }).toString()
     })
 
