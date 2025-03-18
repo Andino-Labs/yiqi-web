@@ -167,12 +167,10 @@ export function Calendar({
                   >
                     <button
                       onClick={() =>
-                        post.status !== 'PUBLISHED' && onEditPost(post)
+                       onEditPost(post)
                       }
-                      disabled={post.status === 'PUBLISHED'}
                       className={cn(
-                        'text-left flex-grow overflow-hidden',
-                        post.status === 'PUBLISHED' && 'cursor-not-allowed'
+                        'text-left flex-grow overflow-hidden'
                       )}
                     >
                       <span className="inline-block truncate">

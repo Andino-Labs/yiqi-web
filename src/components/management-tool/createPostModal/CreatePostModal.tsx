@@ -124,6 +124,7 @@ export function CreatePostModal({
             onChange={e => setContent(e.target.value)}
             placeholder={t('whatDoYouFeel')}
             className="min-h-[100px] resize-none border p-2 !outline-none !ring-0 !ring-offset-0 !focus:outline-none !focus:ring-0 !focus:ring-offset-0"
+            disabled={editingPost?.status === 'PUBLISHED'}
           />
           <div className="flex flex-col md:flex-row md:items-center md:justify-between border-t pt-4 gap-2">
             <div className="flex flex-wrap items-center pt-4 gap-2">
@@ -138,12 +139,14 @@ export function CreatePostModal({
                     setScheduleDate(new Date(e.target.value + 'T00:00:00'))
                   }
                   className="w-full"
+                  disabled={editingPost?.status === 'PUBLISHED'}
                 />
                 <Input
                   type="time"
                   value={scheduleTime}
                   onChange={e => setScheduleTime(e.target.value)}
                   className="w-full sm:w-[100px]"
+                  disabled={editingPost?.status === 'PUBLISHED'}
                 />
               </div>
             </div>
@@ -156,7 +159,7 @@ export function CreatePostModal({
             >
               {t('cancel')}
             </Button>
-            <Button onClick={handleSchedulePost} className="w-full md:w-auto">
+            <Button onClick={handleSchedulePost} className="w-full md:w-auto" disabled={editingPost?.status === 'PUBLISHED'}>
               {editingPost ? t('updatePost') : t('schedulePost')}
             </Button>
             {editingPost && (

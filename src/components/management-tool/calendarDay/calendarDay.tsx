@@ -49,10 +49,9 @@ export default function CalendarDay({
                   : 'bg-blue-500 hover:bg-blue-600'
               }`}
               onClick={() => {
-                if (isSelectable && post.status === 'SCHEDULED') {
                   onEditPost(post)
                 }
-              }}
+              }
             >
               <div className="text-left flex-grow">
                 <time className="text-lg">
