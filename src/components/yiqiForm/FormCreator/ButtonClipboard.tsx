@@ -26,7 +26,7 @@ function ButtonClipboard({
 }: ButtonClipboardProps) {
   const { toast } = useToast()
   const [copied, setCopied] = useState<boolean>(false)
-  const t = useTranslations('YiqiForm')
+  const t = useTranslations('yiqiForm')
 
   const handleCopy = async () => {
     try {

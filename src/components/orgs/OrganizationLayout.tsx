@@ -87,7 +87,7 @@ export default function OrganizationLayout({
       icon: Users,
       href: `/admin/organizations/${currentOrgId}/organizers`
     },
-    process.env.NEXT_PUBLIC_FORMS === 'true' && {
+    !!process.env.NEXT_PUBLIC_FORMS && {
       name: `${tSidebar('forms')}`,
       icon: FolderEdit,
       href: `/admin/organizations/${currentOrgId}/forms`

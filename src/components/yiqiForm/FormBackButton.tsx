@@ -12,7 +12,7 @@ import { useTranslations } from 'next-intl'
 
 function FormBackButton({ url: orgId }: { url: string }) {
   const router = useRouter()
-  const t = useTranslations('YiqiForm')
+  const t = useTranslations('yiqiForm')
 
   const handleBack = () => {
     router.push(`/admin/organizations/${orgId}/forms`)

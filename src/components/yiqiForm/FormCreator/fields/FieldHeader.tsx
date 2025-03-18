@@ -26,7 +26,7 @@ const FieldHeader = ({
   'id' | 'isTitle' | 'fields' | 'typeChange' | 'setTitle'
 >) => {
   const { control, register } = useForm()
-  const t = useTranslations('YiqiForm')
+  const t = useTranslations('yiqiForm')
 
   const currentField = useMemo(
     () => fields.find(field => field.id === id) as FormProps,

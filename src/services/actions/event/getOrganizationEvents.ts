@@ -14,7 +14,7 @@ export async function getOrganizationEvents(
       organizationId,
       deletedAt: null
     },
-    orderBy: { startDate: 'asc' }
+    orderBy: { startDate: 'desc' }
   })
 
   return events.map(event => organizationEventSchema.parse(event))

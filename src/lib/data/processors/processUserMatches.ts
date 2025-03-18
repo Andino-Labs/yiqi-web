@@ -12,7 +12,8 @@ import { z } from 'zod'
 import {
   generateCollaborationPrompt,
   generateEmbeddingPrompt,
-  generateKeyInsightsPrompt
+  generateKeyInsightsPrompt,
+  processUserMatchesSystemPrompt
 } from './prompts'
 
 const parseSchema = z.array(
@@ -156,23 +157,25 @@ export async function processUserMatches(userId: string, eventId: string) {
         matchUser.userDetailedProfile
       )
 
-      await new Promise(resolve => setTimeout(resolve, 1000))
-
       const keyInsights = parseSendMessageResult(
-        await sendMessage(conversation, keyInsightsPrompt)
+        await sendMessage(
+          conversation,
+          keyInsightsPrompt,
+          processUserMatchesSystemPrompt
+        )
       )
-
-      console.log('keyInsights')
 
       const collaborationPrompt = generateCollaborationPrompt(
         user.userDetailedProfile,
         matchUser.userDetailedProfile
       )
 
-      await new Promise(resolve => setTimeout(resolve, 10000))
-
       const collaborationReason = parseSendMessageResult(
-        await sendMessage(conversation, collaborationPrompt)
+        await sendMessage(
+          conversation,
+          collaborationPrompt,
+          processUserMatchesSystemPrompt
+        )
       )
 
       console.log('collaborationReason')

@@ -20,7 +20,7 @@ export function PublishSuccessModal({
   onClose,
   formUrl
 }: PublishSuccessModalProps) {
-  const t = useTranslations('YiqiForm')
+  const t = useTranslations('yiqiForm')
 
   return (
     <Dialog open={isOpen} onOpenChange={() => onClose()}>

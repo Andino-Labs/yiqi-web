@@ -13,7 +13,7 @@ interface TextFieldSectionProps {
 }
 const TextFieldSection = ({ id, fields, setText }: TextFieldSectionProps) => {
   const { control } = useForm()
-  const t = useTranslations('YiqiForm')
+  const t = useTranslations('yiqiForm')
 
   const currentField = fields.find(field => field.id === id)
   const inputType = currentField?.inputType

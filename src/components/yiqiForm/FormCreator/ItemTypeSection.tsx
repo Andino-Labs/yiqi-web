@@ -102,7 +102,7 @@ const ItemTypeSection = ({
       </div>
 
       {isFocused && (
-        <div className="mt-4 flex items-center gap-2 pl-8">
+        <div className="mt-4 flex text-left justify-end gap-2 ">
           <Button
             variant="outline"
             size="sm"
@@ -117,7 +117,8 @@ const ItemTypeSection = ({
             }}
           >
             <Plus className="w-4 h-4 mr-2" />
-            Añadir opción
+
+            <span className="hidden md:block">Añadir opción</span>
           </Button>
 
           {inputType !== InputTypes.SELECT && !haveEtc() && (
@@ -131,7 +132,7 @@ const ItemTypeSection = ({
               }}
             >
               <Settings2 className="w-4 h-4 mr-2" />
-              Agregar &quot;Otros&quot;
+              <span className="hidden md:block">Agregar &quot;Otros&quot;</span>
             </Button>
           )}
         </div>

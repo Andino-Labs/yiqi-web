@@ -162,6 +162,7 @@ export default function EventRegistrationTable({
           <TableRow>
             <TableHead>{t('name')}</TableHead>
             <TableHead>{t('email')}</TableHead>
+            <TableHead>Perfil Completado</TableHead>
             <TableHead>{t('status')}</TableHead>
             <TableHead>{t('tickets')}</TableHead>
             {customFields.map(field => (
@@ -176,6 +177,13 @@ export default function EventRegistrationTable({
               <TableRow key={id}>
                 <TableCell>{attendee.name}</TableCell>
                 <TableCell>{attendee.email}</TableCell>
+                <TableCell>
+                  {attendee.userDetailedProfile ? (
+                    <Check className="w-4 h-4 mr-1" />
+                  ) : (
+                    <X className="w-4 h-4 mr-1" />
+                  )}
+                </TableCell>
                 <TableCell>{getTranslation(status.toString())}</TableCell>
                 <TableCell>
                   <GroupedTicketsDisplay tickets={tickets} />

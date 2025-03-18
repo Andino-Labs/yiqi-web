@@ -55,7 +55,7 @@ export function FormHeader({
   const { toast } = useToast()
   const isMobile = useIsMobile()
   const router = useRouter()
-  const t = useTranslations('YiqiForm')
+  const t = useTranslations('yiqiForm')
 
   const navigationItems = [
     {
@@ -171,7 +171,9 @@ export function FormHeader({
                 onClick={handlePublish}
               >
                 <SendHorizonal className="h-4 w-4" />
-                {isEditing ? t('update') : t('publish')}
+                <span className="hidden md:block">
+                  {isEditing ? t('update') : t('publish')}
+                </span>
               </Button>
             </div>
           </div>

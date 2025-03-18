@@ -32,7 +32,7 @@ const FieldFooter = ({
   copyCard,
   toggleIsRequired
 }: FieldFooterProps) => {
-  const t = useTranslations('YiqiForm')
+  const t = useTranslations('yiqiForm')
 
   const currentField = useMemo(
     () => fields.find(field => field.id === id),

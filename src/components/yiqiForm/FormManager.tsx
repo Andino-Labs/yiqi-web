@@ -29,7 +29,7 @@ function FormManager({
   submissions,
   formId
 }: MainFormProps) {
-  const t = useTranslations('YiqiForm')
+  const t = useTranslations('yiqiForm')
 
   const [form, setForm] = useState<FormProps[]>(
     formResponse?.fields ?? [

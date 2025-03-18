@@ -9,7 +9,8 @@ export const userSchema = z.object({
   email: z.string(),
   emailVerified: z.date().nullable().optional(),
   picture: z.string().nullable(),
-  phoneNumber: z.string().nullable().optional()
+  phoneNumber: z.string().nullable().optional(),
+  userDetailedProfile: z.string().nullable().optional()
 })
 
 export const userDataCollectedShema = z.object({
