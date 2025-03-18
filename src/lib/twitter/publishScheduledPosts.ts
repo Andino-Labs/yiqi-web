@@ -32,12 +32,7 @@ export async function publishScheduledPosts() {
           continue
         }
 
-        const twitterClient = new TwitterApi({
-          appKey: process.env.X_API_KEY!,
-          appSecret: process.env.X_API_SECRET!,
-          accessToken: twitterAccount.accessToken,
-          accessSecret: twitterAccount.accessTokenSecret
-        })
+        const twitterClient = new TwitterApi(twitterAccount.accessToken)
 
         const tweetResponse = await twitterClient.v2.tweet(post.content)
         console.log(

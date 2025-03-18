@@ -474,15 +474,15 @@ model NetworkingMatch {
 }
 
 model TwitterAccount {
-  id                Int      @id @default(autoincrement())
-  userId            String
-  accountUsername   String?
-  accountId         String   @unique
-  accessToken       String
-  accessTokenSecret String
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @default(now()) @updatedAt
-  organizationId    String
+  id              Int      @id @default(autoincrement())
+  userId          String
+  accountUsername String?
+  accountId       String   @unique
+  accessToken     String
+  refreshToken    String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now()) @updatedAt
+  organizationId  String
 
   posts Post[]
   user  User   @relation(fields: [userId], references: [id])

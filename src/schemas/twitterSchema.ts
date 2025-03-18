@@ -23,9 +23,8 @@ export const addTwitterAccount = z.object({
   userIdApp: z.string(),
   userId: z.string(),
   screenName: z.string(),
-  accountId: z.string(),
   accessToken: z.string(),
-  accessTokenSecret: z.string(),
+  refreshToken: z.string(),
   organizationId: z.string()
 })
 

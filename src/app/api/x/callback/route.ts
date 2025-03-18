@@ -1,59 +1,66 @@
-import axios from 'axios'
-import { NextResponse } from 'next/server'
+import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 
-const X_API_KEY = process.env.X_API_KEY as string
-const X_API_SECRET = process.env.X_API_SECRET as string
+const X_CLIENT_ID = process.env.X_CLIENT_ID as string;
+const X_CLIENT_SECRET = process.env.X_CLIENT_SECRET as string;
+const REDIRECT_URI = `${process.env.NEXT_PUBLIC_URL}${process.env.NEXT_PUBLIC_X_REDIRECT_URI}`
 
 export async function GET(request: Request) {
-  try {
-    const { searchParams } = new URL(request.url)
-    const oauth_token = searchParams.get('oauth_token')
-    const oauth_verifier = searchParams.get('oauth_verifier')
+  const { searchParams } = new URL(request.url);
+  const code = searchParams.get('code');
 
-    if (!oauth_token || !oauth_verifier) {
-      return NextResponse.json(
-        { error: 'The oauth_token and oauth_verifier parameters are required.' },
-        { status: 400 }
-      )
-    }
-
-    const accessTokenUrl = 'https://api.twitter.com/oauth/access_token'
-    const params = new URLSearchParams({ oauth_token, oauth_verifier })
-
-    const response = await axios.post(accessTokenUrl, params.toString(), {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Basic ${Buffer.from(`${X_API_KEY}:${X_API_SECRET}`).toString('base64')}`
-      }
-    })
-
-    const result = new URLSearchParams(response.data)
-    const accessToken = result.get('oauth_token')
-    const accessTokenSecret = result.get('oauth_token_secret')
-    const userId = result.get('user_id')
-    const screenName = result.get('screen_name')
-
-    if (!accessToken || !accessTokenSecret || !userId) {
-      return NextResponse.json(
-        { error: 'Failed to obtain access tokens.' },
-        { status: 500 }
-      )
-    }
-
-    const redirectUrl = new URL('/admin/organizations/channels/twitter', request.url)
-    redirectUrl.searchParams.append('accessToken', accessToken)
-    redirectUrl.searchParams.append('accessTokenSecret', accessTokenSecret)
-    redirectUrl.searchParams.append('userId', userId)
-    if (screenName) {
-      redirectUrl.searchParams.append('screenName', screenName)
-    }
-
-    return NextResponse.redirect(redirectUrl)
-  } catch (error: unknown) {
-    console.error('Error exchanging tokens:', error instanceof Error ? error.message : error)
-    return NextResponse.json(
-      { error: 'Error connecting to Twitter.' },
-      { status: 500 }
-    )
+  if (!code) {
+    return NextResponse.json({ error: 'authorization code not received' }, { status: 400 });
   }
+
+  const codeVerifier = cookies().get('code_twitter_verifier')?.value;
+  if (!codeVerifier) {
+    return NextResponse.json({ error: 'code_verifier not found' }, { status: 400 });
+  }
+
+  const credentials = Buffer.from(`${X_CLIENT_ID}:${X_CLIENT_SECRET}`).toString('base64');
+
+  const tokenResponse = await fetch('https://api.twitter.com/2/oauth2/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': `Basic ${credentials}`,
+    },
+    body: new URLSearchParams({
+      grant_type: 'authorization_code',
+      code,
+      redirect_uri: REDIRECT_URI,
+      code_verifier: codeVerifier,
+    }).toString(),
+  });
+  
+  const tokenData = await tokenResponse.json();
+
+  if (!tokenResponse.ok) {
+    return NextResponse.json({ error: 'No se pudo obtener el token' }, { status: 401 });
+  }
+
+  const { access_token, refresh_token } = tokenData;
+
+  const userResponse = await fetch('https://api.twitter.com/2/users/me', {
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+    },
+  })
+
+  const userData = await userResponse.json();
+
+  const { id, username } = userData.data;
+
+  if (!userResponse.ok) {
+    return NextResponse.json({ error: 'User not found' }, { status: 401 })
+  }
+
+  const redirectUrl = new URL('/admin/organizations/channels/twitter', request.url);
+  redirectUrl.searchParams.append('accessToken', access_token);
+  redirectUrl.searchParams.append('refreshToken', refresh_token);
+  redirectUrl.searchParams.append('userId', id)
+  redirectUrl.searchParams.append('screenName', username)
+
+  return NextResponse.redirect(redirectUrl);
 }

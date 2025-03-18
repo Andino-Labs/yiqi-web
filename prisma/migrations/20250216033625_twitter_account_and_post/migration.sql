@@ -5,7 +5,7 @@ CREATE TABLE "TwitterAccount" (
     "accountUsername" TEXT,
     "accountId" TEXT NOT NULL,
     "accessToken" TEXT NOT NULL,
-    "accessTokenSecret" TEXT NOT NULL,
+    "refreshToken" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "organizationId" TEXT NOT NULL,

@@ -27,20 +27,19 @@ export default function RedirectPage({ user }: { user: User }) {
 
       const params = new URLSearchParams(window.location.search)
       const accessToken = params.get('accessToken')
-      const accessTokenSecret = params.get('accessTokenSecret')
+      const refreshToken = params.get('refreshToken')
       const twitterUserId = params.get('userId')
       const screenName = params.get('screenName')
 
-      if (accessToken && accessTokenSecret && twitterUserId) {
+      if (accessToken && refreshToken && twitterUserId) {
         try {
           setSuccess(true)
 
           await createTwitterAccount({
             userIdApp: user.id,
             organizationId: storedOrgId,
-            accountId: twitterUserId,
             accessToken,
-            accessTokenSecret,
+            refreshToken,
             userId: twitterUserId,
             screenName: screenName || ''
           })

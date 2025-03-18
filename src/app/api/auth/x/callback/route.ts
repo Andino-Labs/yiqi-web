@@ -1,60 +1,35 @@
-import axios from 'axios'
-import oauth from 'oauth-1.0a'
-import crypto from 'crypto'
-import { NextResponse } from 'next/server'
+import { NextResponse } from 'next/server';
+import crypto from 'crypto';
 
-const X_API_KEY = process.env.X_API_KEY as string
-const X_API_SECRET = process.env.X_API_SECRET as string
+const X_CLIENT_ID = process.env.X_CLIENT_ID as string;
+const REDIRECT_URI = `${process.env.NEXT_PUBLIC_URL}${process.env.NEXT_PUBLIC_X_REDIRECT_URI}`
 
-const oauth1 = new oauth({
-  consumer: {
-    key: X_API_KEY,
-    secret: X_API_SECRET
-  },
-  signature_method: 'HMAC-SHA1',
-  hash_function: (baseString: string, key: string): string => {
-    return crypto.createHmac('sha1', key).update(baseString).digest('base64')
+export async function GET() {
+  if (!X_CLIENT_ID) {
+    return NextResponse.json({ error: 'X_CLIENT_ID is not defined' }, { status: 500 });
   }
-})
 
-export async function GET(): Promise<NextResponse> {
-  try {
-    const requestTokenUrl = 'https://api.twitter.com/oauth/request_token'
-    const requestTokenResponse = await axios.post(requestTokenUrl, null, {
-      headers: Object.fromEntries(
-        Object.entries(
-          oauth1.toHeader(
-            oauth1.authorize({
-              url: requestTokenUrl,
-              method: 'POST'
-            })
-          )
-        )
-      )
-    })
+  const codeVerifier = crypto.randomBytes(32).toString('hex');
+  const codeChallenge = crypto.createHash('sha256').update(codeVerifier).digest('base64url');
 
-    const requestToken = new URLSearchParams(requestTokenResponse.data)
-    const oauthToken = requestToken.get('oauth_token')
-    const oauthTokenSecret = requestToken.get('oauth_token_secret')
+  const response = NextResponse.redirect(
+    `https://twitter.com/i/oauth2/authorize?${new URLSearchParams({
+      response_type: 'code',
+      client_id: X_CLIENT_ID,
+      redirect_uri: REDIRECT_URI,
+      scope: 'tweet.read tweet.write users.read offline.access',
+      state: crypto.randomBytes(16).toString('hex'),
+      code_challenge: codeChallenge,
+      code_challenge_method: 'S256',
+    })}`
+  );
 
-    if (!oauthToken || !oauthTokenSecret) {
-      return NextResponse.json(
-        { error: 'Failed to obtain OAuth tokens.' },
-        { status: 500 }
-      )
-    }
+  response.cookies.set('code_twitter_verifier', codeVerifier, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'lax',
+    path: '/',
+  });
 
-    const authorizationUrl = `https://api.twitter.com/oauth/authorize?oauth_token=${oauthToken}`
-    return NextResponse.redirect(authorizationUrl)
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error('Error in authentication process:', error.message)
-    } else {
-    console.error('Error in authentication process:', error)
-    }
-    return NextResponse.json(
-      { error: 'Error in the authentication process.' },
-      { status: 500 }
-    )
-  }
+  return response;
 }

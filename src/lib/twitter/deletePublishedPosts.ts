@@ -25,12 +25,7 @@ export async function deletePublishedPost(postTwitterId: string) {
   }
 
   try {
-    const twitterClient = new TwitterApi({
-      appKey: process.env.X_API_KEY!,
-      appSecret: process.env.X_API_SECRET!,
-      accessToken: post.account.accessToken,
-      accessSecret: post.account.accessTokenSecret
-    })
+    const twitterClient = new TwitterApi(post.account.accessToken)
 
     await twitterClient.v2.deleteTweet(postTwitterId)
     console.log(`Post ${post.id} deleted successfully from Twitter.`)
