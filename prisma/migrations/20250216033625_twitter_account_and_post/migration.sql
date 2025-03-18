@@ -9,6 +9,7 @@ CREATE TABLE "TwitterAccount" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "organizationId" TEXT NOT NULL,
+    "expiresIn" INTEGER NOT NULL,
 
     CONSTRAINT "TwitterAccount_pkey" PRIMARY KEY ("id")
 );

@@ -483,6 +483,7 @@ model TwitterAccount {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @default(now()) @updatedAt
   organizationId  String
+  expiresIn       Int
 
   posts Post[]
   user  User   @relation(fields: [userId], references: [id])

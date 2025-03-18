@@ -10,7 +10,8 @@ export const createTwitterAccount = async ({
   userIdApp,
   accessToken,
   refreshToken,
-  organizationId
+  organizationId,
+  expiresIn,
 }: AddTwitterAccountSchema) => {
   const isAllowed = await isOrganizerAdmin(organizationId, userIdApp)
   if (!isAllowed) {
@@ -25,7 +26,8 @@ export const createTwitterAccount = async ({
         organizationId,
         accountId: userId,
         accessToken,
-        refreshToken
+        refreshToken,
+        expiresIn
       }
     })
   } catch (error) {

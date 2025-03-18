@@ -30,6 +30,7 @@ export default function RedirectPage({ user }: { user: User }) {
       const refreshToken = params.get('refreshToken')
       const twitterUserId = params.get('userId')
       const screenName = params.get('screenName')
+      const expiresIn = params.get('expiresIn')
 
       if (accessToken && refreshToken && twitterUserId) {
         try {
@@ -41,7 +42,8 @@ export default function RedirectPage({ user }: { user: User }) {
             accessToken,
             refreshToken,
             userId: twitterUserId,
-            screenName: screenName || ''
+            screenName: screenName || '',
+            expiresIn: Number(expiresIn) || 0
           })
 
           router.push(`/admin/organizations/${storedOrgId}/management-tool`)

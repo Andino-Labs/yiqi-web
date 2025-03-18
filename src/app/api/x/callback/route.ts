@@ -51,7 +51,7 @@ export async function GET(request: Request) {
     )
   }
 
-  const { access_token, refresh_token } = tokenData
+  const { access_token, refresh_token, expires_in } = tokenData
 
   const userResponse = await fetch('https://api.twitter.com/2/users/me', {
     headers: {
@@ -75,6 +75,7 @@ export async function GET(request: Request) {
   redirectUrl.searchParams.append('refreshToken', refresh_token)
   redirectUrl.searchParams.append('userId', id)
   redirectUrl.searchParams.append('screenName', username)
+  redirectUrl.searchParams.append('expiresIn', expires_in)
 
   return NextResponse.redirect(redirectUrl)
 }

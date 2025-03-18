@@ -25,7 +25,8 @@ export const addTwitterAccount = z.object({
   screenName: z.string(),
   accessToken: z.string(),
   refreshToken: z.string(),
-  organizationId: z.string()
+  organizationId: z.string(),
+  expiresIn: z.number()
 })
 
 export const dataTwitterSchema = z
