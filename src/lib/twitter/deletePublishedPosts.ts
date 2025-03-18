@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { TwitterApi } from 'twitter-api-v2'
+import { refreshAccessToken } from './refreshTwitterToken'
 
 const prisma = new PrismaClient()
 
@@ -24,8 +25,19 @@ export async function deletePublishedPost(postTwitterId: string) {
     return
   }
 
+  let accessToken = post.account.accessToken
+
+  if (post.account.expiresAt && post.account.expiresAt.getTime() <= Date.now()) {
+    const newAccessToken = await refreshAccessToken(post.account)
+    if (!newAccessToken) {
+      console.error(`The access token could not be refreshed for ${post.account.accountUsername}`)
+      return
+    }
+    accessToken = newAccessToken
+  }
+
   try {
-    const twitterClient = new TwitterApi(post.account.accessToken)
+    const twitterClient = new TwitterApi(accessToken)
 
     await twitterClient.v2.deleteTweet(postTwitterId)
     console.log(`Post ${post.id} deleted successfully from Twitter.`)

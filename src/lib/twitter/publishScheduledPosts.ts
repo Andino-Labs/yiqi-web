@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { TwitterApi } from 'twitter-api-v2'
+import { refreshAccessToken } from './refreshTwitterToken'
 
 const prisma = new PrismaClient()
 
@@ -25,6 +26,18 @@ export async function publishScheduledPosts() {
   }
 
   for (const twitterAccount of scheduledPosts) {
+
+    let accessToken = twitterAccount.accessToken
+
+    if (twitterAccount.expiresAt && twitterAccount.expiresAt.getTime() <= Date.now()) {
+      const newAccessToken = await refreshAccessToken(twitterAccount)
+      if (!newAccessToken) {
+        console.error(`The access token could not be refreshed for ${twitterAccount.accountUsername}`)
+        continue
+      }
+      accessToken = newAccessToken
+    }
+
     for (const post of twitterAccount.posts) {
       try {
         if (post.status === 'PUBLISHED') {
@@ -32,8 +45,7 @@ export async function publishScheduledPosts() {
           continue
         }
 
-        const twitterClient = new TwitterApi(twitterAccount.accessToken)
-
+        const twitterClient = new TwitterApi(accessToken)
         const tweetResponse = await twitterClient.v2.tweet(post.content)
         console.log(
           `Post ${post.id} of ${twitterAccount.accountUsername} account published successfully.`

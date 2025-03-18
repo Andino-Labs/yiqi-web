@@ -3,8 +3,10 @@
 import { getTwitterPostsByOrganizationId } from '@/services/actions/management-tool/channels/twitter/getTwitterPostsByOrganizationId'
 import { TwitterApi } from 'twitter-api-v2'
 import { isOrganizerAdmin } from '../auth/lucia'
+import { PrismaClient } from '@prisma/client'
+import { refreshAccessToken } from './refreshTwitterToken'
 
-const X_BEARER_TOKEN = process.env.X_BEARER_TOKEN
+const prisma = new PrismaClient()
 
 export default async function getTwitterAnalytics(
   accountId: string,
@@ -16,9 +18,29 @@ export default async function getTwitterAnalytics(
     throw new Error('Unauthorized: You don´t have permission.')
   }
 
+  const twitterAccount = await prisma.twitterAccount.findFirst({
+    where: { organizationId }
+  })
+
+  if (!twitterAccount) {
+    console.error('Twitter account not found for this organization.')
+    return null
+  }
+
+  let accessToken = twitterAccount.accessToken
+
+  if (twitterAccount.expiresAt && twitterAccount.expiresAt.getTime() <= Date.now()) {
+    const newAccessToken = await refreshAccessToken(twitterAccount)
+    if (!newAccessToken) {
+      console.error(`The access token could not be refreshed for ${twitterAccount.accountUsername}`)
+      return null
+    }
+    accessToken = newAccessToken
+  }
+
   try {
     const posts = await getTwitterPostsByOrganizationId(organizationId, userId)
-    const twitterClient = new TwitterApi(X_BEARER_TOKEN!)
+    const twitterClient = new TwitterApi(accessToken)
     const userTweets = await twitterClient.v2.userTimeline(accountId, {
       'tweet.fields': 'public_metrics'
     })
@@ -37,8 +59,6 @@ export default async function getTwitterAnalytics(
       },
       { comments: 0, likes: 0, shares: 0, impressions: 0 }
     )
-
-    console.log('User tweets:', analytics)
 
     return analytics
   } catch (error: unknown) {

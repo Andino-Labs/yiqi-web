@@ -43,7 +43,7 @@ export default function RedirectPage({ user }: { user: User }) {
             refreshToken,
             userId: twitterUserId,
             screenName: screenName || '',
-            expiresIn: Number(expiresIn) || 0
+            expiresAt: new Date(Date.now() + (Number(expiresIn) * 1000))
           })
 
           router.push(`/admin/organizations/${storedOrgId}/management-tool`)
