@@ -49,9 +49,8 @@ export default function CalendarDay({
                   : 'bg-blue-500 hover:bg-blue-600'
               }`}
               onClick={() => {
-                  onEditPost(post)
-                }
-              }
+                onEditPost(post)
+              }}
             >
               <div className="text-left flex-grow">
                 <time className="text-lg">

@@ -166,12 +166,8 @@ export function Calendar({
                     )}
                   >
                     <button
-                      onClick={() =>
-                       onEditPost(post)
-                      }
-                      className={cn(
-                        'text-left flex-grow overflow-hidden'
-                      )}
+                      onClick={() => onEditPost(post)}
+                      className={cn('text-left flex-grow overflow-hidden')}
                     >
                       <span className="inline-block truncate">
                         {format(new Date(post.scheduledDate), 'HH:mm')} -{' '}

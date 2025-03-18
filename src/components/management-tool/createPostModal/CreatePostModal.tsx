@@ -159,7 +159,11 @@ export function CreatePostModal({
             >
               {t('cancel')}
             </Button>
-            <Button onClick={handleSchedulePost} className="w-full md:w-auto" disabled={editingPost?.status === 'PUBLISHED'}>
+            <Button
+              onClick={handleSchedulePost}
+              className="w-full md:w-auto"
+              disabled={editingPost?.status === 'PUBLISHED'}
+            >
               {editingPost ? t('updatePost') : t('schedulePost')}
             </Button>
             {editingPost && (
