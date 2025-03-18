@@ -11,7 +11,8 @@ import {
   Building2,
   FolderEdit,
   Banknote,
-  Settings
+  Settings,
+  Workflow
 } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
@@ -95,6 +96,11 @@ export default function OrganizationLayout({
       name: `${tSidebar('billing')}`,
       icon: Banknote,
       href: `/admin/organizations/${currentOrgId}/billing`
+    },
+    {
+      name: `${tSidebar('managementTool')}`,
+      icon: Workflow,
+      href: `/admin/organizations/${currentOrgId}/management-tool`
     }
   ].filter(item => item !== false)
 

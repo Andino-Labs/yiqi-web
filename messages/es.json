@@ -101,7 +101,8 @@
     "forms": "Formularios",
     "logOut": "Cerrar sesión",
     "events": "Eventos",
-    "settings": "Configuración"
+    "settings": "Configuración",
+    "managementTool": "Herramienta de Gestión"
   },
   "SidebarDropdown": {
     "switchOrganization": "Cambiar Organización"
@@ -853,5 +854,36 @@
     "linkedin": "LinkedIn",
     "x": "X",
     "instagram": "Instagram"
+  },
+  "ManagementTool": {
+    "connectYourAccount": "Conecta tu cuenta",
+    "newPost": "Nuevo post",
+    "scheduleFor": "Programar para",
+    "cancel": "Cancelar",
+    "updatePost": "Actualizar post",
+    "schedulePost": "Programar post",
+    "delete": "Eliminar",
+    "today": "Hoy",
+    "connectAccount": "Cuenta conectada",
+    "connectXTwitter": "Conecta X/Twitter",
+    "sunday": "Domingo",
+    "monday": "Lunes",
+    "tuesday": "Martes",
+    "wednesday": "Miércoles",
+    "thursday": "Jueves",
+    "friday": "Viernes",
+    "saturday": "Sábado",
+    "noPostScheduled": "No hay posts",
+    "of": "de",
+    "successfullRedirect": "Cuenta de Twitter conectada con éxito.",
+    "inProcessRedirect": "Conectando con Twitter......",
+    "errorRedirect": "Error al conectar con Twitter. Por favor, inténtalo de nuevo.",
+    "noDataAvailable": "No hay datos disponibles",
+    "analytics": "Analíticas",
+    "comments": "Comentarios",
+    "likes": "Me gusta",
+    "shares": "Compartidos",
+    "impressions": "Impresiones",
+    "whatDoYouFeel": "¿Qué sientes?"
   }
 }

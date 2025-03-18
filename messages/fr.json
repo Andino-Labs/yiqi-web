@@ -95,7 +95,8 @@
     "organizers": "Organisateurs",
     "billing": "Facturation",
     "logOut": "Se déconnecter",
-    "events": "Événements"
+    "events": "Événements",
+    "managementTool": "Outil de gestion"
   },
   "SidebarDropdown": {
     "switchOrganization": "Changer d'organisation"
@@ -680,5 +681,36 @@
     "completeProfile": "Profil complet",
     "viewTickets": "Voir les billets",
     "viewMatches": "Voir les matchs"
+  },
+  "ManagementTool": {
+    "connectYourAccount": "Connectez votre compte",
+    "newPost": "Nouvelle publication",
+    "scheduleFor": "Planifier pour",
+    "cancel": "Annuler",
+    "updatePost": "Mettre à jour la publication",
+    "schedulePost": "Planifier la publication",
+    "delete": "Supprimer",
+    "today": "Aujourd'hui",
+    "connectAccount": "Compte connecté",
+    "connectXTwitter": "Connecter X/Twitter",
+    "sunday": "Dimanche",
+    "monday": "Lundi",
+    "tuesday": "Mardi",
+    "wednesday": "Mercredi",
+    "thursday": "Jeudi",
+    "friday": "Vendredi",
+    "saturday": "Samedi",
+    "noPostScheduled": "Aucune publication planifiée",
+    "of": "de",
+    "successfullRedirect": "Compte Twitter connecté avec succès.",
+    "inProcessRedirect": "Connexion à Twitter en cours......",
+    "errorRedirect": "Erreur de connexion à Twitter. Veuillez réessayer.",
+    "noDataAvailable": "Aucune donnée disponible",
+    "analytics": "Analytique",
+    "comments": "Commentaires",
+    "likes": "J'aime",
+    "shares": "Partages",
+    "impressions": "Impressions",
+    "whatDoYouFeel": "Que ressentez-vous?"
   }
 }
