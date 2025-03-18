@@ -11,7 +11,7 @@ export const createTwitterAccount = async ({
   accessToken,
   refreshToken,
   organizationId,
-  expiresIn,
+  expiresIn
 }: AddTwitterAccountSchema) => {
   const isAllowed = await isOrganizerAdmin(organizationId, userIdApp)
   if (!isAllowed) {
