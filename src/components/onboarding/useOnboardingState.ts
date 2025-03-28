@@ -37,95 +37,96 @@ export function useOnboardingState(
   })
 
   // Initialize selectedOptions from userProfile
-  const initialSelectedOptions = useMemo(() => {
-    const options: Record<string, string[]> = {}
-    if (userProfile) {
-      if (userProfile.professionalMotivations) {
-        // Check if the value matches one of the predefined options
-        const isStandardOption = [
-          'impact',
-          'growth',
-          'stability',
-          'creativity',
-          'leadership'
-        ].includes(userProfile.professionalMotivations)
-        options.professionalMotivations = isStandardOption
-          ? [userProfile.professionalMotivations]
-          : ['other']
+  const initialSelectedOptions: Record<string, string[]> = {}
+  if (userProfile) {
+    if (userProfile.professionalMotivations) {
+      // Check if the value matches one of the predefined options
+      const isStandardOption = [
+        'impact',
+        'growth',
+        'stability',
+        'creativity',
+        'leadership'
+      ].includes(userProfile.professionalMotivations)
+      initialSelectedOptions.professionalMotivations = isStandardOption
+        ? [userProfile.professionalMotivations]
+        : ['other']
 
-        // Also store using the step ID for the UI
-        options.motivations = options.professionalMotivations
-      }
-
-      if (userProfile.communicationStyle) {
-        const isStandardOption = [
-          'direct',
-          'collaborative',
-          'analytical',
-          'supportive'
-        ].includes(userProfile.communicationStyle)
-        options.communicationStyle = isStandardOption
-          ? [userProfile.communicationStyle]
-          : ['other']
-
-        // Also store using the step ID for the UI
-        options.communication = options.communicationStyle
-      }
-
-      if (userProfile.professionalValues) {
-        const values = userProfile.professionalValues.split(',')
-        const standardValues = values.filter(value =>
-          [
-            'autonomy',
-            'balance',
-            'ethics',
-            'innovation',
-            'recognition',
-            'teamwork'
-          ].includes(value)
-        )
-
-        options.professionalValues = standardValues
-        if (values.length > standardValues.length) {
-          options.professionalValues.push('other')
-        }
-
-        // Also store using the step ID for the UI
-        options.values = options.professionalValues
-      }
-
-      if (userProfile.careerAspirations) {
-        const isStandardOption = [
-          'leadership',
-          'specialist',
-          'entrepreneur',
-          'mentor'
-        ].includes(userProfile.careerAspirations)
-        options.careerAspirations = isStandardOption
-          ? [userProfile.careerAspirations]
-          : ['other']
-
-        // Also store using the step ID for the UI
-        options.aspirations = options.careerAspirations
-      }
-
-      if (userProfile.significantChallenge) {
-        const isStandardOption = [
-          'technical',
-          'team',
-          'resources',
-          'leadership'
-        ].includes(userProfile.significantChallenge)
-        options.significantChallenge = isStandardOption
-          ? [userProfile.significantChallenge]
-          : ['other']
-
-        // Also store using the step ID for the UI
-        options.challenge = options.significantChallenge
-      }
+      // Also store using the step ID for the UI
+      initialSelectedOptions.motivations =
+        initialSelectedOptions.professionalMotivations
     }
-    return options
-  }, [userProfile])
+
+    if (userProfile.communicationStyle) {
+      const isStandardOption = [
+        'direct',
+        'collaborative',
+        'analytical',
+        'supportive'
+      ].includes(userProfile.communicationStyle)
+      initialSelectedOptions.communicationStyle = isStandardOption
+        ? [userProfile.communicationStyle]
+        : ['other']
+
+      // Also store using the step ID for the UI
+      initialSelectedOptions.communication =
+        initialSelectedOptions.communicationStyle
+    }
+
+    if (userProfile.professionalValues) {
+      const values = userProfile.professionalValues.split(',')
+      const standardValues = values.filter(value =>
+        [
+          'autonomy',
+          'balance',
+          'ethics',
+          'innovation',
+          'recognition',
+          'teamwork'
+        ].includes(value)
+      )
+
+      initialSelectedOptions.professionalValues = standardValues
+      if (values.length > standardValues.length) {
+        initialSelectedOptions.professionalValues.push('other')
+      }
+
+      // Also store using the step ID for the UI
+      initialSelectedOptions.values = initialSelectedOptions.professionalValues
+    }
+
+    if (userProfile.careerAspirations) {
+      const isStandardOption = [
+        'leadership',
+        'specialist',
+        'entrepreneur',
+        'mentor'
+      ].includes(userProfile.careerAspirations)
+      initialSelectedOptions.careerAspirations = isStandardOption
+        ? [userProfile.careerAspirations]
+        : ['other']
+
+      // Also store using the step ID for the UI
+      initialSelectedOptions.aspirations =
+        initialSelectedOptions.careerAspirations
+    }
+
+    if (userProfile.significantChallenge) {
+      const isStandardOption = [
+        'technical',
+        'team',
+        'resources',
+        'leadership'
+      ].includes(userProfile.significantChallenge)
+      initialSelectedOptions.significantChallenge = isStandardOption
+        ? [userProfile.significantChallenge]
+        : ['other']
+
+      // Also store using the step ID for the UI
+      initialSelectedOptions.challenge =
+        initialSelectedOptions.significantChallenge
+    }
+  }
 
   // Input state
   const [selectedOptions, setSelectedOptions] = useState<
@@ -133,76 +134,74 @@ export function useOnboardingState(
   >(initialSelectedOptions)
 
   // Initialize customResponses for non-standard values
-  const initialCustomResponses = useMemo(() => {
-    const responses: Record<string, string> = {}
-    if (userProfile) {
-      // For each field, if we selected 'other', store the actual value as the custom response
-      if (initialSelectedOptions.professionalMotivations?.includes('other')) {
-        responses.professionalMotivations =
-          userProfile.professionalMotivations || ''
-        // Also store using the step ID for the UI
-        responses.motivations = responses.professionalMotivations
-      }
-
-      if (initialSelectedOptions.communicationStyle?.includes('other')) {
-        responses.communicationStyle = userProfile.communicationStyle || ''
-        // Also store using the step ID for the UI
-        responses.communication = responses.communicationStyle
-      }
-
-      if (initialSelectedOptions.professionalValues?.includes('other')) {
-        // For values, we need to find the non-standard values
-        const standardValues = [
-          'autonomy',
-          'balance',
-          'ethics',
-          'innovation',
-          'recognition',
-          'teamwork'
-        ]
-        const values = userProfile.professionalValues?.split(',') || []
-        const otherValues = values.filter(
-          value => !standardValues.includes(value)
-        )
-        responses.professionalValues = otherValues.join(', ')
-        // Also store using the step ID for the UI
-        responses.values = responses.professionalValues
-      }
-
-      if (initialSelectedOptions.careerAspirations?.includes('other')) {
-        responses.careerAspirations = userProfile.careerAspirations || ''
-        // Also store using the step ID for the UI
-        responses.aspirations = responses.careerAspirations
-      }
-
-      if (initialSelectedOptions.significantChallenge?.includes('other')) {
-        responses.significantChallenge = userProfile.significantChallenge || ''
-        // Also store using the step ID for the UI
-        responses.challenge = responses.significantChallenge
-      }
+  const initialCustomResponses: Record<string, string> = {}
+  if (userProfile) {
+    // For each field, if we selected 'other', store the actual value as the custom response
+    if (initialSelectedOptions.professionalMotivations?.includes('other')) {
+      initialCustomResponses.professionalMotivations =
+        userProfile.professionalMotivations || ''
+      // Also store using the step ID for the UI
+      initialCustomResponses.motivations =
+        initialCustomResponses.professionalMotivations
     }
-    return responses
-  }, [userProfile, initialSelectedOptions])
+
+    if (initialSelectedOptions.communicationStyle?.includes('other')) {
+      initialCustomResponses.communicationStyle =
+        userProfile.communicationStyle || ''
+      // Also store using the step ID for the UI
+      initialCustomResponses.communication =
+        initialCustomResponses.communicationStyle
+    }
+
+    if (initialSelectedOptions.professionalValues?.includes('other')) {
+      // For values, we need to find the non-standard values
+      const standardValues = [
+        'autonomy',
+        'balance',
+        'ethics',
+        'innovation',
+        'recognition',
+        'teamwork'
+      ]
+      const values = userProfile.professionalValues?.split(',') || []
+      const otherValues = values.filter(
+        value => !standardValues.includes(value)
+      )
+      initialCustomResponses.professionalValues = otherValues.join(', ')
+      // Also store using the step ID for the UI
+      initialCustomResponses.values = initialCustomResponses.professionalValues
+    }
+
+    if (initialSelectedOptions.careerAspirations?.includes('other')) {
+      initialCustomResponses.careerAspirations =
+        userProfile.careerAspirations || ''
+      // Also store using the step ID for the UI
+      initialCustomResponses.aspirations =
+        initialCustomResponses.careerAspirations
+    }
+
+    if (initialSelectedOptions.significantChallenge?.includes('other')) {
+      initialCustomResponses.significantChallenge =
+        userProfile.significantChallenge || ''
+      // Also store using the step ID for the UI
+      initialCustomResponses.challenge =
+        initialCustomResponses.significantChallenge
+    }
+  }
 
   const [customResponses, setCustomResponses] = useState<
     Record<string, string>
   >(initialCustomResponses)
 
-  // File processing state - Combined into a single state object
-  const [fileProcessing, setFileProcessing] = useState({
-    isProcessing: false,
-    selectedFile: null as File | null,
-    status: '',
-    error: null as string | null
-  })
-
-  // Fixed to use ReturnType of setTimeout to avoid type error
-  const fileProcessingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
-    null
-  )
+  // File processing state
+  const [isProcessingFile, setIsProcessingFile] = useState(false)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [processingStatus, setProcessingStatus] = useState<string>('')
+  const [processingError, setProcessingError] = useState<string | null>(null)
 
   // Refs
   const contentRef = useRef<HTMLDivElement>(null)
+  const fileProcessingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Define steps
   const steps: QuestionStep[] = useMemo(
@@ -216,23 +215,11 @@ export function useOnboardingState(
           label: t(option.label)
         }))
       })),
-    [t]
-  )
-
-  // Field mapping for easier reference
-  const fieldMap = useMemo(
-    () =>
-      ({
-        motivations: 'professionalMotivations',
-        communication: 'communicationStyle',
-        values: 'professionalValues',
-        aspirations: 'careerAspirations',
-        challenge: 'significantChallenge'
-      }) as Record<string, keyof NetworkingData>,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
 
-  // Clean up timeout on unmount
+  // Set a timeout for file processing to prevent infinite loading
   useEffect(() => {
     return () => {
       if (fileProcessingTimeoutRef.current) {
@@ -248,256 +235,206 @@ export function useOnboardingState(
     }
   }, [currentStep])
 
-  // File processing function - optimized with useCallback
-  const handleFileChange = useCallback(
-    async (event: React.ChangeEvent<HTMLInputElement>) => {
-      const file = event.target.files?.[0]
-      if (!file) return
+  // File processing function
+  async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0]
+    if (!file) return
 
-      try {
-        // Reset previous errors and update state in one operation
-        setFileProcessing({
-          isProcessing: true,
-          selectedFile: file,
-          status: '',
-          error: null
-        })
+    try {
+      // Reset previous errors
+      setProcessingError(null)
+      setIsProcessingFile(true)
+      setSelectedFile(file)
 
-        // Set a timeout of 2 minutes for the entire process
-        if (fileProcessingTimeoutRef.current) {
-          clearTimeout(fileProcessingTimeoutRef.current)
-        }
-
-        fileProcessingTimeoutRef.current = setTimeout(() => {
-          setFileProcessing(prev => ({
-            ...prev,
-            isProcessing: false,
-            status: ''
-          }))
-
-          const errorMsg =
-            'Processing timeout. Please try again or use a smaller file.'
-
-          setFileProcessing(prev => ({
-            ...prev,
-            error: errorMsg
-          }))
-
-          toast({
-            title: t('resumeUploadError'),
-            description: errorMsg,
-            variant: 'destructive'
-          })
-        }, 120000) // 2 minutes
-
-        const result = await processResume(file, status => {
-          setFileProcessing(prev => ({
-            ...prev,
-            status
-          }))
-        })
-
-        // Update form data with the file information and extracted text
-        setFormData(prev => ({
-          ...prev,
-          resumeUrl: result.publicUrl,
-          resumeText: result.extractedText,
-          resumeFileName: result.fileName,
-          resumeLastUpdated: new Date().toISOString()
-        }))
-
-        // Success message
-        toast({
-          title: t('resumeUploadSuccess'),
-          description: t('resumeUploadSuccessDescription')
-        })
-      } catch (error) {
-        console.error('File processing error:', error)
-        const errorMsg =
-          error instanceof Error ? error.message : 'Unknown error'
-
-        setFileProcessing(prev => ({
-          ...prev,
-          error: errorMsg
-        }))
-
+      // Set a timeout of 2 minutes for the entire process
+      fileProcessingTimeoutRef.current = setTimeout(() => {
+        setIsProcessingFile(false)
+        setProcessingStatus('')
+        setProcessingError(
+          'Processing timeout. Please try again or use a smaller file.'
+        )
         toast({
           title: t('resumeUploadError'),
-          description: errorMsg,
+          description:
+            'Processing timeout. Please try again or use a smaller file.',
           variant: 'destructive'
         })
-      } finally {
-        if (fileProcessingTimeoutRef.current) {
-          clearTimeout(fileProcessingTimeoutRef.current)
-          fileProcessingTimeoutRef.current = null
-        }
+      }, 120000) // 2 minutes
 
-        setFileProcessing(prev => ({
-          ...prev,
-          isProcessing: false,
-          status: ''
-        }))
-      }
-    },
-    [t, toast]
-  )
+      const result = await processResume(file, setProcessingStatus)
 
-  // Form input handlers - optimized with useCallback
-  const handleRadioChange = useCallback(
-    (field: string, value: string) => {
-      // Get the corresponding field name if this is a step ID
-      const fieldName = fieldMap[field] || field
-
-      if (value === 'other') {
-        setSelectedOptions(prev => ({
-          ...prev,
-          [field]: [value],
-          ...(fieldName !== field ? { [fieldName]: [value] } : {})
-        }))
-      } else {
-        setSelectedOptions(prev => ({
-          ...prev,
-          [field]: [value],
-          ...(fieldName !== field ? { [fieldName]: [value] } : {})
-        }))
-
-        // Update form data directly for non-other options
-        const step = steps.find(s => s.id === field)
-        if (step && step.options && step.field !== 'complete') {
-          const option = step.options.find(o => o.value === value)
-          if (option) {
-            const fieldKey = step.field as keyof NetworkingData
-            setFormData(prevData => ({
-              ...prevData,
-              [fieldKey]: option.value // Store the value, not the label
-            }))
-          }
-        }
-      }
-    },
-    [fieldMap, steps]
-  )
-
-  const handleCheckboxChange = useCallback(
-    (field: string, value: string, checked: boolean) => {
-      // Get the corresponding field name if this is a step ID
-      const fieldName = fieldMap[field] || field
-
-      setSelectedOptions(prev => {
-        const currentValues = prev[field] || []
-        let newValues: string[]
-
-        if (checked) {
-          newValues = [...currentValues, value]
-        } else {
-          newValues = currentValues.filter(v => v !== value)
-        }
-
-        return {
-          ...prev,
-          [field]: newValues,
-          ...(fieldName !== field ? { [fieldName]: newValues } : {})
-        }
-      })
-
-      // If "other" is unchecked, remove the custom response
-      if (value === 'other' && !checked) {
-        setCustomResponses(prev => {
-          const newCustomResponses = { ...prev }
-          delete newCustomResponses[field]
-          if (fieldName !== field) {
-            delete newCustomResponses[fieldName]
-          }
-          return newCustomResponses
-        })
-      }
-
-      // Update form data directly for checkbox type
-      if (field === 'professionalValues' || field === 'values') {
-        const step = steps.find(s => s.id === field)
-        if (step && step.options && step.field !== 'complete') {
-          setSelectedOptions(prev => {
-            const currentValues = prev[field] || []
-            let newValues: string[]
-
-            if (checked) {
-              newValues = [...currentValues, value]
-            } else {
-              newValues = currentValues.filter(v => v !== value)
-            }
-
-            const selectedValues = newValues.filter(v => v !== 'other')
-
-            setFormData(prevData => {
-              const fieldKey = step.field as keyof NetworkingData
-              return {
-                ...prevData,
-                [fieldKey]: selectedValues.join(',') // Store values, not labels
-              }
-            })
-
-            return {
-              ...prev,
-              [field]: newValues,
-              ...(fieldName !== field ? { [fieldName]: newValues } : {})
-            }
-          })
-        }
-      }
-    },
-    [fieldMap, steps]
-  )
-
-  const handleCustomResponseChange = useCallback(
-    (field: string, value: string) => {
-      // Get the corresponding field name if this is a step ID
-      const fieldName = fieldMap[field] || field
-
-      setCustomResponses(prev => ({
+      // Update form data with the file information and extracted text
+      setFormData(prev => ({
         ...prev,
-        [field]: value,
-        ...(fieldName !== field ? { [fieldName]: value } : {})
+        resumeUrl: result.publicUrl,
+        resumeText: result.extractedText,
+        resumeFileName: result.fileName,
+        resumeLastUpdated: new Date().toISOString()
       }))
 
-      // Update form data directly when custom response changes
-      if (
-        selectedOptions[field]?.includes('other') ||
-        (fieldName !== field && selectedOptions[fieldName]?.includes('other'))
-      ) {
-        const step = steps.find(s => s.id === field)
-        if (step && step.field !== 'complete') {
+      // Success message
+      toast({
+        title: t('resumeUploadSuccess'),
+        description: t('resumeUploadSuccessDescription')
+      })
+    } catch (error) {
+      console.error('File processing error:', error)
+      setProcessingError(
+        error instanceof Error ? error.message : 'Unknown error'
+      )
+      toast({
+        title: t('resumeUploadError'),
+        description: error instanceof Error ? error.message : 'Unknown error',
+        variant: 'destructive'
+      })
+    } finally {
+      if (fileProcessingTimeoutRef.current) {
+        clearTimeout(fileProcessingTimeoutRef.current)
+        fileProcessingTimeoutRef.current = null
+      }
+      setIsProcessingFile(false)
+      setProcessingStatus('')
+    }
+  }
+
+  // Form input handlers
+  const handleRadioChange = (field: string, value: string) => {
+    // Map to store the relationship between step ID and field name
+    const fieldMap: Record<string, keyof NetworkingData> = {
+      motivations: 'professionalMotivations',
+      communication: 'communicationStyle',
+      values: 'professionalValues',
+      aspirations: 'careerAspirations',
+      challenge: 'significantChallenge'
+    }
+
+    // Get the corresponding field name if this is a step ID
+    const fieldName = fieldMap[field] || field
+
+    if (value === 'other') {
+      setSelectedOptions(prev => ({
+        ...prev,
+        [field]: [value],
+        ...(fieldName !== field ? { [fieldName]: [value] } : {})
+      }))
+    } else {
+      setSelectedOptions(prev => ({
+        ...prev,
+        [field]: [value],
+        ...(fieldName !== field ? { [fieldName]: [value] } : {})
+      }))
+
+      // Update form data directly for non-other options
+      const step = steps.find(s => s.id === field)
+      if (step && step.options && step.field !== 'complete') {
+        const option = step.options.find(o => o.value === value)
+        if (option) {
           const fieldKey = step.field as keyof NetworkingData
           setFormData(prevData => ({
             ...prevData,
-            [fieldKey]: value.trim() ? value : prevData[fieldKey]
+            [fieldKey]: option.value // Store the value, not the label
           }))
         }
       }
-    },
-    [fieldMap, steps, selectedOptions]
-  )
+    }
+  }
 
-  // Save data helper function
-  const saveData = useCallback(
-    async (data: NetworkingData, isFinal: boolean) => {
-      try {
-        await saveNetworkingProfile(data, userId, isFinal)
-        return true
-      } catch (error) {
-        console.error('Error saving data:', error)
-        toast({
-          title: t('errorSaving'),
-          description: t('errorSavingDescription'),
-          variant: 'destructive'
-        })
-        return false
+  const handleCheckboxChange = (
+    field: string,
+    value: string,
+    checked: boolean
+  ) => {
+    // Map to store the relationship between step ID and field name
+    const fieldMap: Record<string, keyof NetworkingData> = {
+      motivations: 'professionalMotivations',
+      communication: 'communicationStyle',
+      values: 'professionalValues',
+      aspirations: 'careerAspirations',
+      challenge: 'significantChallenge'
+    }
+
+    // Get the corresponding field name if this is a step ID
+    const fieldName = fieldMap[field] || field
+
+    const currentValues = selectedOptions[field] || []
+    let newValues: string[]
+
+    if (checked) {
+      newValues = [...currentValues, value]
+    } else {
+      newValues = currentValues.filter(v => v !== value)
+    }
+
+    setSelectedOptions(prev => ({
+      ...prev,
+      [field]: newValues,
+      ...(fieldName !== field ? { [fieldName]: newValues } : {})
+    }))
+
+    // If "other" is unchecked, remove the custom response
+    if (value === 'other' && !checked) {
+      const newCustomResponses = { ...customResponses }
+      delete newCustomResponses[field]
+      if (fieldName !== field) {
+        delete newCustomResponses[fieldName]
       }
-    },
-    [userId, t, toast]
-  )
+      setCustomResponses(newCustomResponses)
+    }
 
-  // Navigation handlers - optimized with useCallback
-  const handleNext = useCallback(() => {
+    // Update form data directly for checkbox type
+    if (field === 'professionalValues' || field === 'values') {
+      const step = steps.find(s => s.id === field)
+      if (step && step.options && step.field !== 'complete') {
+        const selectedValues = newValues.filter(v => v !== 'other')
+
+        setFormData(prevData => {
+          const fieldKey = step.field as keyof NetworkingData
+          return {
+            ...prevData,
+            [fieldKey]: selectedValues.join(',') // Store values, not labels
+          }
+        })
+      }
+    }
+  }
+
+  const handleCustomResponseChange = (field: string, value: string) => {
+    // Map to store the relationship between step ID and field name
+    const fieldMap: Record<string, keyof NetworkingData> = {
+      motivations: 'professionalMotivations',
+      communication: 'communicationStyle',
+      values: 'professionalValues',
+      aspirations: 'careerAspirations',
+      challenge: 'significantChallenge'
+    }
+
+    // Get the corresponding field name if this is a step ID
+    const fieldName = fieldMap[field] || field
+
+    setCustomResponses(prev => ({
+      ...prev,
+      [field]: value,
+      ...(fieldName !== field ? { [fieldName]: value } : {})
+    }))
+
+    // Update form data directly when custom response changes
+    if (
+      selectedOptions[field]?.includes('other') ||
+      (fieldName !== field && selectedOptions[fieldName]?.includes('other'))
+    ) {
+      const step = steps.find(s => s.id === field)
+      if (step && step.field !== 'complete') {
+        const fieldKey = step.field as keyof NetworkingData
+        setFormData(prevData => ({
+          ...prevData,
+          [fieldKey]: value.trim() ? value : prevData[fieldKey]
+        }))
+      }
+    }
+  }
+
+  // Navigation handlers
+  const handleNext = () => {
     const currentField = steps[currentStep].field
     const isLastQuestion = currentStep === steps.length - 2 // Check if this is the last question before completion
     const isMovingToCompletionScreen = isLastQuestion
@@ -514,102 +451,147 @@ export function useOnboardingState(
         router.prefetch('/events')
 
         setIsSubmitting(true)
-        setFileProcessing(prev => ({
-          ...prev,
-          status: t('processingProfileData')
-        }))
+        setProcessingStatus(t('processingProfileData'))
 
         // Make sure we have a timeout to stop loading even if something fails
         const loadingTimeout = setTimeout(() => {
           setIsSubmitting(false)
-          setFileProcessing(prev => ({
-            ...prev,
-            status: ''
-          }))
+          setProcessingStatus('')
         }, 30000) // 30 seconds max for loading
 
         // Helper to clean up timeout and loading state
         const finishLoading = () => {
           clearTimeout(loadingTimeout)
           setIsSubmitting(false)
-          setFileProcessing(prev => ({
-            ...prev,
-            status: ''
-          }))
+          setProcessingStatus('')
         }
 
         // Save data and process profile
-        let dataToSave = { ...formData }
+        let savePromise: Promise<void> | null = null
 
         if (selectedOpts.includes('other')) {
           const customValue = customResponses[steps[currentStep].id] || ''
           if (customValue.trim()) {
-            dataToSave = {
-              ...dataToSave,
-              [currentField]: customValue
-            }
+            savePromise = saveNetworkingProfile(
+              {
+                ...formData,
+                [currentField]: customValue
+              },
+              userId,
+              isLastQuestion
+            )
           }
-        } else if (step?.type !== 'checkbox' && selectedOpts.length > 0) {
+        } else if (step?.type === 'checkbox') {
+          savePromise = saveNetworkingProfile(formData, userId, isLastQuestion)
+        } else if (selectedOpts.length > 0) {
           if (step && step.options) {
             const option = step.options.find(o => o.value === selectedOpts[0])
             if (option && option.value !== 'other') {
-              dataToSave = {
-                ...dataToSave,
-                [currentField]: option.value
-              }
+              savePromise = saveNetworkingProfile(
+                {
+                  ...formData,
+                  [currentField]: option.value
+                },
+                userId,
+                isLastQuestion
+              )
             }
           }
         }
 
-        // Save the data
-        saveData(dataToSave, true).finally(() => {
-          finishLoading()
-        })
+        // If we created a save promise, add error handling and finish loading when done
+        if (savePromise) {
+          savePromise
+            .catch(error => {
+              console.error('Error saving data:', error)
+              toast({
+                title: t('errorSaving'),
+                description: t('errorSavingDescription'),
+                variant: 'destructive'
+              })
+            })
+            .finally(() => {
+              finishLoading()
+            })
+        } else {
+          // If there's no data to save but we're still going to completion screen,
+          // manually trigger processing with just the current form data
+          saveNetworkingProfile(formData, userId, isLastQuestion)
+            .catch(error => {
+              console.error('Error processing profile:', error)
+              toast({
+                title: t('errorSaving'),
+                description: t('errorSavingDescription'),
+                variant: 'destructive'
+              })
+            })
+            .finally(() => {
+              finishLoading()
+            })
+        }
       } else {
         // Regular data save for non-final steps
-        let dataToSave = { ...formData }
-
         if (selectedOpts.includes('other')) {
           const customValue = customResponses[steps[currentStep].id] || ''
           if (customValue.trim()) {
-            dataToSave = {
-              ...dataToSave,
-              [currentField]: customValue
-            }
+            saveNetworkingProfile(
+              {
+                ...formData,
+                [currentField]: customValue
+              },
+              userId,
+              false
+            ).catch(error => {
+              console.error('Error saving data:', error)
+              toast({
+                title: t('errorSaving'),
+                description: t('errorSavingDescription'),
+                variant: 'destructive'
+              })
+            })
           }
-        } else if (step?.type !== 'checkbox' && selectedOpts.length > 0) {
+        } else if (step?.type === 'checkbox') {
+          saveNetworkingProfile(formData, userId, false).catch(error => {
+            console.error('Error saving data:', error)
+            toast({
+              title: t('errorSaving'),
+              description: t('errorSavingDescription'),
+              variant: 'destructive'
+            })
+          })
+        } else if (selectedOpts.length > 0) {
           if (step && step.options) {
             const option = step.options.find(o => o.value === selectedOpts[0])
             if (option && option.value !== 'other') {
-              dataToSave = {
-                ...dataToSave,
-                [currentField]: option.value
-              }
+              saveNetworkingProfile(
+                {
+                  ...formData,
+                  [currentField]: option.value
+                },
+                userId,
+                false
+              ).catch(error => {
+                console.error('Error saving data:', error)
+                toast({
+                  title: t('errorSaving'),
+                  description: t('errorSavingDescription'),
+                  variant: 'destructive'
+                })
+              })
             }
           }
         }
-
-        saveData(dataToSave, false)
       }
     } else {
       setCurrentStep(prev => prev + 1)
     }
-  }, [
-    currentStep,
-    steps,
-    selectedOptions,
-    customResponses,
-    formData,
-    router,
-    saveData,
-    t
-  ])
+  }
 
-  const handlePrevious = useCallback(() => {
+  const handlePrevious = () => {
     setCurrentStep(prev => prev - 1)
-  }, [])
+  }
 
-  const handleSkip = useCallback(async () => {
+  const handleSkip = async () => {
     try {
       setIsSubmitting(true)
       await makeRegularUser({ userId })
@@ -628,7 +610,7 @@ export function useOnboardingState(
     } finally {
       setIsSubmitting(false)
     }
-  }, [userId, t, toast, router])
+  }
 
   const handleComplete = useCallback(async () => {
     try {
@@ -647,7 +629,8 @@ export function useOnboardingState(
         variant: 'destructive'
       })
     }
-  }, [userId, t, toast, router])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId])
 
   // Calculate progress
   const currentProgress = ((currentStep + 1) / steps.length) * 100
@@ -659,10 +642,10 @@ export function useOnboardingState(
     formData,
     selectedOptions,
     customResponses,
-    isProcessingFile: fileProcessing.isProcessing,
-    selectedFile: fileProcessing.selectedFile,
-    processingStatus: fileProcessing.status,
-    processingError: fileProcessing.error,
+    isProcessingFile,
+    selectedFile,
+    processingStatus,
+    processingError,
     contentRef,
     steps,
     currentProgress,
